@@ -1,0 +1,126 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'book8stars@gmail.com';
+    }
+    
+    // ==================== KYC DOCUMENTS STORAGE (CRITICAL SECURITY) ====================
+    
+    // KYC Documents - Aadhaar, PAN, Address Proof
+    match /kyc/{fileName} {
+      // Users can upload their own KYC documents during submission
+      allow create: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024  // Max 5MB
+        && request.resource.contentType.matches('image/.*|application/pdf');  // Images or PDF only
+      
+      // Users can read their own KYC documents
+      allow read: if request.auth != null;
+      
+      // Admin can read all KYC documents (for review)
+      allow read: if isAdmin();
+      
+      // NO UPDATES OR DELETIONS ALLOWED (audit trail)
+      allow update, delete: if false;
+    }
+    
+    // Specific KYC document types
+    match /kyc/aadhaar/{fileName} {
+      allow create: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+      allow read: if request.auth != null || isAdmin();
+      allow update, delete: if false;
+    }
+    
+    match /kyc/pan/{fileName} {
+      allow create: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+      allow read: if request.auth != null || isAdmin();
+      allow update, delete: if false;
+    }
+    
+    match /kyc/addressProof/{fileName} {
+      allow create: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+      allow read: if request.auth != null || isAdmin();
+      allow update, delete: if false;
+    }
+    
+    // ==================== PROJECT MEDIA ====================
+    
+    // Project images and videos
+    match /projects/{projectId}/{fileName} {
+      // Anyone can read project media (public)
+      allow read: if true;
+      
+      // Only project creators can upload media
+      allow create: if request.auth != null
+        && request.resource.size < 10 * 1024 * 1024  // Max 10MB for project media
+        && request.resource.contentType.matches('image/.*|video/.*');
+      
+      // Creators can update their own project media
+      allow update: if request.auth != null;
+      
+      // Creators can delete their own project media
+      allow delete: if request.auth != null;
+    }
+    
+    // ==================== USER PROFILE MEDIA ====================
+    
+    // Profile pictures
+    match /users/{userId}/profile/{fileName} {
+      // Anyone can read profile pictures (public)
+      allow read: if true;
+      
+      // Users can upload their own profile picture
+      allow create: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 2 * 1024 * 1024  // Max 2MB
+        && request.resource.contentType.matches('image/.*');
+      
+      // Users can update/delete their own profile picture
+      allow update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Cover images
+    match /users/{userId}/cover/{fileName} {
+      // Anyone can read cover images (public)
+      allow read: if true;
+      
+      // Users can upload their own cover image
+      allow create: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024  // Max 5MB
+        && request.resource.contentType.matches('image/.*');
+      
+      // Users can update/delete their own cover image
+      allow update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // ==================== GENERAL FILE UPLOADS ====================
+    
+    // Temporary uploads (project creation drafts, etc.)
+    match /uploads/{userId}/{fileName} {
+      // Users can upload their own files
+      allow create: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 10 * 1024 * 1024;  // Max 10MB
+      
+      // Users can read their own uploads
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Users can delete their own uploads
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Default - deny access to everything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

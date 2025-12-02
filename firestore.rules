@@ -1,0 +1,585 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Enhanced user profiles - Privacy-aware access control
+    match /users/{userId} {
+      // Users can read and write their own user document (full access)
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Admin can read all user profiles
+      allow read: if isAdmin() || isAdminByDocument();
+
+      // Admin can update user profiles (for verification/suspension)
+      allow update: if isAdmin() || isAdminByDocument();
+      
+      // Public profiles - Allow reading if profile is public
+      // This allows viewing: id, username, displayName, profileImage, bio, description,
+      // location, jobTitle, socialLinks, achievements, level, experiencePoints
+      allow read: if request.auth != null && 
+                     resource.data.isPublic == true &&
+                     (!exists(/databases/$(database)/documents/blocked-users/$(request.auth.uid + '_' + userId)));
+      
+      // Private profiles - Only allow reading basic info for username resolution
+      // Basic info: id, username, displayName, profileImage (for search/mentions)
+      allow get: if request.auth != null;
+      
+      // IMPORTANT: Allow authenticated users to query by username field
+      // This is needed for username availability checks when changing username
+      // Limited to small queries to prevent bulk scraping
+      allow list: if request.auth != null && request.query.limit <= 10;
+      
+      // Note: Email, stats, and backed projects visibility is controlled at application level
+      // The app will filter these fields based on showEmail, showStats, showBackedProjects flags
+    }
+    
+    // Username system
+    match /usernames/{username} {
+      // Anyone can read username mappings for profile resolution
+      allow read: if true;
+      
+      // Only authenticated users can create username mappings
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Users can update their own username mappings (for username changes)
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // Reserved usernames (read-only)
+    match /reserved-usernames/{username} {
+      allow read: if true;
+      allow write: if false; // Only admin can modify
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'book8stars@gmail.com';
+    }
+    
+    // Alternative admin check using user document
+    function isAdminByDocument() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.email == 'book8stars@gmail.com';
+    }
+    
+    // Helper function to check if user is creator verified
+    function isCreatorVerified(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId)) &&
+             get(/databases/$(database)/documents/users/$(userId)).data.isCreatorVerified == true;
+    }
+
+    // ==================== KYC DOCUMENTS COLLECTION (CRITICAL SECURITY) ====================
+    
+    // KYC Documents - Extremely Sensitive Data
+    match /kyc_documents/{kycDocId} {
+      // Users can ONLY read their own KYC documents
+      allow read: if request.auth != null 
+        && resource.data.userId == request.auth.uid;
+      
+      // Admin can read all KYC documents (for review)
+      allow read: if isAdmin() || isAdminByDocument();
+      
+      // Users can CREATE their own KYC submission (ONE TIME)
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId
+        && request.resource.data.status == 'pending'
+        && request.resource.data.userId == request.auth.uid;
+      
+      // ONLY ADMIN can update KYC status (approve/reject)
+      allow update: if (isAdmin() || isAdminByDocument())
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'reviewedAt', 'reviewedBy', 'rejectionReason', 'lastUpdatedAt']);
+      
+      // NO DELETION ALLOWED (audit trail)
+      allow delete: if false;
+    }
+
+    // Projects rules - UPDATED FOR KYC ENFORCEMENT
+    match /projects/{projectId} {
+      // Anyone can read projects (for browsing)
+      allow read: if true;
+      
+      // ✅ CRITICAL: Only KYC-verified creators can create projects
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.creatorId
+        && isCreatorVerified(request.auth.uid)
+        && request.resource.data.kycDocumentId != null
+        && request.resource.data.identityVerified == true
+        && request.resource.data.status == 'pending_review';
+      
+      // Any authenticated user can update interaction counts and funding stats
+      allow update: if request.auth != null 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount', 'followCount', 'raised', 'supporters', 'lastDonationAt', 'updatedAt']);
+
+      // Project creators can update their own projects (except approval fields)
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.creatorId
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['approvalStatus', 'status', 'kycDocumentId', 'identityVerified']);
+      
+      // ✅ Admin can approve/reject projects and change status
+      allow update: if (isAdmin() || isAdminByDocument()) 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['approvalStatus', 'approvedAt', 'approvedBy', 'rejectedAt', 'rejectedBy', 'rejectionReason', 'status', 'updatedAt']);
+      
+      // Only project creators can delete their own projects
+      allow delete: if request.auth != null 
+        && request.auth.uid == resource.data.creatorId;
+    }
+    
+    // Project supporters/backers
+    match /projects/{projectId}/supporters/{supporterId} {
+      // Anyone can read supporter lists (for displaying supporter count)
+      allow read: if true;
+      
+      // Only authenticated users can create support records
+      allow create: if request.auth != null 
+        && request.auth.uid == supporterId;
+      
+      // Supporters can update their own support records
+      allow update: if request.auth != null 
+        && request.auth.uid == supporterId;
+    }
+    
+    // Project updates
+    match /projects/{projectId}/updates/{updateId} {
+      // Anyone can read project updates
+      allow read: if true;
+      
+      // Only project creators can create/update/delete project updates
+      allow write: if request.auth != null 
+        && request.auth.uid == get(/databases/$(database)/documents/projects/$(projectId)).data.creatorId;
+    }
+    
+    // Project comments
+    match /projects/{projectId}/comments/{commentId} {
+      // Anyone can read comments
+      allow read: if true;
+      
+      // Only authenticated users can create comments
+      allow create: if request.auth != null;
+      
+      // Only comment authors can update/delete their own comments
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.authorId;
+    }
+    
+    // Transactions/Payments (if you implement payment tracking)
+    match /transactions/{transactionId} {
+      // Only the user who made the transaction can read it
+      allow read: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // Only authenticated users can create transactions
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Transactions cannot be updated or deleted (for audit trail)
+      allow update, delete: if false;
+    }
+    
+    // Admin-only collections (if needed)
+    match /admin/{document=**} {
+      allow read, write: if false; // Deny all access by default
+      // You can add admin user checks here if needed
+    }
+    
+    // Project likes
+    match /likes/{likeId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    // Project follows
+    match /follows/{followId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    // User following system
+    match /user-follows/{followId} {
+      allow read: if true;
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.followerUserId;
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.followerUserId;
+    }
+    
+    // Blocked users system
+    match /blocked-users/{blockId} {
+      // Users can read their own blocked list
+      allow read: if request.auth != null 
+        && (request.auth.uid == resource.data.blockerUserId || 
+            request.auth.uid == resource.data.blockedUserId);
+      
+      // Users can block others (blockId format: blockerUserId_blockedUserId)
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.blockerUserId
+        && request.resource.data.blockerUserId != request.resource.data.blockedUserId;
+      
+      // Users can unblock (delete block record)
+      allow delete: if request.auth != null 
+        && request.auth.uid == resource.data.blockerUserId;
+      
+      // No updates allowed - only create/delete
+      allow update: if false;
+    }
+    
+    // Backed projects tracking
+    match /backed-projects/{backingId} {
+      // Users can read their own backed projects
+      allow read: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // Project creators can see who backed their projects
+      allow read: if request.auth != null 
+        && request.auth.uid == get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId;
+      
+      // Users can create their own backing records
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Users can update their own backing records
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // User activity feed
+    match /user-activities/{activityId} {
+      // Users can read their own activities
+      allow read: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // System can create activity records
+      allow create: if request.auth != null;
+      
+      // No updates or deletions allowed
+      allow update, delete: if false;
+    }
+    
+    // Achievement definitions (read-only for users)
+    match /achievement-definitions/{achievementId} {
+      allow read: if true;
+      allow write: if false; // Only admin can modify
+    }
+    
+    // Project Updates (new separate collection)
+    match /project-updates/{updateId} {
+      // Anyone can read project updates (supporters-only check in app)
+      allow read: if request.auth != null;
+      
+      // Only project creators can create/update/delete project updates
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.creatorId;
+      
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.creatorId;
+    }
+    
+    // Project Comments (new separate collection)
+    match /project-comments/{commentId} {
+      // Anyone can read comments
+      allow read: if true;
+      
+      // Only authenticated users can create comments
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Only comment authors can update/delete their own comments
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+    }
+    
+    // Notifications
+    match /notifications/{notificationId} {
+      // Users can read their own notifications
+      allow read: if request.auth != null 
+        && resource.data.userId == request.auth.uid;
+      
+      // Users can mark their own notifications as read
+      allow update: if request.auth != null 
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']);
+      
+      // System can create notifications
+      allow create: if request.auth != null;
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // Project Analytics
+    match /project-analytics/{analyticsId} {
+      // Anyone can read analytics (creator check in app)
+      allow read: if request.auth != null;
+      
+      // System can write analytics data
+      allow write: if request.auth != null;
+    }
+    
+    // Creator Earnings
+    match /creator-earnings/{userId} {
+      // Users can read their own earnings
+      allow read: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can update their own earnings (bank details)
+      allow write: if request.auth != null 
+        && request.auth.uid == userId;
+    }
+    
+    // Payouts
+    match /payouts/{payoutId} {
+      // Users can read their own payouts
+      allow read: if request.auth != null 
+        && resource.data.creatorId == request.auth.uid;
+      
+      // Users can create payout requests
+      allow create: if request.auth != null 
+        && request.resource.data.creatorId == request.auth.uid;
+      
+      // System can update payout status (simulated)
+      allow update: if request.auth != null;
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // Supporters Collection (top-level for better querying)
+    match /supporters/{supporterId} {
+      // Anyone can read supporter records (for public supporter lists)
+      allow read: if true;
+      
+      // Only authenticated users can create support records
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Supporters can update their own support records
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // No deletion (for audit trail)
+      allow delete: if false;
+    }
+    
+    // KYC Submissions (for project creation)
+    match /kyc-submissions/{kycId} {
+      // Users can read their own KYC submissions
+      allow read: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // Admin/system can read all KYC submissions (for verification)
+      allow read: if request.auth != null;
+      
+      // Users can create their own KYC submissions
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Users can update their own KYC submissions (for corrections)
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // Reports Collection (for content moderation)
+    match /reports/{reportId} {
+      // Users can read reports they created
+      allow read: if request.auth != null 
+        && resource.data.reportedBy == request.auth.uid;
+      
+      // Admin can read all reports
+      allow read: if isAdmin() || isAdminByDocument();
+      
+      // Authenticated users can create reports
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.reportedBy;
+      
+      // Only admin can update reports (status, resolution)
+      allow update: if isAdmin() || isAdminByDocument();
+      
+      // No deletion allowed (for audit trail)
+      allow delete: if false;
+    }
+    
+    // Activity Logs Collection
+    match /activity-logs/{logId} {
+      // Users can read their own activity logs
+      allow read: if request.auth != null 
+        && resource.data.userId == request.auth.uid;
+      
+      // Admin can read all activity logs
+      allow read: if isAdmin() || isAdminByDocument();
+      
+      // System can create activity logs
+      allow create: if request.auth != null;
+      
+      // No updates or deletions allowed (for audit trail)
+      allow update, delete: if false;
+    }
+    
+    // Admin Logs Collection (audit trail)
+    match /admin-logs/{logId} {
+      // Only admin can read admin logs
+      allow read: if isAdmin() || isAdminByDocument();
+      
+      // Only admin can create admin logs (system)
+      allow create: if isAdmin() || isAdminByDocument();
+      
+      // No updates or deletions allowed (for audit trail)
+      allow update, delete: if false;
+    }
+    
+    // Keyword Flags Collection (auto-moderation)
+    match /keyword-flags/{flagId} {
+      // Anyone can read keyword flags (for client-side checks)
+      allow read: if true;
+      
+      // Only admin can create/update keyword flags
+      allow create, update: if isAdmin() || isAdminByDocument();
+      
+      // Only admin can delete keyword flags
+      allow delete: if isAdmin() || isAdminByDocument();
+    }
+    
+    // ==================== LANDING PAGE COLLECTIONS ====================
+    
+    // Success Stories (admin-managed)
+    match /success-stories/{storyId} {
+      // Anyone can read published success stories
+      allow read: if true;
+      
+      // Only admin can create/update/delete success stories
+      allow create, update, delete: if isAdmin() || isAdminByDocument();
+    }
+    
+    // Testimonials (admin-managed)
+    match /testimonials/{testimonialId} {
+      // Anyone can read published testimonials
+      allow read: if true;
+      
+      // Only admin can create/update/delete testimonials
+      allow create, update, delete: if isAdmin() || isAdminByDocument();
+    }
+    
+    // Platform Statistics (admin-managed)
+    match /platform-stats/{statsId} {
+      // Anyone can read platform stats
+      allow read: if true;
+      
+      // Only admin can update platform stats
+      allow update: if isAdmin() || isAdminByDocument();
+      
+      // Allow system to create/update stats (for auto-calculation)
+      allow create, update: if request.auth != null;
+      
+      // No deletion allowed
+      allow delete: if false;
+    }
+    
+    // Platform Settings (admin-managed)
+    match /platform-settings/{settingsId} {
+      // Anyone can read platform settings (for feature toggles)
+      allow read: if true;
+      
+      // Only admin can update platform settings
+      allow create, update: if isAdmin() || isAdminByDocument();
+      
+      // No deletion allowed
+      allow delete: if false;
+    }
+    
+    // Recent Activity (for live ticker)
+    match /recent-activity/{activityId} {
+      // Anyone can read recent activity
+      allow read: if true;
+      
+      // System can create activity records
+      allow create: if request.auth != null;
+      
+      // No updates or deletions allowed (for audit trail)
+      allow update, delete: if false;
+    }
+    
+    // FAQ Items (admin-managed)
+    match /faq/{faqId} {
+      // Anyone can read published FAQ items
+      allow read: if true;
+      
+      // Only admin can create/update/delete FAQ items
+      allow create, update, delete: if isAdmin() || isAdminByDocument();
+    }
+    
+    // ==================== USER BEHAVIOR TRACKING & PERSONALIZATION ====================
+    
+    // User Behavior Collection (views and interactions)
+    match /user-behavior/{userId}/{subcollection}/{documentId} {
+      // Users can read their own behavior data
+      allow read: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can create their own behavior records
+      allow create: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can update their own behavior records
+      allow update: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can delete their own behavior data (privacy)
+      allow delete: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Admin can read all behavior data (for analytics)
+      allow read: if isAdmin() || isAdminByDocument();
+    }
+    
+    // User Preferences Collection
+    match /user-preferences/{userId} {
+      // Users can read their own preferences
+      allow read: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can create/update their own preferences
+      allow create, update: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Users can delete their own preferences (reset)
+      allow delete: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Admin can read all preferences
+      allow read: if isAdmin() || isAdminByDocument();
+    }
+    
+    // Recommendation Cache Collection
+    match /recommendation-cache/{userId} {
+      // Users can read their own recommendation cache
+      allow read: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // System can create/update recommendation cache
+      allow create, update: if request.auth != null 
+        && request.auth.uid == userId;
+      
+      // Cache can be deleted by user or system
+      allow delete: if request.auth != null 
+        && request.auth.uid == userId;
+    }
+    
+    // Default rule - deny access to any other documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
