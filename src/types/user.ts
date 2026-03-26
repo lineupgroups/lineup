@@ -100,6 +100,8 @@ export interface EnhancedUser {
 
   // Creator Eligibility
   isCreatorVerified: boolean;  // TRUE only after KYC approval
+  isVerifiedCreator?: boolean; // For profile display (green ring, badge) - set by KYC approval or manual verification
+  verifiedAt?: Timestamp;      // When verification was granted
   canCreateProjects: boolean;  // TRUE only after KYC approval
   creatorActivatedAt?: Timestamp; // When they first became creator
 

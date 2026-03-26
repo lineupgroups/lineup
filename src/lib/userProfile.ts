@@ -90,6 +90,8 @@ export const getEnhancedUserProfile = async (userId: string): Promise<EnhancedUs
       kycDocumentId: userData.kycDocumentId,
 
       isCreatorVerified: userData.isCreatorVerified ?? false,
+      isVerifiedCreator: userData.isVerifiedCreator ?? false, // For profile display (green ring, badge)
+      verifiedAt: userData.verifiedAt,
       canCreateProjects: userData.canCreateProjects ?? false,
       creatorActivatedAt: userData.creatorActivatedAt,
 

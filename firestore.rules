@@ -33,6 +33,21 @@ service cloud.firestore {
       // The app will filter these fields based on showEmail, showStats, showBackedProjects flags
     }
     
+    // User bookmarks subcollection
+    match /users/{userId}/bookmarks/{bookmarkId} {
+      // Users can read their own bookmarks
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Users can create their own bookmarks
+      allow create: if request.auth != null && request.auth.uid == userId;
+      
+      // Users can delete their own bookmarks
+      allow delete: if request.auth != null && request.auth.uid == userId;
+      
+      // No updates needed (bookmarks are simple create/delete)
+      allow update: if false;
+    }
+    
     // Username system
     match /usernames/{username} {
       // Anyone can read username mappings for profile resolution
@@ -202,6 +217,24 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
     
+    // Interactions collection (likes, shares, etc.)
+    match /interactions/{interactionId} {
+      // Anyone authenticated can read interactions (for activity feeds)
+      allow read: if request.auth != null;
+      
+      // Users can create their own interactions
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Users can update their own interactions
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+      
+      // Users can delete their own interactions (unlike)
+      allow delete: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+    }
+    
     // User following system
     match /user-follows/{followId} {
       allow read: if true;
@@ -233,13 +266,9 @@ service cloud.firestore {
     
     // Backed projects tracking
     match /backed-projects/{backingId} {
-      // Users can read their own backed projects
-      allow read: if request.auth != null 
-        && request.auth.uid == resource.data.userId;
-      
-      // Project creators can see who backed their projects
-      allow read: if request.auth != null 
-        && request.auth.uid == get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId;
+      // ✅ Allow any authenticated user to read donations for a project
+      // This is needed for top supporters/donation leaderboard on project pages
+      allow read: if request.auth != null;
       
       // Users can create their own backing records
       allow create: if request.auth != null 
@@ -248,6 +277,13 @@ service cloud.firestore {
       // Users can update their own backing records
       allow update: if request.auth != null 
         && request.auth.uid == resource.data.userId;
+      
+      // Project creators can mark backers as thanked
+      // They can only update thankedAt and thankedBy fields
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['thankedAt', 'thankedBy']);
       
       // No deletion allowed (for audit trail)
       allow delete: if false;
@@ -273,15 +309,33 @@ service cloud.firestore {
     }
     
     // Project Updates (new separate collection)
+    // NOTE: Supporters-only visibility is enforced at the application layer
+    // because Firestore doesn't support complex per-document checks on list queries
     match /project-updates/{updateId} {
-      // Anyone can read project updates (supporters-only check in app)
+      // Read access for authenticated users
+      // The application layer handles supporters-only filtering
       allow read: if request.auth != null;
       
-      // Only project creators can create/update/delete project updates
+      // Only project creators can create updates
+      
       allow create: if request.auth != null 
         && request.auth.uid == request.resource.data.creatorId;
       
-      allow update, delete: if request.auth != null 
+      // Creators can fully update their own updates
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.creatorId;
+      
+      // Any authenticated user can like/unlike (only updating likes, likedBy fields)
+      // This supports the transaction-based like system
+      allow update: if request.auth != null 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy']);
+      
+      // Allow incrementing/decrementing commentCount (for atomic counter updates)
+      allow update: if request.auth != null 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentCount']);
+      
+      // Only creators can delete their updates
+      allow delete: if request.auth != null 
         && request.auth.uid == resource.data.creatorId;
     }
     
@@ -294,11 +348,71 @@ service cloud.firestore {
       allow create: if request.auth != null 
         && request.auth.uid == request.resource.data.userId;
       
-      // Only comment authors can update/delete their own comments
+      // Comment authors can update/delete their own comments
       allow update, delete: if request.auth != null 
         && request.auth.uid == resource.data.userId;
+      
+      // Any authenticated user can like/unlike comments
+      // Only allows updating likes and likedBy fields
+      allow update: if request.auth != null 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy']);
+      
+      // Project creators can pin/unpin comments on their projects
+      // They can only update isPinned and updatedAt fields
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isPinned', 'updatedAt']);
+      
+      // Project creators can also soft-delete (mark as deleted) comments on their projects
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isDeleted', 'deletedAt', 'deletedBy', 'updatedAt']);
+      
+      // Project creators can give/remove hearts on comments (like YouTube's creator heart)
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['creatorHeart', 'creatorHeartAt', 'updatedAt']);
     }
     
+    // Update Comments (comments on project updates)
+    match /update-comments/{commentId} {
+      // Anyone authenticated can read comments on updates
+      allow read: if request.auth != null;
+      
+      // Authenticated users can create comments
+      allow create: if request.auth != null 
+        && request.auth.uid == request.resource.data.userId;
+      
+      // Comment authors can update their own comments (for editing)
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['content', 'isEdited', 'updatedAt']);
+      
+      // Comment authors can soft-delete their own comments
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isDeleted', 'updatedAt']);
+      
+      // Any authenticated user can like comments
+      allow update: if request.auth != null 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy']);
+      
+      // Project creators can delete any comment on their project updates
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isDeleted', 'updatedAt']);
+      
+      // Project creators can give/remove hearts on update comments
+      allow update: if request.auth != null 
+        && exists(/databases/$(database)/documents/projects/$(resource.data.projectId))
+        && get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.creatorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['creatorHeart', 'creatorHeartAt', 'updatedAt']);
+    }
+
     // Notifications
     match /notifications/{notificationId} {
       // Users can read their own notifications

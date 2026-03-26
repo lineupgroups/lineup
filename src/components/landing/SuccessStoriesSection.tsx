@@ -11,7 +11,7 @@ export default function SuccessStoriesSection() {
   if (loading) {
     return (
       <section className="py-16 bg-gradient-to-br from-green-50 to-emerald-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
             <div className="h-4 bg-gray-200 rounded w-96 mx-auto"></div>
@@ -53,7 +53,7 @@ export default function SuccessStoriesSection() {
 
   return (
     <section className="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">

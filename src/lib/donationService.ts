@@ -75,6 +75,9 @@ export interface DonationData extends Omit<BackedProject, 'rewardTier' | 'displa
         email: string;
         phone?: string | null;
     };
+    // Thanked status (set when creator sends thank you)
+    thankedAt?: Timestamp;
+    thankedBy?: string;
 }
 
 export interface DonationStats {

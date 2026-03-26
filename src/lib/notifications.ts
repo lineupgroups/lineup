@@ -2,7 +2,6 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
   addDoc,
   updateDoc,
   query,
@@ -10,7 +9,6 @@ import {
   orderBy,
   limit,
   serverTimestamp,
-  Timestamp,
   writeBatch
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -31,7 +29,7 @@ export const createNotification = async (
       read: false,
       createdAt: serverTimestamp()
     });
-    
+
     return docRef.id;
   } catch (error) {
     console.error('Error creating notification:', error);
@@ -51,9 +49,9 @@ export const getUserNotifications = async (
       orderBy('createdAt', 'desc'),
       limit(limitCount)
     );
-    
+
     const querySnapshot = await getDocs(q);
-    
+
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -72,7 +70,7 @@ export const getUnreadNotificationCount = async (userId: string): Promise<number
       where('userId', '==', userId),
       where('read', '==', false)
     );
-    
+
     const querySnapshot = await getDocs(q);
     return querySnapshot.size;
   } catch (error) {
@@ -103,17 +101,17 @@ export const markAllNotificationsAsRead = async (userId: string): Promise<void> 
       where('userId', '==', userId),
       where('read', '==', false)
     );
-    
+
     const querySnapshot = await getDocs(q);
     const batch = writeBatch(db);
-    
+
     querySnapshot.docs.forEach(doc => {
       batch.update(doc.ref, {
         read: true,
         readAt: serverTimestamp()
       });
     });
-    
+
     await batch.commit();
   } catch (error) {
     console.error('Error marking all notifications as read:', error);
@@ -240,5 +238,91 @@ export const createProjectUpdateNotification = async (
     projectId,
     projectTitle,
     actionUrl: `/project/${projectId}/updates`
+  });
+};
+
+// ===== Update Comment Notifications =====
+
+// Notify creator when someone comments on their update
+export const createUpdateCommentNotification = async (
+  creatorId: string,
+  projectId: string,
+  projectTitle: string,
+  updateId: string,
+  updateTitle: string,
+  commenterName: string,
+  commenterId: string
+): Promise<void> => {
+  // Don't notify if creator is commenting on their own update
+  if (creatorId === commenterId) return;
+
+  await createNotification({
+    userId: creatorId,
+    type: 'update_comment',
+    title: 'New Comment on Update 💬',
+    message: `${commenterName} commented on "${updateTitle}"`,
+    projectId,
+    projectTitle,
+    updateId,
+    updateTitle,
+    relatedUserId: commenterId,
+    relatedUserName: commenterName,
+    actionUrl: `/dashboard/updates`
+  });
+};
+
+// Notify user when creator replies to their update comment
+export const createUpdateCommentReplyNotification = async (
+  originalCommenterId: string,
+  creatorName: string,
+  creatorId: string,
+  projectId: string,
+  projectTitle: string,
+  updateId: string,
+  updateTitle: string
+): Promise<void> => {
+  // Don't notify if creator is replying to themselves
+  if (originalCommenterId === creatorId) return;
+
+  await createNotification({
+    userId: originalCommenterId,
+    type: 'update_comment_reply',
+    title: 'Creator Replied! 💬',
+    message: `${creatorName} replied to your comment on "${updateTitle}"`,
+    projectId,
+    projectTitle,
+    updateId,
+    updateTitle,
+    relatedUserId: creatorId,
+    relatedUserName: creatorName,
+    actionUrl: `/project/${projectId}#updates`
+  });
+};
+
+// Notify user when creator hearts their update comment
+export const createUpdateCommentHeartNotification = async (
+  commenterId: string,
+  creatorName: string,
+  creatorId: string,
+  projectId: string,
+  projectTitle: string,
+  updateId: string,
+  updateTitle: string
+): Promise<void> => {
+  // Don't notify if creator is hearting their own comment (shouldn't happen, but safeguard)
+  if (commenterId === creatorId) return;
+
+  await createNotification({
+    userId: commenterId,
+    type: 'update_comment_heart',
+    title: 'Creator Loved Your Comment! ❤️',
+    message: `${creatorName} loved your comment on "${updateTitle}"`,
+    projectId,
+    projectTitle,
+    updateId,
+    updateTitle,
+    relatedUserId: creatorId,
+    relatedUserName: creatorName,
+    actionUrl: `/project/${projectId}#updates`
   });
 };

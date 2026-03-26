@@ -17,7 +17,7 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
         subtitle="Handpicked just for you"
         icon={Sparkles}
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse" />
           ))}
@@ -54,7 +54,7 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
       icon={Sparkles}
       className="bg-gradient-to-br from-orange-50 to-pink-50"
     >
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map(project => (
           <EnhancedProjectCard key={project.id} project={project} showReasons={true} />
         ))}

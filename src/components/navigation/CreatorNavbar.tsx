@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, User, Menu, LogOut, X, BarChart3, Rocket, DollarSign, Settings, TrendingUp, Edit3, Heart, Shield, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { User, Menu, LogOut, X, BarChart3, Rocket, DollarSign, TrendingUp, Edit3, Users, Shield, ChevronDown, MessageSquare, Settings } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAdmin } from '../../contexts/AdminContext';
 import AuthModal from '../auth/AuthModal';
 import RoleSwitcher from '../common/RoleSwitcher';
 import { UserProfilePicture } from '../common/ProfilePicture';
 import { getResponsiveName } from '../../utils/nameUtils';
-import NotificationCenter from '../notifications/NotificationCenter';
 import NotificationBell from '../notifications/NotificationBell';
+import Logo from '../common/Logo';
+import ProjectSelector from './ProjectSelector';
 
-export default function CreatorNavbar() {
-  const navigate = useNavigate();
+// Creator Navbar component that uses project context
+function CreatorNavbarContent() {
   const { user, signOut } = useAuth();
   const { isAdmin } = useAdmin();
   const location = useLocation();
@@ -22,11 +23,12 @@ export default function CreatorNavbar() {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
-    { path: '/dashboard/projects', label: 'Projects', icon: Rocket },
     { path: '/dashboard/updates', label: 'Updates', icon: Edit3 },
-    { path: '/dashboard/supporters', label: 'Supporters', icon: Heart },
+    { path: '/dashboard/comments', label: 'Comments', icon: MessageSquare },
+    { path: '/dashboard/backers', label: 'Backers', icon: Users },
     { path: '/dashboard/analytics', label: 'Analytics', icon: TrendingUp },
     { path: '/dashboard/earnings', label: 'Earnings', icon: DollarSign },
+    { path: '/dashboard/settings', label: 'Settings', icon: Settings },
     ...(isAdmin ? [{ path: '/admin', label: 'Admin Panel', icon: Shield, requiresAuth: true, adminOnly: true }] : []),
   ];
 
@@ -45,61 +47,64 @@ export default function CreatorNavbar() {
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 pt-safe">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 min-w-0">
-          {/* Logo */}
-          <Link to="/dashboard" className="flex-shrink-0 min-w-0">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">L</span>
-              </div>
+      <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center h-16">
+          {/* Left Section: Logo + Project Selector */}
+          <div className="flex items-center flex-shrink-0">
+            <Link to="/dashboard" className="flex-shrink-0">
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-900">Lineup</h1>
-                <p className="text-xs text-orange-600 font-medium">Creator Studio</p>
+                <Logo size="md" tagline="Creator Studio" />
               </div>
               <div className="sm:hidden">
-                <h1 className="text-lg font-bold text-gray-900">Lineup</h1>
+                <Logo size="sm" showText={false} tagline="" />
               </div>
+            </Link>
+
+            {/* Project Selector */}
+            <div className="hidden lg:block ml-4">
+              <ProjectSelector className="" />
             </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
-                    ? 'text-orange-600 bg-orange-50'
-                    : 'text-gray-700 hover:text-orange-600 hover:bg-orange-50'
-                    }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
           </div>
 
-          {/* Right Side - Role Switcher & User */}
-          <div className="flex items-center space-x-2 lg:space-x-4 min-w-0 flex-shrink-0">
-            {/* Quick Actions */}
+          {/* Center Section: Navigation Items - Centered with flex-1 */}
+          <div className="hidden lg:flex items-center justify-center flex-1 mx-4">
+            <div className="flex items-center bg-gray-50/80 rounded-lg px-1 py-1">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 whitespace-nowrap ${isActive
+                      ? 'text-orange-600 bg-white shadow-sm'
+                      : 'text-gray-600 hover:text-orange-600 hover:bg-white/60'
+                      }`}
+                  >
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    <span className="hidden xl:inline">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Section: Actions + User */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-auto">
+            {/* New Project Button */}
             <Link
-              to="/dashboard/create"
-              className="hidden lg:flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105 flex-shrink-0"
+              to="/dashboard/projects/create"
+              className="hidden xl:flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg text-sm font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-sm hover:shadow-md"
             >
               <Rocket className="w-4 h-4" />
               <span>New Project</span>
             </Link>
 
             {/* Right side - Role Switcher & User or Auth buttons */}
-            <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3">
               {user ? (
-                <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <NotificationBell />
 
                   {/* Role Switcher */}
@@ -109,10 +114,10 @@ export default function CreatorNavbar() {
                   <div className="relative">
                     <button
                       onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="flex items-center space-x-2 px-2 sm:px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer min-w-0"
+                      className="flex items-center space-x-1 px-2 py-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                     >
                       <UserProfilePicture user={user} size="sm" />
-                      <span className="hidden sm:block font-medium text-gray-700 text-sm truncate max-w-[100px] lg:max-w-none">
+                      <span className="hidden md:block font-medium text-gray-700 text-sm truncate max-w-[80px] xl:max-w-[120px]">
                         {getResponsiveName(user.displayName || 'User')}
                       </span>
                       <ChevronDown className="w-4 h-4 text-gray-600" />
@@ -168,7 +173,7 @@ export default function CreatorNavbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-orange-50 transition-colors flex-shrink-0"
+              className="lg:hidden p-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-orange-50 transition-colors flex-shrink-0"
               aria-label="Toggle menu"
             >
               {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -180,6 +185,12 @@ export default function CreatorNavbar() {
         {showMobileMenu && (
           <div className="md:hidden border-t border-gray-200 bg-white">
             <div className="px-4 py-2 space-y-1">
+              {/* Mobile Project Selector */}
+              <div className="py-2 border-b border-gray-100 mb-2">
+                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2 px-1">Filter by Project</p>
+                <ProjectSelector showInMobile={true} className="w-full" />
+              </div>
+
               {/* Mobile Navigation Items */}
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -203,7 +214,7 @@ export default function CreatorNavbar() {
 
               {/* Mobile Quick Action */}
               <Link
-                to="/dashboard/create"
+                to="/dashboard/projects/create"
                 onClick={() => setShowMobileMenu(false)}
                 className="w-full flex items-center space-x-3 px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 mt-2"
               >
@@ -284,3 +295,6 @@ export default function CreatorNavbar() {
     </nav>
   );
 }
+
+// Export the navbar directly - ProjectProvider is now at Layout level
+export default CreatorNavbarContent;

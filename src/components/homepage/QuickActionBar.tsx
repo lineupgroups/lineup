@@ -20,21 +20,20 @@ export default function QuickActionBar() {
 
   return (
     <div className="bg-white border-y border-gray-200 sticky top-16 z-30 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 py-4 overflow-x-auto scrollbar-hide">
           {filters.map((filter) => {
             const Icon = filter.icon;
             const isActive = activeFilter === filter.id;
-            
+
             return (
               <button
                 key={filter.id}
                 onClick={() => handleFilterClick(filter.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${
-                  isActive
+                className={`flex items-center gap-2 px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${isActive
                     ? `bg-gradient-to-r ${filter.color} text-white shadow-lg transform scale-105`
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="text-sm">{filter.label}</span>

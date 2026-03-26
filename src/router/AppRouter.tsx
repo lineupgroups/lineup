@@ -10,12 +10,14 @@ import ProjectDetailPage from '../components/ProjectDetailPage';
 import SupportFlowPage from '../components/SupportFlowPage';
 import SupporterDashboardPage from '../components/pages/SupporterDashboardPage';
 import CreatorDashboardPage from '../components/CreatorDashboardPage';
-import CreatorProjectsPage from '../components/pages/CreatorProjectsPage';
 import CreatorAnalyticsPage from '../components/pages/CreatorAnalyticsPage';
 import CreatorEarningsPage from '../components/pages/CreatorEarningsPage';
 import CreatorUpdatesPage from '../components/pages/CreatorUpdatesPage';
-import CreatorSupportersPage from '../components/pages/CreatorSupportersPage';
-import CreatorDonationsPage from '../components/pages/CreatorDonationsPage';
+import CreatorCommentsPage from '../components/pages/CreatorCommentsPage';
+import CreatorBackersPage from '../components/pages/CreatorBackersPage';
+import CreatorSettingsPage from '../components/pages/CreatorSettingsPage';
+import NotificationsPage from '../components/pages/NotificationsPage';
+import ProjectEditPage from '../components/pages/ProjectEditPage';
 import ProjectCreationWizard from '../components/projectCreation/ProjectCreationWizard';
 import LineupSocials from '../components/LineupSocials';
 import EnhancedUserProfile from '../components/EnhancedUserProfile';
@@ -32,144 +34,182 @@ import KYCStatusPage from '../components/kyc/KYCStatusPage';
 import Layout from '../components/Layout';
 
 export default function AppRouter() {
-  return (
-    <HelmetProvider>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Layout />}>
-          {/* Smart Homepage - Main discover page with personalization */}
-          <Route index element={<SmartHomepage />} />
+    return (
+        <HelmetProvider>
+            <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Layout />}>
+                    {/* Smart Homepage - Main discover page with personalization */}
+                    <Route index element={<SmartHomepage />} />
 
-          {/* Discover Projects - Redirect to main homepage */}
-          <Route path="discover" element={<Navigate to="/" replace />} />
+                    {/* Discover Projects - Redirect to main homepage */}
+                    <Route path="discover" element={<Navigate to="/" replace />} />
 
-          {/* Browse Projects - Redirect to homepage */}
-          <Route path="browse" element={<Navigate to="/" replace />} />
+                    {/* Browse Projects - Redirect to homepage */}
+                    <Route path="browse" element={<Navigate to="/" replace />} />
 
-          {/* Trending Projects */}
-          <Route path="trending" element={<TrendingPage />} />
+                    {/* Trending Projects */}
+                    <Route path="trending" element={<TrendingPage />} />
 
-          {/* Search Results */}
-          <Route path="search" element={<SearchResultsPage />} />
+                    {/* Search Results */}
+                    <Route path="search" element={<SearchResultsPage />} />
 
-          {/* Marketing Landing Page */}
-          <Route path="welcome" element={<LandingPage />} />
+                    {/* Marketing Landing Page */}
+                    <Route path="welcome" element={<LandingPage />} />
 
-          {/* Project Detail */}
-          <Route path="project/:projectId" element={<ProjectDetailPage />} />
+                    {/* Project Detail */}
+                    <Route path="project/:projectId" element={<ProjectDetailPage />} />
 
-          {/* Support Flow */}
-          <Route path="support/:projectId" element={<SupportFlowPage />} />
+                    {/* Support Flow */}
+                    <Route path="support/:projectId" element={<SupportFlowPage />} />
 
-          {/* User Profiles */}
-          <Route path="profile" element={<MyProfilePage />} />
-          <Route path="profile/:userId" element={<EnhancedUserProfile />} />
-          <Route path="profile/@:username" element={<EnhancedUserProfile />} />
+                    {/* User Profiles */}
+                    <Route path="profile" element={<MyProfilePage />} />
+                    <Route path="profile/:userId" element={<EnhancedUserProfile />} />
+                    <Route path="profile/@:username" element={<EnhancedUserProfile />} />
 
-          {/* Other Pages */}
-          <Route path="socials" element={<LineupSocials />} />
-          <Route path="about" element={<div>About Page Coming Soon</div>} />
+                    {/* Other Pages */}
+                    <Route path="socials" element={<LineupSocials />} />
+                    <Route path="about" element={<div>About Page Coming Soon</div>} />
 
-          {/* KYC Routes - Protected */}
-          <Route path="kyc/submit" element={
-            <ProtectedRoute>
-              <KYCSubmissionPage />
-            </ProtectedRoute>
-          } />
-          <Route path="kyc/status" element={
-            <ProtectedRoute>
-              <KYCStatusPage />
-            </ProtectedRoute>
-          } />
-        </Route>
+                    {/* KYC Routes - Protected */}
+                    <Route path="kyc/submit" element={
+                        <ProtectedRoute>
+                            <KYCSubmissionPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="kyc/status" element={
+                        <ProtectedRoute>
+                            <KYCStatusPage />
+                        </ProtectedRoute>
+                    } />
+                </Route>
 
-        {/* Protected Routes - Creator Dashboard (Requires KYC) */}
-        <Route path="/dashboard" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorDashboardPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                {/* Protected Routes - Creator Dashboard (Requires KYC) */}
+                <Route path="/dashboard" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorDashboardPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        {/* Protected Routes - Supporter Dashboard (My Pledges) */}
-        <Route path="/dashboard/supporter" element={
-          <ProtectedRoute>
-            <Layout>
-              <SupporterDashboardPage />
-            </Layout>
-          </ProtectedRoute>
-        } />
+                {/* Protected Routes - Supporter Dashboard (My Pledges) */}
+                <Route path="/dashboard/supporter" element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <SupporterDashboardPage />
+                        </Layout>
+                    </ProtectedRoute>
+                } />
 
-        <Route path="/dashboard/projects" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorProjectsPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                {/* All Notifications Page - Accessible by any authenticated user */}
+                <Route path="/notifications" element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <NotificationsPage />
+                        </Layout>
+                    </ProtectedRoute>
+                } />
 
-        <Route path="/dashboard/analytics" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorAnalyticsPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                {/* Redirect old /dashboard/projects to /dashboard/settings */}
+                <Route path="/dashboard/projects" element={
+                    <Navigate to="/dashboard/settings" replace />
+                } />
 
-        <Route path="/dashboard/earnings" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorEarningsPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                <Route path="/dashboard/analytics" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorAnalyticsPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        <Route path="/dashboard/updates" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorUpdatesPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                <Route path="/dashboard/earnings" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorEarningsPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        <Route path="/dashboard/supporters" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorSupportersPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                <Route path="/dashboard/settings" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorSettingsPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        <Route path="/dashboard/donations" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <CreatorDonationsPage />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                <Route path="/dashboard/updates" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorUpdatesPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        <Route path="/dashboard/projects/create" element={
-          <CreatorProtectedRoute>
-            <Layout>
-              <ProjectCreationWizard />
-            </Layout>
-          </CreatorProtectedRoute>
-        } />
+                <Route path="/dashboard/supporters" element={
+                    <Navigate to="/dashboard/backers" replace />
+                } />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={
-          <ProtectedRoute>
-            <EnhancedAdminDashboard />
-          </ProtectedRoute>
-        } />
+                <Route path="/dashboard/donations" element={
+                    <Navigate to="/dashboard/backers" replace />
+                } />
 
-        {/* Legacy redirects for old hash-based URLs */}
-        <Route path="/legacy" element={<Navigate to="/" replace />} />
+                <Route path="/dashboard/backers" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorBackersPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
 
-        {/* 404 Not Found */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </HelmetProvider>
-  );
+                <Route path="/dashboard/comments" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <CreatorCommentsPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
+
+                <Route path="/dashboard/projects/create" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <ProjectCreationWizard />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
+
+                <Route path="/dashboard/projects/:projectId/edit" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <ProjectEditPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
+
+                <Route path="/dashboard/notifications" element={
+                    <CreatorProtectedRoute>
+                        <Layout>
+                            <NotificationsPage />
+                        </Layout>
+                    </CreatorProtectedRoute>
+                } />
+
+                {/* Admin Routes */}
+                <Route path="/admin" element={
+                    <ProtectedRoute>
+                        <EnhancedAdminDashboard />
+                    </ProtectedRoute>
+                } />
+
+                {/* Legacy redirects for old hash-based URLs */}
+                <Route path="/legacy" element={<Navigate to="/" replace />} />
+
+                {/* 404 Not Found */}
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </HelmetProvider>
+    );
 }

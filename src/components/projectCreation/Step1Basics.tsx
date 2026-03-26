@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Upload, MapPin, DollarSign, Calendar, Youtube, HelpCircle } from 'lucide-react';
+import { Upload, DollarSign, Calendar, Youtube, HelpCircle, X, Tag } from 'lucide-react';
 import { PROJECT_CATEGORIES, DURATION_PRESETS, PROJECT_LIMITS, validateYouTubeUrl, extractYouTubeVideoId, ProjectBasics } from '../../types/projectCreation';
 import { INDIAN_STATES, getCitiesByState } from '../../data/locations';
 import { uploadImage } from '../../lib/cloudinary';
 import { ImageEditor } from '../common/ImageEditor';
+import { sanitizeText } from '../../utils/sanitize';
 import toast from 'react-hot-toast';
 
 interface Step1BasicsProps {
@@ -15,9 +16,9 @@ interface Step1BasicsProps {
 export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps) {
   const [showImageEditor, setShowImageEditor] = useState(false);
   const [tempImageFile, setTempImageFile] = useState<File | null>(null);
-  const [useCustomDuration, setUseCustomDuration] = useState(false);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [tagInput, setTagInput] = useState('');
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,18 +35,18 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
   const handleImageSave = async (croppedImage: string) => {
     try {
       setUploading(true);
-      
+
       // Convert base64 to file
       const response = await fetch(croppedImage);
       const blob = await response.blob();
       const file = new File([blob], tempImageFile?.name || 'cover.jpg', { type: 'image/jpeg' });
-      
+
       // Upload to Cloudinary (it will handle compression)
       const result = await uploadImage(file, {
         folder: 'project-covers',
         tags: ['project', 'cover']
       });
-      
+
       onUpdate({ coverImage: result.secure_url });
       setShowImageEditor(false);
       setTempImageFile(null);
@@ -59,15 +60,56 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
   };
 
   const handleVideoUrlChange = (url: string) => {
-    onUpdate({ videoUrl: url });
-    
-    if (url && validateYouTubeUrl(url)) {
-      const videoId = extractYouTubeVideoId(url);
+    // Don't sanitize URLs - they're validated separately and encoding breaks them
+    const trimmedUrl = url.trim();
+    onUpdate({ videoUrl: trimmedUrl });
+
+    if (trimmedUrl && validateYouTubeUrl(trimmedUrl)) {
+      const videoId = extractYouTubeVideoId(trimmedUrl);
       if (videoId) {
         setVideoPreview(`https://www.youtube.com/embed/${videoId}`);
       }
     } else {
       setVideoPreview(null);
+    }
+  };
+
+  // Handle adding a tag
+  const handleAddTag = () => {
+    const trimmedTag = tagInput.trim().toLowerCase();
+    if (!trimmedTag) return;
+
+    if (trimmedTag.length > PROJECT_LIMITS.MAX_TAG_LENGTH) {
+      toast.error(`Tag must be ${PROJECT_LIMITS.MAX_TAG_LENGTH} characters or less`);
+      return;
+    }
+
+    const currentTags = data.tags || [];
+    if (currentTags.length >= PROJECT_LIMITS.MAX_TAGS) {
+      toast.error(`Maximum ${PROJECT_LIMITS.MAX_TAGS} tags allowed`);
+      return;
+    }
+
+    if (currentTags.includes(trimmedTag)) {
+      toast.error('Tag already added');
+      return;
+    }
+
+    onUpdate({ tags: [...currentTags, trimmedTag] });
+    setTagInput('');
+  };
+
+  // Handle removing a tag
+  const handleRemoveTag = (tagToRemove: string) => {
+    const currentTags = data.tags || [];
+    onUpdate({ tags: currentTags.filter(tag => tag !== tagToRemove) });
+  };
+
+  // Handle tag input keydown
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      handleAddTag();
     }
   };
 
@@ -109,8 +151,8 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
       toast.error(`Maximum funding goal is ₹${PROJECT_LIMITS.MAX_FUNDING_GOAL.toLocaleString('en-IN')}`);
       return;
     }
-    if (!data.duration || data.duration < 1 || data.duration > PROJECT_LIMITS.MAX_DURATION_DAYS) {
-      toast.error(`Campaign duration must be between 1-${PROJECT_LIMITS.MAX_DURATION_DAYS} days`);
+    if (!data.duration || data.duration < PROJECT_LIMITS.MIN_DURATION_DAYS || data.duration > PROJECT_LIMITS.MAX_DURATION_DAYS) {
+      toast.error(`Please select a campaign duration (${PROJECT_LIMITS.MIN_DURATION_DAYS} or ${PROJECT_LIMITS.MAX_DURATION_DAYS} days)`);
       return;
     }
     if (data.videoUrl && !validateYouTubeUrl(data.videoUrl)) {
@@ -135,36 +177,40 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
 
       {/* Project Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="project-title" className="block text-sm font-medium text-gray-700 mb-2">
           Project Title *
         </label>
         <input
+          id="project-title"
           type="text"
           value={data.title || ''}
-          onChange={(e) => onUpdate({ title: e.target.value })}
+          onChange={(e) => onUpdate({ title: sanitizeText(e.target.value) })}
           placeholder="e.g., Smart Solar Lamp for Rural India"
           maxLength={PROJECT_LIMITS.MAX_TITLE_LENGTH}
+          aria-describedby="title-counter"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p id="title-counter" className="text-xs text-gray-500 mt-1">
           {data.title?.length || 0}/{PROJECT_LIMITS.MAX_TITLE_LENGTH} characters
         </p>
       </div>
 
       {/* Tagline */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="project-tagline" className="block text-sm font-medium text-gray-700 mb-2">
           Tagline *
         </label>
         <input
+          id="project-tagline"
           type="text"
           value={data.tagline || ''}
-          onChange={(e) => onUpdate({ tagline: e.target.value })}
+          onChange={(e) => onUpdate({ tagline: sanitizeText(e.target.value) })}
           placeholder="What is your project in one sentence?"
           maxLength={PROJECT_LIMITS.MAX_TAGLINE_LENGTH}
+          aria-describedby="tagline-counter"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p id="tagline-counter" className="text-xs text-gray-500 mt-1">
           {data.tagline?.length || 0}/{PROJECT_LIMITS.MAX_TAGLINE_LENGTH} characters
         </p>
       </div>
@@ -180,17 +226,75 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
               key={category.value}
               type="button"
               onClick={() => onUpdate({ category: category.value })}
-              className={`p-4 border-2 rounded-lg transition-all text-left ${
-                data.category === category.value
-                  ? 'border-orange-500 bg-orange-50'
-                  : 'border-gray-200 hover:border-orange-300'
-              }`}
+              className={`p-4 border-2 rounded-lg transition-all text-left ${data.category === category.value
+                ? 'border-orange-500 bg-orange-50'
+                : 'border-gray-200 hover:border-orange-300'
+                }`}
             >
               <div className="text-2xl mb-1">{category.icon}</div>
               <div className="text-sm font-medium text-gray-900">{category.label}</div>
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Tags */}
+      <div>
+        <label htmlFor="project-tags" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="flex items-center gap-2">
+            <Tag className="w-4 h-4" />
+            <span>Tags (Optional - Max {PROJECT_LIMITS.MAX_TAGS})</span>
+          </div>
+        </label>
+        <p className="text-xs text-gray-500 mb-3">
+          Add tags to help people discover your project
+        </p>
+
+        {/* Tag chips */}
+        {data.tags && data.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {data.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm"
+              >
+                #{tag}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTag(tag)}
+                  className="hover:text-orange-900 focus:outline-none"
+                  aria-label={`Remove tag ${tag}`}
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Tag input */}
+        {(!data.tags || data.tags.length < PROJECT_LIMITS.MAX_TAGS) && (
+          <div className="flex gap-2">
+            <input
+              id="project-tags"
+              type="text"
+              value={tagInput}
+              onChange={(e) => setTagInput(sanitizeText(e.target.value).toLowerCase())}
+              onKeyDown={handleTagKeyDown}
+              placeholder="e.g., innovation, technology, education"
+              maxLength={PROJECT_LIMITS.MAX_TAG_LENGTH}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            />
+            <button
+              type="button"
+              onClick={handleAddTag}
+              disabled={!tagInput.trim()}
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Add
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Location */}
@@ -201,11 +305,11 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
           </label>
           <select
             value={data.location?.state || ''}
-            onChange={(e) => onUpdate({ 
-              location: { 
-                state: e.target.value, 
-                city: '' 
-              } 
+            onChange={(e) => onUpdate({
+              location: {
+                state: e.target.value,
+                city: ''
+              }
             })}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
           >
@@ -222,11 +326,11 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
           </label>
           <select
             value={data.location?.city || ''}
-            onChange={(e) => onUpdate({ 
-              location: { 
-                ...data.location!, 
-                city: e.target.value 
-              } 
+            onChange={(e) => onUpdate({
+              location: {
+                ...data.location!,
+                city: e.target.value
+              }
             })}
             disabled={!data.location?.state}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -250,7 +354,7 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
               <img
                 src={data.coverImage}
                 alt="Cover"
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                className="w-full aspect-video object-cover rounded-lg mb-4"
               />
               <button
                 type="button"
@@ -307,12 +411,12 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
         <p className="text-xs text-gray-500 mt-1">
           Paste your YouTube video URL. Projects with videos get 3x more support!
         </p>
-        
+
         {videoPreview && (
           <div className="mt-4">
             <iframe
               src={videoPreview}
-              className="w-full h-64 rounded-lg"
+              className="w-full aspect-video rounded-lg"
               allowFullScreen
               title="Video preview"
             />
@@ -355,63 +459,25 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
         <label className="block text-sm font-medium text-gray-700 mb-3">
           Campaign Duration *
         </label>
-        
-        {!useCustomDuration ? (
-          <div className="space-y-3">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {DURATION_PRESETS.map((preset) => (
-                <button
-                  key={preset.value}
-                  type="button"
-                  onClick={() => onUpdate({ duration: preset.value })}
-                  className={`p-4 border-2 rounded-lg transition-all ${
-                    data.duration === preset.value
-                      ? 'border-orange-500 bg-orange-50'
-                      : 'border-gray-200 hover:border-orange-300'
-                  }`}
-                >
-                  <Calendar className="w-5 h-5 mx-auto mb-2 text-orange-600" />
-                  <div className="text-sm font-medium text-gray-900">{preset.label}</div>
-                </button>
-              ))}
-            </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {DURATION_PRESETS.map((preset) => (
             <button
+              key={preset.value}
               type="button"
-              onClick={() => setUseCustomDuration(true)}
-              className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+              onClick={() => onUpdate({ duration: preset.value })}
+              aria-pressed={data.duration === preset.value}
+              className={`p-4 border-2 rounded-lg transition-all ${data.duration === preset.value
+                ? 'border-orange-500 bg-orange-50'
+                : 'border-gray-200 hover:border-orange-300'
+                }`}
             >
-              + Set custom duration (1-{PROJECT_LIMITS.MAX_DURATION_DAYS} days)
+              <Calendar className="w-5 h-5 mx-auto mb-2 text-orange-600" />
+              <div className="text-sm font-medium text-gray-900">{preset.label}</div>
             </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <div className="flex items-center space-x-3">
-              <input
-                type="number"
-                value={data.duration || ''}
-                onChange={(e) => onUpdate({ duration: parseInt(e.target.value) || 0 })}
-                placeholder="Enter days"
-                min={PROJECT_LIMITS.MIN_DURATION_DAYS}
-                max={PROJECT_LIMITS.MAX_DURATION_DAYS}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  setUseCustomDuration(false);
-                  onUpdate({ duration: 30 });
-                }}
-                className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-              >
-                Use Presets
-              </button>
-            </div>
-            <p className="text-xs text-gray-500">
-              Maximum {PROJECT_LIMITS.MAX_DURATION_DAYS} days allowed
-            </p>
-          </div>
-        )}
-        
+          ))}
+        </div>
+
         {data.duration && (
           <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-700">
@@ -430,8 +496,9 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
             <ul className="text-sm text-orange-800 space-y-1">
               <li>• Projects with videos get 3x more support</li>
               <li>• Clear, eye-catching images attract more supporters</li>
-              <li>• 30-45 days is the sweet spot for campaigns</li>
+              <li>• 14-30 days is the sweet spot for campaigns</li>
               <li>• Set a realistic goal - it's better to exceed than fall short</li>
+              <li>• Add relevant tags to improve discoverability</li>
             </ul>
           </div>
         </div>
@@ -460,7 +527,7 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
             }}
             aspectRatio={16 / 9}
           />
-          
+
           {/* Upload Loading Overlay */}
           {uploading && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">

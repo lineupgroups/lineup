@@ -62,7 +62,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - Supporter Focused */}
       <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
               Discover Amazing<br />
@@ -93,7 +93,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
       {/* Stats Section */}
       <div className="bg-white py-8 sm:py-16 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
             <div>
               <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">10,000+</div>
@@ -117,7 +117,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
       {/* Featured Projects Carousel */}
       {featuredProjects.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Featured Projects</h2>
             <p className="text-base sm:text-xl text-gray-600">Handpicked projects that are making a difference</p>
@@ -184,7 +184,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                                <span>{getDaysLeft(project)} days left</span>
+                                <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}</span>
                               </div>
                             </div>
                             <button className="px-4 sm:px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm">
@@ -234,7 +234,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
       {/* Projects Near Me Section */}
       <div className="bg-white py-8 sm:py-16 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Projects Near You</h2>
@@ -275,7 +275,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       </div>
 
       {/* Categories & Projects */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="text-center mb-6 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Browse by Category</h2>
           <p className="text-base sm:text-xl text-gray-600">Find projects that match your interests</p>
@@ -378,7 +378,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>{getDaysLeft(project)}d</span>
+                        <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)}d` : 'Ended'}</span>
                       </div>
                     </div>
                     <button
@@ -408,7 +408,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
       {/* How It Works Section */}
       <div className="bg-white py-8 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">How Supporting Works</h2>
             <p className="text-base sm:text-xl text-gray-600">Simple steps to make a difference</p>

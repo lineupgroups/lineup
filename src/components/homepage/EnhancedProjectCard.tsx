@@ -109,8 +109,8 @@ export default function EnhancedProjectCard({ project, showReasons = false }: En
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-300 ${progress >= 100
-                  ? 'bg-gradient-to-r from-green-500 to-emerald-500'
-                  : 'bg-gradient-to-r from-orange-500 to-red-500'
+                ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+                : 'bg-gradient-to-r from-orange-500 to-red-500'
                 }`}
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
@@ -125,7 +125,7 @@ export default function EnhancedProjectCard({ project, showReasons = false }: En
         <div className="flex items-center justify-between text-sm text-gray-600">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            <span>{daysLeft} days left</span>
+            <span>{daysLeft > 0 ? `${daysLeft} days left` : 'Ended'}</span>
           </div>
 
           {project.location && (

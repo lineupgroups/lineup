@@ -41,23 +41,25 @@ export const useDailyRevenue = (creatorId: string, days: number = 7) => {
                     return;
                 }
 
-                // Get pledges for these projects within date range
-                const pledgesRef = collection(db, 'pledges');
-                const pledgesQuery = query(
-                    pledgesRef,
-                    where('projectId', 'in', projectIds),
-                    where('createdAt', '>=', Timestamp.fromDate(startDate)),
-                    where('createdAt', '<=', Timestamp.fromDate(endDate))
+                // Get donations for these projects within date range
+                // Note: Firestore 'in' query limited to 10 items, batch if needed
+                const batchedProjectIds = projectIds.slice(0, 10);
+                const donationsRef = collection(db, 'backed-projects');
+                const donationsQuery = query(
+                    donationsRef,
+                    where('projectId', 'in', batchedProjectIds),
+                    where('backedAt', '>=', Timestamp.fromDate(startDate)),
+                    where('backedAt', '<=', Timestamp.fromDate(endDate))
                 );
 
-                const pledgesSnapshot = await getDocs(pledgesQuery);
+                const donationsSnapshot = await getDocs(donationsQuery);
 
                 // Group by day
                 const dailyMap = new Map<string, { amount: number; supporters: Set<string> }>();
 
-                pledgesSnapshot.docs.forEach(doc => {
-                    const pledge = doc.data();
-                    const date = pledge.createdAt.toDate();
+                donationsSnapshot.docs.forEach(doc => {
+                    const donation = doc.data();
+                    const date = donation.backedAt.toDate();
                     const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
 
                     if (!dailyMap.has(dateKey)) {
@@ -65,8 +67,8 @@ export const useDailyRevenue = (creatorId: string, days: number = 7) => {
                     }
 
                     const dayData = dailyMap.get(dateKey)!;
-                    dayData.amount += pledge.amount || 0;
-                    dayData.supporters.add(pledge.userId);
+                    dayData.amount += donation.amount || 0;
+                    dayData.supporters.add(donation.userId);
                 });
 
                 // Fill in missing days with zero values

@@ -32,6 +32,14 @@ export interface FirestoreProject {
     risks?: string;
   };
   gallery?: string[]; // Project gallery images
+  // FAQs for project
+  faqs?: Array<{
+    id: string;
+    question: string;
+    answer: string;
+  }>;
+  // Creator ID alias (for compatibility)
+  createdBy?: string;
   // Admin approval status
   approvalStatus: 'pending' | 'approved' | 'rejected';
   approvedAt?: Timestamp;
@@ -64,6 +72,9 @@ export interface FirestoreProject {
   uniqueViewers?: string[]; // Array of user IDs who viewed
   // Funding
   fundingGoal?: number; // Alias for goal
+  // Archive
+  isArchived?: boolean;
+  archivedAt?: Timestamp | null;
 }
 
 // Deprecated - Keeping for backward compatibility but system is donation-based now
@@ -84,13 +95,37 @@ export interface FirestoreProjectUpdate {
   title: string;
   content: string;
   image?: string;
+  videoUrl?: string; // YouTube video URL
   createdAt: Timestamp;
   updatedAt?: Timestamp;
+  scheduledFor?: Timestamp | null; // For scheduled updates
   likes: number;
   likedBy?: string[]; // Array of user IDs who liked
   commentCount: number;
+  viewCount?: number; // Number of views
   visibility: 'supporters-only'; // All updates are supporters-only
   isPinned: boolean;
+}
+
+// Update Comment (comments on project updates)
+export interface FirestoreUpdateComment {
+  id: string;
+  updateId: string;
+  projectId: string;
+  userId: string;
+  userName: string;
+  userAvatar: string;
+  content: string;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
+  likes: number;
+  likedBy?: string[];
+  isCreatorComment: boolean;
+  isDeleted: boolean;
+  creatorHeart?: boolean;
+  creatorHeartAt?: Timestamp;
+  parentCommentId?: string; // For nested replies
+  isEdited?: boolean; // Track if comment was edited
 }
 
 // Project Comment (now stored in separate collection)
@@ -110,6 +145,9 @@ export interface FirestoreComment {
   isPinned: boolean;
   isDeleted: boolean;
   isSupporter: boolean; // Only supporters can comment
+  // Creator Heart feature (like YouTube)
+  creatorHeart?: boolean; // True if creator gave a heart
+  creatorHeartAt?: Timestamp; // When the heart was given
 }
 
 export interface FirestoreUser {
@@ -181,11 +219,13 @@ export interface FirestoreSupporter {
 export interface FirestoreNotification {
   id: string;
   userId: string; // Who receives this notification
-  type: 'new_supporter' | 'milestone' | 'comment' | 'project_ending' | 'project_update' | 'project_funded';
+  type: 'new_supporter' | 'milestone' | 'comment' | 'project_ending' | 'project_update' | 'project_funded' | 'update_comment' | 'update_comment_reply' | 'update_comment_heart';
   title: string;
   message: string;
   projectId?: string;
   projectTitle?: string;
+  updateId?: string; // For update-related notifications
+  updateTitle?: string; // For update-related notifications
   relatedUserId?: string; // ID of user who triggered the notification
   relatedUserName?: string;
   createdAt: Timestamp;

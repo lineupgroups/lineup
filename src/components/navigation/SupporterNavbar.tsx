@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, User, Menu, LogOut, X, Home, Compass, TrendingUp, Shield, Heart } from 'lucide-react';
+import { Search, Menu, LogOut, X, Compass, TrendingUp, Shield, Heart } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAdmin } from '../../contexts/AdminContext';
 import AuthModal from '../auth/AuthModal';
@@ -8,6 +8,8 @@ import RoleSwitcher from '../common/RoleSwitcher';
 import BecomeCreatorCTA from '../creator/BecomeCreatorCTA';
 import { UserProfilePicture } from '../common/ProfilePicture';
 import { getResponsiveName } from '../../utils/nameUtils';
+import Logo from '../common/Logo';
+import SupporterNotificationBell from '../notifications/SupporterNotificationBell';
 
 export default function SupporterNavbar() {
   const { user, signOut } = useAuth();
@@ -39,21 +41,15 @@ export default function SupporterNavbar() {
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 pt-safe">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 min-w-0">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 min-w-0">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">L</span>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-900">Lineup</h1>
-                <p className="text-xs text-blue-600 font-medium">Discover Amazing Ideas</p>
-              </div>
-              <div className="sm:hidden">
-                <h1 className="text-lg font-bold text-gray-900">Lineup</h1>
-              </div>
+            <div className="hidden sm:block">
+              <Logo size="md" tagline="Discover Amazing Ideas" taglineColor="text-blue-600" />
+            </div>
+            <div className="sm:hidden">
+              <Logo size="sm" showText={true} tagline="" />
             </div>
           </Link>
 
@@ -63,8 +59,8 @@ export default function SupporterNavbar() {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
-              // Hide item if user is logged in and hideWhenLoggedIn is true
-              if (item.hideWhenLoggedIn && user) {
+              // Check hideWhenLoggedIn if it exists
+              if ('hideWhenLoggedIn' in item && item.hideWhenLoggedIn && user) {
                 return null;
               }
 
@@ -122,7 +118,10 @@ export default function SupporterNavbar() {
 
             {/* User Menu */}
             {user ? (
-              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-shrink-0">
+              <div className="flex items-center space-x-1 sm:space-x-3 min-w-0 flex-shrink-0">
+                {/* Notification Bell */}
+                <SupporterNotificationBell />
+
                 <Link
                   to="/profile"
                   className="flex items-center space-x-1 sm:space-x-2 p-1 sm:p-2 text-gray-600 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-200 min-w-0 max-w-[120px] sm:max-w-[160px]"
@@ -183,8 +182,8 @@ export default function SupporterNavbar() {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
 
-                // Hide item if user is logged in and hideWhenLoggedIn is true
-                if (item.hideWhenLoggedIn && user) {
+                // Check hideWhenLoggedIn if it exists
+                if ('hideWhenLoggedIn' in item && item.hideWhenLoggedIn && user) {
                   return null;
                 }
 

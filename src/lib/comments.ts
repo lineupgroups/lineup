@@ -21,15 +21,23 @@ import {
   FirestoreComment,
   CreateCommentData
 } from '../types/firestore';
-import { getProjectSupporters } from './firestore';
 
 const COMMENTS_COLLECTION = 'project-comments';
 
-// Check if user is a supporter of the project
+// Check if user is a supporter of the project (has donated to it)
 export const isUserSupporter = async (projectId: string, userId: string): Promise<boolean> => {
   try {
-    const supporters = await getProjectSupporters(projectId);
-    return supporters.some(supporter => supporter.userId === userId && supporter.status === 'completed');
+    // Query the backed-projects collection (where actual donations are stored)
+    const donationsRef = collection(db, 'backed-projects');
+    const q = query(
+      donationsRef,
+      where('projectId', '==', projectId),
+      where('userId', '==', userId),
+      limit(1)
+    );
+
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
   } catch (error) {
     console.error('Error checking supporter status:', error);
     return false;
@@ -43,11 +51,11 @@ export const createComment = async (
   try {
     // Verify user is a supporter
     const isSupporter = await isUserSupporter(commentData.projectId, commentData.userId);
-    
+
     if (!isSupporter && !commentData.isCreatorComment) {
       throw new Error('Only supporters and creators can comment on projects');
     }
-    
+
     const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), {
       ...commentData,
       likes: 0,
@@ -57,7 +65,7 @@ export const createComment = async (
       isSupporter,
       createdAt: serverTimestamp()
     });
-    
+
     return docRef.id;
   } catch (error) {
     console.error('Error creating comment:', error);
@@ -75,9 +83,9 @@ export const getProjectComments = async (projectId: string): Promise<FirestoreCo
       orderBy('isPinned', 'desc'),
       orderBy('createdAt', 'desc')
     );
-    
+
     const querySnapshot = await getDocs(q);
-    
+
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -93,7 +101,7 @@ export const getComment = async (commentId: string): Promise<FirestoreComment | 
   try {
     const docRef = doc(db, COMMENTS_COLLECTION, commentId);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() } as FirestoreComment;
     }
@@ -141,15 +149,15 @@ export const toggleCommentLike = async (commentId: string, userId: string): Prom
   try {
     const docRef = doc(db, COMMENTS_COLLECTION, commentId);
     const docSnap = await getDoc(docRef);
-    
+
     if (!docSnap.exists()) {
       throw new Error('Comment not found');
     }
-    
+
     const commentData = docSnap.data() as FirestoreComment;
     const likedBy = commentData.likedBy || [];
     const isLiked = likedBy.includes(userId);
-    
+
     if (isLiked) {
       // Unlike
       await updateDoc(docRef, {
@@ -193,7 +201,7 @@ export const getProjectCommentCount = async (projectId: string): Promise<number>
       where('projectId', '==', projectId),
       where('isDeleted', '==', false)
     );
-    
+
     const querySnapshot = await getDocs(q);
     return querySnapshot.size;
   } catch (error) {
@@ -211,9 +219,9 @@ export const getCommentReplies = async (parentCommentId: string): Promise<Firest
       where('isDeleted', '==', false),
       orderBy('createdAt', 'asc')
     );
-    
+
     const querySnapshot = await getDocs(q);
-    
+
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -221,5 +229,29 @@ export const getCommentReplies = async (parentCommentId: string): Promise<Firest
   } catch (error) {
     console.error('Error getting comment replies:', error);
     return [];
+  }
+};
+
+// Toggle Creator Heart on a comment (creator only, like YouTube's heart feature)
+export const toggleCreatorHeart = async (commentId: string, giveHeart: boolean): Promise<void> => {
+  try {
+    const docRef = doc(db, COMMENTS_COLLECTION, commentId);
+
+    if (giveHeart) {
+      await updateDoc(docRef, {
+        creatorHeart: true,
+        creatorHeartAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+    } else {
+      await updateDoc(docRef, {
+        creatorHeart: false,
+        creatorHeartAt: null,
+        updatedAt: serverTimestamp()
+      });
+    }
+  } catch (error) {
+    console.error('Error toggling creator heart:', error);
+    throw new Error('Failed to toggle creator heart');
   }
 };

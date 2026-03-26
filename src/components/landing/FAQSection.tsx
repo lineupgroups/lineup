@@ -34,10 +34,10 @@ export default function FAQSection() {
 
   // Filter FAQs
   const filteredFAQs = faqs.filter(faq => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch = searchQuery === '' ||
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesCategory = selectedCategory === 'all' || faq.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
@@ -72,7 +72,7 @@ export default function FAQSection() {
 
   return (
     <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
@@ -107,11 +107,10 @@ export default function FAQSection() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full font-medium text-sm transition-all ${
-                selectedCategory === category
+              className={`px-4 py-2 rounded-full font-medium text-sm transition-all ${selectedCategory === category
                   ? 'bg-blue-600 text-white shadow-lg'
                   : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
+                }`}
             >
               {getCategoryLabel(category)}
             </button>
@@ -162,9 +161,8 @@ export default function FAQSection() {
 
                 {/* Answer */}
                 <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'max-h-96' : 'max-h-0'
-                  }`}
+                  className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96' : 'max-h-0'
+                    }`}
                 >
                   <div className="px-6 pb-6 text-gray-600 leading-relaxed">
                     {faq.answer}

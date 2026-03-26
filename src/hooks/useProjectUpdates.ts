@@ -11,7 +11,7 @@ import {
 import { FirestoreProjectUpdate, CreateProjectUpdateData } from '../types/firestore';
 import toast from 'react-hot-toast';
 
-export const useProjectUpdates = (projectId: string) => {
+export const useProjectUpdates = (projectId: string, userId?: string) => {
   const [updates, setUpdates] = useState<FirestoreProjectUpdate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export const useProjectUpdates = (projectId: string) => {
 
   const fetchUpdates = useCallback(async () => {
     if (!projectId) return;
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -38,11 +38,38 @@ export const useProjectUpdates = (projectId: string) => {
     fetchUpdates();
   }, [fetchUpdates]);
 
-  const addUpdate = async (updateData: Omit<CreateProjectUpdateData, 'projectId'>) => {
+  // Accept simplified update data - lib function sets defaults for visibility and isPinned
+  const addUpdate = async (updateData: {
+    title: string;
+    content: string;
+    image?: string;
+    videoUrl?: string;
+    scheduledFor?: Date | null;
+    isPinned?: boolean;
+    sendNotification?: boolean; // Note: Email notifications coming soon
+  }) => {
+    if (!userId) {
+      toast.error('You must be logged in to post updates');
+      throw new Error('User not authenticated');
+    }
+
     try {
-      await createProjectUpdate(projectId, updateData);
+      const { isPinned, sendNotification, ...restData } = updateData;
+
+      // Create the update
+      const updateId = await createProjectUpdate(projectId, restData as any, userId);
+
+      // If isPinned is true, pin the update after creation
+      if (isPinned && updateId) {
+        await toggleUpdatePin(updateId, true, projectId);
+      }
+
+      // Note: sendNotification is stored but email sending is coming soon
+
       await fetchUpdates();
       toast.success('Update posted successfully!');
+
+      return updateId;
     } catch (err) {
       console.error('Error adding update:', err);
       toast.error('Failed to post update');
@@ -86,11 +113,12 @@ export const useProjectUpdates = (projectId: string) => {
     }
   };
 
+  // U-LOG-01: Pass projectId so pinning auto-unpins previous
   const pinUpdate = async (updateId: string, isPinned: boolean) => {
     try {
-      await toggleUpdatePin(updateId, isPinned);
+      await toggleUpdatePin(updateId, isPinned, projectId);
       await fetchUpdates();
-      toast.success(isPinned ? 'Update pinned!' : 'Update unpinned!');
+      toast.success(isPinned ? 'Update pinned! (Previous pin removed)' : 'Update unpinned!');
     } catch (err) {
       console.error('Error pinning update:', err);
       toast.error('Failed to pin update');

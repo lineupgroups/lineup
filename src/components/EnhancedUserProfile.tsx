@@ -5,7 +5,7 @@ import { auth } from '../lib/firebase';
 import { useProjectsByCreator } from '../hooks/useProjects';
 import { useEnhancedUserProfile, useUserFollow } from '../hooks/useEnhancedUserProfile';
 import { useProfileSharing } from '../hooks/useProfileSharing';
-import { Heart, Award, Star, Plus, Activity } from 'lucide-react';
+import { Heart, Award, Star, Plus, Activity, Bookmark } from 'lucide-react';
 import ProjectCard from './projects/ProjectCard';
 import LoadingSpinner from './common/LoadingSpinner';
 import ProfileHero from './profile/ProfileHero';
@@ -14,6 +14,7 @@ import AchievementsSection from './profile/AchievementsSection';
 import BackedProjectsTab from './profile/BackedProjectsTab';
 import ProfileEditModal from './profile/ProfileEditModal';
 import ProfileShareModal from './profile/ProfileShareModal';
+import BookmarkedProjectsTab from './profile/BookmarkedProjectsTab';
 import ErrorBoundary from './common/ErrorBoundary';
 import ProfileErrorFallback from './profile/ProfileErrorFallback';
 import FollowersModal from './profile/FollowersModal';
@@ -37,7 +38,7 @@ const EnhancedUserProfile: React.FC<EnhancedUserProfileProps> = ({ userId: propU
   const username = propUsername || params.username;
   const isOwnProfile = targetUserId === user?.uid;
 
-  const [activeTab, setActiveTab] = useState<'created' | 'backed' | 'achievements' | 'activity'>('created');
+  const [activeTab, setActiveTab] = useState<'created' | 'backed' | 'saved' | 'achievements' | 'activity'>('created');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
@@ -114,6 +115,13 @@ const EnhancedUserProfile: React.FC<EnhancedUserProfileProps> = ({ userId: propU
       hidden: !profile.showBackedProjects && !isOwnProfile
     },
     {
+      id: 'saved',
+      label: 'Saved Projects',
+      icon: <Bookmark className="w-5 h-5" />,
+      count: 0, // Will show actual count from component
+      hidden: !isOwnProfile // Only show saved projects for own profile
+    },
+    {
       id: 'achievements',
       label: 'Achievements',
       icon: <Star className="w-5 h-5" />,
@@ -185,6 +193,9 @@ const EnhancedUserProfile: React.FC<EnhancedUserProfileProps> = ({ userId: propU
 
       case 'backed':
         return <BackedProjectsTab userId={targetUserId} />;
+
+      case 'saved':
+        return <BookmarkedProjectsTab userId={targetUserId} isOwnProfile={isOwnProfile} />;
 
       case 'achievements':
         return (

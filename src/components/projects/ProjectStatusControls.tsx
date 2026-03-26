@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Pause, Square, Eye, EyeOff, AlertCircle, CheckCircle, Clock, Ban } from 'lucide-react';
+import { Play, Pause, Eye, EyeOff, AlertCircle, CheckCircle, Clock, Ban } from 'lucide-react';
 import { FirestoreProject } from '../../types/firestore';
 import { updateProject } from '../../lib/firestore';
 import toast from 'react-hot-toast';
@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 interface ProjectStatusControlsProps {
   project: FirestoreProject;
   onStatusChange?: (newStatus: string) => void;
+  onUpdate?: () => void; // Called after any status change
   className?: string;
 }
 
@@ -90,6 +91,7 @@ const statusConfig = {
 export default function ProjectStatusControls({
   project,
   onStatusChange,
+  onUpdate,
   className = ''
 }: ProjectStatusControlsProps) {
   const [isChangingStatus, setIsChangingStatus] = useState(false);
@@ -113,15 +115,16 @@ export default function ProjectStatusControls({
   const executeStatusChange = async (newStatus: ProjectStatus) => {
     try {
       setIsChangingStatus(true);
-      
+
       await updateProject(project.id, {
         status: newStatus,
         updatedAt: new Date() as any
       });
 
       onStatusChange?.(newStatus);
+      onUpdate?.(); // Call onUpdate callback
       toast.success(`Project status changed to ${statusConfig[newStatus].label}`);
-      
+
     } catch (error) {
       console.error('Error updating project status:', error);
       toast.error('Failed to update project status');
@@ -249,11 +252,11 @@ export default function ProjectStatusControls({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
             <div className="flex items-center space-x-3 mb-4">
-                <div className={`p-2 rounded-lg ${statusConfig[showConfirmDialog].bgColor}`}>
-                  {React.createElement(statusConfig[showConfirmDialog].icon, {
-                    className: `w-6 h-6 ${statusConfig[showConfirmDialog].textColor}`
-                  })}
-                </div>
+              <div className={`p-2 rounded-lg ${statusConfig[showConfirmDialog].bgColor}`}>
+                {React.createElement(statusConfig[showConfirmDialog].icon, {
+                  className: `w-6 h-6 ${statusConfig[showConfirmDialog].textColor}`
+                })}
+              </div>
               <h3 className="text-lg font-semibold text-gray-900">
                 Confirm Status Change
               </h3>
@@ -284,11 +287,10 @@ export default function ProjectStatusControls({
               <button
                 onClick={() => executeStatusChange(showConfirmDialog)}
                 disabled={isChangingStatus}
-                className={`flex-1 px-4 py-2 rounded-lg font-medium text-white transition-colors disabled:opacity-50 ${
-                  showConfirmDialog === 'cancelled' 
-                    ? 'bg-red-600 hover:bg-red-700' 
-                    : 'bg-blue-600 hover:bg-blue-700'
-                }`}
+                className={`flex-1 px-4 py-2 rounded-lg font-medium text-white transition-colors disabled:opacity-50 ${showConfirmDialog === 'cancelled'
+                  ? 'bg-red-600 hover:bg-red-700'
+                  : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
               >
                 {isChangingStatus ? 'Updating...' : 'Confirm'}
               </button>

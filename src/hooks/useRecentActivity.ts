@@ -11,6 +11,7 @@ export interface Activity {
     projectTitle?: string;
     userId?: string;
     userName?: string;
+    amount?: number;
     createdAt: Date;
 }
 
@@ -50,41 +51,84 @@ export const useRecentActivity = (creatorId: string, limit: number = 10) => {
 
                 const allActivities: Activity[] = [];
 
-                // Fetch recent pledges
+                // Fetch recent donations from backed-projects collection (CORRECT collection)
                 try {
-                    const pledgesRef = collection(db, 'pledges');
-                    const pledgesQuery = query(
-                        pledgesRef,
-                        where('projectId', 'in', projectIds.slice(0, 10)), // Firestore 'in' limit
-                        orderBy('createdAt', 'desc'),
-                        firestoreLimit(limit)
+                    // Firestore 'in' query limited to 10 items, so batch if needed
+                    const batchedProjectIds = projectIds.slice(0, 10);
+                    const donationsRef = collection(db, 'backed-projects');
+                    const donationsQuery = query(
+                        donationsRef,
+                        where('projectId', 'in', batchedProjectIds),
+                        orderBy('backedAt', 'desc'),
+                        firestoreLimit(limit * 2) // Get more to properly identify first-time backers
                     );
-                    const pledgesSnapshot = await getDocs(pledgesQuery);
+                    const donationsSnapshot = await getDocs(donationsQuery);
 
-                    pledgesSnapshot.docs.forEach(doc => {
-                        const pledge = doc.data();
+                    // Track seen users to identify first-time vs repeat supporters
+                    // Process in REVERSE order (oldest first) to identify first donations
+                    const allDonations = donationsSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    // Sort by date ascending to find first donations per user per project
+                    const sortedAsc = [...allDonations].sort((a: any, b: any) => {
+                        const aTime = a.backedAt?.toMillis?.() || 0;
+                        const bTime = b.backedAt?.toMillis?.() || 0;
+                        return aTime - bTime;
+                    });
+
+                    // Track first donation per user per project
+                    const firstDonationKey = new Set<string>();
+                    sortedAsc.forEach((donation: any) => {
+                        const userKey = `${donation.userId || 'anon'}-${donation.projectId}`;
+                        if (!firstDonationKey.has(userKey)) {
+                            firstDonationKey.add(userKey);
+                        }
+                    });
+
+                    // Now create activities - check if each donation was the first one
+                    const seenInThisBatch = new Set<string>();
+                    allDonations.forEach((donation: any) => {
+                        const displayName = donation.anonymous ? 'Anonymous Supporter' : (donation.displayName || 'Someone');
+                        const userKey = `${donation.userId || 'anon'}-${donation.projectId}`;
+
+                        // Check if this is their first donation for this project
+                        // by seeing how many donations exist before this one
+                        const donationsBefore = sortedAsc.filter((d: any) => {
+                            const dKey = `${d.userId || 'anon'}-${d.projectId}`;
+                            const dTime = d.backedAt?.toMillis?.() || 0;
+                            const thisTime = donation.backedAt?.toMillis?.() || 0;
+                            return dKey === userKey && dTime < thisTime;
+                        });
+
+                        const isFirstDonation = donationsBefore.length === 0;
+                        seenInThisBatch.add(userKey);
+
                         allActivities.push({
-                            id: `pledge-${doc.id}`,
+                            id: `pledge-${donation.id}`,
                             type: 'pledge',
-                            title: 'New supporter!',
-                            description: `${pledge.userName || 'Someone'} pledged ₹${pledge.amount?.toLocaleString('en-IN') || 0}`,
-                            projectId: pledge.projectId,
-                            projectTitle: projectMap.get(pledge.projectId),
-                            userId: pledge.userId,
-                            userName: pledge.userName,
-                            createdAt: pledge.createdAt?.toDate() || new Date()
+                            title: isFirstDonation ? 'New supporter! 🎉' : 'Repeat support 🔁',
+                            description: `${displayName} backed with ₹${donation.amount?.toLocaleString('en-IN') || 0}`,
+                            projectId: donation.projectId,
+                            projectTitle: projectMap.get(donation.projectId),
+                            userId: donation.anonymous ? undefined : donation.userId,
+                            userName: displayName,
+                            amount: donation.amount,
+                            createdAt: donation.backedAt?.toDate() || new Date()
                         });
                     });
                 } catch (err) {
-                    console.error('Error fetching pledges:', err);
+                    console.error('Error fetching donations from backed-projects:', err);
                 }
 
-                // Fetch recent comments
+                // Fetch recent comments from project-comments collection (CORRECT collection)
                 try {
-                    const commentsRef = collection(db, 'comments');
+                    const batchedProjectIds = projectIds.slice(0, 10);
+                    const commentsRef = collection(db, 'project-comments');
                     const commentsQuery = query(
                         commentsRef,
-                        where('projectId', 'in', projectIds.slice(0, 10)),
+                        where('projectId', 'in', batchedProjectIds),
                         orderBy('createdAt', 'desc'),
                         firestoreLimit(limit)
                     );
@@ -92,12 +136,14 @@ export const useRecentActivity = (creatorId: string, limit: number = 10) => {
 
                     commentsSnapshot.docs.forEach(doc => {
                         const comment = doc.data();
-                        if (!comment.isCreatorComment) { // Only show supporter comments
+                        // Only show supporter comments, not creator's own replies
+                        if (!comment.isCreatorReply && comment.userId !== creatorId) {
+                            const contentPreview = comment.content?.substring(0, 50) || '';
                             allActivities.push({
                                 id: `comment-${doc.id}`,
                                 type: 'comment',
-                                title: 'New comment',
-                                description: `${comment.userName} commented: "${comment.content.substring(0, 50)}${comment.content.length > 50 ? '...' : ''}"`,
+                                title: 'New comment 💬',
+                                description: `${comment.userName || 'Someone'} said: "${contentPreview}${comment.content?.length > 50 ? '...' : ''}"`,
                                 projectId: comment.projectId,
                                 projectTitle: projectMap.get(comment.projectId),
                                 userId: comment.userId,
@@ -107,15 +153,16 @@ export const useRecentActivity = (creatorId: string, limit: number = 10) => {
                         }
                     });
                 } catch (err) {
-                    console.error('Error fetching comments:', err);
+                    console.error('Error fetching comments from project-comments:', err);
                 }
 
-                // Fetch recent likes
+                // Fetch recent likes from interactions collection
                 try {
+                    const batchedProjectIds = projectIds.slice(0, 10);
                     const interactionsRef = collection(db, 'interactions');
                     const likesQuery = query(
                         interactionsRef,
-                        where('projectId', 'in', projectIds.slice(0, 10)),
+                        where('projectId', 'in', batchedProjectIds),
                         where('type', '==', 'like'),
                         orderBy('createdAt', 'desc'),
                         firestoreLimit(limit)
@@ -127,7 +174,7 @@ export const useRecentActivity = (creatorId: string, limit: number = 10) => {
                         allActivities.push({
                             id: `like-${doc.id}`,
                             type: 'like',
-                            title: 'Project liked',
+                            title: 'Project liked ❤️',
                             description: `${like.userName || 'Someone'} liked your project`,
                             projectId: like.projectId,
                             projectTitle: projectMap.get(like.projectId),
@@ -137,7 +184,36 @@ export const useRecentActivity = (creatorId: string, limit: number = 10) => {
                         });
                     });
                 } catch (err) {
-                    console.error('Error fetching likes:', err);
+                    // This might fail if index doesn't exist, that's okay
+                    console.log('Likes query may require composite index:', err);
+                }
+
+                // Fetch recent project updates from project-updates collection
+                try {
+                    const batchedProjectIds = projectIds.slice(0, 10);
+                    const updatesRef = collection(db, 'project-updates');
+                    const updatesQuery = query(
+                        updatesRef,
+                        where('projectId', 'in', batchedProjectIds),
+                        orderBy('createdAt', 'desc'),
+                        firestoreLimit(5)
+                    );
+                    const updatesSnapshot = await getDocs(updatesQuery);
+
+                    updatesSnapshot.docs.forEach(doc => {
+                        const update = doc.data();
+                        allActivities.push({
+                            id: `update-${doc.id}`,
+                            type: 'update',
+                            title: 'Update posted 📝',
+                            description: update.title || 'New project update',
+                            projectId: update.projectId,
+                            projectTitle: projectMap.get(update.projectId),
+                            createdAt: update.createdAt?.toDate() || new Date()
+                        });
+                    });
+                } catch (err) {
+                    console.log('Updates query error:', err);
                 }
 
                 // Sort all activities by date and limit

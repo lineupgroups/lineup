@@ -5,6 +5,7 @@ export interface ProjectBasics {
   title: string;
   tagline: string;
   category: string;
+  tags?: string[]; // Max 5 tags for discoverability
   location: {
     state: string;
     city: string;
@@ -12,7 +13,7 @@ export interface ProjectBasics {
   coverImage: string;
   videoUrl: string; // YouTube only
   fundingGoal: number;
-  duration: number; // 1-40 days, custom
+  duration: number; // 14 or 30 days
 }
 
 // Step 2: Story
@@ -137,16 +138,15 @@ export const PROJECT_CATEGORIES = [
   { value: 'others', label: 'Others', icon: '✨' }
 ];
 
-// Duration presets
+// Duration presets (simplified to 14 and 30 days)
 export const DURATION_PRESETS = [
-  { value: 30, label: '30 days (Recommended)' },
-  { value: 45, label: '45 days' },
-  { value: 60, label: '60 days' }
+  { value: 14, label: '14 days' },
+  { value: 30, label: '30 days (Recommended)' }
 ];
 
 // Maximum values
 export const PROJECT_LIMITS = {
-  MAX_TITLE_LENGTH: 60,
+  MAX_TITLE_LENGTH: 30,
   MAX_TAGLINE_LENGTH: 100,
   MAX_DESCRIPTION_LENGTH: 5000,
   MAX_WHY_LENGTH: 2000,
@@ -154,10 +154,12 @@ export const PROJECT_LIMITS = {
   MAX_GALLERY_IMAGES: 7,
   MIN_FUNDING_GOAL: 10000, // ₹10,000
   MAX_FUNDING_GOAL: 10000000, // ₹1,00,00,000
-  MIN_DURATION_DAYS: 1,
-  MAX_DURATION_DAYS: 40,
+  MIN_DURATION_DAYS: 14,
+  MAX_DURATION_DAYS: 30,
   MAX_TIMELINE_ITEMS: 12,
-  MAX_FUND_BREAKDOWN_ITEMS: 10
+  MAX_FUND_BREAKDOWN_ITEMS: 10,
+  MAX_TAGS: 5,
+  MAX_TAG_LENGTH: 20
 };
 
 // Validation helpers

@@ -12,29 +12,29 @@ export default function SearchResultsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  
+
   // Parse filters from URL
   const parseFiltersFromURL = (): Partial<SearchFilters> => {
     const filters: Partial<SearchFilters> = {};
-    
+
     const query = searchParams.get('q');
     if (query) filters.query = query;
-    
+
     const categories = searchParams.get('categories');
     if (categories) filters.categories = categories.split(',');
-    
+
     const states = searchParams.get('states');
     if (states) filters.states = states.split(',');
-    
+
     const cities = searchParams.get('cities');
     if (cities) filters.cities = cities.split(',');
-    
+
     const sort = searchParams.get('sort');
     if (sort) filters.sortBy = sort as any;
-    
+
     const nearMe = searchParams.get('nearMe');
     if (nearMe === 'true') filters.nearMe = { enabled: true };
-    
+
     return filters;
   };
 
@@ -47,14 +47,14 @@ export default function SearchResultsPage() {
   // Update URL when filters change
   const updateURL = (newFilters: Partial<SearchFilters>) => {
     const params = new URLSearchParams();
-    
+
     if (newFilters.query) params.set('q', newFilters.query);
     if (newFilters.categories?.length) params.set('categories', newFilters.categories.join(','));
     if (newFilters.states?.length) params.set('states', newFilters.states.join(','));
     if (newFilters.cities?.length) params.set('cities', newFilters.cities.join(','));
     if (newFilters.sortBy) params.set('sort', newFilters.sortBy);
     if (newFilters.nearMe?.enabled) params.set('nearMe', 'true');
-    
+
     setSearchParams(params);
   };
 
@@ -72,7 +72,7 @@ export default function SearchResultsPage() {
 
   const handleRemoveFilter = (filterType: string, value?: string) => {
     const updated = { ...params };
-    
+
     switch (filterType) {
       case 'category':
         updated.categories = params.categories?.filter(c => c !== value);
@@ -93,7 +93,7 @@ export default function SearchResultsPage() {
         updated.nearMe = { enabled: false };
         break;
     }
-    
+
     updateParams(updated);
     updateURL(updated);
   };
@@ -123,9 +123,9 @@ export default function SearchResultsPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Search Projects</h1>
-          
+
           {/* Search Bar */}
           <div className="max-w-2xl">
             <SearchAutocomplete
@@ -137,7 +137,7 @@ export default function SearchResultsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Active Filters */}
         {(params.categories?.length || params.states?.length || params.cities?.length) && (
           <div className="mb-6">
@@ -279,7 +279,7 @@ export default function SearchResultsPage() {
                       <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                         {project.tagline}
                       </p>
-                      
+
                       {/* Progress Bar */}
                       <div className="mb-3">
                         <div className="w-full bg-gray-200 rounded-full h-2">

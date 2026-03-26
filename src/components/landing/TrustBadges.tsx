@@ -43,7 +43,7 @@ export default function TrustBadges() {
 
   return (
     <section className="py-12 bg-white border-t border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">

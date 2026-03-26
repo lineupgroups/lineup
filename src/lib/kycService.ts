@@ -193,11 +193,16 @@ export const approveKYC = async (kycDocId: string, adminId: string): Promise<voi
         });
 
         // Update user profile - GRANT CREATOR ACCESS
+        // Note: We set BOTH isCreatorVerified AND isVerifiedCreator for compatibility
+        // - isCreatorVerified: used for KYC/creator mode access
+        // - isVerifiedCreator: used for profile display (green ring, badge)
         const userRef = doc(db, 'users', kycData.userId);
         await updateDoc(userRef, {
             kycStatus: 'approved',
             kycApprovedAt: serverTimestamp(),
             isCreatorVerified: true,
+            isVerifiedCreator: true, // This enables the green ring and verified badge on profile
+            verifiedAt: serverTimestamp(),
             canCreateProjects: true,
             creatorActivatedAt: serverTimestamp(),
             'rolePreferences.canAccessCreatorMode': true,
@@ -254,6 +259,8 @@ export const rejectKYC = async (
             kycRejectedAt: serverTimestamp(),
             kycRejectionReason: reason,
             isCreatorVerified: false,
+            isVerifiedCreator: false, // Also clear the profile verification badge
+            verifiedAt: null,
             canCreateProjects: false,
             'rolePreferences.canAccessCreatorMode': false,
             updatedAt: serverTimestamp(),

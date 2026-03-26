@@ -13,6 +13,7 @@ import {
   getUserFollowedProjects,
   InteractionCounts
 } from '../lib/interactions';
+import { trackProjectInteraction } from '../lib/analytics';
 import { FirestoreProject } from '../types/firestore';
 import { toast } from 'react-hot-toast';
 
@@ -27,11 +28,11 @@ export const useProjectLikes = (projectId: string) => {
   useEffect(() => {
     const checkLikeStatus = async () => {
       if (!user || !projectId) return;
-      
+
       try {
         const liked = await checkUserLikedProject(user.uid, projectId);
         setIsLiked(liked);
-        
+
         const counts = await getProjectInteractionCounts(projectId);
         setLikeCount(counts.likes);
       } catch (error) {
@@ -49,11 +50,11 @@ export const useProjectLikes = (projectId: string) => {
     }
 
     if (isLoading) return;
-    
+
     // Store original state for rollback
     const originalIsLiked = isLiked;
     const originalLikeCount = likeCount;
-    
+
     setIsLoading(true);
 
     try {
@@ -61,22 +62,24 @@ export const useProjectLikes = (projectId: string) => {
         // Optimistic update
         setIsLiked(false);
         setLikeCount(prev => Math.max(0, prev - 1));
-        
+
         await unlikeProject(user.uid, projectId);
         toast.success('Project unliked');
       } else {
         // Optimistic update
         setIsLiked(true);
         setLikeCount(prev => prev + 1);
-        
+
         await likeProject(user.uid, projectId);
+        // Track for analytics dashboard
+        trackProjectInteraction(projectId, 'likes');
         toast.success('Project liked!');
       }
     } catch (error) {
       // Rollback optimistic updates on error
       setIsLiked(originalIsLiked);
       setLikeCount(originalLikeCount);
-      
+
       console.error('Error toggling like:', error);
       toast.error('Failed to update like status. Please try again.');
     } finally {
@@ -103,11 +106,11 @@ export const useProjectFollows = (projectId: string) => {
   useEffect(() => {
     const checkFollowStatus = async () => {
       if (!user || !projectId) return;
-      
+
       try {
         const followed = await checkUserFollowedProject(user.uid, projectId);
         setIsFollowed(followed);
-        
+
         const counts = await getProjectInteractionCounts(projectId);
         setFollowCount(counts.follows);
       } catch (error) {
@@ -125,11 +128,11 @@ export const useProjectFollows = (projectId: string) => {
     }
 
     if (isLoading) return;
-    
+
     // Store original state for rollback
     const originalIsFollowed = isFollowed;
     const originalFollowCount = followCount;
-    
+
     setIsLoading(true);
 
     try {
@@ -137,22 +140,24 @@ export const useProjectFollows = (projectId: string) => {
         // Optimistic update
         setIsFollowed(false);
         setFollowCount(prev => Math.max(0, prev - 1));
-        
+
         await unfollowProject(user.uid, projectId);
         toast.success('Project unfollowed');
       } else {
         // Optimistic update
         setIsFollowed(true);
         setFollowCount(prev => prev + 1);
-        
+
         await followProject(user.uid, projectId);
+        // Track for analytics dashboard
+        trackProjectInteraction(projectId, 'follows');
         toast.success('Following project for updates!');
       }
     } catch (error) {
       // Rollback optimistic updates on error
       setIsFollowed(originalIsFollowed);
       setFollowCount(originalFollowCount);
-      
+
       console.error('Error toggling follow:', error);
       toast.error('Failed to update follow status. Please try again.');
     } finally {
@@ -178,7 +183,7 @@ export const useUserInteractions = (userId?: string) => {
   useEffect(() => {
     const fetchUserInteractions = async () => {
       if (!userId) return;
-      
+
       setIsLoading(true);
       setError(null);
 
@@ -203,7 +208,7 @@ export const useUserInteractions = (userId?: string) => {
 
   const refreshInteractions = async () => {
     if (!userId) return;
-    
+
     try {
       const [liked, followed] = await Promise.all([
         getUserLikedProjects(userId),
@@ -234,7 +239,7 @@ export const useInteractionCounts = (projectId: string) => {
   useEffect(() => {
     const fetchCounts = async () => {
       if (!projectId) return;
-      
+
       try {
         const interactionCounts = await getProjectInteractionCounts(projectId);
         setCounts(interactionCounts);

@@ -11,6 +11,7 @@ import NearYouSection from './homepage/sections/NearYouSection';
 import DiscoverySection from './homepage/sections/DiscoverySection';
 import AlmostFundedSection from './homepage/sections/AlmostFundedSection';
 import FreshLaunchesSection from './homepage/sections/FreshLaunchesSection';
+import TrendingSection from './homepage/sections/TrendingSection';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { useBehaviorTracking } from '../hooks/useBehaviorTracking';
 import { initializeUserPreferences } from '../lib/behaviorTracking';
@@ -29,8 +30,7 @@ export default function SmartHomepage() {
     nearYou,
     discovery,
     almostFunded,
-    freshLaunches,
-    error: recsError
+    freshLaunches
   } = useRecommendations();
 
   // Fallback data for new users
@@ -94,7 +94,7 @@ export default function SmartHomepage() {
 
       switch (filter) {
         case 'trending':
-          targetRef = forYouRef; // For You section shows trending content
+          targetRef = trendingRef;
           break;
         case 'nearme':
           targetRef = nearMeRef;
@@ -165,7 +165,12 @@ export default function SmartHomepage() {
           {hasPersonalizationData ? (
             // Personalized content for users with data
             <>
-              {/* For You Section - Hero/Main section */}
+              {/* Trending Section - Most engaged projects */}
+              <div ref={trendingRef}>
+                <TrendingSection projects={trendingProjects} loading={trendingLoading} />
+              </div>
+
+              {/* For You Section - Personalized */}
               <div ref={forYouRef}>
                 <ForYouSection projects={forYou} loading={recsLoading} />
               </div>
@@ -175,16 +180,15 @@ export default function SmartHomepage() {
                 <NearYouSection projects={nearYou} loading={recsLoading} />
               </div>
 
-              {/* Fresh Launches Section */}
-              <div ref={freshLaunchesRef}>
-                <FreshLaunchesSection projects={freshLaunches} loading={recsLoading} />
-              </div>
-
               {/* Almost Funded Section */}
               <div ref={almostFundedRef}>
                 <AlmostFundedSection projects={almostFunded} loading={recsLoading} />
               </div>
 
+              {/* Fresh Launches Section */}
+              <div ref={freshLaunchesRef}>
+                <FreshLaunchesSection projects={freshLaunches} loading={recsLoading} />
+              </div>
 
               {/* Discovery Section */}
               <DiscoverySection projects={discovery} loading={recsLoading} />
@@ -192,6 +196,14 @@ export default function SmartHomepage() {
           ) : (
             // Fallback content for new users
             <>
+              {/* Trending Section */}
+              <div ref={trendingRef}>
+                <TrendingSection
+                  projects={trendingProjects}
+                  loading={trendingLoading}
+                />
+              </div>
+
               {/* For You Section with fallback data */}
               <div ref={forYouRef}>
                 <ForYouSection
@@ -208,29 +220,7 @@ export default function SmartHomepage() {
                 />
               </div>
 
-              {/* Trending Section */}
-              <div ref={freshLaunchesRef}>
-                <FreshLaunchesSection
-                  projects={freshLaunches.length > 0 ? freshLaunches : trendingProjects.slice(0, 6)}
-                  loading={recsLoading || trendingLoading}
-                />
-              </div>
-
-              {/* Popular Projects as Almost Funded */}
-              <div ref={almostFundedRef}>
-                <AlmostFundedSection
-                  projects={almostFunded.length > 0 ? almostFunded : popularProjects.slice(6, 12)}
-                  loading={recsLoading || popularLoading}
-                />
-              </div>
-
-              {/* More Trending as Discovery */}
-              <DiscoverySection
-                projects={discovery.length > 0 ? discovery : trendingProjects.slice(6, 14)}
-                loading={recsLoading || trendingLoading}
-              />
-
-              {/* Near You Section - Always show, it handles its own empty state */}
+              {/* Near You Section */}
               <div ref={nearMeRef} className="py-8 border-t border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex items-center justify-between mb-6">
@@ -242,6 +232,28 @@ export default function SmartHomepage() {
                   <ProjectsNearMeList onProjectClick={(id) => window.location.href = `/project/${id}`} />
                 </div>
               </div>
+
+              {/* Almost Funded Section */}
+              <div ref={almostFundedRef}>
+                <AlmostFundedSection
+                  projects={almostFunded.length > 0 ? almostFunded : popularProjects.slice(6, 12)}
+                  loading={recsLoading || popularLoading}
+                />
+              </div>
+
+              {/* Fresh Launches Section */}
+              <div ref={freshLaunchesRef}>
+                <FreshLaunchesSection
+                  projects={freshLaunches.length > 0 ? freshLaunches : trendingProjects.slice(0, 6)}
+                  loading={recsLoading || trendingLoading}
+                />
+              </div>
+
+              {/* Discovery Section */}
+              <DiscoverySection
+                projects={discovery.length > 0 ? discovery : trendingProjects.slice(6, 14)}
+                loading={recsLoading || trendingLoading}
+              />
             </>
           )}
         </div>

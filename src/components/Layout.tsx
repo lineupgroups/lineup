@@ -8,6 +8,7 @@ import SupporterOnboarding from './onboarding/SupporterOnboarding';
 import OnboardingBanner from './common/OnboardingBanner';
 import ScrollToTopButton from './common/ScrollToTopButton';
 import { useAuth } from '../contexts/AuthContext';
+import { ProjectProvider } from '../contexts/ProjectContext';
 import { EnhancedOnboardingData, OnboardingProgress, calculateOnboardingProgress, shouldShowOnboarding } from '../types/onboarding';
 import { parseLocationString } from '../data/locations';
 import toast from 'react-hot-toast';
@@ -17,11 +18,14 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { user, refreshUserData } = useAuth();
+  const { user, refreshUserData, currentMode } = useAuth();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showSupporterOnboarding, setShowSupporterOnboarding] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
   const [onboardingProgress, setOnboardingProgress] = useState<OnboardingProgress | null>(null);
+
+  // Determine if we should wrap with ProjectProvider (creator mode)
+  const isCreatorMode = currentMode === 'creator';
 
   // Check if user needs onboarding
   useEffect(() => {
@@ -30,12 +34,12 @@ export default function Layout({ children }: LayoutProps) {
         try {
           const { doc, getDoc } = await import('firebase/firestore');
           const { db } = await import('../lib/firebase');
-          
+
           const userRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userRef);
-          
+
           let currentUserData: any = {};
-          
+
           if (userDoc.exists()) {
             currentUserData = userDoc.data();
           }
@@ -63,9 +67,9 @@ export default function Layout({ children }: LayoutProps) {
           );
 
           // Check if user needs supporter onboarding
-          const needsSupporterOnboarding = !currentUserData.supporterOnboardingComplete && 
-                                         (progress.level === 'incomplete' && progress.completionPercentage < 50);
-          
+          const needsSupporterOnboarding = !currentUserData.supporterOnboardingComplete &&
+            (progress.level === 'incomplete' && progress.completionPercentage < 50);
+
           if (needsSupporterOnboarding) {
             setShowSupporterOnboarding(true);
           } else {
@@ -89,14 +93,14 @@ export default function Layout({ children }: LayoutProps) {
     try {
       setShowOnboarding(false);
       setShowBanner(false);
-      
+
       // Recalculate progress
       const newProgress = calculateOnboardingProgress(data);
       setOnboardingProgress(newProgress);
-      
+
       // Refresh user data to update profile picture in navbar
       await refreshUserData();
-      
+
       toast.success('Profile updated successfully! 🎉');
     } catch (error) {
       console.error('Error completing onboarding:', error);
@@ -110,13 +114,13 @@ export default function Layout({ children }: LayoutProps) {
     try {
       const { doc, updateDoc, increment } = await import('firebase/firestore');
       const { db } = await import('../lib/firebase');
-      
+
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, {
         lastOnboardingPrompt: new Date(),
         onboardingSkippedCount: increment(1)
       });
-      
+
       setShowBanner(false);
     } catch (error) {
       console.error('Error dismissing banner:', error);
@@ -134,7 +138,8 @@ export default function Layout({ children }: LayoutProps) {
     // setShowOnboarding(true);
   };
 
-  return (
+  // The main content that needs to be wrapped with ProjectProvider when in creator mode
+  const layoutContent = (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
       <Helmet>
         <title>Lineup - For the Idea Nation™</title>
@@ -147,7 +152,7 @@ export default function Layout({ children }: LayoutProps) {
       </Helmet>
 
       <RoleAwareNavbar />
-      
+
       {/* Onboarding Banner */}
       {showBanner && onboardingProgress && (
         <OnboardingBanner
@@ -156,11 +161,11 @@ export default function Layout({ children }: LayoutProps) {
           onDismiss={handleBannerDismiss}
         />
       )}
-      
+
       <main className="flex-1">
         {children || <Outlet />}
       </main>
-      
+
       <Footer />
 
       {/* Scroll to Top Button */}
@@ -174,12 +179,19 @@ export default function Layout({ children }: LayoutProps) {
       />
 
       {/* Account Setup Modal for detailed profile setup */}
-      <AccountSetupModal 
+      <AccountSetupModal
         isOpen={showOnboarding}
         onClose={() => setShowOnboarding(false)}
         onComplete={handleOnboardingComplete}
         initialProgress={onboardingProgress || undefined}
       />
     </div>
+  );
+
+  // Wrap with ProjectProvider when in creator mode
+  return isCreatorMode ? (
+    <ProjectProvider>{layoutContent}</ProjectProvider>
+  ) : (
+    layoutContent
   );
 }

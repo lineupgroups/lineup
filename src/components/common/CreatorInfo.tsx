@@ -4,20 +4,39 @@ import { UserProfilePicture } from './ProfilePicture';
 
 import { BadgeCheck } from 'lucide-react';
 
+// Type for pre-fetched creator data
+interface PreFetchedCreator {
+  id: string;
+  displayName: string;
+  username: string;
+  profileImage?: string;
+  bio?: string;
+  isVerifiedCreator?: boolean;
+}
+
 interface CreatorInfoProps {
   creatorId: string;
   size?: 'sm' | 'md' | 'lg';
   showBio?: boolean;
   className?: string;
+  // Issue #14: Optional pre-fetched creator data to avoid N+1 queries
+  prefetchedCreator?: PreFetchedCreator;
 }
 
 export const CreatorInfo: React.FC<CreatorInfoProps> = ({
   creatorId,
   size = 'md',
   showBio = false,
-  className = ''
+  className = '',
+  prefetchedCreator
 }) => {
-  const { creator, isLoading, error } = useCreatorInfo(creatorId);
+  // Only fetch if no prefetched data is provided
+  const { creator: fetchedCreator, isLoading, error } = useCreatorInfo(
+    prefetchedCreator ? '' : creatorId // Pass empty string to skip fetch if prefetched
+  );
+
+  // Use prefetched data if available, otherwise use fetched data
+  const creator = prefetchedCreator || fetchedCreator;
 
   const sizeClasses = {
     sm: {

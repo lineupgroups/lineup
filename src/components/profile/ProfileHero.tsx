@@ -1,10 +1,56 @@
-import React from 'react';
-import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail, BadgeCheck } from 'lucide-react';
 import { EnhancedUser } from '../../types/user';
 import SocialLinksBar from './SocialLinksBar';
 import ReportButton from '../common/ReportButton';
-import { KYCProfileBadge } from '../kyc/KYCVerificationBadge';
 import { sanitizeText, truncateText } from '../../utils/sanitize';
+
+// Expandable Verified Badge Component
+const ExpandableVerifiedBadge: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <button
+      onClick={() => setIsExpanded(!isExpanded)}
+      className={`
+        inline-flex items-center gap-1 flex-shrink-0
+        ${isExpanded
+          ? 'px-2.5 py-1 bg-gradient-to-r from-emerald-50 to-green-50 border border-green-200 rounded-full'
+          : ''
+        }
+        transition-all duration-300 ease-out
+        hover:scale-105 active:scale-95
+        cursor-pointer
+      `}
+      title="KYC Verified Creator"
+    >
+      {/* Green Tick Icon */}
+      <div className={`
+        relative flex items-center justify-center
+        ${isExpanded ? 'w-4 h-4' : 'w-5 h-5 sm:w-6 sm:h-6'}
+        transition-all duration-300
+      `}>
+        <BadgeCheck
+          className={`
+            w-full h-full text-green-500
+            ${isExpanded ? 'fill-green-100' : 'fill-green-50'}
+          `}
+        />
+      </div>
+
+      {/* Expandable Text */}
+      <span
+        className={`
+          text-xs font-semibold text-green-700 whitespace-nowrap
+          overflow-hidden transition-all duration-300 ease-out
+          ${isExpanded ? 'max-w-[100px] opacity-100 ml-0.5' : 'max-w-0 opacity-0'}
+        `}
+      >
+        KYC Verified
+      </span>
+    </button>
+  );
+};
 
 interface ProfileHeroProps {
   user: EnhancedUser;
@@ -18,6 +64,7 @@ interface ProfileHeroProps {
   onFollowersClick?: () => void;
   onFollowingClick?: () => void;
 }
+
 
 const ProfileHero: React.FC<ProfileHeroProps> = ({
   user,
@@ -100,34 +147,73 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
         {/* Avatar Section - overlaps cover */}
         <div className="flex justify-between -mt-12 sm:-mt-16 mb-3">
           <div className="relative">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100">
-              {user.profileImage ? (
-                <img
-                  src={user.profileImage}
-                  alt={user.displayName}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    // Use a more React-like approach for fallback
-                    const parent = target.parentElement;
-                    if (parent && !parent.querySelector('.fallback-avatar')) {
-                      const fallback = document.createElement('div');
-                      fallback.className = 'fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold';
-                      fallback.textContent = getInitials(user.displayName);
-                      parent.appendChild(fallback);
-                    }
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold">
-                  {getInitials(user.displayName)}
+            {/* Premium Verified Ring - gradient with glow effect */}
+            {(user.isVerifiedCreator || user.isCreatorVerified) ? (
+              <div className="relative">
+                {/* White backdrop circle - makes ring stand out on colorful backgrounds */}
+                <div className="absolute inset-0 bg-white rounded-full scale-110" />
+
+                {/* Gradient border ring */}
+                <div className="relative p-[4px] bg-gradient-to-br from-emerald-400 via-green-500 to-teal-500 rounded-full shadow-xl">
+                  {/* Inner white ring for clean look */}
+                  <div className="p-[3px] bg-white rounded-full">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full overflow-hidden bg-gray-100">
+                      {user.profileImage ? (
+                        <img
+                          src={user.profileImage}
+                          alt={user.displayName}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            const parent = target.parentElement;
+                            if (parent && !parent.querySelector('.fallback-avatar')) {
+                              const fallback = document.createElement('div');
+                              fallback.className = 'fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold';
+                              fallback.textContent = getInitials(user.displayName);
+                              parent.appendChild(fallback);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold">
+                          {getInitials(user.displayName)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              /* Non-verified users - standard white border */
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100">
+                {user.profileImage ? (
+                  <img
+                    src={user.profileImage}
+                    alt={user.displayName}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent && !parent.querySelector('.fallback-avatar')) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold';
+                        fallback.textContent = getInitials(user.displayName);
+                        parent.appendChild(fallback);
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold">
+                    {getInitials(user.displayName)}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Level Badge */}
-            <div className="absolute -bottom-1 -right-1 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 border-white">
+            <div className="absolute -bottom-1 -right-1 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 border-white shadow-md z-10">
               L{user.level}
             </div>
           </div>
@@ -202,9 +288,9 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                 {user.displayName}
               </h1>
-              {/* ✨ KYC Verified Badge */}
-              {user.isCreatorVerified && (
-                <KYCProfileBadge className="flex-shrink-0" />
+              {/* ✨ Expandable Verified Badge - click to expand */}
+              {(user.isVerifiedCreator || user.isCreatorVerified) && (
+                <ExpandableVerifiedBadge />
               )}
             </div>
             {user.username && (

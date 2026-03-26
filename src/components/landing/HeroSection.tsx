@@ -13,7 +13,7 @@ export default function HeroSection() {
       <div className="absolute top-40 right-4 sm:right-20 w-12 sm:w-16 h-12 sm:h-16 bg-red-200 rounded-full opacity-20 animate-float-delayed"></div>
       <div className="absolute bottom-20 left-4 sm:left-20 w-10 sm:w-12 h-10 sm:h-12 bg-orange-300 rounded-full opacity-30 animate-float"></div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div className="text-center lg:text-left">

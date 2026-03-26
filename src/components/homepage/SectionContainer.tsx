@@ -21,7 +21,7 @@ export default function SectionContainer({
 }: SectionContainerProps) {
   return (
     <section className={`py-12 ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -39,7 +39,7 @@ export default function SectionContainer({
               )}
             </div>
           </div>
-          
+
           {viewAllLink && (
             <Link
               to={viewAllLink}

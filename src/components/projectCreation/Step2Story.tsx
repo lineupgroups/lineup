@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Upload, Plus, Trash2, PieChart, Calendar, HelpCircle, X } from 'lucide-react';
+import { Upload, Plus, Trash2, HelpCircle, X, ChevronUp, ChevronDown } from 'lucide-react';
 import { ProjectStory, PROJECT_LIMITS, calculatePlatformFee } from '../../types/projectCreation';
 import { uploadImage } from '../../lib/cloudinary';
 import { ImageEditor } from '../common/ImageEditor';
+import { sanitizeText } from '../../utils/sanitize';
 import toast from 'react-hot-toast';
 
 interface Step2StoryProps {
@@ -38,16 +39,16 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
   const handleImageSave = async (croppedImage: string) => {
     try {
       setUploading(true);
-      
+
       const response = await fetch(croppedImage);
       const blob = await response.blob();
       const file = new File([blob], tempImageFile?.name || 'gallery.jpg', { type: 'image/jpeg' });
-      
+
       const result = await uploadImage(file, {
         folder: 'project-gallery',
         tags: ['project', 'gallery']
       });
-      
+
       const currentGallery = data.gallery || [];
       onUpdate({ gallery: [...currentGallery, result.secure_url] });
       setShowImageEditor(false);
@@ -65,6 +66,19 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
     const newGallery = [...(data.gallery || [])];
     newGallery.splice(index, 1);
     onUpdate({ gallery: newGallery });
+  };
+
+  // Issue #9: Move gallery image up or down to reorder
+  const moveGalleryImage = (fromIndex: number, direction: 'up' | 'down') => {
+    const gallery = [...(data.gallery || [])];
+    const toIndex = direction === 'up' ? fromIndex - 1 : fromIndex + 1;
+
+    // Bounds check
+    if (toIndex < 0 || toIndex >= gallery.length) return;
+
+    // Swap images
+    [gallery[fromIndex], gallery[toIndex]] = [gallery[toIndex], gallery[fromIndex]];
+    onUpdate({ gallery });
   };
 
   const addBreakdownItem = () => {
@@ -164,6 +178,18 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
       return;
     }
 
+    // Issue #5: Validate fund breakdown totals
+    const totalBreakdown = getTotalBreakdown();
+    const expectedTotal = fundingGoal - getPlatformFee();
+    const tolerance = expectedTotal * 0.1; // 10% tolerance
+
+    if (Math.abs(totalBreakdown - expectedTotal) > tolerance) {
+      toast.error(
+        `Fund breakdown total (₹${formatCurrency(totalBreakdown)}) should be close to goal minus platform fee (₹${formatCurrency(expectedTotal)}). Please adjust your breakdown.`
+      );
+      return;
+    }
+
     onNext();
   };
 
@@ -184,36 +210,40 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
 
       {/* What are you creating */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="project-description" className="block text-sm font-medium text-gray-700 mb-2">
           What are you creating? *
         </label>
         <textarea
+          id="project-description"
           value={data.description || ''}
-          onChange={(e) => onUpdate({ description: e.target.value })}
+          onChange={(e) => onUpdate({ description: sanitizeText(e.target.value) })}
           placeholder="Describe your project in detail. What is it? Who is it for? What problem does it solve?"
           rows={8}
           maxLength={PROJECT_LIMITS.MAX_DESCRIPTION_LENGTH}
+          aria-describedby="description-counter"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p id="description-counter" className="text-xs text-gray-500 mt-1">
           {data.description?.length || 0}/{PROJECT_LIMITS.MAX_DESCRIPTION_LENGTH} characters
         </p>
       </div>
 
       {/* Why does this matter */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="project-why" className="block text-sm font-medium text-gray-700 mb-2">
           Why does this matter? *
         </label>
         <textarea
+          id="project-why"
           value={data.why || ''}
-          onChange={(e) => onUpdate({ why: e.target.value })}
+          onChange={(e) => onUpdate({ why: sanitizeText(e.target.value) })}
           placeholder="Why should people support this? What impact will it have? Why now?"
           rows={6}
           maxLength={PROJECT_LIMITS.MAX_WHY_LENGTH}
+          aria-describedby="why-counter"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p id="why-counter" className="text-xs text-gray-500 mt-1">
           {data.why?.length || 0}/{PROJECT_LIMITS.MAX_WHY_LENGTH} characters
         </p>
       </div>
@@ -223,7 +253,7 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
         <label className="block text-sm font-medium text-gray-700 mb-3">
           How will you use the funds? *
         </label>
-        
+
         <div className="bg-gray-50 rounded-lg p-4 mb-4">
           <div className="flex flex-col md:flex-row gap-3 mb-3">
             <input
@@ -252,42 +282,44 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
           </div>
         </div>
 
-        {data.fundBreakdown && data.fundBreakdown.length > 0 && (
-          <div className="space-y-2 mb-4">
-            {data.fundBreakdown.map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
-                <div className="flex-1">
-                  <span className="font-medium text-gray-900">{item.item}</span>
+        {
+          data.fundBreakdown && data.fundBreakdown.length > 0 && (
+            <div className="space-y-2 mb-4">
+              {data.fundBreakdown.map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+                  <div className="flex-1">
+                    <span className="font-medium text-gray-900">{item.item}</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="font-semibold text-gray-900">{formatCurrency(item.amount)}</span>
+                    <button onClick={() => editBreakdownItem(index)} className="text-blue-600 hover:text-blue-700">
+                      Edit
+                    </button>
+                    <button onClick={() => removeBreakdownItem(index)} className="text-red-600 hover:text-red-700">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <span className="font-semibold text-gray-900">{formatCurrency(item.amount)}</span>
-                  <button onClick={() => editBreakdownItem(index)} className="text-blue-600 hover:text-blue-700">
-                    Edit
-                  </button>
-                  <button onClick={() => removeBreakdownItem(index)} className="text-red-600 hover:text-red-700">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+              ))}
+
+              <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <span className="font-semibold text-orange-900">Platform Fee (5%)</span>
+                <span className="font-bold text-orange-900">{formatCurrency(getPlatformFee())}</span>
               </div>
-            ))}
-            
-            <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
-              <span className="font-semibold text-orange-900">Platform Fee (5%)</span>
-              <span className="font-bold text-orange-900">{formatCurrency(getPlatformFee())}</span>
+
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
+                <span className="font-bold text-white text-lg">Total Goal</span>
+                <span className="font-bold text-white text-lg">{formatCurrency(fundingGoal)}</span>
+              </div>
+
+              {getTotalBreakdown() !== fundingGoal - getPlatformFee() && (
+                <p className="text-sm text-amber-600">
+                  ⚠️ Breakdown total (₹{formatCurrency(getTotalBreakdown())}) should match goal minus platform fee (₹{formatCurrency(fundingGoal - getPlatformFee())})
+                </p>
+              )}
             </div>
-            
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
-              <span className="font-bold text-white text-lg">Total Goal</span>
-              <span className="font-bold text-white text-lg">{formatCurrency(fundingGoal)}</span>
-            </div>
-            
-            {getTotalBreakdown() !== fundingGoal - getPlatformFee() && (
-              <p className="text-sm text-amber-600">
-                ⚠️ Breakdown total (₹{formatCurrency(getTotalBreakdown())}) should match goal minus platform fee (₹{formatCurrency(fundingGoal - getPlatformFee())})
-              </p>
-            )}
-          </div>
-        )}
+          )
+        }
       </div>
 
       {/* Gallery */}
@@ -295,20 +327,50 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
         <label className="block text-sm font-medium text-gray-700 mb-3">
           Project Gallery (Max {PROJECT_LIMITS.MAX_GALLERY_IMAGES} images) - Optional
         </label>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           {data.gallery?.map((image, index) => (
-            <div key={index} className="relative group">
+            <div key={`gallery-${index}`} className="relative group">
               <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-32 object-cover rounded-lg" />
+              {/* Reorder buttons */}
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(index, 'up')}
+                    className="p-1 bg-white/90 text-gray-700 rounded shadow hover:bg-white"
+                    aria-label={`Move image ${index + 1} up`}
+                  >
+                    <ChevronUp className="w-4 h-4" />
+                  </button>
+                )}
+                {data.gallery && index < data.gallery.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(index, 'down')}
+                    className="p-1 bg-white/90 text-gray-700 rounded shadow hover:bg-white"
+                    aria-label={`Move image ${index + 1} down`}
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              {/* Delete button */}
               <button
+                type="button"
                 onClick={() => removeGalleryImage(index)}
                 className="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label={`Remove image ${index + 1}`}
               >
                 <X className="w-4 h-4" />
               </button>
+              {/* Position indicator */}
+              <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-xs font-medium rounded">
+                {index + 1}
+              </span>
             </div>
           ))}
-          
+
           {(!data.gallery || data.gallery.length < PROJECT_LIMITS.MAX_GALLERY_IMAGES) && (
             <button
               type="button"
@@ -321,7 +383,7 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
             </button>
           )}
         </div>
-        
+
         <input
           id="gallery-input"
           type="file"
@@ -329,7 +391,7 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
           onChange={handleImageSelect}
           className="hidden"
         />
-        
+
         <p className="text-xs text-gray-500">
           Add photos, mockups, prototypes, or infographics. {data.gallery?.length || 0}/{PROJECT_LIMITS.MAX_GALLERY_IMAGES} images
         </p>
@@ -340,29 +402,31 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
         <label className="block text-sm font-medium text-gray-700 mb-3">
           Project Timeline - Optional
         </label>
-        
-        {data.timeline && data.timeline.length > 0 && (
-          <div className="space-y-3 mb-4">
-            {data.timeline.map((item, index) => (
-              <div key={index} className="flex items-center space-x-3">
-                <div className="w-20 px-3 py-2 bg-orange-100 text-orange-900 font-medium rounded-lg text-center">
-                  Month {item.month}
+
+        {
+          data.timeline && data.timeline.length > 0 && (
+            <div className="space-y-3 mb-4">
+              {data.timeline.map((item, index) => (
+                <div key={index} className="flex items-center space-x-3">
+                  <div className="w-20 px-3 py-2 bg-orange-100 text-orange-900 font-medium rounded-lg text-center">
+                    Month {item.month}
+                  </div>
+                  <input
+                    type="text"
+                    value={item.milestone}
+                    onChange={(e) => updateTimelineItem(index, e.target.value)}
+                    placeholder="What will you accomplish?"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  />
+                  <button onClick={() => removeTimelineItem(index)} className="text-red-600 hover:text-red-700">
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
-                <input
-                  type="text"
-                  value={item.milestone}
-                  onChange={(e) => updateTimelineItem(index, e.target.value)}
-                  placeholder="What will you accomplish?"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-                <button onClick={() => removeTimelineItem(index)} className="text-red-600 hover:text-red-700">
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        
+              ))}
+            </div>
+          )
+        }
+
         <button
           type="button"
           onClick={addTimelineItem}
@@ -375,18 +439,20 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
 
       {/* Risks */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="project-risks" className="block text-sm font-medium text-gray-700 mb-2">
           Risks & Challenges - Optional but Recommended
         </label>
         <textarea
+          id="project-risks"
           value={data.risks || ''}
-          onChange={(e) => onUpdate({ risks: e.target.value })}
+          onChange={(e) => onUpdate({ risks: sanitizeText(e.target.value) })}
           placeholder="What could go wrong and how will you handle it? Being transparent builds trust."
           rows={4}
           maxLength={PROJECT_LIMITS.MAX_RISKS_LENGTH}
+          aria-describedby="risks-counter"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p id="risks-counter" className="text-xs text-gray-500 mt-1">
           {data.risks?.length || 0}/{PROJECT_LIMITS.MAX_RISKS_LENGTH} characters
         </p>
       </div>
@@ -435,7 +501,7 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
             }}
             aspectRatio={4 / 3}
           />
-          
+
           {/* Upload Loading Overlay */}
           {uploading && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
@@ -446,7 +512,8 @@ export default function Step2Story({ data, fundingGoal, onUpdate, onNext, onBack
             </div>
           )}
         </>
-      )}
+      )
+      }
     </div>
   );
 }

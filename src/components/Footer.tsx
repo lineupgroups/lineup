@@ -1,5 +1,6 @@
 import React from 'react';
 import { Twitter, Instagram, Mail, Phone, MapPin, ShieldCheck, Lock, RefreshCcw } from 'lucide-react';
+import { LogoDark } from './common/Logo';
 
 export default function Footer() {
   const quickLinks = [
@@ -29,14 +30,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">L</span>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">Lineup</h3>
-                <p className="text-sm text-orange-400 font-medium">For the Idea Nation™</p>
-              </div>
+            <div className="mb-4">
+              <LogoDark size="lg" tagline="For the Idea Nation™" />
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Empowering India's youth to transform innovative ideas into reality.

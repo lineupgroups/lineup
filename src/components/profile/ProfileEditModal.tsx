@@ -284,6 +284,19 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ user, isOpen, onClo
                   </p>
                 </div>
 
+                {/* Email Section - Read Only */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
+                  </label>
+                  <div className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                    {user.email}
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Your email is used for login and notifications
+                  </p>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Job Title

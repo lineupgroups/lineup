@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
-import { ProjectBasics, ProjectStory } from '../../types/projectCreation';
+import { ProjectBasics, ProjectStory, validateYouTubeUrl } from '../../types/projectCreation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useKYC } from '../../hooks/useKYC';
 import Step1Basics from './Step1Basics';
@@ -12,6 +12,27 @@ import toast from 'react-hot-toast';
 import { db } from '../../lib/firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
+// Draft storage key
+const DRAFT_KEY = 'lineup_project_draft';
+
+// Type for project form data
+interface ProjectFormData {
+  basics?: Partial<ProjectBasics>;
+  story?: Partial<ProjectStory>;
+  launch?: {
+    type: 'immediate' | 'scheduled';
+    scheduledDate?: Date;
+    privacy: 'public' | 'private';
+  };
+}
+
+// Consistent error handler
+const handleError = (error: any, context: string) => {
+  console.error(`[${context}]`, error);
+  const message = error?.message || 'An unexpected error occurred';
+  toast.error(message);
+};
+
 export default function ProjectCreationWizard() {
   const { user } = useAuth();
   const { kycData, isApproved, loading: kycLoading } = useKYC();
@@ -20,15 +41,62 @@ export default function ProjectCreationWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPINModal, setShowPINModal] = useState(false);
 
-  const [projectData, setProjectData] = useState<{
-    basics?: Partial<ProjectBasics>;
-    story?: Partial<ProjectStory>;
-    launch?: {
-      type: 'immediate' | 'scheduled';
-      scheduledDate?: Date;
-      privacy: 'public' | 'private';
+  const [projectData, setProjectData] = useState<ProjectFormData>({});
+  const [draftLoaded, setDraftLoaded] = useState(false);
+
+  // Issue #7: Load draft from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedDraft = localStorage.getItem(DRAFT_KEY);
+      if (savedDraft) {
+        const parsed = JSON.parse(savedDraft);
+        // Restore dates properly
+        if (parsed.launch?.scheduledDate) {
+          parsed.launch.scheduledDate = new Date(parsed.launch.scheduledDate);
+        }
+        setProjectData(parsed);
+        toast.success('Draft restored from previous session', { icon: '💾' });
+      }
+    } catch (e) {
+      console.warn('Failed to load draft:', e);
+    }
+    setDraftLoaded(true);
+  }, []);
+
+  // Issue #7: Save draft to localStorage on every update
+  useEffect(() => {
+    if (draftLoaded && Object.keys(projectData).length > 0) {
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(projectData));
+      } catch (e) {
+        console.warn('Failed to save draft:', e);
+      }
+    }
+  }, [projectData, draftLoaded]);
+
+  // Issue #11: Warn before leaving with unsaved changes
+  useEffect(() => {
+    const hasChanges = Object.keys(projectData).length > 0;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
     };
-  }>({});
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [projectData]);
+
+  // Clear draft after successful submission
+  const clearDraft = useCallback(() => {
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch (e) {
+      console.warn('Failed to clear draft:', e);
+    }
+  }, []);
 
   // ✅ KYC Pre-check
   useEffect(() => {
@@ -58,10 +126,10 @@ export default function ProjectCreationWizard() {
     }));
   };
 
-  const updateLaunch = (data: any) => {
+  const updateLaunch = (data: Partial<ProjectFormData['launch']>) => {
     setProjectData(prev => ({
       ...prev,
-      launch: { ...prev.launch, ...data }
+      launch: { ...prev.launch, ...data } as ProjectFormData['launch']
     }));
   };
 
@@ -76,22 +144,56 @@ export default function ProjectCreationWizard() {
       return;
     }
 
+    // Validate payment methods
+    if (!kycData.paymentMethods || kycData.paymentMethods.length === 0) {
+      toast.error('No payment methods found in KYC. Please complete your KYC first.');
+      navigate('/kyc/submit');
+      return;
+    }
+
     try {
       setIsSubmitting(true);
 
       // Get primary payment method from KYC
       const primaryPayment = kycData.paymentMethods.find(pm => pm.isPrimary) || kycData.paymentMethods[0];
 
+      // Validate required data
+      if (!projectData.basics?.title || !projectData.basics?.category) {
+        toast.error('Missing required project information');
+        return;
+      }
+
+      // Issue #10: Re-validate video URL before submission
+      if (projectData.basics?.videoUrl && !validateYouTubeUrl(projectData.basics.videoUrl)) {
+        toast.error('Please enter a valid YouTube URL or remove the video URL');
+        return;
+      }
+
+      if (!projectData.basics?.location?.state || !projectData.basics?.location?.city) {
+        toast.error('Please provide complete location information');
+        return;
+      }
+
+      // Issue #16: Calculate end date based on launch type
+      const launchDate = projectData.launch?.type === 'scheduled' && projectData.launch?.scheduledDate
+        ? new Date(projectData.launch.scheduledDate)
+        : new Date();
+
+      const endDate = new Date(launchDate.getTime() + (projectData.basics.duration || 30) * 24 * 60 * 60 * 1000);
+
       // Create project document
       const projectDoc: any = {
         // Basic Info
-        title: projectData.basics?.title || '',
-        tagline: projectData.basics?.tagline || '',
-        category: projectData.basics?.category || '',
-        location: projectData.basics?.location || { country: 'India', state: '', city: '' },
-        image: projectData.basics?.coverImage || '',
-        goal: projectData.basics?.fundingGoal || 0,
-        duration: projectData.basics?.duration || 30,
+        title: projectData.basics.title,
+        tagline: projectData.basics.tagline || '',
+        category: projectData.basics.category,
+        location: {
+          state: projectData.basics.location.state,
+          city: projectData.basics.location.city
+        },
+        image: projectData.basics.coverImage || '',
+        goal: projectData.basics.fundingGoal || 0,
+        duration: projectData.basics.duration || 30,
 
         // Story
         description: projectData.story?.description || '',
@@ -103,8 +205,9 @@ export default function ProjectCreationWizard() {
         },
         gallery: projectData.story?.gallery || [],
 
-        // Creator
+        // Creator - Issue #4: Use both creatorId and createdBy for compatibility
         creatorId: user.uid,
+        createdBy: user.uid, // Alias for backward compatibility
         creatorName: user.displayName || '',
         creatorPhoto: user.profileImage || user.photoURL || '',
 
@@ -129,17 +232,23 @@ export default function ProjectCreationWizard() {
         // Stats
         raised: 0,
         supporters: 0,
+        likeCount: 0,
+        followCount: 0,
+        viewCount: 0,
 
-        // Timestamps
+        // Timestamps - Issue #16: Use calculated endDate
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
-        endDate: Timestamp.fromDate(
-          new Date(Date.now() + (projectData.basics?.duration || 30) * 24 * 60 * 60 * 1000)
-        )
+        endDate: Timestamp.fromDate(endDate)
       };
 
+      // Optional: Tags
+      if (projectData.basics.tags && projectData.basics.tags.length > 0) {
+        projectDoc.tags = projectData.basics.tags;
+      }
+
       // Optional fields
-      if (projectData.basics?.videoUrl) {
+      if (projectData.basics.videoUrl) {
         projectDoc.videoUrl = projectData.basics.videoUrl;
       }
 
@@ -147,20 +256,30 @@ export default function ProjectCreationWizard() {
         projectDoc.scheduledDate = Timestamp.fromDate(projectData.launch.scheduledDate);
       }
 
+      console.log('📝 Submitting project with data:', projectDoc);
+
       // Add to Firestore
       await addDoc(collection(db, 'projects'), projectDoc);
 
+      // Issue #7: Clear draft after successful submission
+      clearDraft();
+
       toast.success('🎉 Project submitted for admin review!');
-      toast.info('Your project will be published after admin approval', { duration: 5000 });
+      toast.success('ℹ️ Your project will be published after admin approval', { duration: 5000 });
 
       // Navigate to dashboard
       setTimeout(() => {
         navigate('/dashboard/projects');
       }, 2000);
 
-    } catch (error) {
-      console.error('Error creating project:', error);
-      toast.error('Failed to create project. Please try again.');
+    } catch (error: any) {
+      // Issue #12: Consistent error handling
+      if (error.code === 'permission-denied') {
+        handleError(error, 'ProjectCreation - Permission');
+        toast.error('Permission denied. Please check your account permissions.');
+      } else {
+        handleError(error, 'ProjectCreation - Submit');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -247,6 +366,7 @@ export default function ProjectCreationWizard() {
           {currentStep === 2 && (
             <Step2Story
               data={projectData.story || {}}
+              fundingGoal={projectData.basics?.fundingGoal || 0}
               onUpdate={updateStory}
               onNext={() => setCurrentStep(3)}
               onBack={() => setCurrentStep(1)}

@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Search, TrendingUp, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useFeaturedProjects, useRecentActiveProjects, useProjectsByCategory, useProjectSearch } from '../hooks/useProjects';
+import { useCreatorsData } from '../hooks/useCreatorsData';
 import { FirestoreProject } from '../types/firestore';
 import { convertTimestamp, getProjectProgress, getDaysLeft } from '../lib/firestore';
 import { LikeButton } from './interactions/LikeButton';
@@ -23,7 +24,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
   const [sortBy, setSortBy] = useState<'trending' | 'newest'>('trending');
 
   const categories = PROJECT_CATEGORIES.slice(0, 5); // Show first 5 categories on homepage
-  
+
   // Fetch data from Firestore
   const { projects: featuredProjects, loading: featuredLoading, error: featuredError } = useFeaturedProjects();
   const { projects: recentActiveProjects, loading: recentLoading, error: recentError } = useRecentActiveProjects();
@@ -35,7 +36,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
   // Memoize expensive project sorting and filtering
   const displayProjects = useMemo((): FirestoreProject[] => {
     let projects: FirestoreProject[] = [];
-    
+
     if (searchQuery.trim()) {
       projects = searchResults;
     } else if (selectedCategory === 'All') {
@@ -58,6 +59,13 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
       }
     });
   }, [searchQuery, searchResults, selectedCategory, featuredProjects, recentActiveProjects, categoryProjects, sortBy]);
+
+  // Issue #14: Batch fetch all creator data to avoid N+1 queries
+  const creatorIds = useMemo(() => {
+    return displayProjects.map(p => p.creatorId).filter(id => id);
+  }, [displayProjects]);
+  const { creatorsMap, getCreator } = useCreatorsData(creatorIds);
+
   const isLoading = featuredLoading || recentLoading || categoryLoading || searchLoading;
   const hasError = featuredError || recentError || categoryError || searchError;
 
@@ -110,7 +118,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
             <p className="text-xl md:text-2xl text-orange-100 mb-8 max-w-3xl mx-auto">
               Empowering the next generation of innovators to bring their dreams to life
             </p>
-            <button 
+            <button
               onClick={onStartJourney}
               aria-label="Start your crowdfunding journey"
               className="px-8 py-4 bg-white text-orange-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-orange-500"
@@ -150,11 +158,10 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
                     onClick={() => setSelectedCategory(category)}
                     aria-pressed={selectedCategory === category}
                     aria-label={`Filter by ${category} category`}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 whitespace-nowrap ${
-                      selectedCategory === category
-                        ? 'bg-orange-500 text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-600'
-                    }`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 whitespace-nowrap ${selectedCategory === category
+                      ? 'bg-orange-500 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-600'
+                      }`}
                   >
                     {category}
                   </button>
@@ -164,28 +171,26 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
 
             {/* Sort Options */}
             <div className="flex gap-2" role="group" aria-label="Sort options">
-              <button 
+              <button
                 onClick={() => setSortBy('trending')}
                 aria-pressed={sortBy === 'trending'}
                 aria-label="Sort by trending projects"
-                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
-                  sortBy === 'trending'
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${sortBy === 'trending'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  }`}
               >
                 <TrendingUp className="w-4 h-4" />
                 <span>Trending</span>
               </button>
-              <button 
+              <button
                 onClick={() => setSortBy('newest')}
                 aria-pressed={sortBy === 'newest'}
                 aria-label="Sort by newest projects"
-                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
-                  sortBy === 'newest'
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${sortBy === 'newest'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  }`}
               >
                 <Clock className="w-4 h-4" />
                 <span>Newest</span>
@@ -201,13 +206,13 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Featured Projects</h2>
           <div className="relative">
             <div className="overflow-hidden rounded-xl">
-              <div 
+              <div
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {featuredProjects.map((project) => (
                   <div key={project.id} className="w-full flex-shrink-0">
-                    <div 
+                    <div
                       className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-[1.02] transition-all duration-300"
                       onClick={() => onProjectClick(project.id)}
                     >
@@ -227,7 +232,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
                             </span>
                             <div className="flex items-center space-x-2">
                               <LikeButton projectId={project.id} size="sm" showCount={false} />
-                              <ShareButton 
+                              <ShareButton
                                 projectId={project.id}
                                 projectTitle={project.title}
                                 projectDescription={project.tagline}
@@ -238,7 +243,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
                           <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.title}</h3>
                           <p className="text-gray-600 mb-4">{project.tagline}</p>
                           <p className="text-gray-700 mb-6 leading-relaxed">{project.description}</p>
-                          
+
                           {/* Progress */}
                           <div className="mb-6">
                             <div className="flex justify-between text-sm text-gray-600 mb-2">
@@ -261,7 +266,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock className="w-4 h-4" />
-                                <span>{getDaysLeft(project)} days left</span>
+                                <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}</span>
                               </div>
                             </div>
                             <button className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105">
@@ -305,9 +310,8 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
                       role="tab"
                       aria-selected={currentSlide === index}
                       aria-label={`Go to featured project ${index + 1}: ${project.title}`}
-                      className={`w-2 h-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
-                        currentSlide === index ? 'bg-orange-500' : 'bg-gray-300'
-                      }`}
+                      className={`w-2 h-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${currentSlide === index ? 'bg-orange-500' : 'bg-gray-300'
+                        }`}
                     />
                   ))}
                 </div>
@@ -321,7 +325,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900">
-            {selectedCategory === 'All' 
+            {selectedCategory === 'All'
               ? (featuredProjects.length > 0 ? 'Featured Projects' : 'Recent Projects')
               : `${selectedCategory} Projects`
             }
@@ -334,7 +338,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
             <div className="text-red-400 text-6xl mb-4">⚠️</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Something went wrong</h3>
             <p className="text-gray-600 mb-6">We're having trouble loading projects. Please try again.</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-6 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
             >
@@ -361,102 +365,103 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayProjects.map((project) => (
-            <article
-              key={project.id}
-              className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1"
-              onClick={() => onProjectClick(project.id)}
-              role="button"
-              tabIndex={0}
-              aria-label={`View project: ${project.title}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onProjectClick(project.id);
-                }
-              }}
-            >
-              <div className="relative">
-                <ProjectImage
-                  src={project.image}
-                  alt={project.title}
-                  fallbackTitle={project.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full text-sm font-medium">
-                    {project.category}
-                  </span>
-                </div>
-                <div className="absolute top-4 right-4 flex space-x-2">
-                  <div 
-                    className="bg-white/90 backdrop-blur-sm rounded-lg"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <LikeButton projectId={project.id} size="sm" showCount={false} />
+              <article
+                key={project.id}
+                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1"
+                onClick={() => onProjectClick(project.id)}
+                role="button"
+                tabIndex={0}
+                aria-label={`View project: ${project.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onProjectClick(project.id);
+                  }
+                }}
+              >
+                <div className="relative">
+                  <ProjectImage
+                    src={project.image}
+                    alt={project.title}
+                    fallbackTitle={project.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full text-sm font-medium">
+                      {project.category}
+                    </span>
                   </div>
-                  <div 
-                    className="bg-white/90 backdrop-blur-sm rounded-lg"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ShareButton 
-                      projectId={project.id}
-                      projectTitle={project.title}
-                      projectDescription={project.tagline}
-                      size="sm"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{project.title}</h3>
-                <p className="text-gray-600 mb-4 text-sm line-clamp-3">{project.description}</p>
-
-                {/* Creator Info */}
-                <CreatorInfo 
-                  creatorId={project.creatorId} 
-                  size="sm" 
-                  className="mb-4"
-                />
-
-                {/* Progress */}
-                <div className="mb-4">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>{formatCurrency(project.raised)}</span>
-                    <span>{getProgressPercentage(project).toFixed(0)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="absolute top-4 right-4 flex space-x-2">
                     <div
-                      className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${getProgressPercentage(project)}%` }}
-                    ></div>
+                      className="bg-white/90 backdrop-blur-sm rounded-lg"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <LikeButton projectId={project.id} size="sm" showCount={false} />
+                    </div>
+                    <div
+                      className="bg-white/90 backdrop-blur-sm rounded-lg"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ShareButton
+                        projectId={project.id}
+                        projectTitle={project.title}
+                        projectDescription={project.tagline}
+                        size="sm"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Stats and Action */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3 text-sm text-gray-600">
-                    <div className="flex items-center space-x-1">
-                      <Users className="w-4 h-4" />
-                      <span>{project.supporters}</span>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{project.title}</h3>
+                  <p className="text-gray-600 mb-4 text-sm line-clamp-3">{project.description}</p>
+
+                  {/* Creator Info - Using prefetched data */}
+                  <CreatorInfo
+                    creatorId={project.creatorId}
+                    size="sm"
+                    className="mb-4"
+                    prefetchedCreator={getCreator(project.creatorId)}
+                  />
+
+                  {/* Progress */}
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>{formatCurrency(project.raised)}</span>
+                      <span>{getProgressPercentage(project).toFixed(0)}%</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{getDaysLeft(project)}d</span>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${getProgressPercentage(project)}%` }}
+                      ></div>
                     </div>
-                    <InteractionStats projectId={project.id} size="sm" />
                   </div>
-                  <button 
-                    className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium text-sm hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Support
-                  </button>
+
+                  {/* Stats and Action */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 text-sm text-gray-600">
+                      <div className="flex items-center space-x-1">
+                        <Users className="w-4 h-4" />
+                        <span>{project.supporters}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)}d` : 'Ended'}</span>
+                      </div>
+                      <InteractionStats projectId={project.id} size="sm" />
+                    </div>
+                    <button
+                      className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium text-sm hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Support
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
         )}
 
         {/* No Results */}
@@ -465,7 +470,7 @@ export default function Homepage({ onProjectClick, onStartJourney }: HomepagePro
             <div className="text-gray-400 text-6xl mb-4" aria-hidden="true">🔍</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No projects found</h3>
             <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
-            <button 
+            <button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('All');

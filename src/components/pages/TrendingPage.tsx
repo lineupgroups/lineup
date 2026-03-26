@@ -18,10 +18,10 @@ export default function TrendingPage() {
   const { projects: recentProjects, loading: recentLoading, error: recentError } = useRecentActiveProjects();
 
   const categories = [...PROJECT_CATEGORIES];
-  
+
   // Combine and sort projects by trending score
   const allProjects = [...featuredProjects, ...recentProjects];
-  const uniqueProjects = allProjects.filter((project, index, self) => 
+  const uniqueProjects = allProjects.filter((project, index, self) =>
     index === self.findIndex(p => p.id === project.id)
   );
 
@@ -29,10 +29,10 @@ export default function TrendingPage() {
   const getTimeFilteredProjects = () => {
     const now = Date.now();
     const msPerDay = 1000 * 60 * 60 * 24;
-    
+
     return uniqueProjects.filter(project => {
       if (timeFilter === 'all') return true;
-      
+
       // Get project creation date
       let createdDate: Date;
       if (project.createdAt && typeof project.createdAt.toDate === 'function') {
@@ -42,13 +42,13 @@ export default function TrendingPage() {
       } else {
         return true; // Include if can't determine date
       }
-      
+
       const daysSinceCreated = (now - createdDate.getTime()) / msPerDay;
-      
+
       if (timeFilter === 'day') return daysSinceCreated <= 1;
       if (timeFilter === 'week') return daysSinceCreated <= 7;
       if (timeFilter === 'month') return daysSinceCreated <= 30;
-      
+
       return true;
     });
   };
@@ -81,7 +81,7 @@ export default function TrendingPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="w-full px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
@@ -95,7 +95,7 @@ export default function TrendingPage() {
       </div>
 
       {/* Filters */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6">
+      <div className="w-full px-3 sm:px-6 lg:px-8 py-3 sm:py-6">
         <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
           <div className="flex flex-col gap-4 sm:gap-6">
             {/* Time Filter */}
@@ -114,11 +114,10 @@ export default function TrendingPage() {
                   <button
                     key={filter.id}
                     onClick={() => setTimeFilter(filter.id as any)}
-                    className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                      timeFilter === filter.id
+                    className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${timeFilter === filter.id
                         ? 'bg-blue-500 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600'
-                    }`}
+                      }`}
                   >
                     {filter.label}
                   </button>
@@ -132,11 +131,10 @@ export default function TrendingPage() {
                 <button
                   key={category}
                   onClick={() => setCategoryFilter(category)}
-                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors ${
-                    categoryFilter === category
+                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors ${categoryFilter === category
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600'
-                  }`}
+                    }`}
                 >
                   {category}
                 </button>
@@ -147,7 +145,7 @@ export default function TrendingPage() {
       </div>
 
       {/* Projects Grid */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-6 sm:pb-12">
+      <div className="w-full px-3 sm:px-6 lg:px-8 pb-6 sm:pb-12">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-8 gap-2 sm:gap-0">
           <h2 className="text-lg sm:text-2xl font-bold text-gray-900">
             <span className="block sm:hidden">{categoryFilter === 'All' ? 'All Categories' : categoryFilter}</span>
@@ -162,7 +160,7 @@ export default function TrendingPage() {
             <div className="text-red-500 text-6xl mb-4">⚠️</div>
             <h3 className="text-xl font-semibold text-red-900 mb-2">Failed to load trending projects</h3>
             <p className="text-red-600 mb-6">{featuredError || recentError}</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
             >
@@ -221,17 +219,17 @@ export default function TrendingPage() {
                     </span>
                   </div>
                   <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 flex space-x-1 sm:space-x-2">
-                    <div 
+                    <div
                       className="bg-white/90 backdrop-blur-sm rounded-lg"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <LikeButton projectId={project.id} size="sm" showCount={false} />
                     </div>
-                    <div 
+                    <div
                       className="bg-white/90 backdrop-blur-sm rounded-lg"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <ShareButton 
+                      <ShareButton
                         projectId={project.id}
                         projectTitle={project.title}
                         projectDescription={project.tagline}
@@ -248,9 +246,9 @@ export default function TrendingPage() {
                   <p className="text-gray-600 mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2">{project.description}</p>
 
                   {/* Creator Info */}
-                  <CreatorInfo 
-                    creatorId={project.creatorId} 
-                    size="sm" 
+                  <CreatorInfo
+                    creatorId={project.creatorId}
+                    size="sm"
                     className="mb-3"
                   />
 
@@ -293,7 +291,7 @@ export default function TrendingPage() {
                   </div>
 
                   {/* Action Button */}
-                  <button 
+                  <button
                     className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -314,7 +312,7 @@ export default function TrendingPage() {
             <div className="text-gray-400 text-6xl mb-4">📈</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No trending projects found</h3>
             <p className="text-gray-600 mb-6">Try adjusting your filters or check back later</p>
-            <button 
+            <button
               onClick={() => {
                 setTimeFilter('week');
                 setCategoryFilter('All');

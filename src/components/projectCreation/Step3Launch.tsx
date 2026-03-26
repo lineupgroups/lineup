@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Calendar, Globe, Lock, CheckCircle, Rocket, CreditCard } from 'lucide-react';
+import { Calendar, Globe, Lock, CheckCircle, Rocket, CreditCard, Eye } from 'lucide-react';
 import { UserKYCData } from '../../types/kyc';
+import ProjectPreview from './ProjectPreview';
 
 interface Step3LaunchProps {
     data: {
@@ -28,6 +29,7 @@ export default function Step3Launch({
     const [launchType, setLaunchType] = useState<'immediate' | 'scheduled'>(data.type || 'immediate');
     const [scheduledDate, setScheduledDate] = useState(data.scheduledDate || new Date());
     const [privacy, setPrivacy] = useState<'public' | 'private'>(data.privacy || 'public');
+    const [showPreview, setShowPreview] = useState(false);
 
     const handleLaunchTypeChange = (type: 'immediate' | 'scheduled') => {
         setLaunchType(type);
@@ -116,8 +118,8 @@ export default function Step3Launch({
                         type="button"
                         onClick={() => handleLaunchTypeChange('immediate')}
                         className={`p-4 border-2 rounded-lg transition-all ${launchType === 'immediate'
-                                ? 'border-orange-500 bg-orange-50'
-                                : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-orange-500 bg-orange-50'
+                            : 'border-gray-200 hover:border-gray-300'
                             }`}
                     >
                         <Rocket className={`w-8 h-8 mx-auto mb-2 ${launchType === 'immediate' ? 'text-orange-600' : 'text-gray-400'
@@ -130,8 +132,8 @@ export default function Step3Launch({
                         type="button"
                         onClick={() => handleLaunchTypeChange('scheduled')}
                         className={`p-4 border-2 rounded-lg transition-all ${launchType === 'scheduled'
-                                ? 'border-orange-500 bg-orange-50'
-                                : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-orange-500 bg-orange-50'
+                            : 'border-gray-200 hover:border-gray-300'
                             }`}
                     >
                         <Calendar className={`w-8 h-8 mx-auto mb-2 ${launchType === 'scheduled' ? 'text-orange-600' : 'text-gray-400'
@@ -167,8 +169,8 @@ export default function Step3Launch({
                         type="button"
                         onClick={() => handlePrivacyChange('public')}
                         className={`p-4 border-2 rounded-lg transition-all ${privacy === 'public'
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
                             }`}
                     >
                         <Globe className={`w-8 h-8 mx-auto mb-2 ${privacy === 'public' ? 'text-blue-600' : 'text-gray-400'
@@ -181,8 +183,8 @@ export default function Step3Launch({
                         type="button"
                         onClick={() => handlePrivacyChange('private')}
                         className={`p-4 border-2 rounded-lg transition-all ${privacy === 'private'
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
                             }`}
                     >
                         <Lock className={`w-8 h-8 mx-auto mb-2 ${privacy === 'private' ? 'text-blue-600' : 'text-gray-400'
@@ -216,6 +218,15 @@ export default function Step3Launch({
                     Back
                 </button>
                 <button
+                    type="button"
+                    onClick={() => setShowPreview(true)}
+                    disabled={isSubmitting}
+                    className="px-6 py-3 border-2 border-blue-500 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors disabled:opacity-50 flex items-center gap-2"
+                >
+                    <Eye className="w-5 h-5" />
+                    Preview
+                </button>
+                <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-pink-600 text-white rounded-lg font-medium hover:from-orange-700 hover:to-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -237,6 +248,13 @@ export default function Step3Launch({
                     🔒 You'll be asked to verify your identity with your security PIN before submission
                 </p>
             </div>
+
+            {/* Project Preview Modal */}
+            <ProjectPreview
+                isOpen={showPreview}
+                onClose={() => setShowPreview(false)}
+                projectData={projectData}
+            />
         </div>
     );
 }

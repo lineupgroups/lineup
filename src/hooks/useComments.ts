@@ -6,6 +6,7 @@ import {
   deleteComment,
   toggleCommentLike,
   toggleCommentPin,
+  toggleCreatorHeart,
   getProjectCommentCount,
   isUserSupporter
 } from '../lib/comments';
@@ -21,19 +22,19 @@ export const useComments = (projectId: string, userId?: string) => {
 
   const fetchComments = useCallback(async () => {
     if (!projectId) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const [fetchedComments, count] = await Promise.all([
         getProjectComments(projectId),
         getProjectCommentCount(projectId)
       ]);
-      
+
       setComments(fetchedComments);
       setCommentCount(count);
-      
+
       // Check if user can comment (is a supporter)
       if (userId) {
         const isSupporter = await isUserSupporter(projectId, userId);
@@ -90,9 +91,9 @@ export const useComments = (projectId: string, userId?: string) => {
     }
   };
 
-  const likeComment = async (commentId: string, userId: string) => {
+  const likeComment = async (commentId: string, likeUserId: string) => {
     try {
-      const isLiked = await toggleCommentLike(commentId, userId);
+      const isLiked = await toggleCommentLike(commentId, likeUserId);
       await fetchComments();
       return isLiked;
     } catch (err) {
@@ -114,6 +115,20 @@ export const useComments = (projectId: string, userId?: string) => {
     }
   };
 
+  const heartComment = async (commentId: string, giveHeart: boolean) => {
+    try {
+      await toggleCreatorHeart(commentId, giveHeart);
+      await fetchComments();
+      if (giveHeart) {
+        toast.success('❤️ Heart given!');
+      }
+    } catch (err) {
+      console.error('Error toggling heart:', err);
+      toast.error('Failed to update heart');
+      throw err;
+    }
+  };
+
   return {
     comments,
     loading,
@@ -125,6 +140,7 @@ export const useComments = (projectId: string, userId?: string) => {
     removeComment,
     likeComment,
     pinComment,
+    heartComment,
     refetch: fetchComments
   };
 };

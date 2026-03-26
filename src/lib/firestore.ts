@@ -345,7 +345,9 @@ export const isProjectActive = (project: FirestoreProject): boolean => {
 export const getProjectProgress = (project: FirestoreProject): number => {
   const goal = project.goal || project.fundingGoal || 0;
   if (goal <= 0) return 0;
-  return Math.min((project.raised / goal) * 100, 100);
+  const percentage = (project.raised / goal) * 100;
+  // Round to 2 decimal places to avoid floating point errors
+  return Math.min(Math.round(percentage * 100) / 100, 100);
 };
 
 export const getDaysLeft = (endDate: Timestamp | Date | any): number => {

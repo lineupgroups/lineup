@@ -3,6 +3,7 @@ import { Share2, Link, Twitter, Facebook, MessageCircle, Mail, Check } from 'luc
 import { cn } from '../../lib/utils';
 import { toast } from 'react-hot-toast';
 import { sanitizeUrl } from '../../utils/sanitize';
+import { trackProjectInteraction } from '../../lib/analytics';
 
 interface ShareButtonProps {
   projectId: string;
@@ -22,6 +23,13 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Track share for analytics
+  const trackShare = () => {
+    if (projectId) {
+      trackProjectInteraction(projectId, 'shares');
+    }
+  };
 
   const sizeClasses = {
     sm: 'w-4 h-4',
@@ -53,14 +61,15 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
             toast.error('No link available to copy');
             return;
           }
-          
+
           await navigator.clipboard.writeText(projectUrl);
           setCopied(true);
+          trackShare(); // Track for analytics
           toast.success('Link copied to clipboard!');
           setTimeout(() => setCopied(false), 2000);
         } catch (error) {
           console.error('Error copying to clipboard:', error);
-          
+
           try {
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
@@ -69,7 +78,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
             textArea.select();
             const success = document.execCommand('copy');
             document.body.removeChild(textArea);
-            
+
             if (success) {
               toast.success('Link copied to clipboard!');
             } else {
@@ -95,6 +104,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           }
           const twitterUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=Check out this amazing project: ${encodedTitle}`;
           window.open(twitterUrl, '_blank', 'width=600,height=400');
+          trackShare(); // Track for analytics
         } catch (error) {
           console.error('Error sharing to Twitter:', error);
           toast.error('Failed to share to Twitter');
@@ -115,6 +125,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           }
           const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
           window.open(facebookUrl, '_blank', 'width=600,height=400');
+          trackShare(); // Track for analytics
         } catch (error) {
           console.error('Error sharing to Facebook:', error);
           toast.error('Failed to share to Facebook');
@@ -135,6 +146,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           }
           const whatsappUrl = `https://wa.me/?text=${encodedTitle} - ${encodedUrl}`;
           window.open(whatsappUrl, '_blank');
+          trackShare(); // Track for analytics
         } catch (error) {
           console.error('Error sharing to WhatsApp:', error);
           toast.error('Failed to share to WhatsApp');
@@ -157,6 +169,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           const emailBody = `I thought you might be interested in this project:\n\n${projectTitle || 'Project'}\n${projectDescription || ''}\n\n${projectUrl}`;
           const emailUrl = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
           window.location.href = emailUrl;
+          trackShare(); // Track for analytics
         } catch (error) {
           console.error('Error sharing via email:', error);
           toast.error('Failed to share via email');
@@ -218,7 +231,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
       </button>
 
       {isOpen && (
-        <div 
+        <div
           role="menu"
           aria-label="Share options"
           className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-50 py-1"

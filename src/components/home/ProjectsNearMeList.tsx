@@ -150,7 +150,7 @@ export const ProjectsNearMeList: React.FC<ProjectsNearMeListProps> = ({ onProjec
                             </div>
                             <div className="flex items-center">
                                 <Clock className="w-3 h-3 mr-1" />
-                                {getDaysLeft(project)} days left
+                                {getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}
                             </div>
                         </div>
                     </div>

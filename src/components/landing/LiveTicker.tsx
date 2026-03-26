@@ -69,7 +69,7 @@ export default function LiveTicker() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 pb-4">
         <div
           className="pointer-events-auto bg-white/95 backdrop-blur-lg rounded-full shadow-2xl border border-gray-200 px-6 py-3 hover:scale-105 transition-all duration-300 cursor-pointer"
           onMouseEnter={() => setIsPaused(true)}

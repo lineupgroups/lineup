@@ -77,7 +77,7 @@ export default function PlatformStatsSection() {
   if (statsLoading) {
     return (
       <section className="py-16 bg-gradient-to-r from-orange-500 to-red-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 animate-pulse">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="text-center">
@@ -151,7 +151,7 @@ export default function PlatformStatsSection() {
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
