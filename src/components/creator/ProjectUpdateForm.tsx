@@ -225,15 +225,15 @@ export default function ProjectUpdateForm({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-[#111] rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-800 sticky top-0 bg-[#111] z-10">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-brand-white">
               {editingUpdate ? 'Edit Update' : 'Post New Update'}
             </h2>
             <div className="flex items-center gap-3 mt-1">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-neutral-400">
                 Keep your supporters informed about your progress
               </p>
               {/* Auto-save indicator */}
@@ -242,17 +242,17 @@ export default function ProjectUpdateForm({
                   {isAutoSaving ? (
                     <>
                       <Save className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
-                      <span className="text-xs text-orange-600">Saving...</span>
+                      <span className="text-xs text-brand-orange">Saving...</span>
                     </>
                   ) : lastAutoSaved ? (
                     <>
                       <Check className="w-3.5 h-3.5 text-green-500" />
-                      <span className="text-xs text-green-600">
+                      <span className="text-xs text-green-400">
                         Draft saved {lastAutoSaved.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </>
                   ) : hasUnsavedChanges() ? (
-                    <span className="text-xs text-gray-400">Unsaved changes</span>
+                    <span className="text-xs text-neutral-600">Unsaved changes</span>
                   ) : null}
                 </div>
               )}
@@ -260,7 +260,7 @@ export default function ProjectUpdateForm({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-neutral-900 rounded-full transition-colors"
             disabled={isSubmitting}
           >
             <X className="w-6 h-6" />
@@ -270,20 +270,20 @@ export default function ProjectUpdateForm({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Info Banner - Improved Mental Model */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-2xl p-4">
             <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="font-medium text-blue-900">Who can see this update?</p>
-                <p className="text-sm text-blue-700 mt-1">
+                <p className="font-medium text-blue-300">Who can see this update?</p>
+                <p className="text-sm text-blue-400 mt-1">
                   <strong>Only your supporters</strong> — people who have donated to your project can see this update.
                   This creates an exclusive experience for your backers and encourages more people to support you!
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/60 text-blue-700 text-xs font-medium rounded-full border border-blue-200">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#111]/60 text-blue-400 text-xs font-medium rounded-full border border-blue-500/30">
                     <Check className="w-3 h-3" /> Visible to backers
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/60 text-gray-500 text-xs font-medium rounded-full border border-gray-200">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#111]/60 text-neutral-500 text-xs font-medium rounded-full border border-neutral-800">
                     <X className="w-3 h-3" /> Hidden from non-backers
                   </span>
                 </div>
@@ -293,7 +293,7 @@ export default function ProjectUpdateForm({
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
               Update Title *
             </label>
             <input
@@ -301,7 +301,7 @@ export default function ProjectUpdateForm({
               value={title}
               onChange={(e) => setTitle(e.target.value.slice(0, 60))}
               placeholder="e.g., Project Milestone Reached!"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${title.length > 54 ? 'border-red-300' : title.length > 48 ? 'border-yellow-300' : 'border-gray-300'
+              className={`w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid ${title.length > 54 ? 'border-red-300' : title.length > 48 ? 'border-yellow-300' : 'border-neutral-700'
                 }`}
               required
               maxLength={60}
@@ -309,10 +309,10 @@ export default function ProjectUpdateForm({
             />
             {/* Phase 2: Color-coded character counter */}
             <div className="flex items-center justify-between mt-1">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-neutral-500">
                 Keep it short and engaging
               </p>
-              <p className={`text-sm font-medium ${title.length > 54 ? 'text-red-600' : title.length > 48 ? 'text-yellow-600' : 'text-green-600'
+              <p className={`text-sm font-medium ${title.length > 54 ? 'text-red-400' : title.length > 48 ? 'text-yellow-400' : 'text-green-400'
                 }`}>
                 {title.length}/60
               </p>
@@ -321,7 +321,7 @@ export default function ProjectUpdateForm({
 
           {/* Content with Rich Text Editor */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
               Update Content *
             </label>
 
@@ -338,13 +338,13 @@ export default function ProjectUpdateForm({
           {/* Video Embed */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-neutral-300">
                 YouTube Video (Optional)
               </label>
               <button
                 type="button"
                 onClick={() => setShowVideoInput(!showVideoInput)}
-                className={`text-sm flex items-center space-x-1 ${showVideoInput ? 'text-red-600' : 'text-orange-600'
+                className={`text-sm flex items-center space-x-1 ${showVideoInput ? 'text-red-400' : 'text-brand-orange'
                   }`}
               >
                 <Youtube className="w-4 h-4" />
@@ -362,14 +362,14 @@ export default function ProjectUpdateForm({
                     setVideoValid(null); // Reset validation when URL changes
                   }}
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-3 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
                   disabled={isSubmitting}
                 />
 
                 {/* U-LOG-02: Video Preview with availability check button */}
                 {videoUrl && isValidYouTubeUrl(videoUrl) && (
                   <div className="space-y-2">
-                    <div className="relative pt-[56.25%] bg-black rounded-lg overflow-hidden">
+                    <div className="relative pt-[56.25%] bg-black rounded-2xl overflow-hidden">
                       <iframe
                         className="absolute top-0 left-0 w-full h-full"
                         src={`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}`}
@@ -389,13 +389,13 @@ export default function ProjectUpdateForm({
                     {/* Video validity indicator */}
                     <div className="flex items-center gap-2 text-sm">
                       {checkingVideo ? (
-                        <span className="text-gray-500">Checking video availability...</span>
+                        <span className="text-neutral-500">Checking video availability...</span>
                       ) : videoValid === true ? (
-                        <span className="text-green-600 flex items-center gap-1">
+                        <span className="text-green-400 flex items-center gap-1">
                           ✓ Video is accessible
                         </span>
                       ) : videoValid === false ? (
-                        <span className="text-red-600 flex items-center gap-1">
+                        <span className="text-red-400 flex items-center gap-1">
                           ⚠ Video may not be available or is private
                         </span>
                       ) : null}
@@ -404,7 +404,7 @@ export default function ProjectUpdateForm({
                 )}
 
                 {videoUrl && !isValidYouTubeUrl(videoUrl) && (
-                  <p className="text-sm text-red-600">Please enter a valid YouTube URL</p>
+                  <p className="text-sm text-red-400">Please enter a valid YouTube URL</p>
                 )}
               </div>
             )}
@@ -412,7 +412,7 @@ export default function ProjectUpdateForm({
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
               Update Image (Optional)
             </label>
 
@@ -421,12 +421,12 @@ export default function ProjectUpdateForm({
                 <img
                   src={existingImage}
                   alt="Update preview"
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-48 object-cover rounded-2xl"
                 />
                 <button
                   type="button"
                   onClick={() => setExistingImage('')}
-                  className="mt-2 text-sm text-red-600 hover:text-red-700"
+                  className="mt-2 text-sm text-red-400 hover:text-red-400"
                 >
                   Remove image
                 </button>
@@ -449,16 +449,16 @@ export default function ProjectUpdateForm({
           </div>
 
           {/* Phase 2: Options Section */}
-          <div className="bg-gray-50 rounded-lg p-4 space-y-4">
-            <h3 className="font-medium text-gray-700 mb-2">Options</h3>
+          <div className="bg-brand-black rounded-2xl p-4 space-y-4">
+            <h3 className="font-medium text-neutral-300 mb-2">Options</h3>
 
             {/* Pin Update Toggle */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Pin className="w-5 h-5 text-orange-600" />
+                <Pin className="w-5 h-5 text-brand-orange" />
                 <div>
-                  <span className="font-medium text-gray-700">Pin this update</span>
-                  <p className="text-xs text-gray-500">Shows at top of updates list</p>
+                  <span className="font-medium text-neutral-300">Pin this update</span>
+                  <p className="text-xs text-neutral-500">Shows at top of updates list</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -469,19 +469,19 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={isSubmitting}
                 />
-                <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-orange/100"></div>
               </label>
             </div>
 
             {/* Send Notification Toggle - Coming Soon */}
             <div className="flex items-center justify-between opacity-60">
               <div className="flex items-center space-x-2">
-                <Bell className="w-5 h-5 text-blue-600" />
+                <Bell className="w-5 h-5 text-blue-400" />
                 <div>
-                  <span className="font-medium text-gray-700">Notify backers</span>
+                  <span className="font-medium text-neutral-300">Notify backers</span>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-gray-500">Send email notification to all backers</p>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                    <p className="text-xs text-neutral-500">Send email notification to all backers</p>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full">
                       <Info className="w-3 h-3" />
                       Coming Soon
                     </span>
@@ -496,19 +496,19 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={true}
                 />
-                <div className="w-11 h-6 bg-gray-300 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                <div className="w-11 h-6 bg-neutral-700 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
             </div>
 
             {/* Schedule Update Toggle - Coming Soon */}
             <div className="flex items-center justify-between opacity-60">
               <div className="flex items-center space-x-2">
-                <Calendar className="w-5 h-5 text-purple-600" />
+                <Calendar className="w-5 h-5 text-purple-400" />
                 <div>
-                  <span className="font-medium text-gray-700">Schedule for later</span>
+                  <span className="font-medium text-neutral-300">Schedule for later</span>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-gray-500">Auto-post at selected time</p>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+                    <p className="text-xs text-neutral-500">Auto-post at selected time</p>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-500/20 text-purple-400 rounded-full">
                       <Info className="w-3 h-3" />
                       Coming Soon
                     </span>
@@ -523,7 +523,7 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={true}
                 />
-                <div className="w-11 h-6 bg-gray-300 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                <div className="w-11 h-6 bg-neutral-700 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
             </div>
 
@@ -531,29 +531,29 @@ export default function ProjectUpdateForm({
             {isScheduled && false && (
               <div className="grid grid-cols-2 gap-4 mt-4 ml-7 pl-4 border-l-2 border-purple-200">
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Date</label>
+                  <label className="block text-sm text-neutral-400 mb-1">Date</label>
                   <input
                     type="date"
                     value={scheduledDate}
                     onChange={(e) => setScheduledDate(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-purple-500"
                     required={isScheduled}
                     disabled={isSubmitting}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Time</label>
+                  <label className="block text-sm text-neutral-400 mb-1">Time</label>
                   <input
                     type="time"
                     value={scheduledTime}
                     onChange={(e) => setScheduledTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-purple-500"
                     required={isScheduled}
                     disabled={isSubmitting}
                   />
                 </div>
-                <div className="col-span-2 text-sm text-gray-500 flex items-center space-x-1">
+                <div className="col-span-2 text-sm text-neutral-500 flex items-center space-x-1">
                   <Clock className="w-4 h-4" />
                   <span>The update will be automatically posted at the scheduled time (IST).</span>
                 </div>
@@ -562,7 +562,7 @@ export default function ProjectUpdateForm({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
             {/* U-MISS-03: Save Draft button (left side) */}
             <div>
               {onSaveDraft && !editingUpdate && (
@@ -573,7 +573,7 @@ export default function ProjectUpdateForm({
                     toast.success('Draft saved!');
                   }}
                   disabled={isSubmitting || (!title.trim() && !content.trim())}
-                  className="px-4 py-2 border border-yellow-400 text-yellow-700 bg-yellow-50 rounded-lg font-medium hover:bg-yellow-100 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 border border-yellow-400 text-yellow-400 bg-yellow-500/10 rounded-2xl font-medium hover:bg-yellow-500/20 transition-colors disabled:opacity-50"
                 >
                   Save Draft
                 </button>
@@ -587,7 +587,7 @@ export default function ProjectUpdateForm({
                 type="button"
                 onClick={() => setShowPreview(true)}
                 disabled={isSubmitting || !title.trim() || !content.trim()}
-                className="flex items-center space-x-2 px-4 py-2 border border-blue-300 text-blue-600 bg-blue-50 rounded-lg font-medium hover:bg-blue-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center space-x-2 px-4 py-2 border border-blue-500/40 text-blue-400 bg-blue-500/10 rounded-2xl font-medium hover:bg-blue-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Eye className="w-4 h-4" />
                 <span>Preview</span>
@@ -596,7 +596,7 @@ export default function ProjectUpdateForm({
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 border border-neutral-700 text-neutral-300 rounded-2xl font-medium hover:bg-brand-black transition-colors"
                 disabled={isSubmitting}
               >
                 Cancel
@@ -604,7 +604,7 @@ export default function ProjectUpdateForm({
               <button
                 type="submit"
                 disabled={isSubmitting || !title.trim() || !content.trim()}
-                className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                className="px-6 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 {isSubmitting && <Loader className="w-4 h-4 animate-spin" />}
                 <span>

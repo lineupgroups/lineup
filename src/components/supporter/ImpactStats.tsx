@@ -31,57 +31,57 @@ export default function ImpactStats({
             label: 'Total Backed',
             value: formatCurrency(totalBacked),
             icon: IndianRupee,
-            color: 'from-orange-500 to-red-500',
-            bgColor: 'bg-orange-50',
-            iconColor: 'text-orange-600'
+            accentColor: 'text-brand-acid',
+            bgColor: 'bg-brand-acid/10',
+            borderColor: 'group-hover:border-brand-acid/50'
         },
         {
             label: 'Projects Supported',
             value: projectsSupported.toString(),
             icon: Heart,
-            color: 'from-pink-500 to-rose-500',
-            bgColor: 'bg-pink-50',
-            iconColor: 'text-pink-600'
+            accentColor: 'text-brand-orange',
+            bgColor: 'bg-brand-orange/10',
+            borderColor: 'group-hover:border-brand-orange/50'
         },
         {
             label: 'Creators Helped',
             value: creatorsHelped.toString(),
             icon: Users,
-            color: 'from-blue-500 to-indigo-500',
-            bgColor: 'bg-blue-50',
-            iconColor: 'text-blue-600'
+            accentColor: 'text-purple-400',
+            bgColor: 'bg-purple-500/10',
+            borderColor: 'group-hover:border-purple-500/50'
         },
         {
-            label: 'Projects Reached Goal',
+            label: 'Reached Goal',
             value: projectsReachedGoal.toString(),
             icon: Target,
-            color: 'from-green-500 to-emerald-500',
-            bgColor: 'bg-green-50',
-            iconColor: 'text-green-600'
+            accentColor: 'text-cyan-400',
+            bgColor: 'bg-cyan-500/10',
+            borderColor: 'group-hover:border-cyan-500/50'
         },
         {
-            label: 'Categories Explored',
+            label: 'Categories',
             value: uniqueCategories.toString(),
             icon: Layers,
-            color: 'from-purple-500 to-violet-500',
-            bgColor: 'bg-purple-50',
-            iconColor: 'text-purple-600'
+            accentColor: 'text-pink-400',
+            bgColor: 'bg-pink-500/10',
+            borderColor: 'group-hover:border-pink-500/50'
         },
         {
             label: 'Avg. Donation',
             value: formatCurrency(averageDonation),
             icon: TrendingUp,
-            color: 'from-amber-500 to-yellow-500',
-            bgColor: 'bg-amber-50',
-            iconColor: 'text-amber-600'
+            accentColor: 'text-amber-400',
+            bgColor: 'bg-amber-500/10',
+            borderColor: 'group-hover:border-amber-500/50'
         }
     ];
 
     return (
-        <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Your Impact</h2>
-                <span className="text-sm text-gray-500">Making a difference, one project at a time</span>
+        <div className="mb-12">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-6 gap-2">
+                <h2 className="text-2xl font-bold text-brand-white">Your Impact</h2>
+                <span className="text-sm font-medium text-neutral-400">Making a difference, one project at a time</span>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -90,13 +90,13 @@ export default function ImpactStats({
                     return (
                         <div
                             key={index}
-                            className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow"
+                            className={`group bg-[#111] rounded-2xl border border-neutral-800 p-5 transition-all duration-300 hover:bg-[#1a1a1a] ${stat.borderColor}`}
                         >
-                            <div className={`w-10 h-10 ${stat.bgColor} rounded-lg flex items-center justify-center mb-3`}>
-                                <Icon className={`w-5 h-5 ${stat.iconColor}`} />
+                            <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center mb-4 transition-colors`}>
+                                <Icon className={`w-6 h-6 ${stat.accentColor}`} />
                             </div>
-                            <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                            <p className="text-sm text-gray-500">{stat.label}</p>
+                            <p className="text-2xl md:text-3xl font-extrabold text-brand-white mb-1 tracking-tight">{stat.value}</p>
+                            <p className="text-xs md:text-sm font-medium text-neutral-400 uppercase tracking-wider">{stat.label}</p>
                         </div>
                     );
                 })}

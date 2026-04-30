@@ -98,8 +98,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.postsTrend,
             trendLabel: `${stats.thisWeekPosts > 0 ? '+' : ''}${stats.thisWeekPosts} this week`,
             icon: <FileText className="w-5 h-5" />,
-            iconBg: 'bg-orange-100',
-            iconColor: 'text-orange-600'
+            iconBg: 'bg-brand-orange/20',
+            iconColor: 'text-brand-orange'
         },
         {
             label: 'Engagement Rate',
@@ -107,8 +107,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.viewsTrend,
             trendLabel: stats.totalViews > 0 ? `${stats.thisWeekViews > 0 ? '+' : ''}${stats.thisWeekViews} this week` : 'Avg. engagement',
             icon: <Eye className="w-5 h-5" />,
-            iconBg: 'bg-blue-100',
-            iconColor: 'text-blue-600',
+            iconBg: 'bg-blue-500/20',
+            iconColor: 'text-blue-400',
             isRate: stats.totalViews === 0
         },
         {
@@ -117,8 +117,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.likesTrend,
             trendLabel: `${stats.thisWeekLikes > 0 ? '+' : ''}${stats.thisWeekLikes} this week`,
             icon: <ThumbsUp className="w-5 h-5" />,
-            iconBg: 'bg-green-100',
-            iconColor: 'text-green-600'
+            iconBg: 'bg-green-500/20',
+            iconColor: 'text-green-400'
         },
         {
             label: 'Comments',
@@ -126,8 +126,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.commentsTrend,
             trendLabel: `${stats.thisWeekComments > 0 ? '+' : ''}${stats.thisWeekComments} this week`,
             icon: <MessageSquare className="w-5 h-5" />,
-            iconBg: 'bg-purple-100',
-            iconColor: 'text-purple-600'
+            iconBg: 'bg-purple-500/20',
+            iconColor: 'text-purple-400'
         }
     ];
 
@@ -152,17 +152,17 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
     // Show "Get Started" card when no updates
     if (updates.length === 0) {
         return (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 overflow-hidden mb-6">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-orange-50 to-red-50">
+                <div className="px-6 py-4 border-b border-neutral-800 bg-gradient-to-r from-brand-orange/10 to-red-500/10">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-white rounded-lg shadow-sm">
-                            <TrendingUp className="w-5 h-5 text-orange-600" />
+                        <div className="p-2 bg-[#111] rounded-2xl shadow-sm">
+                            <TrendingUp className="w-5 h-5 text-brand-orange" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-gray-900">Updates Overview</h2>
+                            <h2 className="text-lg font-semibold text-brand-white">Updates Overview</h2>
                             {projectTitle && (
-                                <p className="text-sm text-gray-600">Showing stats for "{projectTitle}"</p>
+                                <p className="text-sm text-neutral-400">Showing stats for "{projectTitle}"</p>
                             )}
                         </div>
                     </div>
@@ -175,34 +175,34 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                         {statCards.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="bg-gray-50 rounded-xl p-4 border border-gray-100"
+                                className="bg-brand-black rounded-3xl p-4 border border-neutral-800/50"
                             >
                                 <div className="flex items-center justify-between mb-3">
-                                    <div className={`p-2 rounded-lg ${stat.iconBg}`}>
+                                    <div className={`p-2 rounded-2xl ${stat.iconBg}`}>
                                         <span className={stat.iconColor}>{stat.icon}</span>
                                     </div>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-400 mb-1">0</p>
-                                <p className="text-sm text-gray-600">{stat.label}</p>
-                                <p className="text-xs text-gray-400 mt-1">No data yet</p>
+                                <p className="text-2xl font-bold text-neutral-600 mb-1">0</p>
+                                <p className="text-sm text-neutral-400">{stat.label}</p>
+                                <p className="text-xs text-neutral-600 mt-1">No data yet</p>
                             </div>
                         ))}
                     </div>
 
                     {/* Getting Started Card */}
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                    <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-3xl p-6 border border-blue-500/30">
                         <div className="flex items-start gap-4">
-                            <div className="p-3 bg-blue-100 rounded-lg">
-                                <FileText className="w-6 h-6 text-blue-600" />
+                            <div className="p-3 bg-blue-500/20 rounded-2xl">
+                                <FileText className="w-6 h-6 text-blue-400" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                <h3 className="text-lg font-semibold text-brand-white mb-2">
                                     🚀 Get Started with Updates
                                 </h3>
-                                <p className="text-sm text-gray-600 mb-4">
+                                <p className="text-sm text-neutral-400 mb-4">
                                     Keep your supporters engaged by sharing progress updates! Here are some ideas:
                                 </p>
-                                <ul className="text-sm text-gray-600 space-y-2">
+                                <ul className="text-sm text-neutral-400 space-y-2">
                                     <li className="flex items-center gap-2">
                                         <span className="text-green-500">✓</span>
                                         Share milestone achievements with the "Milestone Reached" template
@@ -220,7 +220,7 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                                         Add images and videos to make updates more engaging
                                     </li>
                                 </ul>
-                                <p className="text-sm text-blue-600 mt-4 font-medium">
+                                <p className="text-sm text-blue-400 mt-4 font-medium">
                                     💡 Tip: Projects with regular updates raise 3x more on average!
                                 </p>
                             </div>
@@ -232,24 +232,24 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 overflow-hidden mb-6">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-orange-50 to-red-50">
+            <div className="px-6 py-4 border-b border-neutral-800 bg-gradient-to-r from-brand-orange/10 to-red-500/10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-white rounded-lg shadow-sm">
-                            <TrendingUp className="w-5 h-5 text-orange-600" />
+                        <div className="p-2 bg-[#111] rounded-2xl shadow-sm">
+                            <TrendingUp className="w-5 h-5 text-brand-orange" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-gray-900">Updates Overview</h2>
+                            <h2 className="text-lg font-semibold text-brand-white">Updates Overview</h2>
                             {projectTitle && (
-                                <p className="text-sm text-gray-600">Showing stats for "{projectTitle}"</p>
+                                <p className="text-sm text-neutral-400">Showing stats for "{projectTitle}"</p>
                             )}
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-gray-500">Engagement Rate</p>
-                        <p className="text-xl font-bold text-orange-600">{stats.engagementRate}%</p>
+                        <p className="text-sm text-neutral-500">Engagement Rate</p>
+                        <p className="text-xl font-bold text-brand-orange">{stats.engagementRate}%</p>
                     </div>
                 </div>
             </div>
@@ -260,14 +260,14 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                     {statCards.map((stat) => (
                         <div
                             key={stat.label}
-                            className="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:shadow-md transition-shadow"
+                            className="bg-brand-black rounded-3xl p-4 border border-neutral-800/50 hover:shadow-md transition-shadow"
                         >
                             <div className="flex items-center justify-between mb-3">
-                                <div className={`p-2 rounded-lg ${stat.iconBg}`}>
+                                <div className={`p-2 rounded-2xl ${stat.iconBg}`}>
                                     <span className={stat.iconColor}>{stat.icon}</span>
                                 </div>
                                 {stat.trend !== undefined && stat.trend !== 0 && (
-                                    <div className={`flex items-center gap-1 text-xs font-medium ${stat.trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                    <div className={`flex items-center gap-1 text-xs font-medium ${stat.trend > 0 ? 'text-green-400' : 'text-red-400'}`}>
                                         {stat.trend > 0 ? (
                                             <ArrowUpRight className="w-3 h-3" />
                                         ) : (
@@ -277,32 +277,32 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                                     </div>
                                 )}
                             </div>
-                            <p className="text-2xl font-bold text-gray-900 mb-1">
+                            <p className="text-2xl font-bold text-brand-white mb-1">
                                 {typeof stat.value === 'string' ? stat.value : formatNumber(stat.value)}
                             </p>
-                            <p className="text-sm text-gray-600">{stat.label}</p>
-                            <p className="text-xs text-gray-500 mt-1">{stat.trendLabel}</p>
+                            <p className="text-sm text-neutral-400">{stat.label}</p>
+                            <p className="text-xs text-neutral-500 mt-1">{stat.trendLabel}</p>
                         </div>
                     ))}
                 </div>
 
                 {/* Best Performing Update */}
                 {stats.bestUpdate && (
-                    <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
+                    <div className="bg-gradient-to-r from-yellow-500/10 to-brand-orange/10 rounded-3xl p-4 border border-yellow-500/30">
                         <div className="flex items-start gap-4">
-                            <div className="p-3 bg-yellow-100 rounded-lg">
-                                <Trophy className="w-6 h-6 text-yellow-600" />
+                            <div className="p-3 bg-yellow-500/20 rounded-2xl">
+                                <Trophy className="w-6 h-6 text-yellow-400" />
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-xs font-semibold text-yellow-700 uppercase tracking-wide">
+                                    <span className="text-xs font-semibold text-yellow-400 uppercase tracking-wide">
                                         🏆 Best Performing Update
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-900 truncate">
+                                <h3 className="text-lg font-semibold text-brand-white truncate">
                                     {stats.bestUpdate.title}
                                 </h3>
-                                <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-4 mt-2 text-sm text-neutral-400">
                                     <span className="flex items-center gap-1">
                                         <Eye className="w-4 h-4" />
                                         {(stats.bestUpdate as any).viewCount || Math.floor((stats.bestUpdate.likes || 0) * 2.5 + (stats.bestUpdate.commentCount || 0) * 5)} views
@@ -315,7 +315,7 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                                         <MessageSquare className="w-4 h-4" />
                                         {stats.bestUpdate.commentCount || 0} comments
                                     </span>
-                                    <span className="text-gray-400">•</span>
+                                    <span className="text-neutral-600">•</span>
                                     <span>{getTimeAgo(convertTimestamp(stats.bestUpdate.createdAt))}</span>
                                 </div>
                             </div>

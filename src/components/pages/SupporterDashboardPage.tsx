@@ -101,18 +101,18 @@ export default function SupporterDashboardPage() {
 
     if (isFullyLoading) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8 px-4 sm:px-6 lg:px-8">
-                <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-brand-black text-brand-white py-8 px-4 sm:px-6 lg:px-8 font-sans">
+                <div className="max-w-7xl mx-auto">
                     <div className="animate-pulse space-y-6">
-                        <div className="h-10 bg-gray-200 rounded w-1/3"></div>
+                        <div className="h-10 bg-neutral-800 rounded-2xl w-1/3"></div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                             {[...Array(6)].map((_, i) => (
-                                <div key={i} className="h-28 bg-gray-200 rounded-xl"></div>
+                                <div key={i} className="h-28 bg-neutral-800 rounded-2xl"></div>
                             ))}
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div className="h-80 bg-gray-200 rounded-xl"></div>
-                            <div className="h-80 bg-gray-200 rounded-xl"></div>
+                            <div className="h-80 bg-neutral-800 rounded-2xl"></div>
+                            <div className="h-80 bg-neutral-800 rounded-2xl"></div>
                         </div>
                     </div>
                 </div>
@@ -121,20 +121,20 @@ export default function SupporterDashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8 px-4 sm:px-6 lg:px-8">
-            <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-brand-black text-brand-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">My Supporter Dashboard</h1>
-                        <p className="text-gray-600 mt-1">Track your impact and manage your contributions</p>
+                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-white">Supporter Hub</h1>
+                        <p className="text-neutral-400 mt-2 text-lg">Track your impact and manage your contributions.</p>
                     </div>
                     <button
                         onClick={() => refresh()}
-                        className="flex items-center gap-2 px-4 py-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-[#111] hover:bg-[#222] border border-neutral-800 rounded-full text-brand-acid transition-all duration-300 font-medium group"
                     >
-                        <RefreshCw className="w-4 h-4" />
-                        Refresh
+                        <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
+                        Sync Data
                     </button>
                 </div>
 
@@ -149,12 +149,12 @@ export default function SupporterDashboardPage() {
                 />
 
                 {/* Tabs */}
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-xl w-fit mb-8">
+                <div className="flex space-x-2 bg-[#111] p-1.5 rounded-2xl w-fit mb-10 border border-neutral-800/50">
                     <button
                         onClick={() => setActiveTab('overview')}
-                        className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'overview'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                        className={`px-6 py-3 rounded-3xl text-sm font-semibold transition-all duration-300 ${activeTab === 'overview'
+                            ? 'bg-brand-acid text-brand-black shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                            : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800/50'
                             }`}
                     >
                         <span className="flex items-center gap-2">
@@ -164,9 +164,9 @@ export default function SupporterDashboardPage() {
                     </button>
                     <button
                         onClick={() => setActiveTab('active')}
-                        className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'active'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                        className={`px-6 py-3 rounded-3xl text-sm font-semibold transition-all duration-300 ${activeTab === 'active'
+                            ? 'bg-brand-acid text-brand-black shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                            : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800/50'
                             }`}
                     >
                         <span className="flex items-center gap-2">
@@ -176,79 +176,83 @@ export default function SupporterDashboardPage() {
                     </button>
                     <button
                         onClick={() => setActiveTab('history')}
-                        className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${activeTab === 'history'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                        className={`px-6 py-3 rounded-3xl text-sm font-semibold transition-all duration-300 ${activeTab === 'history'
+                            ? 'bg-brand-acid text-brand-black shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                            : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800/50'
                             }`}
                     >
                         <span className="flex items-center gap-2">
                             <Clock className="w-4 h-4" />
-                            Donation History
+                            History
                         </span>
                     </button>
                 </div>
 
                 {/* Tab Content */}
                 {activeTab === 'overview' && (
-                    <div className="space-y-8">
+                    <div className="space-y-10">
                         {/* Two Column Layout for Updates and Suggested */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             {/* Updates from Backed Projects */}
                             <BackedProjectUpdates updates={recentUpdates} loading={statsLoading} />
 
                             {/* Active Projects Preview */}
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div className="p-6 border-b border-gray-100">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-2">
-                                            <Heart className="w-5 h-5 text-pink-500" />
-                                            <h2 className="text-lg font-semibold text-gray-900">Active Projects</h2>
+                            <div className="bg-[#111] rounded-3xl border border-neutral-800 overflow-hidden flex flex-col">
+                                <div className="p-6 border-b border-neutral-800 flex items-center justify-between">
+                                    <div className="flex items-center space-x-3">
+                                        <div className="p-2 bg-brand-orange/10 rounded-2xl">
+                                            <Heart className="w-5 h-5 text-brand-orange" />
                                         </div>
-                                        <button
-                                            onClick={() => setActiveTab('active')}
-                                            className="text-sm text-orange-600 hover:text-orange-700 font-medium"
-                                        >
-                                            View All →
-                                        </button>
+                                        <h2 className="text-xl font-bold text-brand-white tracking-tight">Active Projects</h2>
                                     </div>
+                                    <button
+                                        onClick={() => setActiveTab('active')}
+                                        className="text-sm text-brand-orange hover:text-brand-white font-semibold transition-colors"
+                                    >
+                                        View All →
+                                    </button>
                                 </div>
 
                                 {activeProjects.length === 0 ? (
-                                    <div className="p-12 text-center">
-                                        <Heart className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                                        <h3 className="text-lg font-medium text-gray-900 mb-2">No active projects</h3>
-                                        <p className="text-gray-500">You haven't backed any active projects yet.</p>
+                                    <div className="p-12 flex-1 flex flex-col items-center justify-center text-center">
+                                        <Heart className="w-12 h-12 text-neutral-700 mb-4" />
+                                        <h3 className="text-lg font-medium text-brand-white mb-2">No active projects</h3>
+                                        <p className="text-neutral-500">You haven't backed any active projects yet.</p>
                                     </div>
                                 ) : (
-                                    <div className="divide-y divide-gray-100">
+                                    <div className="divide-y divide-neutral-800/50">
                                         {activeProjects.slice(0, 3).map((project) => (
                                             <Link
                                                 key={project.id}
                                                 to={`/project/${project.id}`}
-                                                className="flex gap-4 p-4 hover:bg-gray-50 transition-colors"
+                                                className="group flex gap-5 p-6 hover:bg-neutral-800/30 transition-all duration-300"
                                             >
-                                                <img
-                                                    src={project.image}
-                                                    alt={project.title}
-                                                    className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
-                                                />
-                                                <div className="flex-1 min-w-0">
-                                                    <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">
+                                                <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 border border-neutral-800 group-hover:border-brand-acid/30 transition-colors">
+                                                    <img
+                                                        src={project.image}
+                                                        alt={project.title}
+                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    />
+                                                </div>
+                                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                                    <h3 className="font-bold text-brand-white text-base line-clamp-1 group-hover:text-brand-acid transition-colors">
                                                         {project.title}
                                                     </h3>
-                                                    <p className="text-xs text-gray-500 mt-1">
-                                                        You pledged {formatCurrency(project.pledgeAmount)}
+                                                    <p className="text-sm text-neutral-400 mt-1">
+                                                        Pledged <span className="text-brand-white font-medium">{formatCurrency(project.pledgeAmount)}</span>
                                                     </p>
-                                                    <div className="mt-2">
-                                                        <div className="flex justify-between text-xs text-gray-500 mb-1">
-                                                            <span>{getProjectProgress(project).toFixed(0)}% funded</span>
-                                                            <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}</span>
+                                                    <div className="mt-4">
+                                                        <div className="flex justify-between text-xs text-neutral-400 mb-2 font-medium">
+                                                            <span className="text-brand-acid">{getProjectProgress(project).toFixed(0)}% Funded</span>
+                                                            <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)} Days Left` : 'Ended'}</span>
                                                         </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                                                        <div className="w-full bg-neutral-800 rounded-full h-1.5 overflow-hidden">
                                                             <div
-                                                                className="bg-gradient-to-r from-orange-500 to-red-500 h-1.5 rounded-full"
+                                                                className="bg-brand-acid h-full rounded-full relative"
                                                                 style={{ width: `${Math.min(getProjectProgress(project), 100)}%` }}
-                                                            />
+                                                            >
+                                                                <div className="absolute inset-0 bg-[#111]/20 w-full animate-[shimmer_2s_infinite]"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -263,8 +267,8 @@ export default function SupporterDashboardPage() {
                         <SuggestedProjects
                             projects={forYou.map(p => ({ ...p }) as FirestoreProject)}
                             loading={recommendationsLoading}
-                            title="Recommended For You"
-                            subtitle="Projects you might like"
+                            title="Curated For You"
+                            subtitle="Discover next-gen creators building the future"
                         />
                     </div>
                 )}
@@ -272,84 +276,76 @@ export default function SupporterDashboardPage() {
                 {activeTab === 'active' && (
                     <>
                         {activeProjects.length === 0 ? (
-                            <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-                                <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Heart className="w-8 h-8 text-orange-500" />
+                            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-16 text-center">
+                                <div className="w-20 h-20 bg-brand-orange/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <Heart className="w-10 h-10 text-brand-orange" />
                                 </div>
-                                <h3 className="text-xl font-medium text-gray-900 mb-2">No active projects</h3>
-                                <p className="text-gray-500 mb-6">You don't have any active pledges right now.</p>
+                                <h3 className="text-2xl font-bold text-brand-white mb-3">No active projects</h3>
+                                <p className="text-neutral-400 mb-8 max-w-md mx-auto">You don't have any active pledges right now. Start exploring to back the next big idea.</p>
                                 <Link
                                     to="/"
-                                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                                    className="inline-flex items-center px-8 py-4 text-sm font-bold rounded-full text-brand-black bg-brand-acid hover:bg-[#b3e600] transition-colors shadow-[0_0_20px_rgba(204,255,0,0.2)] hover:shadow-[0_0_30px_rgba(204,255,0,0.4)]"
                                 >
                                     Explore Projects
                                 </Link>
                             </div>
                         ) : (
-                            <div className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {activeProjects.map((project) => (
-                                    <div key={project.id} className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
-                                        <div className="flex flex-col md:flex-row">
-                                            <div className="md:w-64 h-48 md:h-auto relative">
-                                                <img
-                                                    src={project.image}
-                                                    alt={project.title}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className="absolute top-2 left-2">
-                                                    <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
-                                                        ACTIVE
+                                    <div key={project.id} className="group bg-[#111] rounded-3xl border border-neutral-800 overflow-hidden hover:border-brand-acid/50 transition-all duration-500">
+                                        <div className="h-48 relative overflow-hidden">
+                                            <img
+                                                src={project.image}
+                                                alt={project.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent"></div>
+                                            <div className="absolute top-4 left-4">
+                                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-acid text-brand-black shadow-lg">
+                                                    ACTIVE
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="p-6">
+                                            <Link to={`/project/${project.id}`} className="block">
+                                                <h3 className="text-2xl font-bold text-brand-white group-hover:text-brand-acid transition-colors line-clamp-1 mb-1">
+                                                    {project.title}
+                                                </h3>
+                                            </Link>
+                                            <p className="text-sm text-neutral-400 mb-6">
+                                                Backed on {project.pledgeDate?.toDate().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                                            </p>
+
+                                            <div className="p-4 bg-neutral-900 rounded-2xl border border-neutral-800 mb-6">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-neutral-400 text-sm">Your Pledge</span>
+                                                    <span className="text-xl font-bold text-brand-white">{formatCurrency(project.pledgeAmount)}</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-6">
+                                                <div className="flex justify-between text-sm font-medium mb-2">
+                                                    <span className="text-brand-acid">{getProjectProgress(project).toFixed(0)}% Funded</span>
+                                                    <span className="text-neutral-400">
+                                                        <Clock className="w-4 h-4 inline mr-1 -mt-0.5" />
+                                                        {getDaysLeft(project) > 0 ? `${getDaysLeft(project)} Days Left` : 'Ended'}
                                                     </span>
                                                 </div>
-                                            </div>
-
-                                            <div className="p-6 flex-1 flex flex-col justify-between">
-                                                <div>
-                                                    <div className="flex justify-between items-start">
-                                                        <div>
-                                                            <Link to={`/project/${project.id}`} className="text-xl font-bold text-gray-900 hover:text-orange-600 transition-colors">
-                                                                {project.title}
-                                                            </Link>
-                                                            <p className="text-sm text-gray-500 mt-1">
-                                                                Last backed on {project.pledgeDate?.toDate().toLocaleDateString()}
-                                                            </p>
-                                                        </div>
-                                                        <div className="text-right">
-                                                            <p className="text-sm text-gray-500">Your Last Pledge</p>
-                                                            <p className="text-lg font-bold text-gray-900">{formatCurrency(project.pledgeAmount)}</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="mt-4">
-                                                        <div className="flex justify-between text-sm text-gray-600 mb-2">
-                                                            <span>Progress</span>
-                                                            <span>{getProjectProgress(project).toFixed(0)}%</span>
-                                                        </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-2">
-                                                            <div
-                                                                className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full"
-                                                                style={{ width: `${getProjectProgress(project)}%` }}
-                                                            ></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100">
-                                                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                                                        <div className="flex items-center">
-                                                            <Clock className="w-4 h-4 mr-1" />
-                                                            {getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}
-                                                        </div>
-                                                    </div>
-
-                                                    <Link
-                                                        to={`/project/${project.id}`}
-                                                        className="text-orange-600 font-medium text-sm hover:text-orange-800"
-                                                    >
-                                                        View Details →
-                                                    </Link>
+                                                <div className="w-full bg-neutral-800 rounded-full h-2 overflow-hidden">
+                                                    <div
+                                                        className="bg-brand-acid h-full rounded-full"
+                                                        style={{ width: `${Math.min(getProjectProgress(project), 100)}%` }}
+                                                    ></div>
                                                 </div>
                                             </div>
+
+                                            <Link
+                                                to={`/project/${project.id}`}
+                                                className="block w-full py-3 text-center text-sm font-bold text-brand-black bg-brand-white rounded-3xl hover:bg-brand-acid transition-colors"
+                                            >
+                                                View Details
+                                            </Link>
                                         </div>
                                     </div>
                                 ))}

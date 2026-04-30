@@ -96,23 +96,23 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
     return (
         <div
-            className={`bg-white rounded-xl border transition-all ${!comment.hasCreatorReply
-                ? 'border-red-200 shadow-sm ring-1 ring-red-100'
-                : 'border-gray-200 hover:shadow-md'
+            className={`bg-[#111] rounded-3xl border transition-all ${!comment.hasCreatorReply
+                ? 'border-red-500/30 shadow-sm ring-1 ring-red-500/20'
+                : 'border-neutral-800 hover:shadow-md'
                 }`}
         >
             {/* Status Badge */}
             {!comment.hasCreatorReply && (
-                <div className="bg-red-50 border-b border-red-100 px-4 py-2 rounded-t-xl">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600">
+                <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-2 rounded-t-xl">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
                         <AlertCircle className="w-3.5 h-3.5" />
                         NEW - Needs Reply
                     </span>
                 </div>
             )}
             {comment.hasCreatorReply && (
-                <div className="bg-green-50 border-b border-green-100 px-4 py-2 rounded-t-xl">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-600">
+                <div className="bg-green-500/10 border-b border-green-500/20 px-4 py-2 rounded-t-xl">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400">
                         <CheckCircle className="w-3.5 h-3.5" />
                         Replied
                     </span>
@@ -129,26 +129,26 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                             className="w-10 h-10 rounded-full object-cover"
                         />
                     ) : (
-                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-gray-400" />
+                        <div className="w-10 h-10 bg-neutral-900 rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 text-neutral-600" />
                         </div>
                     )}
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-semibold text-gray-900">{comment.userName}</span>
+                            <span className="font-semibold text-brand-white">{comment.userName}</span>
                             {comment.isSupporter && (
-                                <span className="px-1.5 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded">
+                                <span className="px-1.5 py-0.5 bg-brand-orange/20 text-brand-orange text-xs font-medium rounded">
                                     Supporter
                                 </span>
                             )}
-                            <span className="text-gray-400">•</span>
-                            <span className="text-sm text-gray-500">
+                            <span className="text-neutral-600">•</span>
+                            <span className="text-sm text-neutral-500">
                                 {getTimeAgo(convertTimestamp(comment.createdAt))}
                             </span>
                         </div>
                         <Link
                             to={`/project/${comment.projectId}`}
-                            className="text-sm text-orange-600 hover:text-orange-700 flex items-center gap-1 mt-0.5"
+                            className="text-sm text-brand-orange hover:text-brand-orange flex items-center gap-1 mt-0.5"
                         >
                             <FolderOpen className="w-3.5 h-3.5" />
                             {comment.projectTitle}
@@ -157,12 +157,12 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                 </div>
 
                 {/* Comment Content */}
-                <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                    <p className="text-gray-800 whitespace-pre-wrap">{displayContent}</p>
+                <div className="bg-brand-black rounded-2xl p-3 mb-3">
+                    <p className="text-neutral-200 whitespace-pre-wrap">{displayContent}</p>
                     {needsTruncation && (
                         <button
                             onClick={() => setExpanded(!expanded)}
-                            className="text-orange-600 hover:text-orange-700 text-sm font-medium mt-2 flex items-center gap-1"
+                            className="text-brand-orange hover:text-brand-orange text-sm font-medium mt-2 flex items-center gap-1"
                         >
                             {expanded ? (
                                 <>
@@ -181,14 +181,14 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
                 {/* Creator Reply (if exists) */}
                 {comment.hasCreatorReply && comment.replyContent && (
-                    <div className="ml-8 border-l-4 border-orange-300 bg-orange-50 rounded-r-lg p-3 mb-3">
+                    <div className="ml-8 border-l-4 border-brand-orange/40 bg-brand-orange/10 rounded-r-lg p-3 mb-3">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-semibold text-orange-600">Your Reply</span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs font-semibold text-brand-orange">Your Reply</span>
+                            <span className="text-xs text-neutral-500">
                                 {comment.repliedAt && getTimeAgo(convertTimestamp(comment.repliedAt))}
                             </span>
                         </div>
-                        <p className="text-gray-700 text-sm">{comment.replyContent}</p>
+                        <p className="text-neutral-300 text-sm">{comment.replyContent}</p>
                     </div>
                 )}
 
@@ -197,7 +197,7 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                     {!comment.hasCreatorReply && (
                         <button
                             onClick={() => setIsReplying(!isReplying)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-orange/100 text-white text-sm font-medium rounded-2xl hover:bg-[#b3e600] transition-colors"
                         >
                             <Reply className="w-4 h-4" />
                             Reply
@@ -205,9 +205,9 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                     )}
                     <button
                         onClick={() => onPin?.(comment.id)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${comment.isPinned
-                            ? 'bg-orange-100 text-orange-700'
-                            : 'text-gray-600 hover:bg-gray-100'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-2xl transition-colors ${comment.isPinned
+                            ? 'bg-brand-orange/20 text-brand-orange'
+                            : 'text-neutral-400 hover:bg-neutral-900'
                             }`}
                     >
                         <Pin className={`w-4 h-4 ${comment.isPinned ? 'fill-current' : ''}`} />
@@ -217,9 +217,9 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                     {/* Creator Heart Button - Like YouTube's feature */}
                     <button
                         onClick={() => onHeart?.(comment.id, !comment.creatorHeart)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${comment.creatorHeart
-                            ? 'bg-red-100 text-red-600'
-                            : 'text-gray-600 hover:bg-red-50 hover:text-red-500'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-2xl transition-colors ${comment.creatorHeart
+                            ? 'bg-red-100 text-red-400'
+                            : 'text-neutral-400 hover:bg-red-500/10 hover:text-red-500'
                             }`}
                         title={comment.creatorHeart ? 'Remove heart' : 'Give heart'}
                     >
@@ -229,7 +229,7 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
                     <button
                         onClick={() => onLike?.(comment.id)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-900 transition-colors"
                     >
                         <ThumbsUp className="w-4 h-4" />
                         {comment.likes > 0 && <span>{comment.likes}</span>}
@@ -237,7 +237,7 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                     {comment.hasCreatorReply && (
                         <Link
                             to={`/project/${comment.projectId}`}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors ml-auto"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-900 transition-colors ml-auto"
                         >
                             <ExternalLink className="w-4 h-4" />
                             View Thread
@@ -247,10 +247,10 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
                 {/* Reply Box */}
                 {isReplying && (
-                    <div className="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div className="mt-4 bg-brand-black rounded-2xl p-4 border border-neutral-800">
                         {/* Quick Templates */}
                         <div className="flex items-center gap-2 mb-3 overflow-x-auto pb-2">
-                            <span className="text-xs text-gray-500 whitespace-nowrap flex items-center gap-1">
+                            <span className="text-xs text-neutral-500 whitespace-nowrap flex items-center gap-1">
                                 <Sparkles className="w-3.5 h-3.5" />
                                 Quick:
                             </span>
@@ -258,7 +258,7 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                                 <button
                                     key={template.id}
                                     onClick={() => handleTemplateSelect(template.text)}
-                                    className="px-3 py-1 text-xs bg-white border border-gray-200 rounded-full hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-colors whitespace-nowrap"
+                                    className="px-3 py-1 text-xs bg-[#111] border border-neutral-800 rounded-full hover:bg-brand-orange/10 hover:border-brand-orange/40 hover:text-brand-orange transition-colors whitespace-nowrap"
                                 >
                                     {template.label}
                                 </button>
@@ -271,7 +271,7 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                             onChange={(e) => setReplyText(e.target.value)}
                             placeholder="Write your reply..."
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                            className="w-full px-3 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid resize-none"
                             autoFocus
                         />
 
@@ -279,14 +279,14 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                         <div className="flex items-center justify-end gap-2 mt-3">
                             <button
                                 onClick={handleCancelReply}
-                                className="px-4 py-2 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                                className="px-4 py-2 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-800 transition-colors"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSubmitReply}
                                 disabled={!replyText.trim() || submittingReply}
-                                className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white text-sm font-medium rounded-2xl hover:bg-[#b3e600] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {submittingReply ? (
                                     <LoadingSpinner size="sm" />

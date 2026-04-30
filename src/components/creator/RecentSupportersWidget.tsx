@@ -4,7 +4,7 @@ import { useProjectContext } from '../../hooks/useProjectContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import VirtualizedList from '../common/VirtualizedList';
 import { Link } from 'react-router-dom';
-import { Users, RefreshCw, AlertCircle } from 'lucide-react';
+import { Users, RefreshCw, AlertCircle, ArrowRight } from 'lucide-react';
 
 interface RecentSupportersWidgetProps {
     creatorId: string;
@@ -45,46 +45,48 @@ const SupporterItem = memo(({
     const displayName = donation.anonymous ? 'Anonymous Supporter' : donation.userName;
 
     return (
-        <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group">
+        <div className="flex items-center space-x-4 p-4 bg-neutral-900/50 rounded-2xl hover:bg-neutral-900 transition-all duration-300 border border-transparent hover:border-neutral-800 group">
             {/* Avatar */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 relative">
                 {donation.userAvatar && !donation.anonymous ? (
                     <img
                         src={donation.userAvatar}
                         alt={displayName}
-                        className="w-10 h-10 rounded-full object-cover ring-2 ring-white"
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-neutral-800 group-hover:ring-brand-orange transition-all duration-300"
                     />
                 ) : (
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${donation.anonymous
-                            ? 'bg-gray-200 text-gray-500'
-                            : 'bg-gradient-to-br from-orange-400 to-red-500 text-white'
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-extrabold ring-2 ring-neutral-800 group-hover:ring-brand-orange transition-all duration-300 ${donation.anonymous
+                            ? 'bg-neutral-800 text-neutral-500'
+                            : 'bg-brand-orange text-brand-black'
                         }`}>
                         {donation.anonymous ? '🕶️' : getInitials(displayName)}
                     </div>
                 )}
+                {/* Status Indicator Dot */}
+                <div className="absolute bottom-0 right-0 w-3 h-3 bg-brand-acid rounded-full border-2 border-[#111]"></div>
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                <div className="flex items-center justify-between mb-1">
+                    <p className="text-base font-bold text-brand-white truncate group-hover:text-brand-orange transition-colors">
                         {displayName}
                     </p>
-                    <span className="text-sm font-semibold text-green-600">
+                    <span className="text-sm font-extrabold text-brand-acid tracking-tight">
                         {formatCurrency(donation.amount)}
                     </span>
                 </div>
-                <div className="flex items-center justify-between mt-0.5">
+                <div className="flex items-center justify-between">
                     {showProjectLabel && donation.projectTitle ? (
-                        <p className="text-xs text-gray-500 truncate">
-                            backed <span className="font-medium text-orange-600">{donation.projectTitle}</span>
+                        <p className="text-xs font-medium text-neutral-500 truncate">
+                            backed <span className="font-bold text-brand-orange">{donation.projectTitle}</span>
                         </p>
                     ) : (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs font-medium text-neutral-500">
                             {donation.anonymous ? 'Anonymous donation' : 'Backed your project'}
                         </p>
                     )}
-                    <span className="text-xs text-gray-400 flex-shrink-0">
+                    <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest flex-shrink-0">
                         {formatTimeAgo(donation.backedAt)}
                     </span>
                 </div>
@@ -96,12 +98,7 @@ const SupporterItem = memo(({
 SupporterItem.displayName = 'SupporterItem';
 
 /**
- * Recent Supporters Widget with Project Context
- * Features:
- * - Memoized items for performance
- * - Virtualization for lists > 15 items
- * - Error retry functionality
- * - Proper handling of anonymous donors
+ * Recent Supporters Widget with Project Context (Dark Brand UI)
  */
 function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSupportersWidgetProps) {
     const { supporters, loading, error } = useRecentSupporters(creatorId, limit);
@@ -126,7 +123,7 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center py-8">
+            <div className="flex items-center justify-center py-12">
                 <LoadingSpinner />
             </div>
         );
@@ -134,15 +131,15 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
 
     if (error) {
         return (
-            <div className="text-center py-8">
-                <div className="w-12 h-12 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-3">
-                    <AlertCircle className="w-6 h-6 text-red-600" />
+            <div className="text-center py-10">
+                <div className="w-14 h-14 mx-auto rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                    <AlertCircle className="w-6 h-6 text-red-400" />
                 </div>
-                <p className="text-red-600 mb-3">{error}</p>
+                <p className="text-red-400 font-bold mb-4">{error}</p>
                 {onRetry && (
                     <button
                         onClick={onRetry}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
+                        className="inline-flex items-center gap-2 px-5 py-2 bg-red-500 text-brand-black rounded-xl text-sm font-bold hover:bg-red-400 transition-colors shadow-[0_0_15px_rgba(239,68,68,0.2)]"
                     >
                         <RefreshCw className="w-4 h-4" />
                         Try Again
@@ -154,12 +151,12 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
 
     if (filteredSupporters.length === 0) {
         return (
-            <div className="text-center py-8">
-                <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                    <Users className="w-6 h-6 text-gray-400" />
+            <div className="text-center py-10">
+                <div className="w-16 h-16 mx-auto rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center mb-4">
+                    <Users className="w-7 h-7 text-neutral-500" />
                 </div>
-                <p className="text-gray-600">No supporters yet</p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-brand-white font-bold text-lg">No supporters yet</p>
+                <p className="text-sm text-neutral-400 mt-2 max-w-[250px] mx-auto">
                     {selectedProject
                         ? `"${selectedProject.title}" hasn't received any donations yet`
                         : 'Your supporters will appear here when they back your projects'
@@ -168,7 +165,7 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
                 {!selectedProject && (
                     <Link
                         to="/dashboard/projects/create"
-                        className="inline-block mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
+                        className="inline-block mt-6 px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl text-sm font-bold hover:bg-[#b3e600] transition-colors shadow-[0_0_15px_rgba(204,255,0,0.2)]"
                     >
                         Create Project →
                     </Link>
@@ -178,26 +175,31 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
     }
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             {/* Virtualized list for performance */}
-            <VirtualizedList
-                items={filteredSupporters}
-                renderItem={renderSupporter}
-                keyExtractor={keyExtractor}
-                itemHeight={68}
-                maxVisibleItems={15}
-                expandThreshold={15}
-                className="space-y-2"
-                emptyState={null}
-            />
+            <div className="flex-grow">
+                <VirtualizedList
+                    items={filteredSupporters}
+                    renderItem={renderSupporter}
+                    keyExtractor={keyExtractor}
+                    itemHeight={80}
+                    maxVisibleItems={15}
+                    expandThreshold={15}
+                    className="space-y-3 pr-2 custom-scrollbar"
+                    emptyState={null}
+                />
+            </div>
 
             {/* View all link */}
-            <Link
-                to="/dashboard/backers"
-                className="mt-4 w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors"
-            >
-                View all backers →
-            </Link>
+            <div className="mt-6 pt-4 border-t border-neutral-800">
+                <Link
+                    to="/dashboard/backers"
+                    className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-brand-orange hover:text-brand-black hover:bg-brand-orange rounded-xl transition-all duration-300"
+                >
+                    View all backers
+                    <ArrowRight className="w-4 h-4" />
+                </Link>
+            </div>
         </div>
     );
 }

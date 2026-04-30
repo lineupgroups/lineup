@@ -32,95 +32,88 @@ const UserStatsCard: React.FC<UserStatsCardProps> = memo(({ stats, className = '
 
   const statItems = useMemo(() => [
     {
-      label: 'Projects Created',
+      label: 'Projects Launched',
       value: formatNumber(stats?.projectsCreated),
-      icon: <Target className="w-5 h-5" />,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200'
+      icon: <Target className="w-4 h-4" />,
+      color: 'text-brand-acid',
+      bgColor: 'bg-brand-acid/10',
+      borderColor: 'border-brand-acid/20'
     },
     {
-      label: 'Projects Liked',
-      value: formatNumber(stats?.projectsLiked),
-      icon: <Heart className="w-5 h-5" />,
-      color: 'text-pink-600',
-      bgColor: 'bg-pink-50',
-      borderColor: 'border-pink-200'
-    },
-    {
-      label: 'Total Raised',
-      value: formatCurrency(stats?.totalRaised),
-      icon: <TrendingUp className="w-5 h-5" />,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200'
-    },
-    {
-      label: 'Total Backed',
-      value: formatCurrency(stats?.totalBacked),
-      icon: <DollarSign className="w-5 h-5" />,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
-    },
-    {
-      label: 'Followers',
+      label: 'Backers Helped',
       value: formatNumber(stats?.followersCount),
-      icon: <Users className="w-5 h-5" />,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
-      borderColor: 'border-orange-200'
+      icon: <Users className="w-4 h-4" />,
+      color: 'text-brand-orange',
+      bgColor: 'bg-brand-orange/10',
+      borderColor: 'border-brand-orange/20'
+    },
+    {
+      label: 'Total Impact',
+      value: formatCurrency(stats?.totalRaised),
+      icon: <TrendingUp className="w-4 h-4" />,
+      color: 'text-brand-acid',
+      bgColor: 'bg-brand-acid/10',
+      borderColor: 'border-brand-acid/20'
     },
     {
       label: 'Success Rate',
-      value: `${(stats?.successRate || 0).toFixed(1)}%`,
-      icon: <Star className="w-5 h-5" />,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200'
+      value: `${(stats?.successRate || 0).toFixed(0)}%`,
+      icon: <Star className="w-4 h-4" />,
+      color: 'text-brand-orange',
+      bgColor: 'bg-brand-orange/10',
+      borderColor: 'border-brand-orange/20'
     }
   ], [stats, formatCurrency, formatNumber]);
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Statistics</h3>
+    <div className={`bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 sm:p-8 ${className}`}>
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-brand-white flex items-center gap-2">
+          <TrendingUp className="w-4 h-4 text-brand-acid" />
+          Analytics Overview
+        </h3>
+        <div className="px-3 py-1 bg-neutral-800 rounded-full text-[9px] font-black uppercase tracking-widest text-neutral-500">
+          Live Data
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {statItems.map((item, index) => (
           <div
             key={index}
-            onClick={item.label === 'Followers' ? onFollowersClick : undefined}
             className={`
-              p-4 rounded-lg border ${item.borderColor} ${item.bgColor} 
-              transition-all duration-200 hover:shadow-md
-              ${item.label === 'Followers' && onFollowersClick ? 'cursor-pointer hover:scale-105' : ''}
+              p-5 rounded-2xl border ${item.borderColor} ${item.bgColor} 
+              transition-all duration-300 group hover:scale-[1.02]
             `}
           >
-            <div className={`${item.color} mb-2`}>
+            <div className={`${item.color} mb-3 transform group-hover:scale-110 transition-transform`}>
               {item.icon}
             </div>
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-gray-900">{item.value}</p>
-              <p className="text-sm text-gray-600 leading-tight">{item.label}</p>
+              <p className="text-xl sm:text-2xl font-black text-brand-white italic tracking-tight">{item.value}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 leading-tight">{item.label}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Additional insights */}
-      <div className="mt-6 pt-6 border-t border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-          <div
+      <div className="mt-8 pt-8 border-t border-neutral-800">
+        <div className="grid grid-cols-1 gap-4">
+          <button
             onClick={onFollowingClick}
-            className={`flex items-center justify-between ${onFollowingClick ? 'cursor-pointer hover:text-blue-600 transition-colors' : ''
-              }`}
+            className="flex items-center justify-between group p-3 hover:bg-neutral-800/50 rounded-xl transition-all"
           >
-            <span>Following:</span>
-            <span className="font-medium text-gray-900">{formatNumber(stats?.followingCount)}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Avg. Project Duration:</span>
-            <span className="font-medium text-gray-900">{stats?.averageProjectDuration || 0} days</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-400">Following</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-black text-brand-white">{formatNumber(stats?.followingCount)}</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-brand-acid animate-pulse" />
+            </div>
+          </button>
+          
+          <div className="flex items-center justify-between p-3">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">Avg. Project Run</span>
+            <span className="text-sm font-black text-brand-white italic">{stats?.averageProjectDuration || 0} DAYS</span>
           </div>
         </div>
       </div>

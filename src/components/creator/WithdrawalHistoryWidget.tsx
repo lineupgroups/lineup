@@ -24,7 +24,7 @@ interface WithdrawalHistoryWidgetProps {
 
 /**
  * Withdrawal History Quick View Widget
- * Shows recent payout history with status indicators
+ * Shows recent payout history with status indicators (Dark Brand UI)
  */
 function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: WithdrawalHistoryWidgetProps) {
     const { user } = useAuth();
@@ -97,29 +97,29 @@ function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: With
             case 'completed':
                 return {
                     icon: CheckCircle,
-                    color: 'text-green-600',
-                    bgColor: 'bg-green-100',
+                    color: 'text-emerald-400',
+                    bgColor: 'bg-emerald-500/10 border-emerald-500/20',
                     label: 'Completed'
                 };
             case 'processing':
                 return {
                     icon: RefreshCw,
-                    color: 'text-blue-600',
-                    bgColor: 'bg-blue-100',
+                    color: 'text-sky-400',
+                    bgColor: 'bg-sky-500/10 border-sky-500/20',
                     label: 'Processing'
                 };
             case 'failed':
                 return {
                     icon: XCircle,
-                    color: 'text-red-600',
-                    bgColor: 'bg-red-100',
+                    color: 'text-red-400',
+                    bgColor: 'bg-red-500/10 border-red-500/20',
                     label: 'Failed'
                 };
             default:
                 return {
                     icon: Clock,
-                    color: 'text-yellow-600',
-                    bgColor: 'bg-yellow-100',
+                    color: 'text-amber-400',
+                    bgColor: 'bg-amber-500/10 border-amber-500/20',
                     label: 'Pending'
                 };
         }
@@ -127,20 +127,22 @@ function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: With
 
     if (loading) {
         return (
-            <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <Wallet className="w-5 h-5 text-orange-500" />
-                        <h3 className="font-semibold text-gray-900">Recent Withdrawals</h3>
+            <div className={`bg-[#111] rounded-3xl border border-neutral-800 p-6 ${className}`}>
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-brand-orange/10 rounded-lg border border-brand-orange/20">
+                            <Wallet className="w-5 h-5 text-brand-orange" />
+                        </div>
+                        <h3 className="font-bold text-brand-white text-xl tracking-tight">Recent Withdrawals</h3>
                     </div>
                 </div>
                 <div className="space-y-3">
                     {[1, 2, 3].map(i => (
-                        <div key={i} className="animate-pulse flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-200 rounded-lg" />
+                        <div key={i} className="animate-pulse flex items-center gap-4 p-3 bg-neutral-900 rounded-xl">
+                            <div className="w-10 h-10 bg-neutral-800 rounded-lg" />
                             <div className="flex-1">
-                                <div className="h-4 bg-gray-200 rounded w-24 mb-2" />
-                                <div className="h-3 bg-gray-200 rounded w-32" />
+                                <div className="h-4 bg-neutral-800 rounded w-24 mb-2" />
+                                <div className="h-3 bg-neutral-800 rounded w-32" />
                             </div>
                         </div>
                     ))}
@@ -151,25 +153,27 @@ function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: With
 
     if (error) {
         return (
-            <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
-                <div className="flex items-center gap-2 text-red-600">
+            <div className={`bg-[#111] rounded-3xl border border-neutral-800 p-6 ${className}`}>
+                <div className="flex items-center gap-2 text-red-400 bg-red-500/10 p-4 rounded-xl border border-red-500/20">
                     <AlertCircle className="w-5 h-5" />
-                    <p className="text-sm">{error}</p>
+                    <p className="text-sm font-medium">{error}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                    <Wallet className="w-5 h-5 text-orange-500" />
-                    <h3 className="font-semibold text-gray-900">Recent Withdrawals</h3>
+        <div className={`bg-[#111] rounded-3xl border border-neutral-800 p-6 flex flex-col ${className}`}>
+            <div className="flex items-center justify-between mb-6 border-b border-neutral-800 pb-4">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-brand-orange/10 rounded-lg border border-brand-orange/20">
+                        <Wallet className="w-5 h-5 text-brand-orange" />
+                    </div>
+                    <h3 className="font-bold text-brand-white text-xl tracking-tight">Recent Withdrawals</h3>
                 </div>
                 <Link
                     to="/dashboard/earnings?tab=history"
-                    className="text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
+                    className="text-sm text-brand-orange hover:text-brand-white font-semibold flex items-center gap-1 transition-colors"
                 >
                     View All
                     <ArrowRight className="w-4 h-4" />
@@ -177,23 +181,23 @@ function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: With
             </div>
 
             {payouts.length === 0 ? (
-                <div className="text-center py-6">
-                    <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                        <Wallet className="w-6 h-6 text-gray-400" />
+                <div className="text-center py-8">
+                    <div className="w-14 h-14 mx-auto rounded-full bg-neutral-900 flex items-center justify-center mb-4 border border-neutral-800">
+                        <Wallet className="w-6 h-6 text-neutral-500" />
                     </div>
-                    <p className="text-gray-600 text-sm">No withdrawals yet</p>
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="text-brand-white font-bold">No withdrawals yet</p>
+                    <p className="text-neutral-500 text-sm mt-1">
                         Your withdrawal history will appear here
                     </p>
                     <Link
                         to="/dashboard/earnings"
-                        className="inline-block mt-3 text-sm text-orange-600 hover:text-orange-700 font-medium"
+                        className="inline-block mt-5 px-5 py-2 text-sm text-brand-black bg-brand-orange hover:bg-[#ff7529] font-bold rounded-xl transition-colors shadow-[0_0_15px_rgba(255,91,0,0.2)]"
                     >
                         Go to Earnings →
                     </Link>
                 </div>
             ) : (
-                <div className="space-y-3">
+                <div className="space-y-3 flex-grow">
                     {payouts.map(payout => {
                         const status = getStatusConfig(payout.status);
                         const StatusIcon = status.icon;
@@ -201,26 +205,26 @@ function WithdrawalHistoryWidget({ limit: limitCount = 3, className = '' }: With
                         return (
                             <div
                                 key={payout.id}
-                                className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                className="flex items-center gap-4 p-4 bg-neutral-900/50 rounded-2xl hover:bg-neutral-900 transition-colors border border-transparent hover:border-neutral-800 group"
                             >
-                                <div className={`w-10 h-10 rounded-lg ${status.bgColor} flex items-center justify-center`}>
+                                <div className={`w-12 h-12 rounded-xl border ${status.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}>
                                     <StatusIcon className={`w-5 h-5 ${status.color} ${payout.status === 'processing' ? 'animate-spin' : ''}`} />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between">
-                                        <p className="font-semibold text-gray-900">
+                                    <div className="flex items-center justify-between mb-1">
+                                        <p className="font-bold text-brand-white text-lg">
                                             {formatCurrency(payout.amount)}
                                         </p>
-                                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${status.bgColor} ${status.color}`}>
+                                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${status.bgColor} ${status.color} uppercase tracking-wide`}>
                                             {status.label}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                                    <div className="flex items-center gap-2 text-xs font-medium text-neutral-500">
                                         <span>{formatDate(payout.createdAt)}</span>
                                         {payout.bankDetails && (
                                             <>
-                                                <span>•</span>
-                                                <span>****{payout.bankDetails.accountLast4}</span>
+                                                <span className="w-1 h-1 bg-neutral-700 rounded-full"></span>
+                                                <span className="text-neutral-400">****{payout.bankDetails.accountLast4}</span>
                                             </>
                                         )}
                                     </div>

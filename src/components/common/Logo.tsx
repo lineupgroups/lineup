@@ -18,30 +18,30 @@ const sizeClasses = {
 
 const textSizeClasses = {
     sm: 'text-base',
-    md: 'text-xl',
-    lg: 'text-2xl',
-    xl: 'text-3xl',
+    md: 'text-lg',
+    lg: 'text-xl',
+    xl: 'text-2xl',
 };
 
 const taglineSizeClasses = {
-    sm: 'text-[10px]',
-    md: 'text-xs',
-    lg: 'text-sm',
-    xl: 'text-base',
+    sm: 'text-[9px]',
+    md: 'text-[10px]',
+    lg: 'text-[11px]',
+    xl: 'text-sm',
 };
 
 export default function Logo({
     size = 'md',
     showText = true,
     tagline = 'For the Idea Nation™',
-    textColor = 'text-gray-900',
-    taglineColor = 'text-orange-600',
+    textColor = 'text-brand-white',
+    taglineColor = 'text-brand-orange',
     className = '',
 }: LogoProps) {
     return (
-        <div className={`flex items-center space-x-2 ${className}`}>
+        <div className={`flex items-center space-x-2.5 ${className}`}>
             {/* Logo Image */}
-            <div className={`${sizeClasses[size]} rounded-lg overflow-hidden flex-shrink-0`}>
+            <div className={`${sizeClasses[size]} rounded-xl overflow-hidden flex-shrink-0 bg-neutral-900`}>
                 <img
                     src={logoImage}
                     alt="Lineup Logo"
@@ -51,10 +51,12 @@ export default function Logo({
 
             {/* Text */}
             {showText && (
-                <div>
-                    <h1 className={`${textSizeClasses[size]} font-bold ${textColor}`}>Lineup</h1>
+                <div className="flex flex-col -space-y-1">
+                    <h1 className={`${textSizeClasses[size]} font-black tracking-tighter ${textColor} italic`}>
+                        LINEUP
+                    </h1>
                     {tagline && (
-                        <p className={`${taglineSizeClasses[size]} ${taglineColor} font-medium`}>
+                        <p className={`${taglineSizeClasses[size]} ${taglineColor} font-bold uppercase tracking-[0.15em] opacity-90`}>
                             {tagline}
                         </p>
                     )}

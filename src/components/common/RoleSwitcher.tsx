@@ -46,20 +46,22 @@ export default function RoleSwitcher({ className = '', showLabel = true }: RoleS
     {
       id: 'supporter' as UserMode,
       label: 'Supporter',
-      description: 'Discover and support amazing projects',
+      description: 'Discover & support projects',
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      hoverColor: 'hover:bg-blue-100'
+      color: 'text-brand-acid',
+      bgColor: 'bg-brand-acid/10',
+      borderColor: 'border-brand-acid/20',
+      hoverColor: 'hover:bg-brand-acid/20'
     },
     {
       id: 'creator' as UserMode,
       label: 'Creator',
-      description: 'Create and manage your projects',
+      description: 'Create & manage projects',
       icon: Rocket,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
-      hoverColor: 'hover:bg-orange-100'
+      color: 'text-brand-orange',
+      bgColor: 'bg-brand-orange/10',
+      borderColor: 'border-brand-orange/20',
+      hoverColor: 'hover:bg-brand-orange/20'
     }
   ];
 
@@ -73,38 +75,34 @@ export default function RoleSwitcher({ className = '', showLabel = true }: RoleS
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isLoading}
-        className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-2 rounded-lg border transition-all duration-200 ${currentMode === 'supporter'
-          ? 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100'
-          : 'border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100'
+        className={`group flex items-center space-x-2 px-4 py-2 rounded-xl border transition-all duration-300 ${currentMode === 'supporter'
+          ? 'border-neutral-800 bg-neutral-900/50 text-brand-acid hover:border-brand-acid/30 hover:bg-neutral-900'
+          : 'border-neutral-800 bg-neutral-900/50 text-brand-orange hover:border-brand-orange/30 hover:bg-neutral-900'
           } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       >
-        <CurrentIcon className="w-4 h-4" />
+        <div className={`p-1 rounded-lg ${currentMode === 'supporter' ? 'bg-brand-acid/10' : 'bg-brand-orange/10'}`}>
+          <CurrentIcon className="w-3.5 h-3.5" />
+        </div>
         {showLabel && (
           <>
-            <span className="text-xs sm:text-sm font-medium">{currentModeConfig?.label}</span>
-            <ChevronDown className={`w-3 sm:w-4 h-3 sm:h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            <span className="text-xs font-bold uppercase tracking-widest">{currentModeConfig?.label}</span>
+            <ChevronDown className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-300 group-hover:text-neutral-300 ${isOpen ? 'rotate-180' : ''}`} />
           </>
         )}
       </button>
 
       {isOpen && (
         <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
-          />
-
-          {/* Dropdown Menu */}
-          <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white rounded-xl shadow-lg border border-gray-200 z-20 overflow-hidden">
-            <div className="p-4 border-b border-gray-100">
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Zap className="w-4 h-4" />
-                <span className="text-sm font-medium">Switch Mode</span>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
+          <div className="absolute right-0 mt-3 w-72 bg-brand-black border border-neutral-800 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-20 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-4 border-b border-neutral-800 bg-neutral-900/30">
+              <div className="flex items-center space-x-2 text-neutral-400">
+                <Zap className="w-3.5 h-3.5 text-brand-acid" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Switch Workspace</span>
               </div>
             </div>
 
-            <div className="p-2">
+            <div className="p-2 space-y-1">
               {modes.map((mode) => {
                 const Icon = mode.icon;
                 const isActive = mode.id === currentMode;
@@ -114,35 +112,36 @@ export default function RoleSwitcher({ className = '', showLabel = true }: RoleS
                     key={mode.id}
                     onClick={() => handleModeSwitch(mode.id)}
                     disabled={isLoading || isActive}
-                    className={`w-full flex items-start space-x-3 p-3 rounded-lg transition-all duration-200 ${isActive
-                      ? `${mode.bgColor} ${mode.color} cursor-default`
-                      : `hover:bg-gray-50 text-gray-700 ${mode.hoverColor}`
+                    className={`w-full flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 ${isActive
+                      ? `${mode.bgColor} ${mode.color} border ${mode.borderColor} cursor-default`
+                      : `hover:bg-neutral-900 text-neutral-400 hover:text-brand-white`
                       } ${isLoading ? 'opacity-50' : ''}`}
                   >
-                    <div className={`p-2 rounded-lg ${isActive ? mode.bgColor : 'bg-gray-100'}`}>
-                      <Icon className={`w-4 h-4 ${isActive ? mode.color : 'text-gray-600'}`} />
+                    <div className={`p-2 rounded-lg ${isActive ? mode.bgColor : 'bg-neutral-800'}`}>
+                      <Icon className={`w-4 h-4 ${isActive ? mode.color : 'text-neutral-500'}`} />
                     </div>
 
                     <div className="flex-1 text-left">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-medium">{mode.label}</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold tracking-tight">{mode.label}</span>
                         {isActive && (
-                          <span className="px-2 py-1 text-xs font-medium bg-white/80 rounded-full">
-                            Current
-                          </span>
+                          <div className="w-1.5 h-1.5 rounded-full bg-current" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-500 mt-1">{mode.description}</p>
+                      <p className="text-[11px] text-neutral-500 font-medium leading-tight mt-0.5">{mode.description}</p>
                     </div>
                   </button>
                 );
               })}
             </div>
 
-            <div className="p-4 bg-gray-50 border-t border-gray-100">
-              <p className="text-xs text-gray-500">
-                Switch between modes anytime to access different features and tools.
-              </p>
+            <div className="p-4 bg-neutral-900/50 border-t border-neutral-800">
+              <div className="flex items-center space-x-2">
+                <div className="w-1 h-1 rounded-full bg-brand-acid animate-pulse" />
+                <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+                  Real-time sync enabled
+                </p>
+              </div>
             </div>
           </div>
         </>

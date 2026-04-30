@@ -46,7 +46,7 @@ export default function DashboardOnboarding({
             title: 'Welcome to Your Creator Dashboard! 🎉',
             description: 'This is your command center for managing campaigns, tracking supporters, and growing your creator journey.',
             icon: <Sparkles className="w-12 h-12 text-white" />,
-            color: 'from-orange-500 via-red-500 to-purple-600',
+            color: 'from-brand-orange/100 via-red-500 to-purple-600',
             tips: [
                 'View all your key metrics at a glance',
                 'Track revenue and backer growth over time',
@@ -71,7 +71,7 @@ export default function DashboardOnboarding({
             title: 'Revenue Analytics',
             description: 'Visualize your funding trends over time with interactive charts. Toggle between 7, 14, or 30 day views.',
             icon: <BarChart3 className="w-12 h-12 text-white" />,
-            color: 'from-blue-500 to-indigo-600',
+            color: 'from-blue-500/100 to-indigo-600',
             tips: [
                 'See daily donation patterns',
                 'Identify your best performing days',
@@ -84,7 +84,7 @@ export default function DashboardOnboarding({
             title: 'Quick Actions',
             description: 'One-click shortcuts to your most common tasks. Badges show items needing attention.',
             icon: <Zap className="w-12 h-12 text-white" />,
-            color: 'from-yellow-500 to-orange-600',
+            color: 'from-yellow-500/100 to-orange-600',
             tips: [
                 '🚀 Create new projects instantly',
                 '✏️ Post updates to keep backers engaged',
@@ -127,7 +127,7 @@ export default function DashboardOnboarding({
             title: "You're All Set! 🚀",
             description: "You're ready to start your creator journey. Create your first project and share it with the world!",
             icon: <Star className="w-12 h-12 text-white" />,
-            color: 'from-orange-500 via-red-500 to-purple-600',
+            color: 'from-brand-orange/100 via-red-500 to-purple-600',
             tips: [
                 '✅ Complete your profile for trust',
                 '✅ Complete KYC verification',
@@ -202,11 +202,11 @@ export default function DashboardOnboarding({
             <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
             {/* Modal */}
-            <div className={`relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 ${isExiting ? 'scale-95' : 'scale-100'}`}>
+            <div className={`relative w-full max-w-lg bg-[#111] rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 ${isExiting ? 'scale-95' : 'scale-100'}`}>
                 {/* Progress Bar */}
-                <div className="h-1 bg-gray-100">
+                <div className="h-1 bg-neutral-900">
                     <div
-                        className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-brand-orange/100 to-red-500/100 transition-all duration-500"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
@@ -216,25 +216,25 @@ export default function DashboardOnboarding({
                     {/* Skip button */}
                     <button
                         onClick={handleSkip}
-                        className="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-sm"
+                        className="absolute top-4 right-4 p-2 rounded-full bg-[#111]/20 hover:bg-[#111]/30 transition-colors text-sm"
                     >
                         <X className="w-4 h-4" />
                     </button>
 
                     {/* Step indicator */}
-                    <div className="absolute top-4 left-4 text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                    <div className="absolute top-4 left-4 text-sm font-medium bg-[#111]/20 px-3 py-1 rounded-full">
                         {currentStep + 1} / {steps.length}
                     </div>
 
                     {/* Animated background */}
                     <div className="absolute inset-0 opacity-20">
-                        <div className="absolute top-4 left-8 w-16 h-16 rounded-full bg-white/10 animate-pulse" />
-                        <div className="absolute bottom-4 right-8 w-24 h-24 rounded-full bg-white/10 animate-pulse delay-100" />
-                        <div className="absolute top-1/2 left-1/2 w-32 h-32 rounded-full bg-white/5 animate-pulse delay-200" />
+                        <div className="absolute top-4 left-8 w-16 h-16 rounded-full bg-[#111]/10 animate-pulse" />
+                        <div className="absolute bottom-4 right-8 w-24 h-24 rounded-full bg-[#111]/10 animate-pulse delay-100" />
+                        <div className="absolute top-1/2 left-1/2 w-32 h-32 rounded-full bg-[#111]/5 animate-pulse delay-200" />
                     </div>
 
                     <div className="flex flex-col items-center text-center relative z-10 pt-6">
-                        <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-4 backdrop-blur-sm">
+                        <div className="w-20 h-20 rounded-2xl bg-[#111]/20 flex items-center justify-center mb-4 backdrop-blur-sm">
                             {step.icon}
                         </div>
                         <h2 className="text-2xl font-bold mb-2">{step.title}</h2>
@@ -243,19 +243,19 @@ export default function DashboardOnboarding({
 
                 {/* Content */}
                 <div className="p-6">
-                    <p className="text-gray-600 text-center mb-6 leading-relaxed">
+                    <p className="text-neutral-400 text-center mb-6 leading-relaxed">
                         {step.description}
                     </p>
 
                     {/* Tips */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                        <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <div className="bg-brand-black rounded-3xl p-4 mb-6">
+                        <h4 className="text-sm font-semibold text-brand-white mb-3 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-orange-500" />
                             {currentStep === 0 ? 'What you can do:' : 'Tips & Features:'}
                         </h4>
                         <ul className="space-y-2">
                             {step.tips.map((tip, index) => (
-                                <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
+                                <li key={index} className="flex items-start gap-2 text-sm text-neutral-400">
                                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
                                     {tip}
                                 </li>
@@ -267,7 +267,7 @@ export default function DashboardOnboarding({
                     {step.action && (
                         <button
                             onClick={() => handleAction(step.action!.route)}
-                            className="w-full mb-4 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-lg shadow-orange-200"
+                            className="w-full mb-4 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-3xl font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-lg shadow-orange-200"
                         >
                             <Rocket className="w-5 h-5" />
                             {step.action.label}
@@ -279,9 +279,9 @@ export default function DashboardOnboarding({
                         <button
                             onClick={handlePrevious}
                             disabled={currentStep === 0}
-                            className={`flex items-center gap-1 px-4 py-2 rounded-xl font-medium transition-colors ${currentStep === 0
+                            className={`flex items-center gap-1 px-4 py-2 rounded-3xl font-medium transition-colors ${currentStep === 0
                                     ? 'text-gray-300 cursor-not-allowed'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                                    : 'text-neutral-400 hover:bg-neutral-900'
                                 }`}
                         >
                             <ChevronLeft className="w-4 h-4" />
@@ -295,10 +295,10 @@ export default function DashboardOnboarding({
                                     key={index}
                                     onClick={() => setCurrentStep(index)}
                                     className={`w-2 h-2 rounded-full transition-all ${index === currentStep
-                                            ? 'w-6 bg-orange-500'
+                                            ? 'w-6 bg-brand-orange/100'
                                             : index < currentStep
                                                 ? 'bg-orange-300'
-                                                : 'bg-gray-300'
+                                                : 'bg-neutral-700'
                                         }`}
                                 />
                             ))}
@@ -307,7 +307,7 @@ export default function DashboardOnboarding({
                         {currentStep === steps.length - 1 ? (
                             <button
                                 onClick={handleComplete}
-                                className="flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all"
+                                className="flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-3xl font-medium hover:from-orange-600 hover:to-red-600 transition-all"
                             >
                                 Get Started
                                 <ArrowRight className="w-4 h-4" />
@@ -315,7 +315,7 @@ export default function DashboardOnboarding({
                         ) : (
                             <button
                                 onClick={handleNext}
-                                className="flex items-center gap-1 px-4 py-2 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-colors"
+                                className="flex items-center gap-1 px-4 py-2 bg-gray-900 text-white rounded-3xl font-medium hover:bg-gray-800 transition-colors"
                             >
                                 Next
                                 <ChevronRight className="w-4 h-4" />
@@ -326,10 +326,10 @@ export default function DashboardOnboarding({
 
                 {/* Keyboard hints */}
                 <div className="px-6 pb-4 text-center">
-                    <p className="text-xs text-gray-400">
-                        Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">→</kbd> for next,{' '}
-                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">←</kbd> for back,{' '}
-                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">Esc</kbd> to skip
+                    <p className="text-xs text-neutral-600">
+                        Press <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded text-neutral-400">→</kbd> for next,{' '}
+                        <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded text-neutral-400">←</kbd> for back,{' '}
+                        <kbd className="px-1.5 py-0.5 bg-neutral-900 rounded text-neutral-400">Esc</kbd> to skip
                     </p>
                 </div>
             </div>

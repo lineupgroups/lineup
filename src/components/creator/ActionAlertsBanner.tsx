@@ -14,7 +14,6 @@ import { useUnrepliedComments } from '../../hooks/useUnrepliedComments';
 
 /**
  * Alert Types Configuration
- * Extensible structure for adding new alert types in the future
  */
 interface AlertConfig {
     id: string;
@@ -47,7 +46,6 @@ const getDismissedAlerts = (): Record<string, number> => {
 };
 
 // Helper to save dismissed alert
-// Note: We use -1 to represent "never expires" since Infinity can't be serialized to JSON
 const NEVER_EXPIRES = -1;
 
 const dismissAlert = (alertId: string, reappearAfterHours?: number) => {
@@ -78,20 +76,17 @@ export default function ActionAlertsBanner({
     const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [visibleAlerts, setVisibleAlerts] = useState<AlertConfig[]>([]);
-    // Initialize localDismissed from localStorage to persist across navigation
+    
     const [localDismissed, setLocalDismissed] = useState<Set<string>>(() => {
         const dismissed = getDismissedAlerts();
-        // Get all alert IDs that are currently dismissed (either permanently or not yet expired)
         const dismissedIds = Object.entries(dismissed)
             .filter(([_, expiry]) => expiry === NEVER_EXPIRES || Date.now() < expiry)
             .map(([id]) => id);
         return new Set(dismissedIds);
     });
 
-    // Get unreplied comments data
     const { unrepliedCount, loading: commentsLoading } = useUnrepliedComments(creatorId);
 
-    // Build alerts list
     useEffect(() => {
         if (commentsLoading) return;
 
@@ -109,7 +104,7 @@ export default function ActionAlertsBanner({
                     actionLabel: 'Reply Now',
                     actionRoute: '/dashboard/projects', // TODO: Change to /dashboard/comments when route is created
                     dismissible: true,
-                    reappearAfterHours: 24, // Reappear after 24 hours if still unreplied
+                    reappearAfterHours: 24,
                     priority: 1
                 });
             }
@@ -123,10 +118,8 @@ export default function ActionAlertsBanner({
             const raised = project.raised || 0;
             const percentFunded = goal > 0 ? (raised / goal) * 100 : 0;
 
-            // Check each milestone threshold
             MILESTONE_THRESHOLDS.forEach(threshold => {
                 if (percentFunded >= threshold) {
-                    // Check if we've crossed this milestone (not the next one yet)
                     const nextThreshold = MILESTONE_THRESHOLDS.find(t => t > threshold);
                     const isCurrentMilestone = !nextThreshold || percentFunded < nextThreshold;
 
@@ -141,7 +134,7 @@ export default function ActionAlertsBanner({
                                 actionLabel: 'Share',
                                 actionRoute: `/project/${project.id}`,
                                 dismissible: true,
-                                reappearAfterHours: undefined, // One-time alert
+                                reappearAfterHours: undefined,
                                 priority: 2,
                                 projectId: project.id,
                                 milestone: threshold
@@ -152,20 +145,15 @@ export default function ActionAlertsBanner({
             });
         });
 
-        // Sort by priority
         alerts.sort((a, b) => a.priority - b.priority);
-
-        // Limit to 3 alerts
         setVisibleAlerts(alerts.slice(0, 3));
     }, [creatorId, projects, unrepliedCount, commentsLoading, localDismissed]);
 
-    // Handle dismiss
     const handleDismiss = (alert: AlertConfig) => {
         dismissAlert(alert.id, alert.reappearAfterHours);
         setLocalDismissed(prev => new Set([...prev, alert.id]));
     };
 
-    // Handle action click
     const handleAction = (alert: AlertConfig) => {
         if (alert.type === 'success' && alert.projectId && alert.milestone && onMilestoneShare) {
             const project = projects.find(p => p.id === alert.projectId);
@@ -177,7 +165,6 @@ export default function ActionAlertsBanner({
         navigate(alert.actionRoute);
     };
 
-    // Don't render if no alerts
     if (visibleAlerts.length === 0) {
         return null;
     }
@@ -186,97 +173,97 @@ export default function ActionAlertsBanner({
         switch (type) {
             case 'warning':
                 return {
-                    bg: 'bg-amber-50',
-                    border: 'border-amber-300',
-                    iconBg: 'bg-amber-100',
-                    iconColor: 'text-amber-600',
-                    dot: 'bg-amber-500',
-                    button: 'bg-amber-600 hover:bg-amber-700 text-white'
+                    bg: 'bg-brand-orange/10',
+                    border: 'border-brand-orange/20',
+                    iconBg: 'bg-brand-orange/20',
+                    iconColor: 'text-brand-orange',
+                    dot: 'bg-brand-orange',
+                    button: 'bg-brand-orange hover:bg-[#ff7529] text-brand-black shadow-[0_0_10px_rgba(255,91,0,0.2)]'
                 };
             case 'success':
                 return {
-                    bg: 'bg-green-50',
-                    border: 'border-green-300',
-                    iconBg: 'bg-green-100',
-                    iconColor: 'text-green-600',
-                    dot: 'bg-green-500',
-                    button: 'bg-green-600 hover:bg-green-700 text-white'
+                    bg: 'bg-brand-acid/10',
+                    border: 'border-brand-acid/20',
+                    iconBg: 'bg-brand-acid/20',
+                    iconColor: 'text-brand-acid',
+                    dot: 'bg-brand-acid',
+                    button: 'bg-brand-acid hover:bg-[#b3e600] text-brand-black shadow-[0_0_10px_rgba(204,255,0,0.2)]'
                 };
             case 'info':
                 return {
-                    bg: 'bg-blue-50',
-                    border: 'border-blue-300',
-                    iconBg: 'bg-blue-100',
-                    iconColor: 'text-blue-600',
-                    dot: 'bg-blue-500',
-                    button: 'bg-blue-600 hover:bg-blue-700 text-white'
+                    bg: 'bg-sky-500/10',
+                    border: 'border-sky-500/20',
+                    iconBg: 'bg-sky-500/20',
+                    iconColor: 'text-sky-400',
+                    dot: 'bg-sky-400',
+                    button: 'bg-sky-500 hover:bg-sky-400 text-brand-black'
                 };
         }
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-            {/* Header - Always visible */}
+        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 overflow-hidden mb-6">
+            {/* Header */}
             <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-neutral-900 hover:bg-neutral-800 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                         {visibleAlerts.map((alert, idx) => (
                             <span
                                 key={idx}
-                                className={`w-2 h-2 rounded-full ${getAlertColors(alert.type).dot}`}
+                                className={`w-2 h-2 rounded-full ${getAlertColors(alert.type).dot} ${alert.type === 'warning' ? 'animate-pulse' : ''}`}
                             />
                         ))}
                     </div>
-                    <span className="font-medium text-gray-800">
+                    <span className="font-bold text-brand-white">
                         {visibleAlerts.length} item{visibleAlerts.length !== 1 ? 's' : ''} need{visibleAlerts.length === 1 ? 's' : ''} your attention
                     </span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                    <span className="text-sm">{isCollapsed ? 'Show' : 'Hide'}</span>
+                <div className="flex items-center gap-2 text-neutral-400">
+                    <span className="text-xs font-bold uppercase tracking-wider">{isCollapsed ? 'Show' : 'Hide'}</span>
                     {isCollapsed ? (
-                        <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="w-5 h-5" />
                     ) : (
-                        <ChevronUp className="w-4 h-4" />
+                        <ChevronUp className="w-5 h-5" />
                     )}
                 </div>
             </button>
 
-            {/* Alerts List - Collapsible */}
+            {/* Alerts List */}
             {!isCollapsed && (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-neutral-800/50">
                     {visibleAlerts.map((alert) => {
                         const colors = getAlertColors(alert.type);
                         return (
                             <div
                                 key={alert.id}
-                                className={`p-4 ${colors.bg} flex items-center justify-between gap-4 transition-all`}
+                                className={`p-5 ${colors.bg} flex items-center justify-between gap-4 transition-all`}
                             >
-                                <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <div className={`p-2 rounded-lg ${colors.iconBg} ${colors.iconColor} flex-shrink-0`}>
+                                <div className="flex items-center gap-4 flex-1 min-w-0">
+                                    <div className={`p-2.5 rounded-xl ${colors.iconBg} ${colors.iconColor} flex-shrink-0`}>
                                         {alert.icon}
                                     </div>
-                                    <span className="text-gray-800 font-medium truncate">
+                                    <span className="text-brand-white font-bold truncate">
                                         {alert.message}
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-2 flex-shrink-0">
+                                <div className="flex items-center gap-3 flex-shrink-0">
                                     <button
                                         onClick={() => handleAction(alert)}
-                                        className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${colors.button}`}
+                                        className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${colors.button}`}
                                     >
                                         {alert.type === 'success' ? (
                                             <>
-                                                <Share2 className="w-3.5 h-3.5" />
+                                                <Share2 className="w-4 h-4" />
                                                 {alert.actionLabel}
                                             </>
                                         ) : (
                                             <>
                                                 {alert.actionLabel}
-                                                <ArrowRight className="w-3.5 h-3.5" />
+                                                <ArrowRight className="w-4 h-4" />
                                             </>
                                         )}
                                     </button>
@@ -284,10 +271,10 @@ export default function ActionAlertsBanner({
                                     {alert.dismissible && (
                                         <button
                                             onClick={() => handleDismiss(alert)}
-                                            className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                            className="p-2 text-neutral-500 hover:text-brand-white hover:bg-neutral-800 rounded-xl transition-colors"
                                             title="Dismiss"
                                         >
-                                            <X className="w-4 h-4" />
+                                            <X className="w-5 h-5" />
                                         </button>
                                     )}
                                 </div>

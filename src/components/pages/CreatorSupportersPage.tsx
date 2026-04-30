@@ -396,7 +396,7 @@ export default function CreatorSupportersPage() {
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1: return <Crown className="w-5 h-5 text-yellow-500" />;
-      case 2: return <Medal className="w-5 h-5 text-gray-400" />;
+      case 2: return <Medal className="w-5 h-5 text-neutral-600" />;
       case 3: return <Medal className="w-5 h-5 text-amber-600" />;
       default: return <Star className="w-5 h-5 text-gray-300" />;
     }
@@ -413,31 +413,31 @@ export default function CreatorSupportersPage() {
 
   if (projectsLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
       {/* Dynamic Page Title */}
       <PageTitle title="Supporters" description="View and manage your project supporters" />
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-[#111] border-b border-neutral-800 sticky top-0 z-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate(-1)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-neutral-900 rounded-full transition-colors"
               >
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
+                <ArrowLeft className="w-5 h-5 text-neutral-400" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Supporters</h1>
-                <p className="text-sm text-gray-500">
+                <h1 className="text-2xl font-bold text-brand-white">Supporters</h1>
+                <p className="text-sm text-neutral-500">
                   {allDonations.length} total contributions • {calculateTrueUniqueSupporters} unique supporters
                 </p>
               </div>
@@ -445,14 +445,14 @@ export default function CreatorSupportersPage() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={fetchAllDonations}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-neutral-900 rounded-full transition-colors"
                 title="Refresh data"
               >
-                <RefreshCw className={`w-5 h-5 text-gray-600 ${loading ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-5 h-5 text-neutral-400 ${loading ? 'animate-spin' : ''}`} />
               </button>
               <button
                 onClick={handleExportCSV}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-all"
               >
                 <Download className="w-4 h-4" />
                 <span>Export CSV</span>
@@ -465,55 +465,55 @@ export default function CreatorSupportersPage() {
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Raised</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(stats.totalAmount)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Total Raised</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(stats.totalAmount)}</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <DollarSign className="w-6 h-6 text-green-600" />
+              <div className="p-3 bg-green-500/20 rounded-full">
+                <DollarSign className="w-6 h-6 text-green-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Unique Supporters</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{stats.uniqueSupporters}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Unique Supporters</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{stats.uniqueSupporters}</p>
                 {repeatSupporters.size > 0 && (
-                  <p className="text-xs text-green-600 mt-1">
+                  <p className="text-xs text-green-400 mt-1">
                     {repeatSupporters.size} repeat backer{repeatSupporters.size !== 1 ? 's' : ''}
                   </p>
                 )}
               </div>
-              <div className="p-3 bg-orange-100 rounded-full">
-                <Users className="w-6 h-6 text-orange-600" />
+              <div className="p-3 bg-brand-orange/20 rounded-full">
+                <Users className="w-6 h-6 text-brand-orange" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Avg. Donation</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(stats.avgDonation)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Avg. Donation</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(stats.avgDonation)}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-blue-500/20 rounded-full">
+                <TrendingUp className="w-6 h-6 text-blue-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Anonymous</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{stats.anonymousCount}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Anonymous</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{stats.anonymousCount}</p>
               </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <Heart className="w-6 h-6 text-purple-600" />
+              <div className="p-3 bg-purple-500/20 rounded-full">
+                <Heart className="w-6 h-6 text-purple-400" />
               </div>
             </div>
           </div>
@@ -522,7 +522,7 @@ export default function CreatorSupportersPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Top Supporters Panel - S-LOG-02: Show more */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg p-6 text-white mb-6">
+            <div className="bg-gradient-to-br from-brand-orange/100 to-red-600 rounded-3xl shadow-lg p-6 text-white mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <Trophy className="w-6 h-6" />
@@ -531,7 +531,7 @@ export default function CreatorSupportersPage() {
                 {topSupporters.length > 5 && (
                   <button
                     onClick={() => setShowAllTopSupporters(!showAllTopSupporters)}
-                    className="text-xs bg-white/20 px-2 py-1 rounded-full hover:bg-white/30 transition-colors flex items-center"
+                    className="text-xs bg-[#111]/20 px-2 py-1 rounded-full hover:bg-[#111]/30 transition-colors flex items-center"
                   >
                     {showAllTopSupporters ? 'Show Less' : `+${topSupporters.length - 5} more`}
                     {showAllTopSupporters ? <ChevronUp className="w-3 h-3 ml-1" /> : <ChevronDown className="w-3 h-3 ml-1" />}
@@ -546,7 +546,7 @@ export default function CreatorSupportersPage() {
                   {(showAllTopSupporters ? topSupporters : topSupporters.slice(0, 5)).map((supporter, index) => (
                     <div
                       key={supporter.userId + index}
-                      className="flex items-center justify-between bg-white/10 rounded-lg p-3 backdrop-blur-sm"
+                      className="flex items-center justify-between bg-[#111]/10 rounded-2xl p-3 backdrop-blur-sm"
                     >
                       <div className="flex items-center space-x-3">
                         <div className="flex items-center justify-center w-8 h-8">
@@ -579,8 +579,8 @@ export default function CreatorSupportersPage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="font-semibold text-gray-900 mb-4">Projects Overview</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="font-semibold text-brand-white mb-4">Projects Overview</h3>
               <div className="space-y-3">
                 {projects.map(project => {
                   const projectDonations = allDonations.filter(d => d.projectId === project.id);
@@ -589,15 +589,15 @@ export default function CreatorSupportersPage() {
                   return (
                     <div
                       key={project.id}
-                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${selectedProjectId === project.id ? 'bg-orange-100 border border-orange-300' : 'bg-gray-50 hover:bg-gray-100'
+                      className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition-colors ${selectedProjectId === project.id ? 'bg-brand-orange/20 border border-brand-orange/40' : 'bg-brand-black hover:bg-neutral-900'
                         }`}
                       onClick={() => handleProjectChange(project.id)}
                     >
                       <div>
-                        <p className="font-medium text-gray-900 text-sm line-clamp-1">{project.title}</p>
-                        <p className="text-xs text-gray-500">{projectDonations.length} supporters</p>
+                        <p className="font-medium text-brand-white text-sm line-clamp-1">{project.title}</p>
+                        <p className="text-xs text-neutral-500">{projectDonations.length} supporters</p>
                       </div>
-                      <p className="font-semibold text-gray-900 text-sm">{formatCurrency(projectTotal)}</p>
+                      <p className="font-semibold text-brand-white text-sm">{formatCurrency(projectTotal)}</p>
                     </div>
                   );
                 })}
@@ -608,25 +608,25 @@ export default function CreatorSupportersPage() {
           {/* Supporters List */}
           <div className="lg:col-span-2">
             {/* Filters - S-MISS-03 & S-MISS-04 */}
-            <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-4 mb-6 border border-neutral-800/50">
               <div className="flex flex-col space-y-4">
                 {/* Search and Project Filter */}
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-600 w-5 h-5" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                       placeholder="Search supporters by name..."
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-2.5 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-transparent"
                     />
                   </div>
                   <div className="relative">
                     <select
                       value={selectedProjectId}
                       onChange={(e) => handleProjectChange(e.target.value)}
-                      className="appearance-none bg-white border border-gray-300 rounded-lg py-2.5 pl-4 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 min-w-[180px]"
+                      className="appearance-none bg-[#111] border border-neutral-700 rounded-2xl py-2.5 pl-4 pr-10 text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-acid min-w-[180px]"
                     >
                       <option value="all">All Projects</option>
                       {projects.map(project => (
@@ -635,7 +635,7 @@ export default function CreatorSupportersPage() {
                         </option>
                       ))}
                     </select>
-                    <Filter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+                    <Filter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-600 w-4 h-4 pointer-events-none" />
                   </div>
                 </div>
 
@@ -643,11 +643,11 @@ export default function CreatorSupportersPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                   {/* S-MISS-03: Date Range Filter */}
                   <div className="flex items-center space-x-2">
-                    <Clock className="w-4 h-4 text-gray-400" />
+                    <Clock className="w-4 h-4 text-neutral-600" />
                     <select
                       value={dateRange}
                       onChange={(e) => { setDateRange(e.target.value); setCurrentPage(1); }}
-                      className="text-sm border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-orange-500"
+                      className="text-sm border border-neutral-700 rounded-2xl py-2 px-3 focus:ring-2 focus:ring-brand-acid"
                     >
                       {DATE_RANGE_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
@@ -657,11 +657,11 @@ export default function CreatorSupportersPage() {
 
                   {/* S-MISS-04: Amount Range Filter */}
                   <div className="flex items-center space-x-2">
-                    <DollarSign className="w-4 h-4 text-gray-400" />
+                    <DollarSign className="w-4 h-4 text-neutral-600" />
                     <select
                       value={amountRange}
                       onChange={(e) => { setAmountRange(e.target.value); setCurrentPage(1); }}
-                      className="text-sm border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-orange-500"
+                      className="text-sm border border-neutral-700 rounded-2xl py-2 px-3 focus:ring-2 focus:ring-brand-acid"
                     >
                       {AMOUNT_RANGE_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
@@ -673,7 +673,7 @@ export default function CreatorSupportersPage() {
                   {(dateRange !== 'all' || amountRange !== 'all' || searchQuery || selectedProjectId !== 'all') && (
                     <button
                       onClick={resetFilters}
-                      className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+                      className="text-sm text-brand-orange hover:text-brand-orange font-medium"
                     >
                       Reset Filters
                     </button>
@@ -683,17 +683,17 @@ export default function CreatorSupportersPage() {
             </div>
 
             {/* Supporters Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">
+            <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800/50 overflow-hidden">
+              <div className="px-6 py-4 border-b border-neutral-800/50 flex items-center justify-between">
+                <h3 className="font-semibold text-brand-white">
                   {filteredDonations.length} Supporter{filteredDonations.length !== 1 ? 's' : ''}
                   {filteredDonations.length !== allDonations.length && (
-                    <span className="text-gray-500 font-normal"> (filtered)</span>
+                    <span className="text-neutral-500 font-normal"> (filtered)</span>
                   )}
                 </h3>
                 {/* S-OPT-01: Pagination info */}
                 {totalPages > 1 && (
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-neutral-500">
                     Page {currentPage} of {totalPages}
                   </span>
                 )}
@@ -702,22 +702,22 @@ export default function CreatorSupportersPage() {
               {filteredDonations.length === 0 ? (
                 <div className="text-center py-12">
                   <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500 font-medium">No supporters found</p>
-                  <p className="text-sm text-gray-400">Try adjusting your search or filters</p>
+                  <p className="text-neutral-500 font-medium">No supporters found</p>
+                  <p className="text-sm text-neutral-600">Try adjusting your search or filters</p>
                 </div>
               ) : (
                 <>
-                  <div className="divide-y divide-gray-100">
+                  <div className="divide-y divide-neutral-800/50">
                     {paginatedDonations.map((donation) => (
                       <div
                         key={donation.id}
-                        className="px-6 py-4 hover:bg-gray-50 transition-colors"
+                        className="px-6 py-4 hover:bg-brand-black transition-colors"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-4">
                             {/* Avatar */}
                             <div
-                              className={`w-12 h-12 rounded-full flex items-center justify-center ${donation.anonymous ? 'bg-gray-100' : 'bg-gradient-to-br from-orange-400 to-red-500'
+                              className={`w-12 h-12 rounded-full flex items-center justify-center ${donation.anonymous ? 'bg-neutral-900' : 'bg-gradient-to-br from-orange-400 to-red-500/100'
                                 } cursor-pointer hover:opacity-80 transition-opacity`}
                               onClick={() => handleViewProfile(donation)}
                             >
@@ -728,7 +728,7 @@ export default function CreatorSupportersPage() {
                                   className="w-12 h-12 rounded-full object-cover"
                                 />
                               ) : donation.anonymous ? (
-                                <Heart className="w-5 h-5 text-gray-400" />
+                                <Heart className="w-5 h-5 text-neutral-600" />
                               ) : (
                                 <span className="text-white font-bold text-lg">
                                   {donation.displayName.charAt(0).toUpperCase()}
@@ -740,33 +740,33 @@ export default function CreatorSupportersPage() {
                             <div>
                               <div className="flex items-center space-x-2">
                                 <p
-                                  className={`font-medium text-gray-900 ${!donation.anonymous ? 'hover:text-orange-600 cursor-pointer' : ''}`}
+                                  className={`font-medium text-brand-white ${!donation.anonymous ? 'hover:text-brand-orange cursor-pointer' : ''}`}
                                   onClick={() => !donation.anonymous && handleViewProfile(donation)}
                                 >
                                   {donation.displayName}
                                 </p>
                                 {donation.anonymous && (
-                                  <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full">
+                                  <span className="px-2 py-0.5 bg-neutral-900 text-neutral-500 text-xs rounded-full">
                                     Anonymous
                                   </span>
                                 )}
                                 {/* S-MISS-02: Repeat supporter badge */}
                                 {!donation.anonymous && repeatSupporters.has(donation.userId) && (
-                                  <span className="flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                                  <span className="flex items-center bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0.5 rounded-full font-medium">
                                     <Award className="w-3 h-3 mr-1" />
                                     Repeat
                                   </span>
                                 )}
                                 {!donation.anonymous && (
-                                  <ExternalLink className="w-3 h-3 text-gray-400" />
+                                  <ExternalLink className="w-3 h-3 text-neutral-600" />
                                 )}
                               </div>
                               <div className="flex items-center space-x-3 mt-1">
-                                <span className="text-xs text-gray-500 flex items-center">
+                                <span className="text-xs text-neutral-500 flex items-center">
                                   <Calendar className="w-3 h-3 mr-1" />
                                   {formatDistanceToNow(convertTimestamp(donation.backedAt), { addSuffix: true })}
                                 </span>
-                                <span className="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded">
+                                <span className="text-xs text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded">
                                   {donation.projectTitle}
                                 </span>
                               </div>
@@ -776,7 +776,7 @@ export default function CreatorSupportersPage() {
                           {/* Amount & Actions */}
                           <div className="flex items-center space-x-4">
                             <div className="text-right">
-                              <p className="font-bold text-lg text-gray-900">{formatCurrency(donation.amount)}</p>
+                              <p className="font-bold text-lg text-brand-white">{formatCurrency(donation.amount)}</p>
                             </div>
 
                             {!donation.anonymous && (
@@ -785,7 +785,7 @@ export default function CreatorSupportersPage() {
                                   setSelectedSupporter(donation);
                                   setShowThankYouModal(true);
                                 }}
-                                className="flex items-center space-x-1 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-sm font-medium hover:bg-orange-100 transition-colors"
+                                className="flex items-center space-x-1 px-3 py-1.5 bg-brand-orange/10 text-brand-orange rounded-2xl text-sm font-medium hover:bg-brand-orange/20 transition-colors"
                               >
                                 <MessageSquare className="w-4 h-4" />
                                 <span>Thank</span>
@@ -799,11 +799,11 @@ export default function CreatorSupportersPage() {
 
                   {/* S-OPT-01: Pagination Controls */}
                   {totalPages > 1 && (
-                    <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div className="px-6 py-4 border-t border-neutral-800/50 flex items-center justify-between">
                       <button
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 text-sm font-medium text-neutral-300 bg-neutral-900 rounded-2xl hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -823,9 +823,9 @@ export default function CreatorSupportersPage() {
                             <button
                               key={pageNum}
                               onClick={() => setCurrentPage(pageNum)}
-                              className={`w-8 h-8 text-sm font-medium rounded-lg ${currentPage === pageNum
-                                ? 'bg-orange-500 text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              className={`w-8 h-8 text-sm font-medium rounded-2xl ${currentPage === pageNum
+                                ? 'bg-brand-orange/100 text-white'
+                                : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'
                                 }`}
                             >
                               {pageNum}
@@ -836,7 +836,7 @@ export default function CreatorSupportersPage() {
                       <button
                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 text-sm font-medium text-neutral-300 bg-neutral-900 rounded-2xl hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -852,24 +852,24 @@ export default function CreatorSupportersPage() {
       {/* Thank You Modal - S-BUG-03: Actually sends notification */}
       {showThankYouModal && selectedSupporter && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <div className="bg-[#111] rounded-3xl shadow-2xl w-full max-w-lg">
+            <div className="flex items-center justify-between p-6 border-b border-neutral-800">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Send Thank You</h2>
-                <p className="text-sm text-gray-500">
+                <h2 className="text-xl font-bold text-brand-white">Send Thank You</h2>
+                <p className="text-sm text-neutral-500">
                   To {selectedSupporter.displayName} for their {formatCurrency(selectedSupporter.amount)} contribution
                 </p>
               </div>
               <button
                 onClick={() => setShowThankYouModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
+                className="p-2 hover:bg-neutral-900 rounded-full"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2">
                 Your Message
               </label>
               <textarea
@@ -877,24 +877,24 @@ export default function CreatorSupportersPage() {
                 onChange={(e) => setThankYouMessage(e.target.value)}
                 placeholder="Thank you so much for supporting my project! Your contribution means the world to me..."
                 rows={5}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-transparent resize-none"
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-neutral-500 mt-2">
                 This message will be sent as an in-app notification to the supporter.
               </p>
             </div>
 
-            <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+            <div className="flex items-center justify-end space-x-3 p-6 border-t border-neutral-800 bg-brand-black rounded-b-xl">
               <button
                 onClick={() => setShowThankYouModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-neutral-400 hover:text-neutral-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSendThankYou}
                 disabled={sendingMessage || !thankYouMessage.trim()}
-                className="flex items-center space-x-2 px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center space-x-2 px-6 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {sendingMessage ? (
                   <LoadingSpinner size="sm" />

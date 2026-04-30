@@ -217,28 +217,28 @@ export default function CreatorEarningsPage() {
 
   if (projectsLoading || loading || earningsLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
       {/* Dynamic Page Title */}
       <PageTitle title="Earnings" description="Manage your earnings and withdrawals" />
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-[#111] border-b border-neutral-800 sticky top-0 z-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="p-2.5 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg">
+              <div className="p-2.5 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl shadow-lg">
                 <DollarSign className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Earnings</h1>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <h1 className="text-2xl sm:text-3xl font-bold text-brand-white">Earnings</h1>
+                <p className="text-sm text-neutral-500 mt-0.5">
                   {selectedProject
                     ? `Showing earnings for ${selectedProject.title}`
                     : 'Manage your earnings, withdrawals, and tax documents'
@@ -249,7 +249,7 @@ export default function CreatorEarningsPage() {
             <div className="flex items-center space-x-3">
               <button
                 onClick={handleDownloadStatement}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"
+                className="flex items-center space-x-2 px-4 py-2 border border-neutral-700 rounded-2xl text-neutral-400 hover:bg-brand-black"
               >
                 <FileText className="w-4 h-4" />
                 <span className="hidden sm:inline">Statement</span>
@@ -257,7 +257,7 @@ export default function CreatorEarningsPage() {
               <button
                 onClick={() => setShowPayoutForm(true)}
                 disabled={processingPayout || (summary?.availableBalance || 0) < 500}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 disabled:opacity-50"
               >
                 <Wallet className="w-4 h-4" />
                 <span>Withdraw</span>
@@ -269,7 +269,7 @@ export default function CreatorEarningsPage() {
 
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Demo Banner */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl p-4 mb-8 text-white">
+        <div className="bg-gradient-to-r from-blue-500/100 to-purple-500 rounded-3xl p-4 mb-8 text-white">
           <div className="flex items-center space-x-3">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <p className="text-sm">
@@ -280,50 +280,50 @@ export default function CreatorEarningsPage() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Earned</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(summary?.totalRaised || 0)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Total Earned</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(summary?.totalRaised || 0)}</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <DollarSign className="w-6 h-6 text-green-600" />
+              <div className="p-3 bg-green-500/20 rounded-full">
+                <DollarSign className="w-6 h-6 text-green-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Available</p>
-                <p className="text-2xl font-bold text-green-600 mt-1">{formatCurrency(summary?.availableBalance || 0)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Available</p>
+                <p className="text-2xl font-bold text-green-400 mt-1">{formatCurrency(summary?.availableBalance || 0)}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Wallet className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-blue-500/20 rounded-full">
+                <Wallet className="w-6 h-6 text-blue-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Pending</p>
-                <p className="text-2xl font-bold text-yellow-600 mt-1">{formatCurrency(summary?.pendingBalance || 0)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Pending</p>
+                <p className="text-2xl font-bold text-yellow-400 mt-1">{formatCurrency(summary?.pendingBalance || 0)}</p>
               </div>
-              <div className="p-3 bg-yellow-100 rounded-full">
-                <Clock className="w-6 h-6 text-yellow-600" />
+              <div className="p-3 bg-yellow-500/20 rounded-full">
+                <Clock className="w-6 h-6 text-yellow-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Withdrawn</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(summary?.totalWithdrawn || 0)}</p>
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Withdrawn</p>
+                <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(summary?.totalWithdrawn || 0)}</p>
               </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <CheckCircle className="w-6 h-6 text-purple-600" />
+              <div className="p-3 bg-purple-500/20 rounded-full">
+                <CheckCircle className="w-6 h-6 text-purple-400" />
               </div>
             </div>
           </div>
@@ -333,8 +333,8 @@ export default function CreatorEarningsPage() {
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Earnings Timeline */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Earnings Timeline</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-6">Earnings Timeline</h3>
               <div className="h-48 flex items-end justify-between space-x-2">
                 {earningsTimeline.map((month) => {
                   const maxAmount = Math.max(...earningsTimeline.map(m => m.amount));
@@ -351,7 +351,7 @@ export default function CreatorEarningsPage() {
                           {formatCurrency(month.amount)}
                         </div>
                       </div>
-                      <span className="text-xs text-gray-500 mt-2">{month.month}</span>
+                      <span className="text-xs text-neutral-500 mt-2">{month.month}</span>
                     </div>
                   );
                 })}
@@ -359,10 +359,10 @@ export default function CreatorEarningsPage() {
             </div>
 
             {/* Earnings by Project */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Earnings by Project</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-4">Earnings by Project</h3>
               {earningsByProject.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No earnings yet</p>
+                <p className="text-neutral-500 text-center py-8">No earnings yet</p>
               ) : (
                 <div className="space-y-4">
                   {earningsByProject.map((project, index) => {
@@ -373,14 +373,14 @@ export default function CreatorEarningsPage() {
                       <div key={project.id}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
-                            <span className="text-sm font-medium text-gray-900">{project.title}</span>
-                            <span className="text-xs text-gray-500">({project.count} donations)</span>
+                            <span className="text-sm font-medium text-brand-white">{project.title}</span>
+                            <span className="text-xs text-neutral-500">({project.count} donations)</span>
                           </div>
-                          <span className="font-semibold text-gray-900">{formatCurrency(project.amount)}</span>
+                          <span className="font-semibold text-brand-white">{formatCurrency(project.amount)}</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-neutral-800 rounded-full h-2">
                           <div
-                            className={`h-2 rounded-full transition-all duration-500 ${index === 0 ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-orange-400'
+                            className={`h-2 rounded-full transition-all duration-500 ${index === 0 ? 'bg-gradient-to-r from-brand-orange/100 to-red-500/100' : 'bg-orange-400'
                               }`}
                             style={{ width: `${percentage}%` }}
                           />
@@ -393,43 +393,43 @@ export default function CreatorEarningsPage() {
             </div>
 
             {/* Payout History (Enhanced with Reference IDs) */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Payout History</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-4">Payout History</h3>
               {mockPayoutHistory.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-gray-500 font-medium">Date</th>
-                        <th className="text-left py-2 text-gray-500 font-medium">Amount</th>
-                        <th className="text-left py-2 text-gray-500 font-medium">Method</th>
-                        <th className="text-left py-2 text-gray-500 font-medium">Status</th>
-                        <th className="text-left py-2 text-gray-500 font-medium">Reference</th>
+                      <tr className="border-b border-neutral-800">
+                        <th className="text-left py-2 text-neutral-500 font-medium">Date</th>
+                        <th className="text-left py-2 text-neutral-500 font-medium">Amount</th>
+                        <th className="text-left py-2 text-neutral-500 font-medium">Method</th>
+                        <th className="text-left py-2 text-neutral-500 font-medium">Status</th>
+                        <th className="text-left py-2 text-neutral-500 font-medium">Reference</th>
                       </tr>
                     </thead>
                     <tbody>
                       {mockPayoutHistory.map((payout) => (
-                        <tr key={payout.id} className="border-b border-gray-100 hover:bg-gray-50">
+                        <tr key={payout.id} className="border-b border-neutral-800/50 hover:bg-brand-black">
                           <td className="py-3">{new Date(payout.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                           <td className="py-3 font-medium">{formatCurrency(payout.amount)}</td>
                           <td className="py-3">{payout.method}</td>
                           <td className="py-3">
-                            <span className={`px-2 py-1 rounded-full text-xs ${payout.status === 'completed' ? 'bg-green-100 text-green-700' :
-                              payout.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
-                                'bg-gray-100 text-gray-700'
+                            <span className={`px-2 py-1 rounded-full text-xs ${payout.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                              payout.status === 'processing' ? 'bg-yellow-500/20 text-yellow-400' :
+                                'bg-neutral-900 text-neutral-300'
                               }`}>
                               {payout.status === 'completed' ? '✅ Completed' :
                                 payout.status === 'processing' ? '⏳ Processing' : payout.status}
                             </span>
                           </td>
-                          <td className="py-3 text-gray-500 font-mono text-xs">{payout.reference}</td>
+                          <td className="py-3 text-neutral-500 font-mono text-xs">{payout.reference}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">No payouts yet</p>
+                <p className="text-neutral-500 text-center py-8">No payouts yet</p>
               )}
             </div>
           </div>
@@ -437,7 +437,7 @@ export default function CreatorEarningsPage() {
           {/* Right Sidebar */}
           <div className="space-y-6">
             {/* Tax Information (Enhanced with GST) */}
-            <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-gradient-to-br from-brand-orange/100 to-red-600 rounded-3xl shadow-lg p-6 text-white">
               <div className="flex items-center space-x-2 mb-4">
                 <FileText className="w-5 h-5" />
                 <h3 className="font-semibold">Earnings Breakdown</h3>
@@ -475,12 +475,12 @@ export default function CreatorEarningsPage() {
             </div>
 
             {/* Payment Methods (Enhanced) */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-900">Payment Methods</h3>
+                <h3 className="font-semibold text-brand-white">Payment Methods</h3>
                 <button
                   onClick={() => setShowBankForm(true)}
-                  className="text-sm text-orange-600 hover:text-orange-700"
+                  className="text-sm text-brand-orange hover:text-brand-orange"
                 >
                   + Add New
                 </button>
@@ -488,61 +488,61 @@ export default function CreatorEarningsPage() {
 
               <div className="space-y-3">
                 {/* Bank Account (Mock) */}
-                <div className={`flex items-center justify-between p-3 rounded-lg border-2 ${mockBankDetails.primaryMethod === 'bank' ? 'border-green-500 bg-green-50' : 'border-gray-200 bg-gray-50'
+                <div className={`flex items-center justify-between p-3 rounded-2xl border-2 ${mockBankDetails.primaryMethod === 'bank' ? 'border-green-500 bg-green-500/10' : 'border-neutral-800 bg-brand-black'
                   }`}>
                   <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg ${mockBankDetails.primaryMethod === 'bank' ? 'bg-green-100' : 'bg-gray-200'}`}>
-                      <Building2 className={`w-5 h-5 ${mockBankDetails.primaryMethod === 'bank' ? 'text-green-600' : 'text-gray-500'}`} />
+                    <div className={`p-2 rounded-2xl ${mockBankDetails.primaryMethod === 'bank' ? 'bg-green-500/20' : 'bg-neutral-800'}`}>
+                      <Building2 className={`w-5 h-5 ${mockBankDetails.primaryMethod === 'bank' ? 'text-green-400' : 'text-neutral-500'}`} />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-gray-900">{mockBankDetails.bankName}</p>
+                        <p className="text-sm font-medium text-brand-white">{mockBankDetails.bankName}</p>
                         {mockBankDetails.primaryMethod === 'bank' && (
-                          <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Primary</span>
+                          <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Primary</span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500">A/C {mockBankDetails.accountNumber}</p>
-                      <p className="text-xs text-gray-400">IFSC: {mockBankDetails.ifsc}</p>
+                      <p className="text-xs text-neutral-500">A/C {mockBankDetails.accountNumber}</p>
+                      <p className="text-xs text-neutral-600">IFSC: {mockBankDetails.ifsc}</p>
                     </div>
                   </div>
-                  <button className="text-xs text-gray-500 hover:text-gray-700">Edit</button>
+                  <button className="text-xs text-neutral-500 hover:text-neutral-300">Edit</button>
                 </div>
 
                 {/* UPI (Mock) */}
                 {mockBankDetails.hasUPI && (
-                  <div className={`flex items-center justify-between p-3 rounded-lg border-2 ${mockBankDetails.primaryMethod === 'upi' ? 'border-green-500 bg-green-50' : 'border-gray-200 bg-gray-50'
+                  <div className={`flex items-center justify-between p-3 rounded-2xl border-2 ${mockBankDetails.primaryMethod === 'upi' ? 'border-green-500 bg-green-500/10' : 'border-neutral-800 bg-brand-black'
                     }`}>
                     <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${mockBankDetails.primaryMethod === 'upi' ? 'bg-green-100' : 'bg-gray-200'}`}>
-                        <Smartphone className={`w-5 h-5 ${mockBankDetails.primaryMethod === 'upi' ? 'text-green-600' : 'text-gray-500'}`} />
+                      <div className={`p-2 rounded-2xl ${mockBankDetails.primaryMethod === 'upi' ? 'bg-green-500/20' : 'bg-neutral-800'}`}>
+                        <Smartphone className={`w-5 h-5 ${mockBankDetails.primaryMethod === 'upi' ? 'text-green-400' : 'text-neutral-500'}`} />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900">UPI</p>
-                        <p className="text-xs text-gray-500">{mockBankDetails.upiId}</p>
+                        <p className="text-sm font-medium text-brand-white">UPI</p>
+                        <p className="text-xs text-neutral-500">{mockBankDetails.upiId}</p>
                       </div>
                     </div>
-                    <button className="text-xs text-orange-600 hover:text-orange-700">Set Primary</button>
+                    <button className="text-xs text-brand-orange hover:text-brand-orange">Set Primary</button>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Tax Documents */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center space-x-2 mb-4">
-                <Shield className="w-5 h-5 text-blue-600" />
-                <h3 className="font-semibold text-gray-900">Tax Documents</h3>
+                <Shield className="w-5 h-5 text-blue-400" />
+                <h3 className="font-semibold text-brand-white">Tax Documents</h3>
               </div>
               <div className="space-y-2">
                 {taxDocuments.map((doc, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div key={idx} className="flex items-center justify-between p-3 bg-brand-black rounded-2xl hover:bg-neutral-900 transition-colors">
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{doc.name}</p>
-                      <p className="text-xs text-gray-500">{doc.description}</p>
+                      <p className="text-sm font-medium text-brand-white">{doc.name}</p>
+                      <p className="text-xs text-neutral-500">{doc.description}</p>
                     </div>
                     <button
                       onClick={() => toast.success(`${doc.name} download started (Mock)`)}
-                      className="flex items-center gap-1 text-xs text-orange-600 hover:text-orange-700"
+                      className="flex items-center gap-1 text-xs text-brand-orange hover:text-brand-orange"
                     >
                       <Download className="w-3 h-3" />
                       {doc.type.toUpperCase()}
@@ -553,12 +553,12 @@ export default function CreatorEarningsPage() {
             </div>
 
             {/* India Compliance Info */}
-            <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+            <div className="bg-blue-500/10 rounded-3xl p-4 border border-blue-500/30">
               <div className="flex items-start space-x-3">
-                <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <Shield className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-blue-900 text-sm">India Tax Compliance</h4>
-                  <ul className="text-xs text-blue-700 mt-2 space-y-1">
+                  <h4 className="font-medium text-blue-300 text-sm">India Tax Compliance</h4>
+                  <ul className="text-xs text-blue-400 mt-2 space-y-1">
                     <li>• PAN required for payouts &gt; ₹50,000</li>
                     <li>• TDS (1%) deducted on payouts &gt; ₹7,50,000/year</li>
                     <li>• GST (18%) charged on platform fee</li>
@@ -569,26 +569,26 @@ export default function CreatorEarningsPage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="font-semibold text-gray-900 mb-4">Quick Stats</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="font-semibold text-brand-white mb-4">Quick Stats</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Total Projects</span>
-                  <span className="font-medium text-gray-900">{projects.length}</span>
+                  <span className="text-sm text-neutral-400">Total Projects</span>
+                  <span className="font-medium text-brand-white">{projects.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Total Donations</span>
-                  <span className="font-medium text-gray-900">{allDonations.length}</span>
+                  <span className="text-sm text-neutral-400">Total Donations</span>
+                  <span className="font-medium text-brand-white">{allDonations.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Avg. Donation</span>
-                  <span className="font-medium text-gray-900">
+                  <span className="text-sm text-neutral-400">Avg. Donation</span>
+                  <span className="font-medium text-brand-white">
                     {formatCurrency(allDonations.length > 0 ? allDonations.reduce((s, d) => s + d.amount, 0) / allDonations.length : 0)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Min. Withdrawal</span>
-                  <span className="font-medium text-gray-900">₹500</span>
+                  <span className="text-sm text-neutral-400">Min. Withdrawal</span>
+                  <span className="font-medium text-brand-white">₹500</span>
                 </div>
               </div>
             </div>

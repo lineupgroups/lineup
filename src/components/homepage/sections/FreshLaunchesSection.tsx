@@ -16,11 +16,10 @@ export default function FreshLaunchesSection({ projects, loading }: FreshLaunche
         title="Fresh Launches"
         subtitle="Be an early supporter of new projects"
         icon={Rocket}
-        className="bg-gradient-to-br from-yellow-50 to-orange-50"
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse" />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
           ))}
         </div>
       </SectionContainer>
@@ -34,14 +33,13 @@ export default function FreshLaunchesSection({ projects, loading }: FreshLaunche
         title="Fresh Launches"
         subtitle="Be an early supporter of new projects"
         icon={Rocket}
-        className="bg-gradient-to-br from-yellow-50 to-orange-50"
       >
-        <div className="text-center py-12">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Clock className="w-8 h-8 text-orange-600" />
+        <div className="text-center py-16 bg-neutral-900/50 rounded-3xl border border-neutral-800">
+          <div className="w-20 h-20 bg-brand-orange/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Clock className="w-10 h-10 text-brand-orange" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No new launches this week</h3>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <h3 className="text-xl font-bold text-brand-white mb-3 tracking-tight">No new launches this week</h3>
+          <p className="text-neutral-400 max-w-md mx-auto font-medium leading-relaxed">
             Projects launched in the last 7 days will appear here.
             New ideas are coming soon!
           </p>
@@ -55,7 +53,6 @@ export default function FreshLaunchesSection({ projects, loading }: FreshLaunche
       title="Fresh Launches"
       subtitle="Be an early supporter of new projects"
       icon={Rocket}
-      className="bg-gradient-to-br from-yellow-50 to-orange-50"
     >
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map(project => (
@@ -65,6 +62,3 @@ export default function FreshLaunchesSection({ projects, loading }: FreshLaunche
     </SectionContainer>
   );
 }
-
-
-

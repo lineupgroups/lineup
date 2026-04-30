@@ -37,13 +37,13 @@ export const InteractionStats: React.FC<InteractionStatsProps> = ({
       icon: Heart,
       count: counts.likes,
       label: 'likes',
-      color: 'text-red-500'
+      color: 'text-brand-orange'
     },
     {
       icon: Bell,
       count: counts.follows,
       label: 'followers',
-      color: 'text-blue-500'
+      color: 'text-brand-acid'
     }
   ];
 
@@ -53,7 +53,7 @@ export const InteractionStats: React.FC<InteractionStatsProps> = ({
       icon: Eye,
       count: viewCount,
       label: 'views',
-      color: 'text-gray-500'
+      color: 'text-neutral-500'
     });
   }
 
@@ -66,8 +66,8 @@ export const InteractionStats: React.FC<InteractionStatsProps> = ({
       )}>
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex items-center gap-1">
-            <div className={cn('bg-gray-200 rounded animate-pulse', sizeClasses[size])} />
-            <div className={cn('bg-gray-200 rounded animate-pulse h-4 w-8', textSizeClasses[size])} />
+            <div className={cn('bg-neutral-800 rounded animate-pulse', sizeClasses[size])} />
+            <div className={cn('bg-neutral-800 rounded animate-pulse h-4 w-8', textSizeClasses[size])} />
           </div>
         ))}
       </div>
@@ -86,7 +86,7 @@ export const InteractionStats: React.FC<InteractionStatsProps> = ({
 
   return (
     <div className={cn(
-      'flex gap-4',
+      'flex gap-6',
       orientation === 'vertical' ? 'flex-col' : 'flex-row items-center',
       className
     )}>
@@ -95,12 +95,12 @@ export const InteractionStats: React.FC<InteractionStatsProps> = ({
         return (
           <div
             key={stat.label}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1.5 group cursor-default"
             title={`${stat.count} ${stat.label}`}
           >
-            <Icon className={cn(sizeClasses[size], stat.color)} />
+            <Icon className={cn(sizeClasses[size], stat.color, "transition-transform group-hover:scale-110")} />
             <span className={cn(
-              'font-medium text-gray-600',
+              'font-black italic text-neutral-500 group-hover:text-neutral-300 transition-colors',
               textSizeClasses[size]
             )}>
               {formatCount(stat.count)}

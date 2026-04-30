@@ -104,11 +104,11 @@ export default function ActionAlerts({ projects }: ActionAlertsProps) {
         switch (type) {
             case 'danger':
                 return {
-                    bg: 'bg-red-50',
-                    border: 'border-red-200',
-                    icon: 'text-red-600 bg-red-100',
+                    bg: 'bg-red-500/10',
+                    border: 'border-red-500/30',
+                    icon: 'text-red-400 bg-red-100',
                     text: 'text-red-800',
-                    button: 'text-red-600 hover:text-red-800'
+                    button: 'text-red-400 hover:text-red-800'
                 };
             case 'warning':
                 return {
@@ -120,28 +120,28 @@ export default function ActionAlerts({ projects }: ActionAlertsProps) {
                 };
             case 'info':
                 return {
-                    bg: 'bg-blue-50',
-                    border: 'border-blue-200',
-                    icon: 'text-blue-600 bg-blue-100',
-                    text: 'text-blue-800',
-                    button: 'text-blue-600 hover:text-blue-800'
+                    bg: 'bg-blue-500/10',
+                    border: 'border-blue-500/30',
+                    icon: 'text-blue-400 bg-blue-500/20',
+                    text: 'text-blue-300',
+                    button: 'text-blue-400 hover:text-blue-300'
                 };
         }
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 overflow-hidden">
+            <div className="p-4 border-b border-neutral-800/50 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <AlertTriangle className="w-5 h-5 text-orange-500" />
-                    <h2 className="text-lg font-semibold text-gray-900">Action Needed</h2>
+                    <h2 className="text-lg font-semibold text-brand-white">Action Needed</h2>
                 </div>
-                <span className="bg-orange-100 text-orange-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                <span className="bg-brand-orange/20 text-brand-orange text-xs font-medium px-2.5 py-0.5 rounded-full">
                     {alerts.length} alert{alerts.length !== 1 ? 's' : ''}
                 </span>
             </div>
 
-            <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
+            <div className="divide-y divide-neutral-800/50 max-h-80 overflow-y-auto">
                 {alerts.slice(0, 5).map((alert) => {
                     const styles = getAlertStyles(alert.type);
                     return (
@@ -150,12 +150,12 @@ export default function ActionAlerts({ projects }: ActionAlertsProps) {
                             className={`p-4 ${styles.bg} border-l-4 ${styles.border}`}
                         >
                             <div className="flex items-start gap-3">
-                                <div className={`p-2 rounded-lg ${styles.icon} flex-shrink-0`}>
+                                <div className={`p-2 rounded-2xl ${styles.icon} flex-shrink-0`}>
                                     {alert.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <h3 className={`font-medium ${styles.text}`}>{alert.title}</h3>
-                                    <p className="text-sm text-gray-600 mt-0.5 line-clamp-2">{alert.message}</p>
+                                    <p className="text-sm text-neutral-400 mt-0.5 line-clamp-2">{alert.message}</p>
                                     {alert.action && (
                                         <Link
                                             to={alert.action.href}
@@ -173,8 +173,8 @@ export default function ActionAlerts({ projects }: ActionAlertsProps) {
             </div>
 
             {alerts.length > 5 && (
-                <div className="p-3 bg-gray-50 text-center">
-                    <span className="text-sm text-gray-500">
+                <div className="p-3 bg-brand-black text-center">
+                    <span className="text-sm text-neutral-500">
                         +{alerts.length - 5} more alert{alerts.length - 5 !== 1 ? 's' : ''}
                     </span>
                 </div>

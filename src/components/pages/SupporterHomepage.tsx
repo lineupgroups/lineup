@@ -59,7 +59,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black">
       {/* Hero Section - Supporter Focused */}
       <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
@@ -75,13 +75,13 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
               <Link
                 to="/discover"
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 text-center"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#111] text-blue-400 rounded-2xl font-semibold text-base sm:text-lg hover:bg-neutral-900 transition-all duration-200 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#111] focus:ring-offset-2 focus:ring-offset-blue-600 text-center"
               >
                 Explore Projects
               </Link>
               <button
                 onClick={handleBecomeCreator}
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-lg font-semibold text-base sm:text-lg hover:bg-white hover:text-blue-600 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 text-center"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-2xl font-semibold text-base sm:text-lg hover:bg-[#111] hover:text-blue-400 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#111] focus:ring-offset-2 focus:ring-offset-blue-600 text-center"
               >
                 <span className="hidden sm:inline">Have an idea? Start creating →</span>
                 <span className="sm:hidden">Start Creating</span>
@@ -92,24 +92,24 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       </div>
 
       {/* Stats Section */}
-      <div className="bg-white py-8 sm:py-16 border-b border-gray-200">
+      <div className="bg-[#111] py-8 sm:py-16 border-b border-neutral-800">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
             <div>
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">10,000+</div>
-              <div className="text-sm sm:text-base text-gray-600">Projects Funded</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-400 mb-1 sm:mb-2">10,000+</div>
+              <div className="text-sm sm:text-base text-neutral-400">Projects Funded</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1 sm:mb-2">₹50 Cr+</div>
-              <div className="text-sm sm:text-base text-gray-600">Total Raised</div>
+              <div className="text-2xl sm:text-3xl font-bold text-purple-400 mb-1 sm:mb-2">₹50 Cr+</div>
+              <div className="text-sm sm:text-base text-neutral-400">Total Raised</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-bold text-indigo-600 mb-1 sm:mb-2">1M+</div>
-              <div className="text-sm sm:text-base text-gray-600">Happy Supporters</div>
+              <div className="text-sm sm:text-base text-neutral-400">Happy Supporters</div>
             </div>
             <div>
-              <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-1 sm:mb-2">95%</div>
-              <div className="text-sm sm:text-base text-gray-600">Success Rate</div>
+              <div className="text-2xl sm:text-3xl font-bold text-green-400 mb-1 sm:mb-2">95%</div>
+              <div className="text-sm sm:text-base text-neutral-400">Success Rate</div>
             </div>
           </div>
         </div>
@@ -119,12 +119,12 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       {featuredProjects.length > 0 && (
         <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
           <div className="text-center mb-6 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Featured Projects</h2>
-            <p className="text-base sm:text-xl text-gray-600">Handpicked projects that are making a difference</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-brand-white mb-2 sm:mb-4">Featured Projects</h2>
+            <p className="text-base sm:text-xl text-neutral-400">Handpicked projects that are making a difference</p>
           </div>
 
           <div className="relative">
-            <div className="overflow-hidden rounded-xl">
+            <div className="overflow-hidden rounded-3xl">
               <div
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -132,7 +132,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                 {featuredProjects.map((project) => (
                   <div key={project.id} className="w-full flex-shrink-0">
                     <div
-                      className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-[1.02] transition-all duration-300"
+                      className="bg-[#111] rounded-3xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-[1.02] transition-all duration-300"
                       onClick={() => onProjectClick(project.id)}
                     >
                       <div className="sm:flex">
@@ -145,7 +145,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                         </div>
                         <div className="sm:w-1/2 p-4 sm:p-8">
                           <div className="flex items-center justify-between mb-4">
-                            <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
+                            <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium">
                               {project.category}
                             </span>
                             <div className="flex items-center space-x-2">
@@ -158,26 +158,26 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                               />
                             </div>
                           </div>
-                          <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">{project.tagline}</p>
-                          <p className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none">{project.description}</p>
+                          <h3 className="text-lg sm:text-2xl font-bold text-brand-white mb-2">{project.title}</h3>
+                          <p className="text-sm sm:text-base text-neutral-400 mb-3 sm:mb-4">{project.tagline}</p>
+                          <p className="text-sm sm:text-base text-neutral-300 mb-4 sm:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none">{project.description}</p>
 
                           {/* Progress */}
                           <div className="mb-4 sm:mb-6">
-                            <div className="flex justify-between text-sm text-gray-600 mb-2">
+                            <div className="flex justify-between text-sm text-neutral-400 mb-2">
                               <span>{formatCurrency(project.raised)} raised</span>
                               <span>{getProgressPercentage(project).toFixed(0)}% funded</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-neutral-800 rounded-full h-2">
                               <div
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                                className="bg-gradient-to-r from-blue-500/100 to-purple-600 h-2 rounded-full transition-all duration-500"
                                 style={{ width: `${getProgressPercentage(project)}%` }}
                               ></div>
                             </div>
                           </div>
 
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
-                            <div className="flex items-center space-x-3 sm:space-x-4 text-xs sm:text-sm text-gray-600">
+                            <div className="flex items-center space-x-3 sm:space-x-4 text-xs sm:text-sm text-neutral-400">
                               <div className="flex items-center space-x-1">
                                 <Users className="w-3 h-3 sm:w-4 sm:h-4" />
                                 <span>{project.supporters} supporters</span>
@@ -187,7 +187,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                                 <span>{getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}</span>
                               </div>
                             </div>
-                            <button className="px-4 sm:px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm">
+                            <button className="px-4 sm:px-6 py-2 bg-gradient-to-r from-blue-500/100 to-purple-600 text-white rounded-2xl font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm">
                               Support Now
                             </button>
                           </div>
@@ -204,13 +204,13 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
               <>
                 <button
                   onClick={prevSlide}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200"
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#111]/90 hover:bg-[#111] p-2 rounded-full shadow-lg transition-all duration-200"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#111]/90 hover:bg-[#111] p-2 rounded-full shadow-lg transition-all duration-200"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -221,7 +221,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                     <button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
-                      className={`w-2 h-2 rounded-full transition-all duration-200 ${currentSlide === index ? 'bg-blue-500' : 'bg-gray-300'
+                      className={`w-2 h-2 rounded-full transition-all duration-200 ${currentSlide === index ? 'bg-blue-500/100' : 'bg-neutral-700'
                         }`}
                     />
                   ))}
@@ -233,16 +233,16 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       )}
 
       {/* Projects Near Me Section */}
-      <div className="bg-white py-8 sm:py-16 border-b border-gray-200">
+      <div className="bg-[#111] py-8 sm:py-16 border-b border-neutral-800">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Projects Near You</h2>
-              <p className="text-base sm:text-lg text-gray-600 flex items-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-brand-white mb-2">Projects Near You</h2>
+              <p className="text-base sm:text-lg text-neutral-400 flex items-center">
                 <span className="mr-2">Showing projects in</span>
-                <span className="font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex items-center">
+                <span className="font-semibold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full flex items-center">
                   Bangalore
-                  <button className="ml-2 text-blue-400 hover:text-blue-600">
+                  <button className="ml-2 text-blue-400 hover:text-blue-400">
                     <span className="sr-only">Change location</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -253,7 +253,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
             </div>
             <Link
               to="/search?nearMe=true"
-              className="hidden sm:flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+              className="hidden sm:flex items-center text-blue-400 font-semibold hover:text-blue-400 transition-colors"
             >
               View all nearby
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -265,7 +265,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
           <div className="mt-6 sm:hidden text-center">
             <Link
               to="/search?nearMe=true"
-              className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+              className="inline-flex items-center text-blue-400 font-semibold hover:text-blue-400 transition-colors"
             >
               View all nearby
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -277,8 +277,8 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       {/* Categories & Projects */}
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="text-center mb-6 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Browse by Category</h2>
-          <p className="text-base sm:text-xl text-gray-600">Find projects that match your interests</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-brand-white mb-2 sm:mb-4">Browse by Category</h2>
+          <p className="text-base sm:text-xl text-neutral-400">Find projects that match your interests</p>
         </div>
 
         {/* Category Filters */}
@@ -288,8 +288,8 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
               key={category}
               onClick={() => setSelectedCategory(category)}
               className={`px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 ${selectedCategory === category
-                ? 'bg-blue-500 text-white shadow-md'
-                : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
+                ? 'bg-blue-500/100 text-white shadow-md'
+                : 'bg-[#111] text-neutral-300 hover:bg-blue-500/10 hover:text-blue-400 border border-neutral-800'
                 }`}
             >
               {category}
@@ -301,15 +301,15 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl shadow-sm overflow-hidden animate-pulse">
-                <div className="h-48 bg-gray-200"></div>
+              <div key={i} className="bg-[#111] rounded-3xl shadow-sm overflow-hidden animate-pulse">
+                <div className="h-48 bg-neutral-800"></div>
                 <div className="p-4 sm:p-6">
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-3 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-2 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-4 bg-neutral-800 rounded mb-2"></div>
+                  <div className="h-3 bg-neutral-800 rounded mb-4"></div>
+                  <div className="h-2 bg-neutral-800 rounded mb-4"></div>
                   <div className="flex justify-between">
-                    <div className="h-3 bg-gray-200 rounded w-20"></div>
-                    <div className="h-8 bg-gray-200 rounded w-20"></div>
+                    <div className="h-3 bg-neutral-800 rounded w-20"></div>
+                    <div className="h-8 bg-neutral-800 rounded w-20"></div>
                   </div>
                 </div>
               </div>
@@ -320,7 +320,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
             {displayProjects.slice(0, 9).map((project) => (
               <div
                 key={project.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1"
+                className="bg-[#111] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1"
                 onClick={() => onProjectClick(project.id)}
               >
                 <div className="relative">
@@ -330,13 +330,13 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                     className="w-full h-40 sm:h-48 object-cover"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-[#111]/90 backdrop-blur-sm text-neutral-300 rounded-full text-sm font-medium">
                       {project.category}
                     </span>
                   </div>
                   <div className="absolute top-4 right-4 flex space-x-2">
                     <div
-                      className="bg-white/90 backdrop-blur-sm rounded-lg"
+                      className="bg-[#111]/90 backdrop-blur-sm rounded-2xl"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <LikeButton projectId={project.id} size="sm" showCount={false} />
@@ -345,8 +345,8 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                 </div>
 
                 <div className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 line-clamp-2">{project.title}</h3>
-                  <p className="text-gray-600 mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-3">{project.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-brand-white mb-2 line-clamp-2">{project.title}</h3>
+                  <p className="text-neutral-400 mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-3">{project.description}</p>
 
                   {/* Creator Info */}
                   <CreatorInfo
@@ -357,13 +357,13 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
                   {/* Progress */}
                   <div className="mb-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <div className="flex justify-between text-sm text-neutral-400 mb-2">
                       <span>{formatCurrency(project.raised)}</span>
                       <span>{getProgressPercentage(project).toFixed(0)}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-neutral-800 rounded-full h-2">
                       <div
-                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                        className="bg-gradient-to-r from-blue-500/100 to-purple-600 h-2 rounded-full transition-all duration-500"
                         style={{ width: `${getProgressPercentage(project)}%` }}
                       ></div>
                     </div>
@@ -371,7 +371,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
 
                   {/* Stats and Action */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
-                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-gray-600">
+                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-neutral-400">
                       <div className="flex items-center space-x-1">
                         <Users className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>{project.supporters}</span>
@@ -382,7 +382,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
                       </div>
                     </div>
                     <button
-                      className="px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium text-xs sm:text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+                      className="px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500/100 to-purple-600 text-white rounded-2xl font-medium text-xs sm:text-sm hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
                       onClick={(e) => e.stopPropagation()}
                     >
                       Support
@@ -398,7 +398,7 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
         <div className="text-center mt-6 sm:mt-12">
           <Link
             to="/discover"
-            className="inline-flex items-center space-x-2 px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
+            className="inline-flex items-center space-x-2 px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-500/100 to-purple-600 text-white rounded-2xl font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
           >
             <span>View All Projects</span>
             <ArrowRight className="w-4 h-4" />
@@ -407,36 +407,36 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
       </div>
 
       {/* How It Works Section */}
-      <div className="bg-white py-8 sm:py-16">
+      <div className="bg-[#111] py-8 sm:py-16">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">How Supporting Works</h2>
-            <p className="text-base sm:text-xl text-gray-600">Simple steps to make a difference</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-brand-white mb-2 sm:mb-4">How Supporting Works</h2>
+            <p className="text-base sm:text-xl text-neutral-400">Simple steps to make a difference</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">1. Discover</h3>
-              <p className="text-sm sm:text-base text-gray-600">Browse amazing projects and find ones that inspire you</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-brand-white mb-2">1. Discover</h3>
+              <p className="text-sm sm:text-base text-neutral-400">Browse amazing projects and find ones that inspire you</p>
             </div>
 
             <div className="text-center">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">2. Support</h3>
-              <p className="text-sm sm:text-base text-gray-600">Choose your support level and help bring ideas to life</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-brand-white mb-2">2. Support</h3>
+              <p className="text-sm sm:text-base text-neutral-400">Choose your support level and help bring ideas to life</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <Star className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">3. Celebrate</h3>
-              <p className="text-sm sm:text-base text-gray-600">Watch projects succeed and get exclusive updates</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-brand-white mb-2">3. Celebrate</h3>
+              <p className="text-sm sm:text-base text-neutral-400">Watch projects succeed and get exclusive updates</p>
             </div>
           </div>
         </div>
@@ -452,13 +452,13 @@ export default function SupporterHomepage({ onProjectClick }: SupporterHomepageP
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               to="/discover"
-              className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105"
+              className="px-8 py-3 bg-[#111] text-blue-400 rounded-2xl font-semibold hover:bg-neutral-900 transition-all duration-200 transform hover:scale-105"
             >
               Start Supporting
             </Link>
             <button
               onClick={handleBecomeCreator}
-              className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200 transform hover:scale-105"
+              className="px-8 py-3 border-2 border-white text-white rounded-2xl font-semibold hover:bg-[#111] hover:text-blue-400 transition-all duration-200 transform hover:scale-105"
             >
               Become a Creator
             </button>

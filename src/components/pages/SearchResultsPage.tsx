@@ -120,11 +120,11 @@ export default function SearchResultsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-[#111] border-b border-neutral-800">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Search Projects</h1>
+          <h1 className="text-2xl font-bold text-brand-white mb-4">Search Projects</h1>
 
           {/* Search Bar */}
           <div className="max-w-2xl">
@@ -169,7 +169,7 @@ export default function SearchResultsPage() {
             <Filter className="w-5 h-5" />
             <span>Filters</span>
             {(params.categories?.length || 0) + (params.states?.length || 0) > 0 && (
-              <span className="bg-white text-orange-600 px-2 py-0.5 rounded-full text-xs font-bold">
+              <span className="bg-[#111] text-brand-orange px-2 py-0.5 rounded-full text-xs font-bold">
                 {(params.categories?.length || 0) + (params.states?.length || 0)}
               </span>
             )}
@@ -182,12 +182,12 @@ export default function SearchResultsPage() {
                 className="absolute inset-0 bg-black bg-opacity-50"
                 onClick={() => setShowMobileFilters(false)}
               />
-              <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-xl overflow-y-auto">
-                <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-[#111] shadow-xl overflow-y-auto">
+                <div className="p-4 border-b border-neutral-800 flex items-center justify-between">
                   <h3 className="text-lg font-semibold">Filters</h3>
                   <button
                     onClick={() => setShowMobileFilters(false)}
-                    className="p-2 hover:bg-gray-100 rounded"
+                    className="p-2 hover:bg-neutral-900 rounded"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -197,10 +197,10 @@ export default function SearchResultsPage() {
                   onFiltersChange={handleFiltersChange}
                   onClearAll={handleClearAll}
                 />
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-neutral-800">
                   <button
                     onClick={() => setShowMobileFilters(false)}
-                    className="w-full py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700"
+                    className="w-full py-3 bg-orange-600 text-white rounded-2xl font-medium hover:bg-orange-700"
                   >
                     Apply Filters
                   </button>
@@ -213,14 +213,14 @@ export default function SearchResultsPage() {
           <div className="flex-1">
             {/* Results Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-brand-white">
                 {loading ? 'Searching...' : `${totalResults} projects found`}
               </h2>
             </div>
 
             {/* Error State */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 mb-6">
                 <p className="text-red-800">{error}</p>
               </div>
             )}
@@ -229,10 +229,10 @@ export default function SearchResultsPage() {
             {loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
-                    <div className="h-48 bg-gray-200 rounded mb-4" />
-                    <div className="h-4 bg-gray-200 rounded mb-2" />
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div key={i} className="bg-[#111] rounded-2xl border border-neutral-800 p-4 animate-pulse">
+                    <div className="h-48 bg-neutral-800 rounded mb-4" />
+                    <div className="h-4 bg-neutral-800 rounded mb-2" />
+                    <div className="h-4 bg-neutral-800 rounded w-3/4" />
                   </div>
                 ))}
               </div>
@@ -241,10 +241,10 @@ export default function SearchResultsPage() {
             {/* No Results */}
             {!loading && projects.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-600 mb-4">No projects found matching your search criteria.</p>
+                <p className="text-neutral-400 mb-4">No projects found matching your search criteria.</p>
                 <button
                   onClick={handleClearAll}
-                  className="text-orange-600 hover:text-orange-700 font-medium"
+                  className="text-brand-orange hover:text-brand-orange font-medium"
                 >
                   Clear all filters
                 </button>
@@ -258,7 +258,7 @@ export default function SearchResultsPage() {
                   <div
                     key={project.id}
                     onClick={() => handleProjectClick(project.id)}
-                    className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    className="bg-[#111] rounded-2xl border border-neutral-800 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                   >
                     <div className="relative h-48">
                       <img
@@ -273,16 +273,16 @@ export default function SearchResultsPage() {
                       )}
                     </div>
                     <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                      <h3 className="font-semibold text-brand-white mb-2 line-clamp-2">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      <p className="text-sm text-neutral-400 mb-4 line-clamp-2">
                         {project.tagline}
                       </p>
 
                       {/* Progress Bar */}
                       <div className="mb-3">
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-neutral-800 rounded-full h-2">
                           <div
                             className="bg-orange-600 h-2 rounded-full transition-all"
                             style={{ width: `${getProgressPercentage(project)}%` }}
@@ -293,12 +293,12 @@ export default function SearchResultsPage() {
                       {/* Stats */}
                       <div className="flex items-center justify-between text-sm">
                         <div>
-                          <div className="font-semibold text-gray-900">{formatCurrency(project.raised)}</div>
-                          <div className="text-gray-500">raised of {formatCurrency(project.goal)}</div>
+                          <div className="font-semibold text-brand-white">{formatCurrency(project.raised)}</div>
+                          <div className="text-neutral-500">raised of {formatCurrency(project.goal)}</div>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-gray-900">{project.daysLeft}</div>
-                          <div className="text-gray-500">days left</div>
+                          <div className="font-semibold text-brand-white">{project.daysLeft}</div>
+                          <div className="text-neutral-500">days left</div>
                         </div>
                       </div>
                     </div>

@@ -114,9 +114,9 @@ export default function ShareMilestoneModal({
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="relative w-full max-w-md bg-[#111] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
                 {/* Celebration Header */}
-                <div className="relative bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 p-6 text-white overflow-hidden">
+                <div className="relative bg-gradient-to-r from-brand-orange/100 via-red-500 to-purple-600 p-6 text-white overflow-hidden">
                     {/* Animated confetti background */}
                     <div className="absolute inset-0 opacity-20">
                         <div className="absolute top-2 left-4 animate-bounce delay-100">🎊</div>
@@ -127,7 +127,7 @@ export default function ShareMilestoneModal({
 
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                        className="absolute top-4 right-4 p-1 rounded-full bg-[#111]/20 hover:bg-[#111]/30 transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -147,35 +147,35 @@ export default function ShareMilestoneModal({
                 <div className="p-6">
                     {/* Milestone Stats */}
                     <div className="text-center mb-6">
-                        <p className="text-gray-600 mb-2 line-clamp-2">
+                        <p className="text-neutral-400 mb-2 line-clamp-2">
                             "{projectTitle}"
                         </p>
                         <div className="flex items-center justify-center gap-3 mb-3">
                             <span className="text-4xl">{getMilestoneEmoji()}</span>
-                            <span className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                            <span className="text-4xl font-bold bg-gradient-to-r from-brand-orange/100 to-red-500/100 bg-clip-text text-transparent">
                                 {percentFunded}%
                             </span>
                             <span className="text-4xl">{getMilestoneEmoji()}</span>
                         </div>
-                        <p className="text-lg font-semibold text-gray-900">
+                        <p className="text-lg font-semibold text-brand-white">
                             {formatCurrency(raised)} raised
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-neutral-500">
                             from {backerCount} amazing backers
                         </p>
                     </div>
 
                     {/* Progress bar */}
                     <div className="mb-6">
-                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-3 bg-neutral-900 rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full transition-all duration-500"
+                                className="h-full bg-gradient-to-r from-brand-orange/100 to-red-500/100 rounded-full transition-all duration-500"
                                 style={{ width: `${Math.min(percentFunded, 100)}%` }}
                             />
                         </div>
                         {amountToGo > 0 && (
-                            <p className="text-center text-sm text-gray-500 mt-2">
-                                Only <span className="font-semibold text-orange-600">{formatCurrency(amountToGo)}</span> more to reach your goal!
+                            <p className="text-center text-sm text-neutral-500 mt-2">
+                                Only <span className="font-semibold text-brand-orange">{formatCurrency(amountToGo)}</span> more to reach your goal!
                             </p>
                         )}
                     </div>
@@ -183,7 +183,7 @@ export default function ShareMilestoneModal({
                     {/* Share Title */}
                     <div className="flex items-center gap-2 mb-4">
                         <Sparkles className="w-5 h-5 text-orange-500" />
-                        <h3 className="font-semibold text-gray-900">Share this achievement</h3>
+                        <h3 className="font-semibold text-brand-white">Share this achievement</h3>
                     </div>
 
                     {/* Share Buttons */}
@@ -192,39 +192,39 @@ export default function ShareMilestoneModal({
                         <button
                             onClick={handleWhatsAppShare}
                             disabled={isSharing}
-                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-green-50 hover:bg-green-100 border border-green-200 transition-all hover:scale-105 active:scale-95"
+                            className="flex flex-col items-center gap-2 p-4 rounded-3xl bg-green-500/10 hover:bg-green-500/20 border border-green-200 transition-all hover:scale-105 active:scale-95"
                         >
-                            <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full bg-green-500/100 flex items-center justify-center">
                                 <MessageCircle className="w-5 h-5 text-white" />
                             </div>
-                            <span className="text-xs font-medium text-green-700">WhatsApp</span>
+                            <span className="text-xs font-medium text-green-400">WhatsApp</span>
                         </button>
 
                         {/* Twitter */}
                         <button
                             onClick={handleTwitterShare}
                             disabled={isSharing}
-                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all hover:scale-105 active:scale-95"
+                            className="flex flex-col items-center gap-2 p-4 rounded-3xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition-all hover:scale-105 active:scale-95"
                         >
-                            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full bg-blue-500/100 flex items-center justify-center">
                                 <Twitter className="w-5 h-5 text-white" />
                             </div>
-                            <span className="text-xs font-medium text-blue-700">Twitter</span>
+                            <span className="text-xs font-medium text-blue-400">Twitter</span>
                         </button>
 
                         {/* Copy Link */}
                         <button
                             onClick={handleCopyLink}
-                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-all hover:scale-105 active:scale-95"
+                            className="flex flex-col items-center gap-2 p-4 rounded-3xl bg-brand-black hover:bg-neutral-900 border border-neutral-800 transition-all hover:scale-105 active:scale-95"
                         >
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${copied ? 'bg-green-500' : 'bg-gray-500'}`}>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${copied ? 'bg-green-500/100' : 'bg-brand-black0'}`}>
                                 {copied ? (
                                     <Check className="w-5 h-5 text-white" />
                                 ) : (
                                     <Link2 className="w-5 h-5 text-white" />
                                 )}
                             </div>
-                            <span className={`text-xs font-medium ${copied ? 'text-green-700' : 'text-gray-700'}`}>
+                            <span className={`text-xs font-medium ${copied ? 'text-green-400' : 'text-neutral-300'}`}>
                                 {copied ? 'Copied!' : 'Copy Link'}
                             </span>
                         </button>
@@ -234,7 +234,7 @@ export default function ShareMilestoneModal({
                     <div className="flex gap-3">
                         <button
                             onClick={onClose}
-                            className="flex-1 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-xl font-medium transition-colors"
+                            className="flex-1 px-4 py-3 text-neutral-300 hover:bg-neutral-900 rounded-3xl font-medium transition-colors"
                         >
                             Maybe Later
                         </button>
@@ -243,7 +243,7 @@ export default function ShareMilestoneModal({
                                 onClose();
                                 window.open(`/dashboard/updates?action=new&projectId=${projectId}`, '_self');
                             }}
-                            className="flex-1 px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all flex items-center justify-center gap-2"
+                            className="flex-1 px-4 py-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-3xl font-medium hover:from-orange-600 hover:to-red-600 transition-all flex items-center justify-center gap-2"
                         >
                             <Share2 className="w-4 h-4" />
                             Post Update

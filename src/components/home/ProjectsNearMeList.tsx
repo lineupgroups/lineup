@@ -61,14 +61,14 @@ export const ProjectsNearMeList: React.FC<ProjectsNearMeListProps> = ({ onProjec
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[...Array(4)].map((_, i) => (
-                    <div key={i} className="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse">
-                        <div className="h-40 bg-gray-200"></div>
+                    <div key={i} className="bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden animate-pulse">
+                        <div className="h-40 bg-neutral-800"></div>
                         <div className="p-4">
-                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                            <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+                            <div className="h-4 bg-neutral-800 rounded w-3/4 mb-2"></div>
+                            <div className="h-3 bg-neutral-800 rounded w-1/2 mb-4"></div>
                             <div className="flex justify-between">
-                                <div className="h-3 bg-gray-200 rounded w-1/3"></div>
-                                <div className="h-3 bg-gray-200 rounded w-1/3"></div>
+                                <div className="h-3 bg-neutral-800 rounded w-1/3"></div>
+                                <div className="h-3 bg-neutral-800 rounded w-1/3"></div>
                             </div>
                         </div>
                     </div>
@@ -79,10 +79,10 @@ export const ProjectsNearMeList: React.FC<ProjectsNearMeListProps> = ({ onProjec
 
     if (projects.length === 0) {
         return (
-            <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No projects found nearby</h3>
-                <p className="text-gray-500">Be the first to start a project in Bangalore!</p>
+            <div className="text-center py-16 bg-neutral-900/50 rounded-3xl border border-dashed border-neutral-800">
+                <MapPin className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
+                <h3 className="text-lg font-bold text-brand-white mb-2">No projects found nearby</h3>
+                <p className="text-neutral-500 font-medium">Be the first to start a project in Bangalore!</p>
             </div>
         );
     }
@@ -92,34 +92,36 @@ export const ProjectsNearMeList: React.FC<ProjectsNearMeListProps> = ({ onProjec
             {projects.map((project) => (
                 <div
                     key={project.id}
-                    className="bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group"
+                    className="group bg-neutral-900/50 rounded-2xl border border-neutral-800 hover:border-brand-orange/30 hover:bg-neutral-900 hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer"
                     onClick={() => onProjectClick(project.id)}
                 >
-                    <div className="relative h-40 overflow-hidden">
+                    <div className="relative h-40 overflow-hidden bg-neutral-800">
                         <img
                             src={project.image}
                             alt={project.title}
-                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                         />
-                        <div className="absolute top-2 right-2">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent opacity-60"></div>
+                        
+                        <div className="absolute top-3 right-3">
                             <div
-                                className="bg-white/90 backdrop-blur-sm rounded-full p-1.5 shadow-sm"
+                                className="bg-neutral-900/80 backdrop-blur-md rounded-xl p-1 border border-neutral-700 shadow-sm"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <LikeButton projectId={project.id} size="sm" showCount={false} />
                             </div>
                         </div>
-                        <div className="absolute bottom-2 left-2">
-                            <span className="px-2 py-1 bg-black/60 backdrop-blur-sm text-white rounded text-xs font-medium flex items-center">
-                                <MapPin className="w-3 h-3 mr-1" />
+                        <div className="absolute bottom-3 left-3">
+                            <span className="px-2.5 py-1.5 bg-brand-black/80 backdrop-blur-md border border-neutral-700 text-brand-white rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center">
+                                <MapPin className="w-3 h-3 mr-1.5 text-brand-orange" />
                                 {typeof project.location === 'string' ? project.location : project.location?.city || 'Unknown'}
                             </span>
                         </div>
                     </div>
 
-                    <div className="p-4">
-                        <div className="mb-3">
-                            <h3 className="text-base font-bold text-gray-900 mb-1 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div className="mb-4">
+                            <h3 className="text-base font-bold text-brand-white mb-2 line-clamp-1 group-hover:text-brand-orange transition-colors">
                                 {project.title}
                             </h3>
                             <CreatorInfo
@@ -130,26 +132,28 @@ export const ProjectsNearMeList: React.FC<ProjectsNearMeListProps> = ({ onProjec
                         </div>
 
                         {/* Mini Progress Bar */}
-                        <div className="mb-3">
-                            <div className="flex justify-between text-xs text-gray-600 mb-1">
-                                <span className="font-medium text-gray-900">{formatCurrency(project.raised)}</span>
-                                <span>{getProjectProgress(project).toFixed(0)}%</span>
+                        <div className="mb-4">
+                            <div className="flex justify-between text-xs font-bold tracking-wide mb-2 text-brand-white">
+                                <span>{formatCurrency(project.raised)}</span>
+                                <span className="text-brand-orange">{getProjectProgress(project).toFixed(0)}%</span>
                             </div>
-                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                            <div className="w-full bg-neutral-800 rounded-full h-1.5 overflow-hidden">
                                 <div
-                                    className="bg-blue-600 h-1.5 rounded-full"
+                                    className="bg-brand-orange h-1.5 rounded-full transition-all duration-1000 ease-out relative"
                                     style={{ width: `${getProjectProgress(project)}%` }}
-                                ></div>
+                                >
+                                    <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite]"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-gray-500 border-t border-gray-100 pt-3">
-                            <div className="flex items-center">
-                                <Users className="w-3 h-3 mr-1" />
+                        <div className="flex items-center justify-between text-xs font-bold text-neutral-400 border-t border-neutral-800/50 pt-4 uppercase tracking-wider">
+                            <div className="flex items-center gap-1.5">
+                                <Users className="w-3.5 h-3.5 text-neutral-500" />
                                 {project.supporters}
                             </div>
-                            <div className="flex items-center">
-                                <Clock className="w-3 h-3 mr-1" />
+                            <div className="flex items-center gap-1.5">
+                                <Clock className="w-3.5 h-3.5 text-neutral-500" />
                                 {getDaysLeft(project) > 0 ? `${getDaysLeft(project)} days left` : 'Ended'}
                             </div>
                         </div>

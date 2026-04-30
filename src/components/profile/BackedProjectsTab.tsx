@@ -127,84 +127,80 @@ const BackedProjectsTab: React.FC<BackedProjectsTabProps> = ({ userId, className
   return (
     <div className={className}>
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-2 text-blue-600 mb-2">
-            <Heart className="w-5 h-5" />
-            <span className="font-medium">Total Backed</span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 group hover:border-brand-acid/30 transition-all duration-300">
+          <div className="flex items-center gap-3 text-brand-acid mb-4">
+            <Heart className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Total Support</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">{backedProjects.length}</div>
+          <div className="text-3xl font-black text-brand-white italic tracking-tighter">{backedProjects.length}</div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-2 text-green-600 mb-2">
-            <DollarSign className="w-5 h-5" />
-            <span className="font-medium">Total Amount</span>
+        <div className="bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 group hover:border-brand-orange/30 transition-all duration-300">
+          <div className="flex items-center gap-3 text-brand-orange mb-4">
+            <DollarSign className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Total Impact</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">{formatCurrency(totalBacked)}</div>
+          <div className="text-3xl font-black text-brand-white italic tracking-tighter">{formatCurrency(totalBacked)}</div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-2 text-purple-600 mb-2">
-            <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">Completed</span>
+        <div className="bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 group hover:border-brand-acid/30 transition-all duration-300">
+          <div className="flex items-center gap-3 text-brand-acid mb-4">
+            <CheckCircle className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Successes</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">{statusCounts.completed || 0}</div>
+          <div className="text-3xl font-black text-brand-white italic tracking-tighter">{statusCounts.completed || 0}</div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-2 text-orange-600 mb-2">
-            <Clock className="w-5 h-5" />
-            <span className="font-medium">Active</span>
+        <div className="bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 group hover:border-brand-orange/30 transition-all duration-300">
+          <div className="flex items-center gap-3 text-brand-orange mb-4">
+            <Clock className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Active</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">{statusCounts.active || 0}</div>
+          <div className="text-3xl font-black text-brand-white italic tracking-tighter">{statusCounts.active || 0}</div>
         </div>
       </div>
 
       {/* Filters and Sorting */}
-      <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* Status Filter */}
-          <div className="flex flex-wrap gap-2">
-            <span className="text-sm font-medium text-gray-700 mr-2">Filter by status:</span>
-            {['all', 'active', 'completed', 'cancelled'].map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilterStatus(status as any)}
-                className={`
-                  px-3 py-1 text-sm rounded-full transition-colors duration-200 capitalize
-                  ${filterStatus === status
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
-                  }
-                `}
-              >
-                {status} {status !== 'all' && `(${statusCounts[status] || 0})`}
-              </button>
-            ))}
-          </div>
-
-          {/* Sort Options */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="text-sm border border-gray-200 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10 bg-neutral-900/20 p-4 rounded-3xl border border-neutral-800/50">
+        <div className="flex flex-wrap items-center gap-3">
+          {['all', 'active', 'completed', 'cancelled'].map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status as any)}
+              className={`
+                px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-2xl transition-all duration-300
+                ${filterStatus === status
+                  ? 'bg-brand-acid text-brand-black shadow-[0_0_15px_rgba(204,255,0,0.15)]'
+                  : 'bg-neutral-900 text-neutral-500 border border-neutral-800 hover:text-brand-white hover:border-neutral-700'
+                }
+              `}
             >
-              <option value="recent">Most Recent</option>
-              <option value="amount">Amount (High to Low)</option>
-              <option value="status">Status</option>
-            </select>
+              {status} {status !== 'all' && <span className="opacity-60 ml-1">({statusCounts[status] || 0})</span>}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative group">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="appearance-none bg-neutral-900 text-brand-white text-[10px] font-black uppercase tracking-widest border border-neutral-800 rounded-2xl px-6 py-3.5 pr-10 focus:outline-none focus:border-brand-acid transition-all w-full md:w-auto"
+          >
+            <option value="recent">Timeline</option>
+            <option value="amount">Impact</option>
+            <option value="status">Status</option>
+          </select>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
+            <Clock className="w-3 h-3" />
           </div>
         </div>
       </div>
 
       {/* Backed Projects List */}
       {filteredProjects.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {filteredProjects.map((backing) => {
-            // Calculate dynamic status based on project data if available
             let displayStatus = backing.status;
             let statusLabel = backing.status;
             let statusColorClass = getStatusColor(backing.status);
@@ -217,75 +213,81 @@ const BackedProjectsTab: React.FC<BackedProjectsTabProps> = ({ userId, className
                 backing.project.goal || backing.project.fundingGoal || 0
               );
 
-              // If the project is expired/successful/failed, override the backing status (unless backing was cancelled)
               if (backing.status !== 'cancelled' && projectStatus.status !== 'active') {
                 displayStatus = projectStatus.status;
                 statusLabel = getStatusLabel(projectStatus.status);
-                statusColorClass = getProjectStatusColor(projectStatus.status as any);
-
-                // Map project status to icons
-                if (projectStatus.status === 'successful') StatusIcon = <CheckCircle className="w-4 h-4 text-green-600" />;
-                else if (projectStatus.status === 'failed') StatusIcon = <XCircle className="w-4 h-4 text-red-600" />;
-                else if (projectStatus.status === 'expired') StatusIcon = <Clock className="w-4 h-4 text-gray-600" />;
+                
+                // Map to brand colors
+                if (projectStatus.status === 'successful') {
+                  statusColorClass = 'bg-brand-acid/10 text-brand-acid border-brand-acid/20 shadow-[0_0_10px_rgba(204,255,0,0.1)]';
+                  StatusIcon = <CheckCircle className="w-3.5 h-3.5" />;
+                } else if (projectStatus.status === 'failed') {
+                  statusColorClass = 'bg-brand-orange/10 text-brand-orange border-brand-orange/20';
+                  StatusIcon = <XCircle className="w-3.5 h-3.5" />;
+                } else {
+                  statusColorClass = 'bg-neutral-800 text-neutral-400 border-neutral-700';
+                  StatusIcon = <Clock className="w-3.5 h-3.5" />;
+                }
               }
             }
 
             return (
-              <div key={backing.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-                <div className="flex gap-4">
+              <div key={backing.id} className="bg-neutral-900/30 rounded-[2rem] border border-neutral-800 p-6 sm:p-8 hover:border-neutral-700 transition-all duration-300 group">
+                <div className="flex flex-col sm:flex-row gap-8">
                   {/* Project Image */}
-                  <div className="flex-shrink-0">
-                    <div className="w-24 h-16 bg-gray-100 rounded-lg overflow-hidden">
-                      {backing.project?.image ? (
-                        <img
-                          src={backing.project.image}
-                          alt={backing.project.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600"></div>
-                      )}
-                    </div>
+                  <div className="flex-shrink-0 w-full sm:w-48 aspect-video sm:aspect-square rounded-2xl overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 to-transparent z-10" />
+                    {backing.project?.image ? (
+                      <img
+                        src={backing.project.image}
+                        alt={backing.project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-brand-orange/20 to-brand-acid/20"></div>
+                    )}
                   </div>
 
                   {/* Project Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900 truncate">
+                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                      <h3 className="text-xl sm:text-2xl font-black text-brand-white italic tracking-tighter truncate uppercase">
                         {backing.project?.title || 'Project Title'}
                       </h3>
                       <div className={`
-                        inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full border
+                        inline-flex items-center gap-2 px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] rounded-full border self-start sm:self-center
                         ${statusColorClass}
                       `}>
                         {StatusIcon}
-                        <span className="capitalize">{statusLabel}</span>
+                        <span>{statusLabel}</span>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">
-                      <div className="flex items-center gap-1">
-                        <DollarSign className="w-4 h-4" />
-                        <span className="font-medium">{formatCurrency(backing.amount)}</span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
+                      <div className="space-y-1">
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Commitment</p>
+                        <p className="text-lg font-black text-brand-acid italic">{formatCurrency(backing.amount)}</p>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>Backed {formatDate(backing.backedAt)}</span>
+                      <div className="space-y-1">
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Timeline</p>
+                        <p className="text-sm font-bold text-brand-white">{formatDate(backing.backedAt)}</p>
                       </div>
-                      {backing.anonymous && (
-                        <div className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium border border-amber-200">
-                          🕶️ Backed Anonymously
+                      {backing.rewardTier && (
+                        <div className="space-y-1">
+                          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Tier</p>
+                          <p className="text-sm font-bold text-brand-orange truncate">{backing.rewardTier}</p>
                         </div>
                       )}
-                      {backing.rewardTier && (
-                        <div className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          {backing.rewardTier}
+                      {backing.anonymous && (
+                        <div className="space-y-1">
+                          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Status</p>
+                          <p className="text-[10px] font-bold text-neutral-400">🕶️ PRIVATE</p>
                         </div>
                       )}
                     </div>
 
                     {backing.project?.description && (
-                      <p className="text-gray-600 text-sm line-clamp-2">
+                      <p className="text-neutral-500 text-sm font-medium line-clamp-2 leading-relaxed">
                         {backing.project.description}
                       </p>
                     )}
@@ -296,23 +298,23 @@ const BackedProjectsTab: React.FC<BackedProjectsTabProps> = ({ userId, className
           })}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            {filterStatus === 'all' ? 'No Backed Projects' : `No ${filterStatus} projects`}
+        <div className="text-center py-24 bg-neutral-900/20 rounded-[3rem] border border-neutral-800 border-dashed">
+          <Heart className="w-20 h-20 text-neutral-800 mx-auto mb-8" />
+          <h3 className="text-2xl font-black text-brand-white italic uppercase tracking-tight mb-4">
+            {filterStatus === 'all' ? 'Lineup Empty' : `No ${filterStatus} records`}
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-neutral-500 max-w-sm mx-auto mb-10 font-medium">
             {filterStatus === 'all'
-              ? 'Start supporting amazing projects to see them here!'
-              : `Try changing the filter to see other projects.`
+              ? 'Join the nation by supporting your first project today.'
+              : `Try adjusting your status filter to reveal hidden entries.`
             }
           </p>
           {filterStatus !== 'all' && (
             <button
               onClick={() => setFilterStatus('all')}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-acid hover:text-brand-acid/80 transition-all"
             >
-              Show All Projects
+              Show All History
             </button>
           )}
         </div>

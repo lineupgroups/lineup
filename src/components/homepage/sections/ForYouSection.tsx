@@ -18,8 +18,8 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
         icon={Sparkles}
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse" />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
           ))}
         </div>
       </SectionContainer>
@@ -32,14 +32,15 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
         title="For You"
         subtitle="Discovering projects just for you"
         icon={Sparkles}
-        className="bg-gradient-to-br from-orange-50 to-pink-50"
       >
-        <div className="text-center py-12">
-          <Sparkles className="w-16 h-16 mx-auto text-orange-400 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">
+        <div className="text-center py-16 bg-neutral-900/50 rounded-3xl border border-neutral-800">
+          <div className="w-20 h-20 bg-brand-orange/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Sparkles className="w-10 h-10 text-brand-orange" />
+          </div>
+          <h3 className="text-xl font-bold text-brand-white mb-3 tracking-tight">
             We're learning your preferences
           </h3>
-          <p className="text-gray-600">
+          <p className="text-neutral-400 font-medium">
             Explore some projects and we'll personalize your feed!
           </p>
         </div>
@@ -52,7 +53,6 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
       title="For You"
       subtitle="Projects we think you'll love"
       icon={Sparkles}
-      className="bg-gradient-to-br from-orange-50 to-pink-50"
     >
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map(project => (
@@ -62,5 +62,3 @@ export default function ForYouSection({ projects, loading }: ForYouSectionProps)
     </SectionContainer>
   );
 }
-
-

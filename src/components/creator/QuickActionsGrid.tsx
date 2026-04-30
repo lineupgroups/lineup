@@ -48,66 +48,66 @@ export default function QuickActionsGrid({
     const actions: QuickActionCard[] = [
         {
             id: 'create-project',
-            icon: <Rocket className="w-6 h-6 text-orange-600" />,
-            iconBg: 'bg-orange-100',
-            iconHoverBg: 'group-hover:bg-orange-200',
-            hoverBorder: 'hover:border-orange-300',
+            icon: <Rocket className="w-5 h-5 text-brand-acid group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-brand-acid/10',
+            iconHoverBg: 'group-hover:bg-brand-acid',
+            hoverBorder: 'hover:border-brand-acid/50',
             label: 'Create Project',
             description: 'Start a new campaign',
             route: '/dashboard/projects/create',
             badge: projectCount === 0 ? 'New' : undefined,
-            badgeColor: 'bg-orange-500 text-white'
+            badgeColor: 'bg-brand-acid text-brand-black'
         },
         {
             id: 'post-update',
-            icon: <Edit3 className="w-6 h-6 text-blue-600" />,
-            iconBg: 'bg-blue-100',
-            iconHoverBg: 'group-hover:bg-blue-200',
-            hoverBorder: 'hover:border-blue-300',
+            icon: <Edit3 className="w-5 h-5 text-brand-orange group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-brand-orange/10',
+            iconHoverBg: 'group-hover:bg-brand-orange',
+            hoverBorder: 'hover:border-brand-orange/50',
             label: 'Post Update',
             description: 'Share progress with backers',
             route: '/dashboard/updates?action=new'
         },
         {
             id: 'view-analytics',
-            icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
-            iconBg: 'bg-purple-100',
-            iconHoverBg: 'group-hover:bg-purple-200',
-            hoverBorder: 'hover:border-purple-300',
+            icon: <BarChart3 className="w-5 h-5 text-purple-400 group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-purple-500/10',
+            iconHoverBg: 'group-hover:bg-purple-400',
+            hoverBorder: 'hover:border-purple-400/50',
             label: 'View Analytics',
             description: 'Track views & engagement',
             route: '/dashboard/analytics'
         },
         {
             id: 'view-backers',
-            icon: <Users className="w-6 h-6 text-green-600" />,
-            iconBg: 'bg-green-100',
-            iconHoverBg: 'group-hover:bg-green-200',
-            hoverBorder: 'hover:border-green-300',
+            icon: <Users className="w-5 h-5 text-blue-400 group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-blue-500/10',
+            iconHoverBg: 'group-hover:bg-blue-400',
+            hoverBorder: 'hover:border-blue-400/50',
             label: 'View Backers',
             description: 'See who\'s supporting you',
             route: '/dashboard/backers',
             badge: newBackersThisWeek > 0 ? `${newBackersThisWeek} new` : undefined,
-            badgeColor: 'bg-green-500 text-white'
+            badgeColor: 'bg-brand-acid text-brand-black'
         },
         {
             id: 'withdraw-funds',
-            icon: <Wallet className="w-6 h-6 text-yellow-600" />,
-            iconBg: 'bg-yellow-100',
-            iconHoverBg: 'group-hover:bg-yellow-200',
-            hoverBorder: 'hover:border-yellow-300',
+            icon: <Wallet className="w-5 h-5 text-emerald-400 group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-emerald-500/10',
+            iconHoverBg: 'group-hover:bg-emerald-400',
+            hoverBorder: 'hover:border-emerald-400/50',
             label: 'Withdraw Funds',
             description: 'Transfer to your bank',
             route: '/dashboard/earnings?tab=payout',
             badge: availableBalance >= 500 ? formatCurrency(availableBalance) : undefined,
-            badgeColor: 'bg-green-500 text-white'
+            badgeColor: 'bg-brand-acid text-brand-black'
         },
         {
             id: 'reply-comments',
-            icon: <MessageSquare className="w-6 h-6 text-indigo-600" />,
-            iconBg: 'bg-indigo-100',
-            iconHoverBg: 'group-hover:bg-indigo-200',
-            hoverBorder: 'hover:border-indigo-300',
+            icon: <MessageSquare className="w-5 h-5 text-pink-400 group-hover:text-brand-black transition-colors" />,
+            iconBg: 'bg-pink-500/10',
+            iconHoverBg: 'group-hover:bg-pink-400',
+            hoverBorder: 'hover:border-pink-400/50',
             label: 'Reply Comments',
             description: 'Engage with supporters',
             route: '/dashboard/comments',
@@ -118,12 +118,16 @@ export default function QuickActionsGrid({
     ];
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                    <Rocket className="w-5 h-5 text-orange-500" />
-                    Quick Actions
-                </h2>
+        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-6 flex flex-col">
+            <div className="flex items-center justify-between mb-6 border-b border-neutral-800 pb-4">
+                <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-neutral-800 rounded-lg">
+                        <Rocket className="w-5 h-5 text-brand-white" />
+                    </div>
+                    <h2 className="text-xl font-bold text-brand-white tracking-tight">
+                        Quick Actions
+                    </h2>
+                </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -131,29 +135,32 @@ export default function QuickActionsGrid({
                     <button
                         key={action.id}
                         onClick={() => navigate(action.route)}
-                        className={`relative p-4 rounded-xl border border-gray-200 ${action.hoverBorder} hover:shadow-md transition-all text-left group`}
+                        className={`relative p-5 rounded-2xl border border-neutral-800 bg-neutral-900 ${action.hoverBorder} hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-300 text-left group overflow-hidden`}
                     >
+                        {/* Subtle background glow on hover */}
+                        <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${action.iconHoverBg}`}></div>
+                        
                         {/* Badge */}
                         {action.badge && (
-                            <span className={`absolute -top-2 -right-2 px-2 py-0.5 text-xs font-bold rounded-full ${action.badgeColor}`}>
+                            <span className={`absolute -top-2 -right-2 px-2.5 py-0.5 text-xs font-bold rounded-full border border-neutral-800 shadow-lg ${action.badgeColor} z-10`}>
                                 {action.badge}
                             </span>
                         )}
 
                         {/* Red Dot for urgent items */}
                         {action.showRedDot && (
-                            <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                            <span className="absolute top-4 right-4 w-2 h-2 bg-red-500 rounded-full animate-pulse z-10" />
                         )}
 
-                        <div className="flex flex-col items-center text-center">
-                            <div className={`p-3 ${action.iconBg} ${action.iconHoverBg} rounded-lg transition-colors mb-3`}>
+                        <div className="flex flex-col relative z-10">
+                            <div className={`p-3 w-fit ${action.iconBg} ${action.iconHoverBg} rounded-xl transition-colors duration-300 mb-4`}>
                                 {action.icon}
                             </div>
-                            <h3 className="text-sm font-semibold text-gray-900 mb-1">{action.label}</h3>
-                            <p className="text-xs text-gray-500 hidden sm:block">{action.description}</p>
+                            <h3 className="text-base font-bold text-brand-white mb-1 group-hover:text-brand-acid transition-colors">{action.label}</h3>
+                            <p className="text-sm text-neutral-400 hidden sm:block font-medium">{action.description}</p>
                         </div>
 
-                        <ArrowRight className="absolute bottom-3 right-3 w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
+                        <ArrowRight className="absolute bottom-5 right-5 w-4 h-4 text-neutral-600 group-hover:text-brand-white transition-colors z-10 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0" />
                     </button>
                 ))}
             </div>

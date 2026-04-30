@@ -171,17 +171,17 @@ export default function GoalCelebration({
 
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scaleIn relative">
+            <div className="bg-[#111] rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-scaleIn relative">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 p-2 text-white/80 hover:text-white rounded-full hover:bg-white/20 transition-colors z-10"
+                    className="absolute top-4 right-4 p-2 text-white/80 hover:text-white rounded-full hover:bg-[#111]/20 transition-colors z-10"
                 >
                     <X className="w-5 h-5" />
                 </button>
 
                 {/* Animated Header */}
-                <div className="relative bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 p-8 text-white overflow-hidden">
+                <div className="relative bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500/100 p-8 text-white overflow-hidden">
                     {/* Floating Sparkles */}
                     <div className="absolute inset-0">
                         {[...Array(15)].map((_, i) => (
@@ -204,14 +204,14 @@ export default function GoalCelebration({
                     <div className="relative z-10 text-center">
                         {/* Animated Trophy */}
                         <div className={`transition-all duration-500 ${step >= 1 ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-10 opacity-0 scale-50'}`}>
-                            <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                            <div className="w-20 h-20 bg-[#111]/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
                                 <Trophy className="w-10 h-10 text-yellow-200" />
                             </div>
                         </div>
 
                         {/* Title */}
                         <div className={`transition-all duration-500 delay-150 ${step >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-3">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#111]/20 backdrop-blur-sm rounded-full mb-3">
                                 <PartyPopper className="w-5 h-5" />
                                 <span className="font-semibold">GOAL REACHED!</span>
                                 <PartyPopper className="w-5 h-5 transform scale-x-[-1]" />
@@ -226,27 +226,27 @@ export default function GoalCelebration({
                     <div className={`transition-all duration-500 delay-300 ${step >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
                         {/* Project Title */}
                         <div className="text-center mb-6">
-                            <p className="text-gray-500 text-sm mb-1">Your project</p>
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">"{projectTitle}"</h3>
-                            <p className="text-gray-600">has reached its funding goal!</p>
+                            <p className="text-neutral-500 text-sm mb-1">Your project</p>
+                            <h3 className="text-xl font-bold text-brand-white mb-4">"{projectTitle}"</h3>
+                            <p className="text-neutral-400">has reached its funding goal!</p>
                         </div>
 
                         {/* Stats */}
-                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 mb-6">
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-3xl p-4 mb-6">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="text-center">
-                                    <div className="flex items-center justify-center gap-1 text-green-600 mb-1">
+                                    <div className="flex items-center justify-center gap-1 text-green-400 mb-1">
                                         <TrendingUp className="w-4 h-4" />
                                         <span className="text-xs font-medium">RAISED</span>
                                     </div>
-                                    <p className="text-2xl font-bold text-gray-900">{formatCurrency(raised)}</p>
+                                    <p className="text-2xl font-bold text-brand-white">{formatCurrency(raised)}</p>
                                 </div>
                                 <div className="text-center">
-                                    <div className="flex items-center justify-center gap-1 text-green-600 mb-1">
+                                    <div className="flex items-center justify-center gap-1 text-green-400 mb-1">
                                         <Heart className="w-4 h-4" />
                                         <span className="text-xs font-medium">FUNDED</span>
                                     </div>
-                                    <p className="text-2xl font-bold text-gray-900">{Math.round(percentFunded)}%</p>
+                                    <p className="text-2xl font-bold text-brand-white">{Math.round(percentFunded)}%</p>
                                 </div>
                             </div>
                         </div>
@@ -254,7 +254,7 @@ export default function GoalCelebration({
                         {/* Share Options */}
                         {!showShareOptions ? (
                             <>
-                                <p className="text-center text-gray-600 text-sm mb-6">
+                                <p className="text-center text-neutral-400 text-sm mb-6">
                                     Thank you for your hard work! Share this milestone with your supporters!
                                 </p>
 
@@ -262,21 +262,21 @@ export default function GoalCelebration({
                                 <div className="space-y-3">
                                     <button
                                         onClick={() => setShowShareOptions(true)}
-                                        className="w-full px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all hover:shadow-lg transform hover:scale-[1.02] flex items-center justify-center gap-2"
+                                        className="w-full px-6 py-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-all hover:shadow-lg transform hover:scale-[1.02] flex items-center justify-center gap-2"
                                     >
                                         <Share2 className="w-5 h-5" />
                                         Share This Achievement
                                     </button>
                                     <button
                                         onClick={handlePostUpdate}
-                                        className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all flex items-center justify-center gap-2"
+                                        className="w-full px-6 py-3 bg-blue-500/100 text-white rounded-2xl font-medium hover:bg-blue-600 transition-all flex items-center justify-center gap-2"
                                     >
                                         <Edit3 className="w-5 h-5" />
                                         Post an Update
                                     </button>
                                     <button
                                         onClick={onClose}
-                                        className="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-all"
+                                        className="w-full px-6 py-3 bg-neutral-900 text-neutral-300 rounded-2xl font-medium hover:bg-neutral-800 transition-all"
                                     >
                                         Maybe Later
                                     </button>
@@ -284,7 +284,7 @@ export default function GoalCelebration({
                             </>
                         ) : (
                             <>
-                                <p className="text-center text-gray-600 text-sm mb-4">
+                                <p className="text-center text-neutral-400 text-sm mb-4">
                                     Share your achievement on:
                                 </p>
 
@@ -294,7 +294,7 @@ export default function GoalCelebration({
                                         <button
                                             key={option.name}
                                             onClick={() => option.action(shareUrl, shareText)}
-                                            className={`flex flex-col items-center justify-center p-3 ${option.color} ${option.hoverColor} text-white rounded-xl transition-all hover:scale-105`}
+                                            className={`flex flex-col items-center justify-center p-3 ${option.color} ${option.hoverColor} text-white rounded-3xl transition-all hover:scale-105`}
                                             title={`Share on ${option.name}`}
                                         >
                                             {option.icon}
@@ -306,9 +306,9 @@ export default function GoalCelebration({
                                 {/* Copy Link */}
                                 <button
                                     onClick={handleCopyLink}
-                                    className={`w-full px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${linkCopied
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    className={`w-full px-4 py-3 rounded-2xl font-medium transition-all flex items-center justify-center gap-2 ${linkCopied
+                                        ? 'bg-green-500/20 text-green-400'
+                                        : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'
                                         }`}
                                 >
                                     {linkCopied ? (
@@ -327,7 +327,7 @@ export default function GoalCelebration({
                                 {/* Back button */}
                                 <button
                                     onClick={() => setShowShareOptions(false)}
-                                    className="w-full mt-3 px-6 py-2 text-gray-500 hover:text-gray-700 text-sm transition-colors"
+                                    className="w-full mt-3 px-6 py-2 text-neutral-500 hover:text-neutral-300 text-sm transition-colors"
                                 >
                                     ← Back
                                 </button>

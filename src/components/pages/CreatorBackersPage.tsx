@@ -93,11 +93,11 @@ const getRankIcon = (rank: number) => {
         case 1:
             return <Crown className="w-5 h-5 text-yellow-500" />;
         case 2:
-            return <Medal className="w-5 h-5 text-gray-400" />;
+            return <Medal className="w-5 h-5 text-neutral-600" />;
         case 3:
             return <Award className="w-5 h-5 text-orange-400" />;
         default:
-            return <span className="w-5 h-5 text-gray-400 text-sm font-medium">{rank}</span>;
+            return <span className="w-5 h-5 text-neutral-600 text-sm font-medium">{rank}</span>;
     }
 };
 
@@ -466,13 +466,13 @@ export default function CreatorBackersPage() {
     // Loading state with skeleton
     if (loading && supporters.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
                 {/* Header Skeleton */}
-                <div className="bg-white border-b border-gray-200">
+                <div className="bg-[#111] border-b border-neutral-800">
                     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
                         <div className="animate-pulse">
-                            <div className="h-8 w-48 bg-gray-200 rounded mb-2" />
-                            <div className="h-4 w-72 bg-gray-100 rounded" />
+                            <div className="h-8 w-48 bg-neutral-800 rounded mb-2" />
+                            <div className="h-4 w-72 bg-neutral-900 rounded" />
                         </div>
                     </div>
                 </div>
@@ -481,13 +481,13 @@ export default function CreatorBackersPage() {
                     {/* Stats Cards Skeleton */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+                            <div key={i} className="bg-[#111] rounded-3xl border border-neutral-800 p-6 animate-pulse">
                                 <div className="flex items-center justify-between mb-4">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-xl" />
-                                    <div className="w-16 h-6 bg-gray-100 rounded-full" />
+                                    <div className="w-12 h-12 bg-neutral-800 rounded-3xl" />
+                                    <div className="w-16 h-6 bg-neutral-900 rounded-full" />
                                 </div>
-                                <div className="h-8 w-24 bg-gray-200 rounded mb-2" />
-                                <div className="h-4 w-32 bg-gray-100 rounded" />
+                                <div className="h-8 w-24 bg-neutral-800 rounded mb-2" />
+                                <div className="h-4 w-32 bg-neutral-900 rounded" />
                             </div>
                         ))}
                     </div>
@@ -496,29 +496,29 @@ export default function CreatorBackersPage() {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 space-y-4">
                             {/* Filter Bar Skeleton */}
-                            <div className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
+                            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-4 animate-pulse">
                                 <div className="flex gap-3">
-                                    <div className="h-10 w-48 bg-gray-200 rounded-lg" />
-                                    <div className="h-10 w-24 bg-gray-100 rounded-lg" />
-                                    <div className="h-10 w-24 bg-gray-100 rounded-lg" />
+                                    <div className="h-10 w-48 bg-neutral-800 rounded-2xl" />
+                                    <div className="h-10 w-24 bg-neutral-900 rounded-2xl" />
+                                    <div className="h-10 w-24 bg-neutral-900 rounded-2xl" />
                                 </div>
                             </div>
 
                             {/* Backer Cards Skeleton */}
                             {[1, 2, 3, 4, 5].map((i) => (
-                                <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
+                                <div key={i} className="bg-[#111] rounded-3xl border border-neutral-800 p-4 animate-pulse">
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-gray-200 rounded-full" />
+                                        <div className="w-12 h-12 bg-neutral-800 rounded-full" />
                                         <div className="flex-1">
-                                            <div className="h-5 w-32 bg-gray-200 rounded mb-2" />
-                                            <div className="h-4 w-48 bg-gray-100 rounded mb-2" />
-                                            <div className="h-3 w-24 bg-gray-100 rounded" />
+                                            <div className="h-5 w-32 bg-neutral-800 rounded mb-2" />
+                                            <div className="h-4 w-48 bg-neutral-900 rounded mb-2" />
+                                            <div className="h-3 w-24 bg-neutral-900 rounded" />
                                         </div>
                                         <div className="text-right">
-                                            <div className="h-6 w-20 bg-green-100 rounded mb-2" />
+                                            <div className="h-6 w-20 bg-green-500/20 rounded mb-2" />
                                             <div className="flex gap-1">
-                                                <div className="w-8 h-8 bg-gray-100 rounded" />
-                                                <div className="w-8 h-8 bg-gray-100 rounded" />
+                                                <div className="w-8 h-8 bg-neutral-900 rounded" />
+                                                <div className="w-8 h-8 bg-neutral-900 rounded" />
                                             </div>
                                         </div>
                                     </div>
@@ -528,14 +528,14 @@ export default function CreatorBackersPage() {
 
                         {/* Sidebar Skeleton */}
                         <div className="space-y-6">
-                            <div className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse">
-                                <div className="h-6 w-28 bg-gray-200 rounded mb-4" />
+                            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 animate-pulse">
+                                <div className="h-6 w-28 bg-neutral-800 rounded mb-4" />
                                 {[1, 2, 3, 4, 5].map((i) => (
                                     <div key={i} className="flex items-center gap-3 mb-3">
-                                        <div className="w-8 h-8 bg-gray-200 rounded-full" />
-                                        <div className="w-8 h-8 bg-gray-100 rounded-full" />
-                                        <div className="flex-1 h-4 bg-gray-100 rounded" />
-                                        <div className="w-16 h-4 bg-gray-100 rounded" />
+                                        <div className="w-8 h-8 bg-neutral-800 rounded-full" />
+                                        <div className="w-8 h-8 bg-neutral-900 rounded-full" />
+                                        <div className="flex-1 h-4 bg-neutral-900 rounded" />
+                                        <div className="w-16 h-4 bg-neutral-900 rounded" />
                                     </div>
                                 ))}
                             </div>
@@ -549,10 +549,10 @@ export default function CreatorBackersPage() {
     // Error state
     if (error) {
         return (
-            <div className="min-h-screen bg-gray-50">
-                <div className="bg-white border-b border-gray-200">
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
+                <div className="bg-[#111] border-b border-neutral-800">
                     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-                        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                        <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
                             <Users className="w-8 h-8 text-orange-500" />
                             Backers
                         </h1>
@@ -566,18 +566,18 @@ export default function CreatorBackersPage() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
-                        <p className="text-gray-600 mb-6">
+                        <h2 className="text-2xl font-bold text-brand-white mb-2">Something went wrong</h2>
+                        <p className="text-neutral-400 mb-6">
                             We couldn't load your backers data. Please check your connection and try again.
                         </p>
                         <button
                             onClick={() => window.location.reload()}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-md hover:shadow-lg"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-orange/100 text-white font-medium rounded-2xl hover:bg-[#b3e600] transition-colors shadow-md hover:shadow-lg"
                         >
                             <RefreshCw className="w-5 h-5" />
                             Try Again
                         </button>
-                        <p className="text-sm text-gray-400 mt-4">
+                        <p className="text-sm text-neutral-600 mt-4">
                             Error: {error}
                         </p>
                     </div>
@@ -587,17 +587,17 @@ export default function CreatorBackersPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200">
+            <div className="bg-[#111] border-b border-neutral-800">
                 <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                            <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
                                 <Users className="w-8 h-8 text-orange-500" />
                                 Backers
                             </h1>
-                            <p className="text-gray-600 mt-1">
+                            <p className="text-neutral-400 mt-1">
                                 {isFilteringByProject
                                     ? `Showing backers for: ${selectedProject?.title}`
                                     : 'View and engage with your supporters across all projects'
@@ -609,7 +609,7 @@ export default function CreatorBackersPage() {
                             <div className="relative">
                                 <button
                                     onClick={() => setShowExportDropdown(!showExportDropdown)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors"
                                 >
                                     <Download className="w-4 h-4" />
                                     Export
@@ -619,24 +619,24 @@ export default function CreatorBackersPage() {
                                 {showExportDropdown && (
                                     <>
                                         <div className="fixed inset-0 z-10" onClick={() => setShowExportDropdown(false)} />
-                                        <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[160px]">
+                                        <div className="absolute top-full right-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[160px]">
                                             <button
                                                 onClick={handleExportCSV}
-                                                className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2"
+                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
                                             >
                                                 <FileText className="w-4 h-4" />
                                                 Export as CSV
                                             </button>
                                             <button
                                                 onClick={handleExportPDF}
-                                                className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2"
+                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
                                             >
                                                 <FileText className="w-4 h-4 text-red-500" />
                                                 Export as PDF
                                             </button>
                                             <button
                                                 onClick={handleExportJSON}
-                                                className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2"
+                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
                                             >
                                                 <FileText className="w-4 h-4" />
                                                 Export as JSON
@@ -649,7 +649,7 @@ export default function CreatorBackersPage() {
                             <button
                                 onClick={handleRefresh}
                                 disabled={loading}
-                                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors disabled:opacity-50"
                             >
                                 <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                                 Refresh
@@ -674,17 +674,17 @@ export default function CreatorBackersPage() {
                     {/* Left Column - Backers List (2/3) */}
                     <div className="xl:col-span-2">
                         {/* Filters */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
+                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-4 mb-4">
                             <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
                                 {/* Search */}
                                 <div className="relative flex-1 w-full lg:max-w-xs">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
                                     <input
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search backers..."
-                                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="w-full pl-10 pr-4 py-2 border border-neutral-800 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
                                     />
                                 </div>
 
@@ -692,22 +692,22 @@ export default function CreatorBackersPage() {
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowAmountDropdown(!showAmountDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors text-sm"
+                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
                                     >
-                                        <DollarSign className="w-4 h-4 text-gray-500" />
+                                        <DollarSign className="w-4 h-4 text-neutral-500" />
                                         {currentAmountLabel}
-                                        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showAmountDropdown ? 'rotate-180' : ''}`} />
+                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showAmountDropdown ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {showAmountDropdown && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setShowAmountDropdown(false)} />
-                                            <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[150px]">
+                                            <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[150px]">
                                                 {AMOUNT_FILTER_OPTIONS.map(option => (
                                                     <button
                                                         key={option.value}
                                                         onClick={() => { setAmountFilter(option.value); setShowAmountDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-sm ${amountFilter === option.value ? 'bg-orange-50 text-orange-600' : ''}`}
+                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${amountFilter === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
                                                     >
                                                         {option.label}
                                                     </button>
@@ -721,22 +721,22 @@ export default function CreatorBackersPage() {
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowDateDropdown(!showDateDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors text-sm"
+                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
                                     >
-                                        <Calendar className="w-4 h-4 text-gray-500" />
+                                        <Calendar className="w-4 h-4 text-neutral-500" />
                                         {currentDateLabel}
-                                        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showDateDropdown ? 'rotate-180' : ''}`} />
+                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showDateDropdown ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {showDateDropdown && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setShowDateDropdown(false)} />
-                                            <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[130px]">
+                                            <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[130px]">
                                                 {DATE_FILTER_OPTIONS.map(option => (
                                                     <button
                                                         key={option.value}
                                                         onClick={() => { setDateFilter(option.value); setShowDateDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-sm ${dateFilter === option.value ? 'bg-orange-50 text-orange-600' : ''}`}
+                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${dateFilter === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
                                                     >
                                                         {option.label}
                                                     </button>
@@ -747,22 +747,22 @@ export default function CreatorBackersPage() {
                                 </div>
 
                                 {/* Type Filter */}
-                                <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                                <div className="flex items-center bg-neutral-900 rounded-2xl p-1">
                                     <button
                                         onClick={() => setTypeFilter('all')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'all' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600'}`}
+                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'all' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
                                     >
                                         All
                                     </button>
                                     <button
                                         onClick={() => setTypeFilter('named')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'named' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600'}`}
+                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'named' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
                                     >
                                         Named
                                     </button>
                                     <button
                                         onClick={() => setTypeFilter('anonymous')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'anonymous' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600'}`}
+                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'anonymous' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
                                     >
                                         Anonymous
                                     </button>
@@ -772,22 +772,22 @@ export default function CreatorBackersPage() {
                                 <div className="relative ml-auto">
                                     <button
                                         onClick={() => setShowSortDropdown(!showSortDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors text-sm"
+                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
                                     >
-                                        <ArrowUpDown className="w-4 h-4 text-gray-500" />
+                                        <ArrowUpDown className="w-4 h-4 text-neutral-500" />
                                         {currentSortLabel}
-                                        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
+                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {showSortDropdown && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
-                                            <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[180px]">
+                                            <div className="absolute top-full right-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[180px]">
                                                 {SORT_OPTIONS.map(option => (
                                                     <button
                                                         key={option.value}
                                                         onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-sm ${sortOption === option.value ? 'bg-orange-50 text-orange-600' : ''}`}
+                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${sortOption === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
                                                     >
                                                         {option.label}
                                                     </button>
@@ -802,19 +802,19 @@ export default function CreatorBackersPage() {
                         {/* Backers List */}
                         <div className="space-y-3">
                             {paginatedSupporters.length === 0 ? (
-                                <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+                                <div className="bg-[#111] rounded-3xl border border-neutral-800 p-12 text-center">
                                     {stats.totalSupporters === 0 ? (
                                         <>
-                                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                                <Users className="w-8 h-8 text-gray-400" />
+                                            <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Users className="w-8 h-8 text-neutral-600" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Backers Yet</h3>
-                                            <p className="text-gray-600 mb-4">
+                                            <h3 className="text-lg font-semibold text-brand-white mb-2">No Backers Yet</h3>
+                                            <p className="text-neutral-400 mb-4">
                                                 When supporters back your project, they'll appear here.
                                             </p>
                                             <Link
                                                 to="/dashboard/projects"
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                                                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white rounded-2xl hover:bg-[#b3e600] transition-colors"
                                             >
                                                 <ExternalLink className="w-4 h-4" />
                                                 Share Your Projects
@@ -822,11 +822,11 @@ export default function CreatorBackersPage() {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                                <Search className="w-8 h-8 text-gray-400" />
+                                            <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Search className="w-8 h-8 text-neutral-600" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Results Found</h3>
-                                            <p className="text-gray-600">
+                                            <h3 className="text-lg font-semibold text-brand-white mb-2">No Results Found</h3>
+                                            <p className="text-neutral-400">
                                                 Try adjusting your filters or search query.
                                             </p>
                                         </>
@@ -837,7 +837,7 @@ export default function CreatorBackersPage() {
                                     {paginatedSupporters.map((supporter, index) => (
                                         <div
                                             key={supporter.id}
-                                            className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                                            className="bg-[#111] rounded-3xl border border-neutral-800 p-4 hover:shadow-md transition-shadow"
                                         >
                                             <div className="flex items-start gap-4">
                                                 {/* Rank or Avatar */}
@@ -853,8 +853,8 @@ export default function CreatorBackersPage() {
                                                             className="w-12 h-12 rounded-full object-cover"
                                                         />
                                                     ) : (
-                                                        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                                                            <User className="w-6 h-6 text-gray-400" />
+                                                        <div className="w-12 h-12 bg-neutral-900 rounded-full flex items-center justify-center">
+                                                            <User className="w-6 h-6 text-neutral-600" />
                                                         </div>
                                                     )}
                                                 </div>
@@ -862,31 +862,31 @@ export default function CreatorBackersPage() {
                                                 {/* Info */}
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <span className="font-semibold text-gray-900">
+                                                        <span className="font-semibold text-brand-white">
                                                             {supporter.anonymous ? 'Anonymous Supporter' : supporter.displayName}
                                                         </span>
                                                         {supporter.anonymous && (
-                                                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                                            <span className="px-2 py-0.5 bg-neutral-900 text-neutral-400 text-xs rounded-full">
                                                                 Anonymous
                                                             </span>
                                                         )}
                                                         {supporter.donationCount > 1 && (
-                                                            <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full">
+                                                            <span className="px-2 py-0.5 bg-brand-orange/20 text-brand-orange text-xs rounded-full">
                                                                 {supporter.donationCount}x Backer
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="text-sm text-gray-500 mt-1">
+                                                    <div className="text-sm text-neutral-500 mt-1">
                                                         {supporter.donationCount} donation{supporter.donationCount !== 1 ? 's' : ''} • Latest: {getTimeAgo(supporter.latestDonation)}
                                                     </div>
-                                                    <div className="text-sm text-gray-500 mt-1 truncate">
+                                                    <div className="text-sm text-neutral-500 mt-1 truncate">
                                                         Projects: {supporter.projects.join(', ')}
                                                     </div>
                                                 </div>
 
                                                 {/* Amount */}
                                                 <div className="flex-shrink-0 text-right">
-                                                    <div className="text-xl font-bold text-green-600">
+                                                    <div className="text-xl font-bold text-green-400">
                                                         {formatCurrency(supporter.totalAmount)}
                                                     </div>
                                                     <div className="flex items-center gap-2 mt-2">
@@ -895,7 +895,7 @@ export default function CreatorBackersPage() {
                                                                 {/* Thank You Button or Thanked Badge */}
                                                                 {supporter.isThanked || locallyThankedIds.has(supporter.id) ? (
                                                                     <span
-                                                                        className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-lg"
+                                                                        className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-2xl"
                                                                         title="Already thanked"
                                                                     >
                                                                         ✓ Thanked
@@ -903,7 +903,7 @@ export default function CreatorBackersPage() {
                                                                 ) : (
                                                                     <button
                                                                         onClick={() => handleOpenThankYou(supporter)}
-                                                                        className="p-1.5 text-pink-500 hover:bg-pink-50 rounded-lg transition-colors"
+                                                                        className="p-1.5 text-pink-500 hover:bg-pink-50 rounded-2xl transition-colors"
                                                                         title="Send Thank You"
                                                                     >
                                                                         <Heart className="w-4 h-4" />
@@ -911,7 +911,7 @@ export default function CreatorBackersPage() {
                                                                 )}
                                                                 <button
                                                                     onClick={() => window.open(`/user/${supporter.userId}`, '_blank')}
-                                                                    className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                                                                    className="p-1.5 text-blue-500 hover:bg-blue-500/10 rounded-2xl transition-colors"
                                                                     title="View Profile"
                                                                 >
                                                                     <ExternalLink className="w-4 h-4" />
@@ -923,7 +923,7 @@ export default function CreatorBackersPage() {
                                                                 navigator.clipboard.writeText(`${supporter.displayName} - ${formatCurrency(supporter.totalAmount)}`);
                                                                 toast.success('Copied to clipboard!');
                                                             }}
-                                                            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                                                            className="p-1.5 text-neutral-500 hover:bg-neutral-900 rounded-2xl transition-colors"
                                                             title="Copy Details"
                                                         >
                                                             <Copy className="w-4 h-4" />
@@ -936,7 +936,7 @@ export default function CreatorBackersPage() {
                                             {supporter.donationCount > 1 && (
                                                 <button
                                                     onClick={() => toggleExpanded(supporter.id)}
-                                                    className="w-full flex items-center justify-center gap-2 mt-3 pt-3 border-t border-gray-100 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                                                    className="w-full flex items-center justify-center gap-2 mt-3 pt-3 border-t border-neutral-800/50 text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
                                                 >
                                                     {expandedSupporters.has(supporter.id) ? (
                                                         <>
@@ -954,19 +954,19 @@ export default function CreatorBackersPage() {
 
                                             {/* Expandable Donation History */}
                                             {expandedSupporters.has(supporter.id) && supporter.donationHistory && (
-                                                <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                                                <div className="mt-3 pt-3 border-t border-neutral-800/50 space-y-2">
                                                     {supporter.donationHistory.map((donation) => (
                                                         <div
                                                             key={donation.id}
-                                                            className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg"
+                                                            className="flex items-center justify-between py-2 px-3 bg-brand-black rounded-2xl"
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <div className="w-2 h-2 bg-green-500 rounded-full" />
+                                                                <div className="w-2 h-2 bg-green-500/100 rounded-full" />
                                                                 <div>
-                                                                    <div className="font-medium text-gray-900 text-sm">
+                                                                    <div className="font-medium text-brand-white text-sm">
                                                                         {formatCurrency(donation.amount)}
                                                                     </div>
-                                                                    <div className="text-xs text-gray-500">
+                                                                    <div className="text-xs text-neutral-500">
                                                                         {donation.date.toLocaleDateString('en-IN', {
                                                                             day: 'numeric',
                                                                             month: 'short',
@@ -977,7 +977,7 @@ export default function CreatorBackersPage() {
                                                             </div>
                                                             <button
                                                                 onClick={() => handleOpenReceipt(supporter, donation)}
-                                                                className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded transition-colors"
+                                                                className="p-1.5 text-neutral-600 hover:text-green-400 hover:bg-green-500/10 rounded transition-colors"
                                                                 title="Generate Receipt"
                                                             >
                                                                 <Receipt className="w-4 h-4" />
@@ -994,7 +994,7 @@ export default function CreatorBackersPage() {
                                         <div className="text-center pt-4">
                                             <button
                                                 onClick={handleLoadMore}
-                                                className="px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                                className="px-6 py-3 bg-[#111] border border-neutral-700 rounded-2xl text-neutral-300 font-medium hover:bg-brand-black transition-colors"
                                             >
                                                 Load More ({filteredSupporters.length - displayCount} remaining)
                                             </button>
@@ -1006,7 +1006,7 @@ export default function CreatorBackersPage() {
 
                         {/* Results Count */}
                         {paginatedSupporters.length > 0 && (
-                            <div className="text-center text-sm text-gray-500 mt-4">
+                            <div className="text-center text-sm text-neutral-500 mt-4">
                                 Showing {paginatedSupporters.length} of {filteredSupporters.length} backers
                             </div>
                         )}
@@ -1015,14 +1015,14 @@ export default function CreatorBackersPage() {
                     {/* Right Column - Top Backers & Stats (1/3) */}
                     <div className="space-y-6">
                         {/* Top Backers Leaderboard */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5">
+                            <h3 className="text-lg font-semibold text-brand-white flex items-center gap-2 mb-4">
                                 <Crown className="w-5 h-5 text-yellow-500" />
                                 Top Backers
                             </h3>
 
                             {topSupporters.length === 0 ? (
-                                <p className="text-gray-500 text-sm text-center py-4">No backers yet</p>
+                                <p className="text-neutral-500 text-sm text-center py-4">No backers yet</p>
                             ) : (
                                 <>
                                     <div className="space-y-3">
@@ -1038,21 +1038,21 @@ export default function CreatorBackersPage() {
                                                         className="w-8 h-8 rounded-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                                                        <User className="w-4 h-4 text-gray-400" />
+                                                    <div className="w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center">
+                                                        <User className="w-4 h-4 text-neutral-600" />
                                                     </div>
                                                 )}
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="font-medium text-gray-900 truncate text-sm">
+                                                    <div className="font-medium text-brand-white truncate text-sm">
                                                         {supporter.anonymous ? 'Anonymous' : supporter.displayName}
                                                     </div>
                                                     {showLeaderboardModal && (
-                                                        <div className="text-xs text-gray-500">
+                                                        <div className="text-xs text-neutral-500">
                                                             {supporter.donationCount} donation{supporter.donationCount !== 1 ? 's' : ''}
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="font-bold text-green-600 text-sm">
+                                                <div className="font-bold text-green-400 text-sm">
                                                     {formatCurrency(supporter.totalAmount)}
                                                 </div>
                                             </div>
@@ -1063,7 +1063,7 @@ export default function CreatorBackersPage() {
                                     {supporters.length > 5 && (
                                         <button
                                             onClick={() => setShowLeaderboardModal(!showLeaderboardModal)}
-                                            className="w-full mt-4 py-2 text-sm text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors flex items-center justify-center gap-2"
+                                            className="w-full mt-4 py-2 text-sm text-brand-orange hover:text-brand-orange hover:bg-brand-orange/10 rounded-2xl transition-colors flex items-center justify-center gap-2"
                                         >
                                             <Trophy className="w-4 h-4" />
                                             {showLeaderboardModal ? (
@@ -1078,19 +1078,19 @@ export default function CreatorBackersPage() {
                         </div>
 
                         {/* Quick Stats */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5">
+                            <h3 className="text-lg font-semibold text-brand-white mb-4">
                                 Quick Stats
                             </h3>
                             <div className="space-y-3">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 text-sm">Named vs Anonymous</span>
+                                    <span className="text-neutral-400 text-sm">Named vs Anonymous</span>
                                     <span className="font-medium text-sm">
                                         {stats.uniqueNonAnonymous} / {stats.anonymousCount}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 text-sm">Repeat backer rate</span>
+                                    <span className="text-neutral-400 text-sm">Repeat backer rate</span>
                                     <span className="font-medium text-sm">
                                         {stats.totalSupporters > 0
                                             ? `${((stats.repeatSupporters / stats.totalSupporters) * 100).toFixed(0)}%`
@@ -1099,8 +1099,8 @@ export default function CreatorBackersPage() {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 text-sm">Top contribution</span>
-                                    <span className="font-bold text-green-600 text-sm">
+                                    <span className="text-neutral-400 text-sm">Top contribution</span>
+                                    <span className="font-bold text-green-400 text-sm">
                                         {topSupporters[0] ? formatCurrency(topSupporters[0].totalAmount) : '₹0'}
                                     </span>
                                 </div>

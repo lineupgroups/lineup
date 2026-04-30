@@ -24,7 +24,7 @@ export default function BecomeCreatorCTA({ variant = 'navbar', className = '' }:
                 to={targetPath}
                 className={`
                     inline-flex items-center gap-2 px-4 py-2 
-                    bg-gradient-to-r from-orange-500 to-pink-600 
+                    bg-gradient-to-r from-brand-orange/100 to-pink-600 
                     text-white rounded-full font-semibold text-sm
                     shadow-md hover:shadow-lg hover:scale-105 
                     transition-all duration-200 ease-in-out
@@ -44,7 +44,7 @@ export default function BecomeCreatorCTA({ variant = 'navbar', className = '' }:
 
     if (variant === 'banner') {
         return (
-            <div className={`bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl p-6 text-white ${className}`}>
+            <div className={`bg-gradient-to-r from-brand-orange/100 to-pink-500 rounded-3xl p-6 text-white ${className}`}>
                 <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
@@ -66,14 +66,14 @@ export default function BecomeCreatorCTA({ variant = 'navbar', className = '' }:
                         </ul>
                         <Link
                             to={targetPath}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-600 rounded-lg font-semibold hover:shadow-xl transition-all"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#111] text-brand-orange rounded-2xl font-semibold hover:shadow-xl transition-all"
                         >
                             {hasSubmittedKYC ? 'View Status' : 'Start KYC Verification'}
                             <ArrowRight className="w-5 h-5" />
                         </Link>
                     </div>
                     <div className="hidden md:block flex-shrink-0">
-                        <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
+                        <div className="w-32 h-32 bg-[#111]/10 rounded-full flex items-center justify-center">
                             <Rocket className="w-16 h-16 text-white" />
                         </div>
                     </div>
@@ -84,22 +84,22 @@ export default function BecomeCreatorCTA({ variant = 'navbar', className = '' }:
 
     // Card variant
     return (
-        <div className={`bg-gradient-to-br from-orange-50 to-pink-50 border-2 border-orange-200 rounded-xl p-6 ${className}`}>
+        <div className={`bg-gradient-to-br from-brand-orange/10 to-pink-50 border-2 border-brand-orange/30 rounded-3xl p-6 ${className}`}>
             <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-brand-orange/100 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Rocket className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-brand-white mb-2">
                     {hasSubmittedKYC ? 'KYC Submitted' : 'Want to Create Projects?'}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-neutral-400 mb-4">
                     {hasSubmittedKYC
                         ? 'Check your KYC verification status'
                         : 'Complete KYC verification to unlock creator features'}
                 </p>
                 <Link
                     to={targetPath}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-orange/100 to-pink-500 text-white rounded-2xl font-medium hover:shadow-lg transition-all"
                 >
                     {buttonText}
                     <ArrowRight className="w-4 h-4" />

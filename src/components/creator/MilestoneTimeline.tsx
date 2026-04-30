@@ -62,12 +62,12 @@ export default function MilestoneTimeline({ project }: MilestoneTimelineProps) {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-6">Funding Milestones</h3>
+        <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800">
+            <h3 className="text-lg font-bold text-brand-white mb-6">Funding Milestones</h3>
 
             <div className="relative">
                 {/* Vertical line */}
-                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
+                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-neutral-800" />
 
                 {/* Milestones */}
                 <div className="space-y-6">
@@ -76,7 +76,7 @@ export default function MilestoneTimeline({ project }: MilestoneTimelineProps) {
                             {/* Icon */}
                             <div className={`relative z-10 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${milestone.reached
                                     ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg'
-                                    : 'bg-gray-200 text-gray-400'
+                                    : 'bg-neutral-800 text-neutral-600'
                                 }`}>
                                 {milestone.reached ? (
                                     <CheckCircle className="w-5 h-5" />
@@ -88,25 +88,25 @@ export default function MilestoneTimeline({ project }: MilestoneTimelineProps) {
                             {/* Content */}
                             <div className="flex-1 pt-1">
                                 <div className="flex items-center justify-between">
-                                    <h4 className={`text-sm font-semibold ${milestone.reached ? 'text-gray-900' : 'text-gray-500'
+                                    <h4 className={`text-sm font-semibold ${milestone.reached ? 'text-brand-white' : 'text-neutral-500'
                                         }`}>
                                         {milestone.title}
                                     </h4>
                                     {milestone.reached && milestone.date && (
-                                        <span className="text-xs text-gray-500">
+                                        <span className="text-xs text-neutral-500">
                                             {formatDate(milestone.date)}
                                         </span>
                                     )}
                                 </div>
 
                                 {milestone.reached && milestone.percentage > 0 && (
-                                    <p className="text-xs text-green-600 mt-1">
+                                    <p className="text-xs text-green-400 mt-1">
                                         ✓ Milestone reached
                                     </p>
                                 )}
 
                                 {!milestone.reached && milestone.percentage > 0 && (
-                                    <p className="text-xs text-gray-400 mt-1">
+                                    <p className="text-xs text-neutral-600 mt-1">
                                         {(milestone.percentage - progress).toFixed(0)}% away
                                     </p>
                                 )}
@@ -117,15 +117,15 @@ export default function MilestoneTimeline({ project }: MilestoneTimelineProps) {
             </div>
 
             {/* Current Progress Summary */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-neutral-800">
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="text-sm text-gray-600">Current Progress</p>
-                        <p className="text-2xl font-bold text-gray-900">{progress.toFixed(1)}%</p>
+                        <p className="text-sm text-neutral-400">Current Progress</p>
+                        <p className="text-2xl font-bold text-brand-white">{progress.toFixed(1)}%</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-gray-600">Raised</p>
-                        <p className="text-lg font-bold text-green-600">
+                        <p className="text-sm text-neutral-400">Raised</p>
+                        <p className="text-lg font-bold text-green-400">
                             ₹{project.raised.toLocaleString('en-IN')}
                         </p>
                     </div>

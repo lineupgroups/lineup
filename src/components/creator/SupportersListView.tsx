@@ -126,55 +126,55 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Total Supporters</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{supporters.length}</p>
+              <p className="text-sm text-neutral-400 font-medium">Total Supporters</p>
+              <p className="text-2xl font-bold text-brand-white mt-1">{supporters.length}</p>
             </div>
-            <div className="p-3 bg-blue-100 rounded-lg">
-              <User className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-blue-500/20 rounded-2xl">
+              <User className="w-6 h-6 text-blue-400" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Total Raised</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(totalRaised)}</p>
+              <p className="text-sm text-neutral-400 font-medium">Total Raised</p>
+              <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(totalRaised)}</p>
             </div>
-            <div className="p-3 bg-green-100 rounded-lg">
-              <DollarSign className="w-6 h-6 text-green-600" />
+            <div className="p-3 bg-green-500/20 rounded-2xl">
+              <DollarSign className="w-6 h-6 text-green-400" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Average Donation</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{formatCurrency(averageDonation)}</p>
+              <p className="text-sm text-neutral-400 font-medium">Average Donation</p>
+              <p className="text-2xl font-bold text-brand-white mt-1">{formatCurrency(averageDonation)}</p>
             </div>
-            <div className="p-3 bg-purple-100 rounded-lg">
-              <DollarSign className="w-6 h-6 text-purple-600" />
+            <div className="p-3 bg-purple-500/20 rounded-2xl">
+              <DollarSign className="w-6 h-6 text-purple-400" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Filters and Actions */}
-      <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div className="bg-[#111] rounded-3xl shadow-sm p-4 border border-neutral-800">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-600" />
             <input
               type="text"
               placeholder="Search supporters..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full pl-10 pr-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
             />
           </div>
 
@@ -182,7 +182,7 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 border border-neutral-700 text-neutral-300 rounded-2xl hover:bg-brand-black transition-colors"
             >
               <Filter className="w-4 h-4" />
               <span>Filters</span>
@@ -191,7 +191,7 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'amount')}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="px-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
             >
               <option value="date">Sort by Date</option>
               <option value="amount">Sort by Amount</option>
@@ -199,7 +199,7 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
 
             <button
               onClick={exportToCSV}
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all"
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl hover:from-orange-600 hover:to-red-600 transition-all"
             >
               <Download className="w-4 h-4" />
               <span>Export CSV</span>
@@ -209,16 +209,16 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
 
         {/* Expanded Filters */}
         {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-neutral-800">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-neutral-300 mb-2">
                   Filter by City
                 </label>
                 <select
                   value={filterCity}
                   onChange={(e) => setFilterCity(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
                 >
                   <option value="">All Cities</option>
                   {getUniqueCities().map(city => (
@@ -233,7 +233,7 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
                 onClick={() => {
                   setFilterCity('');
                 }}
-                className="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium"
+                className="mt-4 text-sm text-brand-orange hover:text-brand-orange font-medium"
               >
                 Clear Filters
               </button>
@@ -244,43 +244,43 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
 
       {/* Supporters List */}
       {filteredSupporters.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
+        <div className="bg-[#111] rounded-3xl shadow-sm p-12 text-center border border-neutral-800">
           <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-brand-white mb-2">
             {searchTerm || filterCity ? 'No supporters match your filters' : 'No supporters yet'}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-neutral-400">
             {searchTerm || filterCity 
               ? 'Try adjusting your search or filters' 
               : 'Share your project to get your first supporters!'}
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-brand-black border-b border-neutral-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Supporter
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Amount
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                     Status
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-neutral-800">
                 {filteredSupporters.map((supporter) => (
-                  <tr key={supporter.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={supporter.id} className="hover:bg-brand-black transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <img
@@ -289,17 +289,17 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
+                          <div className="text-sm font-medium text-brand-white">
                             {supporter.anonymous ? 'Anonymous Donor' : supporter.userName}
                           </div>
                           {supporter.userEmail && !supporter.anonymous && (
-                            <div className="text-sm text-gray-500 flex items-center space-x-1">
+                            <div className="text-sm text-neutral-500 flex items-center space-x-1">
                               <Mail className="w-3 h-3" />
                               <span>{supporter.userEmail}</span>
                             </div>
                           )}
                           {supporter.message && (
-                            <div className="text-xs text-gray-600 italic mt-1 max-w-xs truncate">
+                            <div className="text-xs text-neutral-400 italic mt-1 max-w-xs truncate">
                               "{supporter.message}"
                             </div>
                           )}
@@ -307,19 +307,19 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-semibold text-gray-900">
+                      <div className="text-sm font-semibold text-brand-white">
                         {formatCurrency(supporter.amount)}
                       </div>
                       {supporter.paymentMethod && (
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-neutral-500">
                           via {supporter.paymentMethod}
                         </div>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {supporter.city || supporter.state ? (
-                        <div className="flex items-center text-sm text-gray-700">
-                          <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                        <div className="flex items-center text-sm text-neutral-300">
+                          <MapPin className="w-4 h-4 mr-1 text-neutral-600" />
                           <span>
                             {supporter.city}
                             {supporter.city && supporter.state && ', '}
@@ -327,12 +327,12 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
                           </span>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-400">N/A</span>
+                        <span className="text-sm text-neutral-600">N/A</span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center text-sm text-gray-700">
-                        <Calendar className="w-4 h-4 mr-1 text-gray-400" />
+                      <div className="flex items-center text-sm text-neutral-300">
+                        <Calendar className="w-4 h-4 mr-1 text-neutral-600" />
                         <span>
                           {supporter.createdAt.toDate().toLocaleDateString('en-IN', {
                             year: 'numeric',
@@ -345,9 +345,9 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         supporter.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-500/20 text-green-800'
                           : supporter.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-800'
+                          ? 'bg-yellow-500/20 text-yellow-800'
                           : 'bg-red-100 text-red-800'
                       }`}>
                         {supporter.status}
@@ -362,10 +362,10 @@ export default function SupportersListView({ projectId }: SupportersListViewProp
       )}
 
       {/* Summary Footer */}
-      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-        <div className="text-sm text-gray-600">
-          Showing <span className="font-semibold text-gray-900">{filteredSupporters.length}</span> of{' '}
-          <span className="font-semibold text-gray-900">{supporters.length}</span> supporters
+      <div className="bg-brand-black rounded-3xl p-4 border border-neutral-800">
+        <div className="text-sm text-neutral-400">
+          Showing <span className="font-semibold text-brand-white">{filteredSupporters.length}</span> of{' '}
+          <span className="font-semibold text-brand-white">{supporters.length}</span> supporters
         </div>
       </div>
     </div>

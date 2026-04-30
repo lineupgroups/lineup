@@ -203,7 +203,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       toast.success('Account created successfully!');
     } catch (error: any) {
       console.error('Sign up error:', error);
-      toast.error(error.message || 'Failed to create account');
+      // Map Firebase error codes to user-friendly messages
+      let errorMessage = 'Failed to create account';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already registered. Try signing in instead.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password is too weak. Use at least 6 characters.';
+      } else if (error.code === 'auth/operation-not-allowed') {
+        errorMessage = 'Email/password sign up is not enabled. Contact support.';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your internet connection.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      toast.error(errorMessage);
       throw error;
     } finally {
       setLoading(false);

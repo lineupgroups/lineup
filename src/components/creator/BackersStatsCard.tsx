@@ -58,7 +58,7 @@ const formatCompact = (num: number): string => {
 const TrendIndicator = ({ value, suffix = '' }: { value: number; suffix?: string }) => {
     if (value === 0) {
         return (
-            <span className="flex items-center text-gray-500 text-xs">
+            <span className="flex items-center text-neutral-500 text-xs">
                 <Minus className="w-3 h-3 mr-0.5" />
                 No change{suffix}
             </span>
@@ -67,7 +67,7 @@ const TrendIndicator = ({ value, suffix = '' }: { value: number; suffix?: string
 
     if (value > 0) {
         return (
-            <span className="flex items-center text-green-600 text-xs">
+            <span className="flex items-center text-green-400 text-xs">
                 <ArrowUp className="w-3 h-3 mr-0.5" />
                 +{value}{suffix}
             </span>
@@ -84,13 +84,13 @@ const TrendIndicator = ({ value, suffix = '' }: { value: number; suffix?: string
 
 // Loading skeleton
 const StatCardSkeleton = () => (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse">
+    <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 animate-pulse">
         <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gray-200 rounded-lg" />
-            <div className="h-4 bg-gray-200 rounded w-24" />
+            <div className="w-10 h-10 bg-neutral-800 rounded-2xl" />
+            <div className="h-4 bg-neutral-800 rounded w-24" />
         </div>
-        <div className="h-8 bg-gray-200 rounded w-32 mb-2" />
-        <div className="h-3 bg-gray-200 rounded w-20" />
+        <div className="h-8 bg-neutral-800 rounded w-32 mb-2" />
+        <div className="h-3 bg-neutral-800 rounded w-20" />
     </div>
 );
 
@@ -153,22 +153,22 @@ export default function BackersStatsCard({
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {/* Total Raised */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg">
-                        <DollarSign className="w-5 h-5 text-green-600" />
+                    <div className="p-2.5 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl">
+                        <DollarSign className="w-5 h-5 text-green-400" />
                     </div>
-                    <span className="text-sm font-medium text-gray-500">Total Raised</span>
+                    <span className="text-sm font-medium text-neutral-500">Total Raised</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-brand-white">
                     {formatCurrency(stats.totalRaised)}
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-neutral-500">
                         {isFilteringByProject ? 'For this project' : 'Across all projects'}
                     </span>
                     {weeklyStats.amountThisWeek > 0 && (
-                        <span className="text-xs text-green-600 font-medium">
+                        <span className="text-xs text-green-400 font-medium">
                             +{formatCompact(weeklyStats.amountThisWeek)} this week
                         </span>
                     )}
@@ -176,18 +176,18 @@ export default function BackersStatsCard({
             </div>
 
             {/* Unique Backers */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg">
-                        <Users className="w-5 h-5 text-blue-600" />
+                    <div className="p-2.5 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl">
+                        <Users className="w-5 h-5 text-blue-400" />
                     </div>
-                    <span className="text-sm font-medium text-gray-500">Unique Backers</span>
+                    <span className="text-sm font-medium text-neutral-500">Unique Backers</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-brand-white">
                     {stats.totalSupporters}
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-neutral-500">
                         {stats.uniqueNonAnonymous} named, {stats.anonymousCount} anon
                     </span>
                     {weeklyStats.newBackersThisWeek > 0 && (
@@ -197,37 +197,37 @@ export default function BackersStatsCard({
             </div>
 
             {/* Average Donation */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-purple-100 to-violet-100 rounded-lg">
-                        <TrendingUp className="w-5 h-5 text-purple-600" />
+                    <div className="p-2.5 bg-gradient-to-br from-purple-100 to-violet-100 rounded-2xl">
+                        <TrendingUp className="w-5 h-5 text-purple-400" />
                     </div>
-                    <span className="text-sm font-medium text-gray-500">Avg. Donation</span>
+                    <span className="text-sm font-medium text-neutral-500">Avg. Donation</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-brand-white">
                     {formatCurrency(stats.avgContribution)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-neutral-500 mt-1">
                     Per backer
                 </div>
             </div>
 
             {/* Repeat Backers */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-orange-100 to-amber-100 rounded-lg">
-                        <Repeat className="w-5 h-5 text-orange-600" />
+                    <div className="p-2.5 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl">
+                        <Repeat className="w-5 h-5 text-brand-orange" />
                     </div>
-                    <span className="text-sm font-medium text-gray-500">Repeat Backers</span>
+                    <span className="text-sm font-medium text-neutral-500">Repeat Backers</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-brand-white">
                     {stats.repeatSupporters}
-                    <span className="text-lg font-medium text-gray-500 ml-1">
+                    <span className="text-lg font-medium text-neutral-500 ml-1">
                         ({repeatPercentage}%)
                     </span>
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-neutral-500">
                         Backed {isFilteringByProject ? 'multiple times' : 'multiple projects'}
                     </span>
                     {weeklyStats.repeatChange !== 0 && (

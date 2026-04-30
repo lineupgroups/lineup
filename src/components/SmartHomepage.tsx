@@ -120,7 +120,7 @@ export default function SmartHomepage() {
   // Show loading while auth is being determined
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -138,7 +138,7 @@ export default function SmartHomepage() {
   // If user is logged in, show personalized homepage
   return (
     <PageErrorBoundary>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans">
         {/* Personalized Header */}
         <PersonalizedHeader />
 
@@ -221,12 +221,12 @@ export default function SmartHomepage() {
               </div>
 
               {/* Near You Section */}
-              <div ref={nearMeRef} className="py-8 border-t border-gray-100">
+              <div ref={nearMeRef} className="py-8 border-t border-neutral-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">Projects Near You</h2>
-                      <p className="text-gray-600">Support local creators in your area</p>
+                      <h2 className="text-2xl font-bold text-brand-white">Projects Near You</h2>
+                      <p className="text-neutral-400">Support local creators in your area</p>
                     </div>
                   </div>
                   <ProjectsNearMeList onProjectClick={(id) => window.location.href = `/project/${id}`} />

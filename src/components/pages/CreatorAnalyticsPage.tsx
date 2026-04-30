@@ -51,7 +51,7 @@ function LazyChart({
   return (
     <div ref={containerRef} className={`${height} min-h-[200px]`}>
       {isVisible ? children : (
-        <div className="flex items-center justify-center h-full text-gray-400">
+        <div className="flex items-center justify-center h-full text-neutral-600">
           <LoadingSpinner size="sm" />
           <span className="ml-2">{fallback}</span>
         </div>
@@ -351,7 +351,7 @@ export default function CreatorAnalyticsPage() {
     // Since we don't have actual referral data, we create realistic mock distribution
     const sources = [
       { name: 'Direct Links', color: 'bg-gray-600', percentage: 35, icon: '🔗' },
-      { name: 'WhatsApp', color: 'bg-green-500', percentage: 28, icon: '📱' },
+      { name: 'WhatsApp', color: 'bg-green-500/100', percentage: 28, icon: '📱' },
       { name: 'Instagram', color: 'bg-pink-500', percentage: 15, icon: '📸' },
       { name: 'Twitter/X', color: 'bg-blue-400', percentage: 10, icon: '🐦' },
       { name: 'Facebook', color: 'bg-blue-600', percentage: 7, icon: '👤' },
@@ -418,25 +418,25 @@ export default function CreatorAnalyticsPage() {
         name: 'Mobile',
         percentage: 72,
         icon: Smartphone,
-        color: 'from-blue-500 to-cyan-400',
-        bgColor: 'bg-blue-100',
-        textColor: 'text-blue-600'
+        color: 'from-blue-500/100 to-cyan-400',
+        bgColor: 'bg-blue-500/20',
+        textColor: 'text-blue-400'
       },
       {
         name: 'Desktop',
         percentage: 23,
         icon: Monitor,
         color: 'from-purple-500 to-pink-400',
-        bgColor: 'bg-purple-100',
-        textColor: 'text-purple-600'
+        bgColor: 'bg-purple-500/20',
+        textColor: 'text-purple-400'
       },
       {
         name: 'Tablet',
         percentage: 5,
         icon: Tablet,
-        color: 'from-orange-500 to-amber-400',
-        bgColor: 'bg-orange-100',
-        textColor: 'text-orange-600'
+        color: 'from-brand-orange/100 to-amber-400',
+        bgColor: 'bg-brand-orange/20',
+        textColor: 'text-brand-orange'
       },
     ];
 
@@ -687,21 +687,21 @@ export default function CreatorAnalyticsPage() {
   // Skeleton Loading State (Phase 9)
   if (projectsLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
         {/* Header Skeleton */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="bg-[#111] border-b border-neutral-800 sticky top-0 z-10">
           <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse" />
+                <div className="w-12 h-12 bg-neutral-800 rounded-3xl animate-pulse" />
                 <div>
-                  <div className="h-7 w-32 bg-gray-200 rounded animate-pulse" />
-                  <div className="h-4 w-48 bg-gray-200 rounded animate-pulse mt-2" />
+                  <div className="h-7 w-32 bg-neutral-800 rounded animate-pulse" />
+                  <div className="h-4 w-48 bg-neutral-800 rounded animate-pulse mt-2" />
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-10 w-24 bg-gray-200 rounded-lg animate-pulse" />
-                <div className="h-10 w-24 bg-gray-200 rounded-lg animate-pulse" />
+                <div className="h-10 w-24 bg-neutral-800 rounded-2xl animate-pulse" />
+                <div className="h-10 w-24 bg-neutral-800 rounded-2xl animate-pulse" />
               </div>
             </div>
           </div>
@@ -710,20 +710,20 @@ export default function CreatorAnalyticsPage() {
         <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
           {/* Filter Skeleton */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse" />
-            <div className="h-10 w-64 bg-gray-200 rounded-lg animate-pulse" />
+            <div className="h-10 w-48 bg-neutral-800 rounded-2xl animate-pulse" />
+            <div className="h-10 w-64 bg-neutral-800 rounded-2xl animate-pulse" />
           </div>
 
           {/* Stats Cards Skeleton - 6 cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+              <div key={i} className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-gray-200 rounded-xl animate-pulse" />
-                  <div className="w-16 h-5 bg-gray-200 rounded-full animate-pulse" />
+                  <div className="w-10 h-10 bg-neutral-800 rounded-3xl animate-pulse" />
+                  <div className="w-16 h-5 bg-neutral-800 rounded-full animate-pulse" />
                 </div>
-                <div className="h-8 w-24 bg-gray-200 rounded animate-pulse" />
-                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse mt-2" />
+                <div className="h-8 w-24 bg-neutral-800 rounded animate-pulse" />
+                <div className="h-4 w-20 bg-neutral-800 rounded animate-pulse mt-2" />
               </div>
             ))}
           </div>
@@ -733,13 +733,13 @@ export default function CreatorAnalyticsPage() {
             {/* Left 2 Columns */}
             <div className="lg:col-span-2 space-y-6">
               {/* Chart Skeleton */}
-              <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-6" />
-                <div className="h-64 bg-gray-100 rounded-lg animate-pulse flex items-end justify-around p-4">
+              <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+                <div className="h-6 w-32 bg-neutral-800 rounded animate-pulse mb-6" />
+                <div className="h-64 bg-neutral-900 rounded-2xl animate-pulse flex items-end justify-around p-4">
                   {[...Array(12)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-6 bg-gray-200 rounded-t animate-pulse"
+                      className="w-6 bg-neutral-800 rounded-t animate-pulse"
                       style={{ height: `${Math.random() * 60 + 20}%` }}
                     />
                   ))}
@@ -747,11 +747,11 @@ export default function CreatorAnalyticsPage() {
               </div>
 
               {/* Heatmap Skeleton */}
-              <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-6" />
+              <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+                <div className="h-6 w-40 bg-neutral-800 rounded animate-pulse mb-6" />
                 <div className="grid grid-cols-25 gap-1">
                   {[...Array(168)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 bg-gray-200 rounded animate-pulse" />
+                    <div key={i} className="w-3 h-3 bg-neutral-800 rounded animate-pulse" />
                   ))}
                 </div>
               </div>
@@ -761,16 +761,16 @@ export default function CreatorAnalyticsPage() {
             <div className="space-y-6">
               {/* Widget Skeletons */}
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-4" />
+                <div key={i} className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+                  <div className="h-6 w-32 bg-neutral-800 rounded animate-pulse mb-4" />
                   <div className="space-y-3">
                     {[...Array(4)].map((_, j) => (
                       <div key={j} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 bg-gray-200 rounded animate-pulse" />
-                          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+                          <div className="w-8 h-8 bg-neutral-800 rounded animate-pulse" />
+                          <div className="h-4 w-24 bg-neutral-800 rounded animate-pulse" />
                         </div>
-                        <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+                        <div className="h-4 w-16 bg-neutral-800 rounded animate-pulse" />
                       </div>
                     ))}
                   </div>
@@ -786,18 +786,18 @@ export default function CreatorAnalyticsPage() {
   // Empty State - No Projects (Phase 9)
   if (userProjects.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-brand-orange/100 to-red-500/100 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <BarChart3 className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">No Projects Yet</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold text-brand-white mb-3">No Projects Yet</h2>
+          <p className="text-neutral-400 mb-6">
             Create your first project to start tracking analytics and see how your campaigns perform.
           </p>
           <a
             href="/dashboard/projects/create"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium rounded-lg hover:from-orange-600 hover:to-red-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white font-medium rounded-2xl hover:from-orange-600 hover:to-red-600 transition-colors"
           >
             Create Your First Project
           </a>
@@ -809,19 +809,19 @@ export default function CreatorAnalyticsPage() {
   // Error State (Phase 9)
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="w-20 h-20 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <BarChart3 className="w-10 h-10 text-red-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Unable to Load Analytics</h2>
-          <p className="text-gray-600 mb-2">{error}</p>
-          <p className="text-gray-500 text-sm mb-6">
+          <h2 className="text-2xl font-bold text-brand-white mb-3">Unable to Load Analytics</h2>
+          <p className="text-neutral-400 mb-2">{error}</p>
+          <p className="text-neutral-500 text-sm mb-6">
             There was a problem loading your analytics data. Please check your connection and try again.
           </p>
           <button
             onClick={() => fetchAllDonations()}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium rounded-lg hover:from-orange-600 hover:to-red-600 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white font-medium rounded-2xl hover:from-orange-600 hover:to-red-600 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Retry Loading
@@ -832,21 +832,21 @@ export default function CreatorAnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
       {/* Dynamic Page Title */}
       <PageTitle title="Analytics" description="Track performance across your projects" />
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-[#111] border-b border-neutral-800 sticky top-0 z-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="p-2.5 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl shadow-lg">
+              <div className="p-2.5 bg-gradient-to-br from-brand-orange/100 to-red-500/100 rounded-3xl shadow-lg">
                 <BarChart3 className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analytics</h1>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <h1 className="text-2xl sm:text-3xl font-bold text-brand-white">Analytics</h1>
+                <p className="text-sm text-neutral-500 mt-0.5">
                   {selectedProjectId === 'all'
                     ? 'Performance across all your projects'
                     : `Viewing: ${userProjects.find(p => p.id === selectedProjectId)?.title || 'Selected Project'}`
@@ -859,7 +859,7 @@ export default function CreatorAnalyticsPage() {
               <div className="relative">
                 <button
                   onClick={() => setShowExportDropdown(!showExportDropdown)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Export</span>
@@ -869,27 +869,27 @@ export default function CreatorAnalyticsPage() {
                 {showExportDropdown && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowExportDropdown(false)} />
-                    <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[160px] py-1">
+                    <div className="absolute top-full right-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[160px] py-1">
                       <button
                         onClick={handleExportCSV}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2 transition-colors"
                       >
-                        <FileText className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-medium text-gray-700">Export as CSV</span>
+                        <FileText className="w-4 h-4 text-green-400" />
+                        <span className="text-sm font-medium text-neutral-300">Export as CSV</span>
                       </button>
                       <button
                         onClick={handleExportPDF}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2 transition-colors"
                       >
                         <FileText className="w-4 h-4 text-red-500" />
-                        <span className="text-sm font-medium text-gray-700">Export as PDF</span>
+                        <span className="text-sm font-medium text-neutral-300">Export as PDF</span>
                       </button>
                       <button
                         onClick={handleExportJSON}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                        className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2 transition-colors"
                       >
                         <FileText className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm font-medium text-gray-700">Export as JSON</span>
+                        <span className="text-sm font-medium text-neutral-300">Export as JSON</span>
                       </button>
                     </div>
                   </>
@@ -899,7 +899,7 @@ export default function CreatorAnalyticsPage() {
               <button
                 onClick={handleRefresh}
                 disabled={refreshing}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                 <span className="hidden sm:inline">Refresh</span>
@@ -918,25 +918,25 @@ export default function CreatorAnalyticsPage() {
               <select
                 value={selectedProjectId}
                 onChange={(e) => handleProjectChange(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg py-2.5 pl-4 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 min-w-[200px]"
+                className="appearance-none bg-[#111] border border-neutral-700 rounded-2xl py-2.5 pl-4 pr-10 text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-acid min-w-[200px]"
               >
                 <option value="all">All Projects</option>
                 {userProjects.map(project => (
                   <option key={project.id} value={project.id}>{project.title}</option>
                 ))}
               </select>
-              <Filter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+              <Filter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-600 w-4 h-4 pointer-events-none" />
             </div>
 
             {/* A-MISS-04: Time Range with Custom Option */}
-            <div className="flex items-center space-x-1 bg-white border border-gray-300 rounded-lg p-1">
+            <div className="flex items-center space-x-1 bg-[#111] border border-neutral-700 rounded-2xl p-1">
               {DATE_RANGE_OPTIONS.filter(o => o.value !== -1).map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleTimeRangeChange(option.value)}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${timeRange === option.value
-                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white'
+                    : 'text-neutral-300 hover:bg-neutral-900'
                     }`}
                 >
                   {option.label}
@@ -945,8 +945,8 @@ export default function CreatorAnalyticsPage() {
               <button
                 onClick={() => handleTimeRangeChange(-1)}
                 className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${timeRange === -1
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white'
+                  : 'text-neutral-300 hover:bg-neutral-900'
                   }`}
               >
                 <CalendarDays className="w-4 h-4" />
@@ -958,9 +958,9 @@ export default function CreatorAnalyticsPage() {
           {/* Comparison Toggle */}
           <button
             onClick={() => setShowComparison(!showComparison)}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${showComparison
-              ? 'bg-orange-100 text-orange-700 border border-orange-300'
-              : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+            className={`flex items-center space-x-2 px-4 py-2 rounded-2xl text-sm font-medium transition-colors ${showComparison
+              ? 'bg-brand-orange/20 text-brand-orange border border-brand-orange/40'
+              : 'bg-[#111] border border-neutral-700 text-neutral-400 hover:bg-brand-black'
               }`}
           >
             <Calendar className="w-4 h-4" />
@@ -970,24 +970,24 @@ export default function CreatorAnalyticsPage() {
 
         {/* Custom Date Picker */}
         {showCustomDatePicker && timeRange === -1 && (
-          <div className="bg-white rounded-xl shadow-sm p-4 mb-8 border border-gray-100 flex flex-wrap items-center gap-4">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-4 mb-8 border border-neutral-800/50 flex flex-wrap items-center gap-4">
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium text-gray-700">From:</label>
+              <label className="text-sm font-medium text-neutral-300">From:</label>
               <input
                 type="date"
                 value={customStartDate}
                 onChange={(e) => setCustomStartDate(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-500"
+                className="border border-neutral-700 rounded-2xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-acid"
               />
             </div>
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium text-gray-700">To:</label>
+              <label className="text-sm font-medium text-neutral-300">To:</label>
               <input
                 type="date"
                 value={customEndDate}
                 onChange={(e) => setCustomEndDate(e.target.value)}
                 max={format(new Date(), 'yyyy-MM-dd')}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-500"
+                className="border border-neutral-700 rounded-2xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-acid"
               />
             </div>
           </div>
@@ -996,80 +996,80 @@ export default function CreatorAnalyticsPage() {
         {/* Enhanced Stats Cards - 6 Key Metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
           {/* Total Views */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-blue-100 rounded-xl">
-                <Eye className="w-5 h-5 text-blue-600" />
+              <div className="p-2.5 bg-blue-500/20 rounded-3xl">
+                <Eye className="w-5 h-5 text-blue-400" />
               </div>
               {enhancedStats.viewsTrend !== 0 && (
-                <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.viewsTrend >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.viewsTrend >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-100 text-red-400'
                   }`}>
                   {enhancedStats.viewsTrend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {Math.abs(enhancedStats.viewsTrend).toFixed(1)}%
                 </div>
               )}
             </div>
-            <p className="text-2xl font-bold text-gray-900">{enhancedStats.totalViews.toLocaleString('en-IN')}</p>
-            <p className="text-xs text-gray-500 mt-1">Total Views</p>
+            <p className="text-2xl font-bold text-brand-white">{enhancedStats.totalViews.toLocaleString('en-IN')}</p>
+            <p className="text-xs text-neutral-500 mt-1">Total Views</p>
           </div>
 
           {/* Conversion Rate */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-green-100 rounded-xl">
-                <Target className="w-5 h-5 text-green-600" />
+              <div className="p-2.5 bg-green-500/20 rounded-3xl">
+                <Target className="w-5 h-5 text-green-400" />
               </div>
               {enhancedStats.conversionRate > 4 && (
-                <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-xs font-medium">
                   Above avg
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-gray-900">{enhancedStats.conversionRate.toFixed(2)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Conversion Rate</p>
-            <p className="text-xs text-gray-400">Views → Backers</p>
+            <p className="text-2xl font-bold text-brand-white">{enhancedStats.conversionRate.toFixed(2)}%</p>
+            <p className="text-xs text-neutral-500 mt-1">Conversion Rate</p>
+            <p className="text-xs text-neutral-600">Views → Backers</p>
           </div>
 
           {/* Total Raised */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-orange-100 rounded-xl">
-                <BarChart3 className="w-5 h-5 text-orange-600" />
+              <div className="p-2.5 bg-brand-orange/20 rounded-3xl">
+                <BarChart3 className="w-5 h-5 text-brand-orange" />
               </div>
-              <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.raisedTrend >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.raisedTrend >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-100 text-red-400'
                 }`}>
                 {enhancedStats.raisedTrend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                 {Math.abs(enhancedStats.raisedTrend).toFixed(1)}%
               </div>
             </div>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(enhancedStats.totalRaised)}</p>
-            <p className="text-xs text-gray-500 mt-1">Total Raised</p>
+            <p className="text-2xl font-bold text-brand-white">{formatCurrency(enhancedStats.totalRaised)}</p>
+            <p className="text-xs text-neutral-500 mt-1">Total Raised</p>
             {showComparison && (
-              <p className="text-xs text-gray-400">vs prev period</p>
+              <p className="text-xs text-neutral-600">vs prev period</p>
             )}
           </div>
 
           {/* Total Backers */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-purple-100 rounded-xl">
-                <Users className="w-5 h-5 text-purple-600" />
+              <div className="p-2.5 bg-purple-500/20 rounded-3xl">
+                <Users className="w-5 h-5 text-purple-400" />
               </div>
-              <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.backersTrend >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              <div className={`flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${enhancedStats.backersTrend >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-100 text-red-400'
                 }`}>
                 {enhancedStats.backersTrend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                 {Math.abs(enhancedStats.backersTrend).toFixed(1)}%
               </div>
             </div>
-            <p className="text-2xl font-bold text-gray-900">{enhancedStats.totalBackers.toLocaleString('en-IN')}</p>
-            <p className="text-xs text-gray-500 mt-1">Total Backers</p>
-            <p className="text-xs text-gray-400">{aggregateStats.uniqueSupporters} unique</p>
+            <p className="text-2xl font-bold text-brand-white">{enhancedStats.totalBackers.toLocaleString('en-IN')}</p>
+            <p className="text-xs text-neutral-500 mt-1">Total Backers</p>
+            <p className="text-xs text-neutral-600">{aggregateStats.uniqueSupporters} unique</p>
           </div>
 
           {/* Engagement Rate */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-pink-100 rounded-xl">
+              <div className="p-2.5 bg-pink-100 rounded-3xl">
                 <Heart className="w-5 h-5 text-pink-600" />
               </div>
               {enhancedStats.engagementRate > 10 && (
@@ -1078,15 +1078,15 @@ export default function CreatorAnalyticsPage() {
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-gray-900">{enhancedStats.engagementRate.toFixed(1)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Engagement Rate</p>
-            <p className="text-xs text-gray-400">{enhancedStats.totalLikes} likes + {enhancedStats.totalComments} comments</p>
+            <p className="text-2xl font-bold text-brand-white">{enhancedStats.engagementRate.toFixed(1)}%</p>
+            <p className="text-xs text-neutral-500 mt-1">Engagement Rate</p>
+            <p className="text-xs text-neutral-600">{enhancedStats.totalLikes} likes + {enhancedStats.totalComments} comments</p>
           </div>
 
           {/* Share Rate */}
-          <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-5 border border-neutral-800/50 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <div className="p-2.5 bg-cyan-100 rounded-xl">
+              <div className="p-2.5 bg-cyan-100 rounded-3xl">
                 <Share2 className="w-5 h-5 text-cyan-600" />
               </div>
               {enhancedStats.shareRate > 5 && (
@@ -1095,9 +1095,9 @@ export default function CreatorAnalyticsPage() {
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-gray-900">{enhancedStats.shareRate.toFixed(1)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Share Rate</p>
-            <p className="text-xs text-gray-400">{enhancedStats.totalShares} shares</p>
+            <p className="text-2xl font-bold text-brand-white">{enhancedStats.shareRate.toFixed(1)}%</p>
+            <p className="text-xs text-neutral-500 mt-1">Share Rate</p>
+            <p className="text-xs text-neutral-600">{enhancedStats.totalShares} shares</p>
           </div>
         </div>
 
@@ -1105,13 +1105,13 @@ export default function CreatorAnalyticsPage() {
           {/* Main Content - Left 2 Columns */}
           <div className="lg:col-span-2 space-y-6">
             {/* A-BUG-01: Fixed Funding Trend Chart */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Funding Trend</h3>
+                <h3 className="text-lg font-semibold text-brand-white">Funding Trend</h3>
                 <div className="flex items-center space-x-4 text-sm">
                   <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded" />
-                    <span className="text-gray-600">Amount</span>
+                    <div className="w-3 h-3 bg-gradient-to-r from-brand-orange/100 to-red-500/100 rounded" />
+                    <span className="text-neutral-400">Amount</span>
                   </div>
                 </div>
               </div>
@@ -1128,8 +1128,8 @@ export default function CreatorAnalyticsPage() {
                           <div className="relative flex-1 w-full flex items-end">
                             <div
                               className={`w-full rounded-t transition-all duration-300 ${day.amount > 0
-                                ? 'bg-gradient-to-t from-orange-500 to-red-400 hover:from-orange-600 hover:to-red-500'
-                                : 'bg-gray-200'
+                                ? 'bg-gradient-to-t from-brand-orange/100 to-red-400 hover:from-orange-600 hover:to-red-500/100'
+                                : 'bg-neutral-800'
                                 }`}
                               style={{ height: `${Math.max(height, day.amount > 0 ? 8 : 2)}%` }}
                             />
@@ -1138,7 +1138,7 @@ export default function CreatorAnalyticsPage() {
                               {formatCurrency(day.amount)} • {day.count} donations
                             </div>
                           </div>
-                          <span className="text-xs text-gray-400 mt-2 transform -rotate-45 origin-left whitespace-nowrap">
+                          <span className="text-xs text-neutral-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap">
                             {format(day.dateObj, 'd MMM')}
                           </span>
                         </div>
@@ -1146,7 +1146,7 @@ export default function CreatorAnalyticsPage() {
                     })}
                   </div>
                 ) : (
-                  <div className="h-64 flex items-center justify-center text-gray-400">
+                  <div className="h-64 flex items-center justify-center text-neutral-600">
                     <div className="text-center">
                       <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-50" />
                       <p>No donation data for this period</p>
@@ -1157,9 +1157,9 @@ export default function CreatorAnalyticsPage() {
             </div>
 
             {/* A-MISS-05: Hourly Heatmap */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Donation Heatmap</h3>
-              <p className="text-sm text-gray-500 mb-4">When do your supporters donate? (by day/hour)</p>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-4">Donation Heatmap</h3>
+              <p className="text-sm text-neutral-500 mb-4">When do your supporters donate? (by day/hour)</p>
 
               <LazyChart height="h-48" fallback="Loading heatmap...">
                 <div className="overflow-x-auto">
@@ -1167,7 +1167,7 @@ export default function CreatorAnalyticsPage() {
                     {/* Hours header */}
                     <div className="flex pl-12 mb-1">
                       {Array.from({ length: 24 }, (_, i) => (
-                        <div key={i} className="flex-1 text-center text-xs text-gray-400">
+                        <div key={i} className="flex-1 text-center text-xs text-neutral-600">
                           {i % 3 === 0 ? `${i}` : ''}
                         </div>
                       ))}
@@ -1176,7 +1176,7 @@ export default function CreatorAnalyticsPage() {
                     {/* Heatmap grid */}
                     {dayNames.map((day, dayIndex) => (
                       <div key={day} className="flex items-center">
-                        <div className="w-12 text-xs text-gray-500 font-medium">{day}</div>
+                        <div className="w-12 text-xs text-neutral-500 font-medium">{day}</div>
                         <div className="flex-1 flex">
                           {hourlyHeatmap[dayIndex].map((value, hourIndex) => {
                             const intensity = value / maxHeatmapValue;
@@ -1203,7 +1203,7 @@ export default function CreatorAnalyticsPage() {
 
                     {/* Legend */}
                     <div className="flex items-center justify-end mt-4 space-x-2">
-                      <span className="text-xs text-gray-500">Less</span>
+                      <span className="text-xs text-neutral-500">Less</span>
                       <div className="flex">
                         {[0.1, 0.3, 0.5, 0.7, 0.9].map((opacity) => (
                           <div
@@ -1213,7 +1213,7 @@ export default function CreatorAnalyticsPage() {
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500">More</span>
+                      <span className="text-xs text-neutral-500">More</span>
                     </div>
                   </div>
                 </div>
@@ -1221,8 +1221,8 @@ export default function CreatorAnalyticsPage() {
             </div>
 
             {/* A-LOG-02: Real Conversion Funnel */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Conversion Funnel</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-6">Conversion Funnel</h3>
 
               <LazyChart height="h-auto" fallback="Loading funnel...">
                 <div className="space-y-4">
@@ -1234,24 +1234,24 @@ export default function CreatorAnalyticsPage() {
                       <div key={stage.stage}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
-                            <span className="text-sm font-medium text-gray-700">{stage.stage}</span>
+                            <span className="text-sm font-medium text-neutral-300">{stage.stage}</span>
                             {index > 0 && dropOff > 0 && (
-                              <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded">
+                              <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded">
                                 -{dropOff.toFixed(1)}% drop
                               </span>
                             )}
                           </div>
-                          <span className="text-sm text-gray-600">{stage.count.toLocaleString()}</span>
+                          <span className="text-sm text-neutral-400">{stage.count.toLocaleString()}</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-8 relative overflow-hidden">
+                        <div className="w-full bg-neutral-800 rounded-full h-8 relative overflow-hidden">
                           <div
                             className={`h-8 rounded-full transition-all duration-500 ${index === funnelData.length - 1
                               ? 'bg-gradient-to-r from-green-500 to-emerald-500'
-                              : 'bg-gradient-to-r from-orange-400 to-orange-500'
+                              : 'bg-gradient-to-r from-orange-400 to-brand-orange/100'
                               }`}
                             style={{ width: `${widthPercent}%` }}
                           />
-                          <span className="absolute inset-0 flex items-center justify-center text-sm font-medium text-gray-700">
+                          <span className="absolute inset-0 flex items-center justify-center text-sm font-medium text-neutral-300">
                             {stage.percentage.toFixed(1)}%
                           </span>
                         </div>
@@ -1266,13 +1266,13 @@ export default function CreatorAnalyticsPage() {
           {/* Right Sidebar */}
           <div className="space-y-6">
             {/* Projects Breakdown */}
-            <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-gradient-to-br from-brand-orange/100 to-red-600 rounded-3xl shadow-lg p-6 text-white">
               <h3 className="text-lg font-semibold mb-4">Projects Breakdown</h3>
               <div className="space-y-3">
                 {projectsBreakdown.slice(0, 5).map((project) => (
                   <div
                     key={project.id}
-                    className={`flex items-center justify-between bg-white/10 rounded-lg p-3 backdrop-blur-sm cursor-pointer hover:bg-white/20 transition-colors ${selectedProjectId === project.id ? 'ring-2 ring-white' : ''
+                    className={`flex items-center justify-between bg-[#111]/10 rounded-2xl p-3 backdrop-blur-sm cursor-pointer hover:bg-[#111]/20 transition-colors ${selectedProjectId === project.id ? 'ring-2 ring-[#111]' : ''
                       }`}
                     onClick={() => handleProjectChange(project.id)}
                   >
@@ -1291,10 +1291,10 @@ export default function CreatorAnalyticsPage() {
             </div>
 
             {/* Traffic Sources Widget (Phase 4) */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center gap-2 mb-4">
-                <Globe className="w-5 h-5 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Traffic Sources</h3>
+                <Globe className="w-5 h-5 text-blue-400" />
+                <h3 className="text-lg font-semibold text-brand-white">Traffic Sources</h3>
               </div>
 
               {filteredDonations.length > 0 ? (
@@ -1304,14 +1304,14 @@ export default function CreatorAnalyticsPage() {
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">{source.icon}</span>
-                          <span className="text-sm font-medium text-gray-700">{source.name}</span>
+                          <span className="text-sm font-medium text-neutral-300">{source.name}</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-xs text-gray-500">{source.percentage}%</span>
-                          <span className="text-sm font-bold text-gray-900">{formatCurrency(source.amount)}</span>
+                          <span className="text-xs text-neutral-500">{source.percentage}%</span>
+                          <span className="text-sm font-bold text-brand-white">{formatCurrency(source.amount)}</span>
                         </div>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-neutral-900 rounded-full h-2 overflow-hidden">
                         <div
                           className={`h-2 rounded-full transition-all duration-500 ${source.color}`}
                           style={{ width: `${source.percentage}%` }}
@@ -1323,30 +1323,30 @@ export default function CreatorAnalyticsPage() {
               ) : (
                 <div className="text-center py-8">
                   <Globe className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500 text-sm">No traffic data available</p>
-                  <p className="text-gray-400 text-xs mt-1">Data will appear when donations come in</p>
+                  <p className="text-neutral-500 text-sm">No traffic data available</p>
+                  <p className="text-neutral-600 text-xs mt-1">Data will appear when donations come in</p>
                 </div>
               )}
 
-              <p className="text-xs text-gray-400 mt-4 text-center">
+              <p className="text-xs text-neutral-600 mt-4 text-center">
                 📊 Based on typical crowdfunding patterns
               </p>
             </div>
 
             {/* Geographic Insights Widget (Phase 5) */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-green-600" />
-                  <h3 className="text-lg font-semibold text-gray-900">Geographic Insights</h3>
+                  <MapPin className="w-5 h-5 text-green-400" />
+                  <h3 className="text-lg font-semibold text-brand-white">Geographic Insights</h3>
                 </div>
                 {/* Toggle between States and Cities */}
-                <div className="flex bg-gray-100 rounded-lg p-0.5">
+                <div className="flex bg-neutral-900 rounded-2xl p-0.5">
                   <button
                     onClick={() => setGeoViewMode('states')}
                     className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${geoViewMode === 'states'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-[#111] text-brand-white shadow-sm'
+                      : 'text-neutral-400 hover:text-brand-white'
                       }`}
                   >
                     States
@@ -1354,8 +1354,8 @@ export default function CreatorAnalyticsPage() {
                   <button
                     onClick={() => setGeoViewMode('cities')}
                     className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${geoViewMode === 'cities'
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-[#111] text-brand-white shadow-sm'
+                      : 'text-neutral-400 hover:text-brand-white'
                       }`}
                   >
                     Cities
@@ -1371,16 +1371,16 @@ export default function CreatorAnalyticsPage() {
                       <div key={item.name} className="group">
                         <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400 w-4">{index + 1}.</span>
+                            <span className="text-xs font-bold text-neutral-600 w-4">{index + 1}.</span>
                             <span className="text-sm">{item.emoji}</span>
-                            <span className="text-sm font-medium text-gray-700">{item.name}</span>
+                            <span className="text-sm font-medium text-neutral-300">{item.name}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500">{item.percentage}%</span>
-                            <span className="text-sm font-bold text-gray-900">{formatCurrency(item.amount)}</span>
+                            <span className="text-xs text-neutral-500">{item.percentage}%</span>
+                            <span className="text-sm font-bold text-brand-white">{formatCurrency(item.amount)}</span>
                           </div>
                         </div>
-                        <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden ml-6">
+                        <div className="w-full bg-neutral-900 rounded-full h-1.5 overflow-hidden ml-6">
                           <div
                             className="h-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500"
                             style={{ width: `${item.percentage * 2}%` }}
@@ -1392,21 +1392,21 @@ export default function CreatorAnalyticsPage() {
               ) : (
                 <div className="text-center py-8">
                   <MapPin className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500 text-sm">No geographic data available</p>
-                  <p className="text-gray-400 text-xs mt-1">Data will appear when donations come in</p>
+                  <p className="text-neutral-500 text-sm">No geographic data available</p>
+                  <p className="text-neutral-600 text-xs mt-1">Data will appear when donations come in</p>
                 </div>
               )}
 
-              <p className="text-xs text-gray-400 mt-4 text-center">
+              <p className="text-xs text-neutral-600 mt-4 text-center">
                 🇮🇳 Based on typical Indian crowdfunding patterns
               </p>
             </div>
 
             {/* Device Breakdown Widget (Phase 6) */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
               <div className="flex items-center gap-2 mb-4">
-                <Smartphone className="w-5 h-5 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Device Breakdown</h3>
+                <Smartphone className="w-5 h-5 text-blue-400" />
+                <h3 className="text-lg font-semibold text-brand-white">Device Breakdown</h3>
               </div>
 
               {filteredDonations.length > 0 ? (
@@ -1426,10 +1426,10 @@ export default function CreatorAnalyticsPage() {
                         }}
                       />
                       {/* Inner circle for donut effect */}
-                      <div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
+                      <div className="absolute inset-3 bg-[#111] rounded-full flex items-center justify-center">
                         <div className="text-center">
-                          <p className="text-lg font-bold text-gray-900">72%</p>
-                          <p className="text-xs text-gray-500">Mobile</p>
+                          <p className="text-lg font-bold text-brand-white">72%</p>
+                          <p className="text-xs text-neutral-500">Mobile</p>
                         </div>
                       </div>
                     </div>
@@ -1440,19 +1440,19 @@ export default function CreatorAnalyticsPage() {
                     {deviceBreakdownData.map((device) => {
                       const IconComponent = device.icon;
                       return (
-                        <div key={device.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div key={device.name} className="flex items-center justify-between p-3 bg-brand-black rounded-2xl hover:bg-neutral-900 transition-colors">
                           <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${device.bgColor}`}>
+                            <div className={`p-2 rounded-2xl ${device.bgColor}`}>
                               <IconComponent className={`w-4 h-4 ${device.textColor}`} />
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-gray-800">{device.name}</p>
-                              <p className="text-xs text-gray-500">{device.count} donations</p>
+                              <p className="text-sm font-medium text-neutral-300">{device.name}</p>
+                              <p className="text-xs text-neutral-500">{device.count} donations</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-bold text-gray-900">{device.percentage}%</p>
-                            <p className="text-xs text-gray-500">{formatCurrency(device.amount)}</p>
+                            <p className="text-sm font-bold text-brand-white">{device.percentage}%</p>
+                            <p className="text-xs text-neutral-500">{formatCurrency(device.amount)}</p>
                           </div>
                         </div>
                       );
@@ -1462,32 +1462,32 @@ export default function CreatorAnalyticsPage() {
               ) : (
                 <div className="text-center py-8">
                   <Smartphone className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500 text-sm">No device data available</p>
-                  <p className="text-gray-400 text-xs mt-1">Data will appear when donations come in</p>
+                  <p className="text-neutral-500 text-sm">No device data available</p>
+                  <p className="text-neutral-600 text-xs mt-1">Data will appear when donations come in</p>
                 </div>
               )}
 
-              <p className="text-xs text-gray-400 mt-4 text-center">
+              <p className="text-xs text-neutral-600 mt-4 text-center">
                 📱 India is mobile-first (72%+ traffic)
               </p>
             </div>
 
             {/* Conversion Stats */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Stats</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-4">Conversion Stats</h3>
               <div className="space-y-4">
                 {projectsBreakdown.slice(0, 3).map((project) => (
-                  <div key={project.id} className="p-3 bg-gray-50 rounded-lg">
-                    <p className="text-sm font-medium text-gray-800 line-clamp-1 mb-2">{project.title}</p>
+                  <div key={project.id} className="p-3 bg-brand-black rounded-2xl">
+                    <p className="text-sm font-medium text-neutral-300 line-clamp-1 mb-2">{project.title}</p>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Views → Donations</span>
-                      <span className="font-bold text-orange-600">
+                      <span className="text-neutral-500">Views → Donations</span>
+                      <span className="font-bold text-brand-orange">
                         {project.conversionRate.toFixed(2)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div className="w-full bg-neutral-800 rounded-full h-2 mt-2">
                       <div
-                        className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full"
+                        className="bg-gradient-to-r from-brand-orange/100 to-red-500/100 h-2 rounded-full"
                         style={{ width: `${Math.min(project.conversionRate * 10, 100)}%` }}
                       />
                     </div>
@@ -1495,34 +1495,34 @@ export default function CreatorAnalyticsPage() {
                 ))}
 
                 {projectsBreakdown.length === 0 && (
-                  <p className="text-gray-500 text-sm text-center py-4">No data available</p>
+                  <p className="text-neutral-500 text-sm text-center py-4">No data available</p>
                 )}
               </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+            <div className="bg-[#111] rounded-3xl shadow-sm p-6 border border-neutral-800/50">
+              <h3 className="text-lg font-semibold text-brand-white mb-4">Quick Stats</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm text-gray-600">Period</span>
-                  <span className="text-sm font-medium text-gray-900">
+                <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
+                  <span className="text-sm text-neutral-400">Period</span>
+                  <span className="text-sm font-medium text-brand-white">
                     {format(dateRange.start, 'MMM d')} - {format(dateRange.end, 'MMM d')}
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm text-gray-600">Total Projects</span>
-                  <span className="text-sm font-medium text-gray-900">{userProjects.length}</span>
+                <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
+                  <span className="text-sm text-neutral-400">Total Projects</span>
+                  <span className="text-sm font-medium text-brand-white">{userProjects.length}</span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm text-gray-600">Avg Daily Donations</span>
-                  <span className="text-sm font-medium text-gray-900">
+                <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
+                  <span className="text-sm text-neutral-400">Avg Daily Donations</span>
+                  <span className="text-sm font-medium text-brand-white">
                     {(aggregateStats.totalDonations / Math.max(dailyTrend.length, 1)).toFixed(1)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm text-gray-600">Avg Daily Revenue</span>
-                  <span className="text-sm font-medium text-gray-900">
+                <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
+                  <span className="text-sm text-neutral-400">Avg Daily Revenue</span>
+                  <span className="text-sm font-medium text-brand-white">
                     {formatCurrency(aggregateStats.totalRaised / Math.max(dailyTrend.length, 1))}
                   </span>
                 </div>

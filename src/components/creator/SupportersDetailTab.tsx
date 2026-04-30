@@ -90,7 +90,7 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
 
     if (error) {
         return (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-3xl p-6">
                 <p className="text-red-800">{error}</p>
             </div>
         );
@@ -98,10 +98,10 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
 
     if (supporters.length === 0) {
         return (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
+            <div className="text-center py-12 bg-brand-black rounded-3xl">
                 <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No supporters yet</h3>
-                <p className="text-gray-600">
+                <h3 className="text-lg font-semibold text-brand-white mb-2">No supporters yet</h3>
+                <p className="text-neutral-400">
                     Supporters who back your project will appear here
                 </p>
             </div>
@@ -113,16 +113,16 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
             {/* Header with actions */}
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-brand-white">
                         {supporters.length} {supporters.length === 1 ? 'Supporter' : 'Supporters'}
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-neutral-400">
                         Total raised: {formatCurrency(supporters.reduce((sum, s) => sum + s.amount, 0))}
                     </p>
                 </div>
                 <button
                     onClick={handleExport}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors"
                 >
                     <Download className="w-4 h-4" />
                     <span>Export CSV</span>
@@ -130,27 +130,27 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
+            <div className="bg-[#111] rounded-2xl border border-neutral-800 p-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Search */}
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                         <input
                             type="text"
                             placeholder="Search supporters..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-transparent"
                         />
                     </div>
 
                     {/* Filter by tier */}
                     <div className="relative">
-                        <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-600" />
                         <select
                             value={filterTier}
                             onChange={(e) => setFilterTier(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
+                            className="w-full pl-10 pr-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-transparent appearance-none bg-[#111]"
                         >
                             <option value="all">All reward tiers</option>
                             {rewardTiers.map(tier => (
@@ -163,7 +163,7 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as 'date' | 'amount')}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white"
+                        className="px-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-transparent appearance-none bg-[#111]"
                     >
                         <option value="date">Sort by Date</option>
                         <option value="amount">Sort by Amount</option>
@@ -173,32 +173,32 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
 
             {/* Supporters list */}
             {filteredSupporters.length === 0 ? (
-                <div className="text-center py-8 bg-gray-50 rounded-lg">
-                    <p className="text-gray-600">No supporters match your filters</p>
+                <div className="text-center py-8 bg-brand-black rounded-2xl">
+                    <p className="text-neutral-400">No supporters match your filters</p>
                 </div>
             ) : (
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div className="bg-[#111] rounded-2xl border border-neutral-800 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-gray-50 border-b border-gray-200">
+                            <thead className="bg-brand-black border-b border-neutral-800">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                                         Supporter
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                                         Amount
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                                         Reward
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                                         Date
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-200">
+                            <tbody className="divide-y divide-neutral-800">
                                 {filteredSupporters.map((supporter) => (
-                                    <tr key={supporter.id} className="hover:bg-gray-50 transition-colors">
+                                    <tr key={supporter.id} className="hover:bg-brand-black transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 {supporter.userAvatar ? (
@@ -208,14 +208,14 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
                                                         className="w-10 h-10 rounded-full object-cover mr-3"
                                                     />
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold mr-3">
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-orange/100 to-red-500/100 flex items-center justify-center text-white font-semibold mr-3">
                                                         {supporter.userName.charAt(0).toUpperCase()}
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <p className="text-sm font-medium text-gray-900">{supporter.userName}</p>
+                                                    <p className="text-sm font-medium text-brand-white">{supporter.userName}</p>
                                                     {supporter.location && (
-                                                        <p className="text-xs text-gray-500 flex items-center mt-0.5">
+                                                        <p className="text-xs text-neutral-500 flex items-center mt-0.5">
                                                             <MapPin className="w-3 h-3 mr-1" />
                                                             {supporter.location}
                                                         </p>
@@ -224,18 +224,18 @@ export default function SupportersDetailTab({ projectId }: SupportersDetailTabPr
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center text-sm font-medium text-gray-900">
-                                                <DollarSign className="w-4 h-4 mr-1 text-green-600" />
+                                            <div className="flex items-center text-sm font-medium text-brand-white">
+                                                <DollarSign className="w-4 h-4 mr-1 text-green-400" />
                                                 {formatCurrency(supporter.amount)}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded">
+                                            <span className="px-2 py-1 bg-brand-orange/20 text-brand-orange text-xs font-medium rounded">
                                                 {supporter.rewardTier || 'No reward'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center text-sm text-gray-500">
+                                            <div className="flex items-center text-sm text-neutral-500">
                                                 <Calendar className="w-4 h-4 mr-1" />
                                                 {supporter.createdAt.toLocaleDateString('en-IN', {
                                                     month: 'short',

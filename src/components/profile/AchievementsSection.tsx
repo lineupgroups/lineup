@@ -71,29 +71,34 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
   ];
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-neutral-900/30 rounded-3xl border border-neutral-800 p-6 sm:p-10 ${className}`}>
       {/* Header with Level Info */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
-            Achievements & Progress
-          </h3>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-gray-900">Level {level}</div>
-            <div className="text-sm text-gray-500">{experiencePoints.toLocaleString()} XP</div>
+      <div className="mb-10">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 mb-8">
+          <div className="space-y-2">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-brand-white flex items-center gap-3">
+              <Trophy className="w-4 h-4 text-brand-orange" />
+              Achievements & Rank
+            </h3>
+            <p className="text-4xl sm:text-5xl font-black text-brand-white tracking-tighter italic uppercase">
+              Level {level}
+            </p>
+          </div>
+          <div className="text-left sm:text-right">
+            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mb-1">Total Experience</div>
+            <div className="text-2xl font-black text-brand-acid italic tracking-tight">{experiencePoints.toLocaleString()} XP</div>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>Progress to Level {level + 1}</span>
-            <span>{progressXP} / {requiredXP} XP</span>
+        <div className="space-y-4 bg-neutral-900/50 p-6 rounded-[2rem] border border-neutral-800/50">
+          <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
+            <span className="text-neutral-400">Progress to Level {level + 1}</span>
+            <span className="text-brand-acid italic">{progressXP} / {requiredXP} XP</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="relative w-full h-4 bg-neutral-800 rounded-full overflow-hidden">
             <div
-              className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-300"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-orange to-brand-acid h-full rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(204,255,0,0.2)]"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -101,23 +106,25 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
       </div>
 
       {/* Filter Buttons */}
-      <div className="mb-6">
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-10 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-2 pb-2">
           {filterButtons.map((filter) => (
             <button
               key={filter.key}
               onClick={() => setSelectedFilter(filter.key as any)}
               className={`
-                inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                flex items-center gap-2 px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap
                 ${selectedFilter === filter.key
-                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                  : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
+                  ? 'bg-brand-acid text-brand-black shadow-[0_0_20px_rgba(204,255,0,0.15)]'
+                  : 'bg-neutral-900 text-neutral-500 border border-neutral-800 hover:text-brand-white hover:border-neutral-700'
                 }
               `}
             >
               {filter.icon}
               {filter.label}
-              <span className="ml-1 px-2 py-0.5 bg-white rounded-full text-xs">
+              <span className={`ml-1 px-2 py-0.5 rounded-full text-[10px] ${
+                selectedFilter === filter.key ? 'bg-brand-black/10' : 'bg-neutral-800'
+              }`}>
                 {filter.key === 'all' 
                   ? achievements.length 
                   : achievements.filter(a => a.type === filter.key).length
@@ -130,7 +137,7 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
 
       {/* Achievements Grid */}
       {sortedAchievements.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedAchievements.map((achievement) => (
             <AchievementBadge
               key={achievement.id}
@@ -141,41 +148,41 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <Trophy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h4 className="text-lg font-medium text-gray-900 mb-2">No Achievements Yet</h4>
-          <p className="text-gray-600 mb-4">
+        <div className="text-center py-20 bg-neutral-900/20 rounded-[2.5rem] border border-neutral-800 border-dashed">
+          <Trophy className="w-16 h-16 text-neutral-800 mx-auto mb-6" />
+          <h4 className="text-xl font-bold text-brand-white mb-2">No Achievements Found</h4>
+          <p className="text-neutral-500 max-w-xs mx-auto mb-8 font-medium">
             {selectedFilter === 'all' 
-              ? 'Start creating or backing projects to unlock achievements!'
-              : `No ${selectedFilter} achievements unlocked yet.`
+              ? 'Start your journey to unlock exclusive platform honors.'
+              : `No ${selectedFilter} badges have been earned yet.`
             }
           </p>
           <button
             onClick={() => setSelectedFilter('all')}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="text-[11px] font-black uppercase tracking-widest text-brand-acid hover:text-brand-acid/80 transition-colors"
           >
-            View All Categories
+            Reset Filters
           </button>
         </div>
       )}
 
       {/* Achievement Summary */}
       {achievements.length > 0 && (
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div className="mt-10 pt-10 border-t border-neutral-800">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {rarityOrder.map((rarity) => {
               const count = achievements.filter(a => a.rarity === rarity).length;
-              const colors = {
-                legendary: 'text-yellow-600 bg-yellow-50',
-                epic: 'text-purple-600 bg-purple-50',
-                rare: 'text-blue-600 bg-blue-50',
-                common: 'text-gray-600 bg-gray-50'
+              const rarityStyles = {
+                legendary: 'text-brand-acid border-brand-acid/30 bg-brand-acid/5',
+                epic: 'text-brand-orange border-brand-orange/30 bg-brand-orange/5',
+                rare: 'text-brand-white border-neutral-700 bg-neutral-900/50',
+                common: 'text-neutral-500 border-neutral-800 bg-neutral-900/30'
               };
               
               return (
-                <div key={rarity} className={`p-3 rounded-lg ${colors[rarity as keyof typeof colors]}`}>
-                  <div className="text-2xl font-bold">{count}</div>
-                  <div className="text-sm capitalize">{rarity}</div>
+                <div key={rarity} className={`p-5 rounded-2xl border ${rarityStyles[rarity as keyof typeof rarityStyles]} transition-all duration-300 hover:scale-105`}>
+                  <div className="text-3xl font-black italic mb-1">{count}</div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em]">{rarity}</div>
                 </div>
               );
             })}

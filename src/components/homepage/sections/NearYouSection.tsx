@@ -19,7 +19,7 @@ export default function NearYouSection({ projects, loading }: NearYouSectionProp
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse" />
+            <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
           ))}
         </div>
       </SectionContainer>
@@ -45,5 +45,3 @@ export default function NearYouSection({ projects, loading }: NearYouSectionProp
     </SectionContainer>
   );
 }
-
-

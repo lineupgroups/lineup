@@ -53,17 +53,17 @@ export default function CreatorCelebration({ isOpen, onClose, userName }: Creato
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-scaleIn">
+            <div className="bg-[#111] rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-scaleIn">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors z-10"
+                    className="absolute top-4 right-4 p-2 text-neutral-600 hover:text-neutral-400 rounded-full hover:bg-neutral-900 transition-colors z-10"
                 >
                     <X className="w-5 h-5" />
                 </button>
 
                 {/* Animated Background */}
-                <div className="relative bg-gradient-to-br from-orange-500 via-pink-500 to-purple-600 p-8 text-white overflow-hidden">
+                <div className="relative bg-gradient-to-br from-brand-orange/100 via-pink-500 to-purple-600 p-8 text-white overflow-hidden">
                     {/* Floating Sparkles */}
                     <div className="absolute inset-0">
                         {[...Array(20)].map((_, i) => (
@@ -86,7 +86,7 @@ export default function CreatorCelebration({ isOpen, onClose, userName }: Creato
                     <div className="relative z-10 text-center">
                         {/* Animated Rocket */}
                         <div className={`transition-all duration-700 ${step >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                            <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                            <div className="w-24 h-24 bg-[#111]/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
                                 <Rocket className="w-12 h-12 text-white" />
                             </div>
                         </div>
@@ -104,45 +104,45 @@ export default function CreatorCelebration({ isOpen, onClose, userName }: Creato
                     <div className={`transition-all duration-700 delay-500 ${step >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
                         {/* Success Message */}
                         <div className="text-center mb-6">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full font-semibold mb-4">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 text-green-400 rounded-full font-semibold mb-4">
                                 <CheckCircle className="w-5 h-5" />
                                 <span>You're now a Verified Creator!</span>
                             </div>
 
-                            <p className="text-gray-600 mb-6">
+                            <p className="text-neutral-400 mb-6">
                                 Your KYC has been approved. You can now create unlimited projects and start raising funds!
                             </p>
                         </div>
 
                         {/* Features Unlocked */}
                         <div className="space-y-3 mb-6">
-                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-2xl">
+                                <div className="w-8 h-8 bg-blue-500/100 rounded-full flex items-center justify-center flex-shrink-0">
                                     <CheckCircle className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-gray-900">Create Projects</p>
-                                    <p className="text-sm text-gray-600">Launch unlimited crowdfunding campaigns</p>
+                                    <p className="font-semibold text-brand-white">Create Projects</p>
+                                    <p className="text-sm text-neutral-400">Launch unlimited crowdfunding campaigns</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl">
+                                <div className="w-8 h-8 bg-green-500/100 rounded-full flex items-center justify-center flex-shrink-0">
                                     <CheckCircle className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-gray-900">Receive Funding</p>
-                                    <p className="text-sm text-gray-600">Get direct payments from supporters</p>
+                                    <p className="font-semibold text-brand-white">Receive Funding</p>
+                                    <p className="text-sm text-neutral-400">Get direct payments from supporters</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                                <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl">
+                                <div className="w-8 h-8 bg-purple-500/100 rounded-full flex items-center justify-center flex-shrink-0">
                                     <CheckCircle className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-gray-900">Build Community</p>
-                                    <p className="text-sm text-gray-600">Connect with supporters and grow your audience</p>
+                                    <p className="font-semibold text-brand-white">Build Community</p>
+                                    <p className="text-sm text-neutral-400">Connect with supporters and grow your audience</p>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@ export default function CreatorCelebration({ isOpen, onClose, userName }: Creato
                         <div className="flex gap-3">
                             <button
                                 onClick={onClose}
-                                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                                className="flex-1 px-6 py-3 border border-neutral-700 text-neutral-300 rounded-2xl font-medium hover:bg-brand-black transition-colors"
                             >
                                 Explore Dashboard
                             </button>
@@ -160,7 +160,7 @@ export default function CreatorCelebration({ isOpen, onClose, userName }: Creato
                                     onClose();
                                     window.location.href = '/dashboard/projects/create';
                                 }}
-                                className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-pink-600 text-white rounded-lg font-medium hover:from-orange-700 hover:to-pink-700 transition-all hover:shadow-lg"
+                                className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-pink-600 text-white rounded-2xl font-medium hover:from-orange-700 hover:to-pink-700 transition-all hover:shadow-lg"
                             >
                                 Create First Project
                             </button>

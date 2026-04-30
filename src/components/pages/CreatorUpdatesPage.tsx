@@ -18,8 +18,8 @@ const UPDATE_TEMPLATES = [
     id: 'milestone',
     name: 'Milestone Reached',
     icon: Flag,
-    color: 'text-green-600',
-    bgColor: 'bg-green-100',
+    color: 'text-green-400',
+    bgColor: 'bg-green-500/20',
     title: '🎯 We hit a major milestone!',
     content: `**Exciting news, supporters!**
 
@@ -41,7 +41,7 @@ Thank you for being part of this journey! Your support makes all the difference.
     id: 'thankyou',
     name: 'Thank You',
     icon: Heart,
-    color: 'text-red-600',
+    color: 'text-red-400',
     bgColor: 'bg-red-100',
     title: '❤️ A Heartfelt Thank You',
     content: `**Dear Supporters,**
@@ -64,8 +64,8 @@ With love and gratitude,
     id: 'celebration',
     name: 'Goal Achieved',
     icon: PartyPopper,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-100',
+    color: 'text-purple-400',
+    bgColor: 'bg-purple-500/20',
     title: '🎉 We Did It! Funding Goal Reached!',
     content: `**AMAZING NEWS!**
 
@@ -90,8 +90,8 @@ YOU made this happen. THANK YOU!`
     id: 'progress',
     name: 'Progress Update',
     icon: Sparkles,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-100',
+    color: 'text-blue-400',
+    bgColor: 'bg-blue-500/20',
     title: '📊 Progress Report',
     content: `**Weekly/Monthly Update**
 
@@ -231,8 +231,8 @@ export default function CreatorUpdatesPage() {
       id: 'draft',
       name: 'Saved Draft',
       icon: FileText,
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-100',
+      color: 'text-neutral-400',
+      bgColor: 'bg-neutral-900',
       title: draft.title,
       content: draft.content
     });
@@ -278,37 +278,37 @@ export default function CreatorUpdatesPage() {
 
   if (projectsLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
       {/* Dynamic Page Title */}
       <PageTitle title="Updates" description="Share progress with your supporters" />
 
       <div className="w-full px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Project Updates</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-brand-white mb-2">Project Updates</h1>
+          <p className="text-neutral-400">
             Share exclusive progress updates with your supporters. Only people who have backed your project can see these updates.
           </p>
         </div>
 
         {/* Actions Bar */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="bg-[#111] rounded-3xl shadow-sm p-6 mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {/* Show selected project info from context */}
             <div>
               {selectedProjectId ? (
-                <p className="text-sm text-gray-600">
-                  Posting updates for: <span className="font-semibold text-gray-900">{userProjects.find(p => p.id === selectedProjectId)?.title}</span>
+                <p className="text-sm text-neutral-400">
+                  Posting updates for: <span className="font-semibold text-brand-white">{userProjects.find(p => p.id === selectedProjectId)?.title}</span>
                 </p>
               ) : (
-                <p className="text-sm text-gray-500">Select a project from the navbar dropdown to post updates</p>
+                <p className="text-sm text-neutral-500">Select a project from the navbar dropdown to post updates</p>
               )}
             </div>
 
@@ -317,7 +317,7 @@ export default function CreatorUpdatesPage() {
                 {/* U-MISS-04: Templates button */}
                 <button
                   onClick={() => setShowTemplates(!showTemplates)}
-                  className="flex items-center space-x-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+                  className="flex items-center space-x-2 px-4 py-2.5 border border-neutral-700 text-neutral-300 rounded-2xl hover:bg-brand-black transition-all"
                 >
                   <Sparkles className="w-5 h-5" />
                   <span>Templates</span>
@@ -329,7 +329,7 @@ export default function CreatorUpdatesPage() {
                     setSelectedTemplate(null);
                     setShowUpdateForm(true);
                   }}
-                  className="flex items-center space-x-2 px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all"
+                  className="flex items-center space-x-2 px-6 py-2.5 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-all"
                 >
                   <Plus className="w-5 h-5" />
                   <span>Post Update</span>
@@ -340,19 +340,19 @@ export default function CreatorUpdatesPage() {
 
           {/* U-MISS-04: Templates Section */}
           {showTemplates && selectedProjectId && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <h3 className="text-sm font-medium text-gray-700 mb-4">Quick Start Templates</h3>
+            <div className="mt-6 pt-6 border-t border-neutral-800">
+              <h3 className="text-sm font-medium text-neutral-300 mb-4">Quick Start Templates</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {UPDATE_TEMPLATES.map(template => (
                   <button
                     key={template.id}
                     onClick={() => useTemplate(template)}
-                    className="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-all text-center group"
+                    className="flex flex-col items-center p-4 rounded-2xl border border-neutral-800 hover:border-brand-orange/40 hover:bg-brand-orange/10 transition-all text-center group"
                   >
-                    <div className={`p-2 rounded-lg ${template.bgColor} mb-2`}>
+                    <div className={`p-2 rounded-2xl ${template.bgColor} mb-2`}>
                       <template.icon className={`w-5 h-5 ${template.color}`} />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 group-hover:text-orange-700">
+                    <span className="text-sm font-medium text-neutral-300 group-hover:text-brand-orange">
                       {template.name}
                     </span>
                   </button>
@@ -363,21 +363,21 @@ export default function CreatorUpdatesPage() {
 
           {/* U-MISS-03: Drafts Section */}
           {projectDrafts.length > 0 && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Saved Drafts</h3>
+            <div className="mt-6 pt-6 border-t border-neutral-800">
+              <h3 className="text-sm font-medium text-neutral-300 mb-3">Saved Drafts</h3>
               <div className="space-y-2">
                 {projectDrafts.map((draft, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+                    className="flex items-center justify-between p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-yellow-600" />
+                      <FileText className="w-5 h-5 text-yellow-400" />
                       <div>
-                        <p className="font-medium text-gray-900">
+                        <p className="font-medium text-brand-white">
                           {draft.title || 'Untitled Draft'}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-neutral-500">
                           Saved {new Date(draft.savedAt).toLocaleDateString('en-IN', {
                             day: 'numeric',
                             month: 'short',
@@ -390,13 +390,13 @@ export default function CreatorUpdatesPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => loadDraft(draft)}
-                        className="px-3 py-1 text-sm bg-yellow-600 text-white rounded-lg hover:bg-yellow-700"
+                        className="px-3 py-1 text-sm bg-yellow-600 text-white rounded-2xl hover:bg-yellow-700"
                       >
                         Continue
                       </button>
                       <button
                         onClick={() => deleteDraft(draft.projectId)}
-                        className="px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                        className="px-3 py-1 text-sm text-red-400 hover:bg-red-500/10 rounded-2xl"
                       >
                         Delete
                       </button>
@@ -436,12 +436,12 @@ export default function CreatorUpdatesPage() {
             />
           </>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+          <div className="bg-[#111] rounded-3xl shadow-sm p-12 text-center">
             <Edit3 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-brand-white mb-2">
               Select a project to manage updates
             </h3>
-            <p className="text-gray-600">
+            <p className="text-neutral-400">
               Choose a project from the dropdown above to post and manage supporters-only updates.
             </p>
           </div>

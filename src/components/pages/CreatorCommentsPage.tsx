@@ -230,7 +230,7 @@ export default function CreatorCommentsPage() {
 
     if (loading && comments.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans py-6 px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-center py-20">
                     <LoadingSpinner size="lg" />
                 </div>
@@ -239,17 +239,17 @@ export default function CreatorCommentsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
             {/* Header - Full width like Dashboard */}
-            <div className="bg-white border-b border-gray-200">
+            <div className="bg-[#111] border-b border-neutral-800">
                 <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                            <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
                                 <MessageSquare className="w-8 h-8 text-orange-500" />
                                 Comment Inbox
                             </h1>
-                            <p className="text-gray-600 mt-1">
+                            <p className="text-neutral-400 mt-1">
                                 {isFilteringByProject
                                     ? `Showing comments for: ${selectedProject?.title}`
                                     : 'Manage and respond to supporter comments across all projects'
@@ -259,7 +259,7 @@ export default function CreatorCommentsPage() {
                         <button
                             onClick={handleRefresh}
                             disabled={loading}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                            className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors disabled:opacity-50"
                         >
                             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                             Refresh
@@ -274,33 +274,33 @@ export default function CreatorCommentsPage() {
                 <CommentsStatsCard stats={currentStats} loading={loading} />
 
                 {/* Filters - Full width */}
-                <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
+                <div className="bg-[#111] rounded-3xl border border-neutral-800 p-4 mb-6">
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                         {/* Status Tabs */}
-                        <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                        <div className="flex items-center bg-neutral-900 rounded-2xl p-1">
                             <button
                                 onClick={() => setFilterStatus('all')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${filterStatus === 'all' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${filterStatus === 'all' ? 'bg-[#111] text-brand-white shadow-sm' : 'text-neutral-400 hover:text-brand-white'
                                     }`}
                             >
                                 All
                             </button>
                             <button
                                 onClick={() => setFilterStatus('unreplied')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'unreplied' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'unreplied' ? 'bg-[#111] text-red-400 shadow-sm' : 'text-neutral-400 hover:text-brand-white'
                                     }`}
                             >
                                 <AlertCircle className="w-3.5 h-3.5" />
                                 Unreplied
                                 {currentStats.unreplied > 0 && (
-                                    <span className="bg-red-100 text-red-700 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                    <span className="bg-red-100 text-red-400 text-xs font-bold px-1.5 py-0.5 rounded-full">
                                         {currentStats.unreplied}
                                     </span>
                                 )}
                             </button>
                             <button
                                 onClick={() => setFilterStatus('replied')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'replied' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'replied' ? 'bg-[#111] text-green-400 shadow-sm' : 'text-neutral-400 hover:text-brand-white'
                                     }`}
                             >
                                 <CheckCircle className="w-3.5 h-3.5" />
@@ -312,24 +312,24 @@ export default function CreatorCommentsPage() {
                         <div className="relative">
                             <button
                                 onClick={() => setShowSortDropdown(!showSortDropdown)}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors"
                             >
-                                <ArrowUpDown className="w-4 h-4 text-gray-500" />
-                                <span className="text-gray-700">{currentSortLabel}</span>
-                                <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
+                                <ArrowUpDown className="w-4 h-4 text-neutral-500" />
+                                <span className="text-neutral-300">{currentSortLabel}</span>
+                                <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
                             </button>
 
                             {showSortDropdown && (
                                 <>
                                     <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
-                                    <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[150px]">
+                                    <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[150px]">
                                         {sortOptions.map(option => {
                                             const Icon = option.icon;
                                             return (
                                                 <button
                                                     key={option.value}
                                                     onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
-                                                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 ${sortOption === option.value ? 'bg-orange-50 text-orange-600' : ''}`}
+                                                    className={`w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2 ${sortOption === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
                                                 >
                                                     <Icon className="w-4 h-4" />
                                                     {option.label}
@@ -343,13 +343,13 @@ export default function CreatorCommentsPage() {
 
                         {/* Search - Grows to fill space */}
                         <div className="relative flex-1 max-w-md">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search comments..."
-                                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                className="w-full pl-10 pr-4 py-2.5 border border-neutral-800 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
                             />
                             {searchQuery && debouncedSearchQuery !== searchQuery && (
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -360,7 +360,7 @@ export default function CreatorCommentsPage() {
 
                         {/* Results Info */}
                         {filteredComments.length > 0 && (
-                            <span className="text-sm text-gray-500 whitespace-nowrap">
+                            <span className="text-sm text-neutral-500 whitespace-nowrap">
                                 {filteredComments.length} {filteredComments.length === 1 ? 'comment' : 'comments'}
                             </span>
                         )}
@@ -370,21 +370,21 @@ export default function CreatorCommentsPage() {
                 {/* Comments List - Full width grid */}
                 <div className="space-y-4">
                     {paginatedComments.length === 0 ? (
-                        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-12 text-center">
                             {stats.total === 0 ? (
                                 // No comments at all
                                 <>
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <MessageSquare className="w-8 h-8 text-gray-400" />
+                                    <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <MessageSquare className="w-8 h-8 text-neutral-600" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Comments Yet</h3>
-                                    <p className="text-gray-600 mb-4">
+                                    <h3 className="text-lg font-semibold text-brand-white mb-2">No Comments Yet</h3>
+                                    <p className="text-neutral-400 mb-4">
                                         Comments from your supporters will appear here.<br />
                                         Share your project to get more engagement!
                                     </p>
                                     <Link
                                         to="/dashboard/projects"
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white rounded-2xl hover:bg-[#b3e600] transition-colors"
                                     >
                                         <ExternalLink className="w-4 h-4" />
                                         View Projects
@@ -393,22 +393,22 @@ export default function CreatorCommentsPage() {
                             ) : filterStatus === 'unreplied' && currentStats.unreplied === 0 ? (
                                 // All caught up
                                 <>
-                                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                                         <CheckCircle className="w-8 h-8 text-green-500" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">All Caught Up! 🎉</h3>
-                                    <p className="text-gray-600">
+                                    <h3 className="text-lg font-semibold text-brand-white mb-2">All Caught Up! 🎉</h3>
+                                    <p className="text-neutral-400">
                                         You've replied to all comments. Great engagement!
                                     </p>
                                 </>
                             ) : (
                                 // No results for filter
                                 <>
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Search className="w-8 h-8 text-gray-400" />
+                                    <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <Search className="w-8 h-8 text-neutral-600" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Comments Found</h3>
-                                    <p className="text-gray-600">
+                                    <h3 className="text-lg font-semibold text-brand-white mb-2">No Comments Found</h3>
+                                    <p className="text-neutral-400">
                                         {isFilteringByProject
                                             ? `No comments match your search for "${selectedProject?.title}".`
                                             : 'Try adjusting your filters or search query.'
@@ -438,7 +438,7 @@ export default function CreatorCommentsPage() {
                                 <div className="text-center pt-4">
                                     <button
                                         onClick={handleLoadMore}
-                                        className="px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                        className="px-6 py-3 bg-[#111] border border-neutral-700 rounded-2xl text-neutral-300 font-medium hover:bg-brand-black transition-colors"
                                     >
                                         Load More ({filteredComments.length - displayCount} remaining)
                                     </button>

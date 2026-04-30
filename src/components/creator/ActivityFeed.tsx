@@ -24,27 +24,27 @@ const ActivityItem = memo(({
         switch (type) {
             case 'pledge':
             case 'donation':
-                return { Icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100', emoji: '💰' };
+                return { Icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20', emoji: '💰' };
             case 'anonymous_pledge':
-                return { Icon: Users, color: 'text-gray-600', bg: 'bg-gray-100', emoji: '🕶️' };
+                return { Icon: Users, color: 'text-neutral-400', bg: 'bg-neutral-800 border border-neutral-700', emoji: '🕶️' };
             case 'comment':
-                return { Icon: MessageSquare, color: 'text-blue-600', bg: 'bg-blue-100', emoji: '💬' };
+                return { Icon: MessageSquare, color: 'text-blue-400', bg: 'bg-blue-500/10 border border-blue-500/20', emoji: '💬' };
             case 'like':
-                return { Icon: Heart, color: 'text-red-600', bg: 'bg-red-100', emoji: '❤️' };
+                return { Icon: Heart, color: 'text-pink-400', bg: 'bg-pink-500/10 border border-pink-500/20', emoji: '❤️' };
             case 'milestone':
-                return { Icon: Trophy, color: 'text-purple-600', bg: 'bg-purple-100', emoji: '🎉' };
+                return { Icon: Trophy, color: 'text-brand-acid', bg: 'bg-brand-acid/10 border border-brand-acid/20', emoji: '🎉' };
             case 'update':
-                return { Icon: Edit3, color: 'text-orange-600', bg: 'bg-orange-100', emoji: '✏️' };
+                return { Icon: Edit3, color: 'text-brand-orange', bg: 'bg-brand-orange/10 border border-brand-orange/20', emoji: '✏️' };
             case 'project_approved':
-                return { Icon: Rocket, color: 'text-green-600', bg: 'bg-green-100', emoji: '✅' };
+                return { Icon: Rocket, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20', emoji: '✅' };
             case 'project_rejected':
-                return { Icon: Rocket, color: 'text-red-600', bg: 'bg-red-100', emoji: '❌' };
+                return { Icon: Rocket, color: 'text-red-400', bg: 'bg-red-500/10 border border-red-500/20', emoji: '❌' };
             case 'payout':
-                return { Icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100', emoji: '💳' };
+                return { Icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20', emoji: '💳' };
             case 'follower':
-                return { Icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', emoji: '👤' };
+                return { Icon: Users, color: 'text-sky-400', bg: 'bg-sky-500/10 border border-sky-500/20', emoji: '👤' };
             default:
-                return { Icon: Calendar, color: 'text-gray-600', bg: 'bg-gray-100', emoji: '📋' };
+                return { Icon: Calendar, color: 'text-neutral-400', bg: 'bg-neutral-800 border border-neutral-700', emoji: '📋' };
         }
     };
 
@@ -71,26 +71,26 @@ const ActivityItem = memo(({
 
     return (
         <div
-            className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group"
+            className="flex items-start space-x-4 p-4 bg-neutral-900/50 rounded-2xl hover:bg-neutral-900 transition-all duration-300 cursor-pointer border border-transparent hover:border-neutral-800 group"
         >
-            <div className={`p-2 ${bg} rounded-lg flex-shrink-0 group-hover:scale-110 transition-transform`}>
+            <div className={`p-2.5 ${bg} rounded-xl flex-shrink-0 group-hover:scale-110 transition-transform shadow-sm`}>
                 <Icon className={`w-4 h-4 ${color}`} />
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-900 font-medium">
-                    <span className="mr-1">{emoji}</span>
+                <p className="text-sm text-brand-white font-bold tracking-wide">
+                    <span className="mr-2 text-base">{emoji}</span>
                     {activity.title}
                 </p>
-                <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">
+                <p className="text-xs text-neutral-400 mt-1 line-clamp-2 font-medium">
                     {sanitizeDescription(activity.description)}
                 </p>
                 {showProjectLabel && activity.projectTitle && (
-                    <p className="text-xs text-gray-500 mt-1">
-                        on <span className="font-medium text-orange-600">{activity.projectTitle}</span>
+                    <p className="text-[11px] text-neutral-500 mt-1.5 font-bold uppercase tracking-wider">
+                        ON <span className="text-brand-acid">{activity.projectTitle}</span>
                     </p>
                 )}
             </div>
-            <span className="text-xs text-gray-500 flex-shrink-0">
+            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex-shrink-0 bg-neutral-900 px-2 py-1 rounded-md border border-neutral-800 group-hover:bg-[#111]">
                 {formatTimeAgo(activity.createdAt)}
             </span>
         </div>
@@ -100,12 +100,7 @@ const ActivityItem = memo(({
 ActivityItem.displayName = 'ActivityItem';
 
 /**
- * Activity Feed with Project Context
- * Features:
- * - Memoized items for performance
- * - Virtualization for lists > 15 items
- * - Error retry functionality
- * - User ID sanitization for security
+ * Activity Feed with Project Context (Dark Brand UI)
  */
 function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
     const { activities, loading, error } = useRecentActivity(creatorId, limit);
@@ -130,7 +125,7 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center py-8">
+            <div className="flex items-center justify-center py-12">
                 <LoadingSpinner />
             </div>
         );
@@ -138,15 +133,15 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
 
     if (error) {
         return (
-            <div className="text-center py-8">
-                <div className="w-12 h-12 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-3">
-                    <AlertCircle className="w-6 h-6 text-red-600" />
+            <div className="text-center py-10">
+                <div className="w-14 h-14 mx-auto rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                    <AlertCircle className="w-6 h-6 text-red-400" />
                 </div>
-                <p className="text-red-600 mb-3">{error}</p>
+                <p className="text-red-400 font-bold mb-4">{error}</p>
                 {onRetry && (
                     <button
                         onClick={onRetry}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
+                        className="inline-flex items-center gap-2 px-5 py-2 bg-red-500 text-brand-black rounded-xl text-sm font-bold hover:bg-red-400 transition-colors shadow-[0_0_15px_rgba(239,68,68,0.2)]"
                     >
                         <RefreshCw className="w-4 h-4" />
                         Try Again
@@ -158,10 +153,12 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
 
     if (filteredActivities.length === 0) {
         return (
-            <div className="text-center py-8">
-                <div className="text-gray-400 text-4xl mb-2">📭</div>
-                <p className="text-gray-600">No activity yet</p>
-                <p className="text-sm text-gray-500 mt-1">
+            <div className="text-center py-10">
+                <div className="w-16 h-16 mx-auto rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center mb-4 text-2xl">
+                    📭
+                </div>
+                <p className="text-brand-white font-bold text-lg">No activity yet</p>
+                <p className="text-sm text-neutral-400 mt-2 max-w-[250px] mx-auto">
                     {selectedProject
                         ? `No activity for "${selectedProject.title}" yet`
                         : 'Create your first project to start seeing activity here!'
@@ -170,7 +167,7 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
                 {!selectedProject && (
                     <Link
                         to="/dashboard/projects/create"
-                        className="inline-block mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
+                        className="inline-block mt-6 px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl text-sm font-bold hover:bg-[#b3e600] transition-colors shadow-[0_0_15px_rgba(204,255,0,0.2)]"
                     >
                         Create Project →
                     </Link>
@@ -181,16 +178,18 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
 
     // Use virtualization for large lists
     return (
-        <VirtualizedList
-            items={filteredActivities}
-            renderItem={renderActivity}
-            keyExtractor={keyExtractor}
-            itemHeight={76}
-            maxVisibleItems={15}
-            expandThreshold={15}
-            className="space-y-2"
-            emptyState={null}
-        />
+        <div className="h-full w-full">
+            <VirtualizedList
+                items={filteredActivities}
+                renderItem={renderActivity}
+                keyExtractor={keyExtractor}
+                itemHeight={88}
+                maxVisibleItems={15}
+                expandThreshold={15}
+                className="space-y-3 pr-2 custom-scrollbar"
+                emptyState={null}
+            />
+        </div>
     );
 }
 

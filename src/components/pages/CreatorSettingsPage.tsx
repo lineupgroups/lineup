@@ -199,28 +199,28 @@ export default function CreatorSettingsPage() {
 
     if (projectsLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans flex items-center justify-center">
                 <LoadingSpinner size="lg" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
             {/* Dynamic Page Title */}
             <PageTitle title="Settings" description="Manage your account and project settings" />
 
             {/* Header */}
-            <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+            <div className="bg-[#111] border-b border-neutral-800 sticky top-0 z-10">
                 <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
-                            <div className="p-2.5 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl shadow-lg">
+                            <div className="p-2.5 bg-gradient-to-br from-gray-600 to-gray-800 rounded-3xl shadow-lg">
                                 <SettingsIcon className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Settings</h1>
-                                <p className="text-sm text-gray-500 mt-0.5">
+                                <h1 className="text-2xl sm:text-3xl font-bold text-brand-white">Settings</h1>
+                                <p className="text-sm text-neutral-500 mt-0.5">
                                     Manage your account, notifications, and project settings
                                 </p>
                             </div>
@@ -236,8 +236,8 @@ export default function CreatorSettingsPage() {
                     <div className="space-y-6">
 
                         {/* Project Management */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-orange-500 to-red-500">
+                        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800/50 overflow-hidden">
+                            <div className="p-6 border-b border-neutral-800/50 bg-gradient-to-r from-brand-orange/100 to-red-500/100">
                                 <div className="flex items-center space-x-2 text-white">
                                     <Calendar className="w-5 h-5" />
                                     <h3 className="font-semibold">Project Management</h3>
@@ -249,14 +249,14 @@ export default function CreatorSettingsPage() {
                                     {/* Project Status */}
                                     <div className="space-y-4">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm font-medium text-gray-600">Project Status</span>
-                                            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${projectInfo.status === 'active' ? 'bg-green-100 text-green-700' :
-                                                projectInfo.status === 'paused' ? 'bg-yellow-100 text-yellow-700' :
-                                                    'bg-gray-100 text-gray-700'
+                                            <span className="text-sm font-medium text-neutral-400">Project Status</span>
+                                            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${projectInfo.status === 'active' ? 'bg-green-500/20 text-green-400' :
+                                                projectInfo.status === 'paused' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                    'bg-neutral-900 text-neutral-300'
                                                 }`}>
-                                                <span className={`w-2 h-2 rounded-full ${projectInfo.status === 'active' ? 'bg-green-500' :
-                                                    projectInfo.status === 'paused' ? 'bg-yellow-500' :
-                                                        'bg-gray-500'
+                                                <span className={`w-2 h-2 rounded-full ${projectInfo.status === 'active' ? 'bg-green-500/100' :
+                                                    projectInfo.status === 'paused' ? 'bg-yellow-500/100' :
+                                                        'bg-brand-black0'
                                                     }`} />
                                                 {projectInfo.status.charAt(0).toUpperCase() + projectInfo.status.slice(1)}
                                             </span>
@@ -264,40 +264,40 @@ export default function CreatorSettingsPage() {
 
                                         <div>
                                             <div className="flex items-center justify-between mb-2">
-                                                <span className="text-sm font-medium text-gray-600">Funding Progress</span>
-                                                <span className="text-sm font-semibold text-gray-900">
+                                                <span className="text-sm font-medium text-neutral-400">Funding Progress</span>
+                                                <span className="text-sm font-semibold text-brand-white">
                                                     {formatCurrency(projectInfo.currentAmount)} / {formatCurrency(projectInfo.goalAmount)}
                                                 </span>
                                             </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div className="w-full bg-neutral-800 rounded-full h-2.5">
                                                 <div
-                                                    className="bg-gradient-to-r from-orange-500 to-red-500 h-2.5 rounded-full transition-all duration-500"
+                                                    className="bg-gradient-to-r from-brand-orange/100 to-red-500/100 h-2.5 rounded-full transition-all duration-500"
                                                     style={{ width: `${projectInfo.progress}%` }}
                                                 />
                                             </div>
-                                            <p className="text-xs text-gray-500 mt-1">{projectInfo.progress.toFixed(1)}% funded</p>
+                                            <p className="text-xs text-neutral-500 mt-1">{projectInfo.progress.toFixed(1)}% funded</p>
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm font-medium text-gray-600">Days Left</span>
-                                            <span className={`text-lg font-bold ${projectInfo.daysLeft <= 3 ? 'text-red-600' : 'text-gray-900'}`}>
+                                            <span className="text-sm font-medium text-neutral-400">Days Left</span>
+                                            <span className={`text-lg font-bold ${projectInfo.daysLeft <= 3 ? 'text-red-400' : 'text-brand-white'}`}>
                                                 {projectInfo.daysLeft} days
                                             </span>
                                         </div>
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-200">
+                                    <div className="grid grid-cols-2 gap-3 pt-4 border-t border-neutral-800">
                                         <button
                                             onClick={() => setShowExtensionForm(!showExtensionForm)}
-                                            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
+                                            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-500/10 text-blue-400 rounded-2xl hover:bg-blue-500/20 transition-colors font-medium text-sm"
                                         >
                                             <Calendar className="w-4 h-4" />
                                             Extend Deadline
                                         </button>
                                         <button
                                             onClick={() => setShowCancellationConfirm(!showCancellationConfirm)}
-                                            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors font-medium text-sm"
+                                            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 text-red-400 rounded-2xl hover:bg-red-100 transition-colors font-medium text-sm"
                                         >
                                             <X className="w-4 h-4" />
                                             Cancel Project
@@ -306,10 +306,10 @@ export default function CreatorSettingsPage() {
 
                                     {/* Extension Form */}
                                     {showExtensionForm && (
-                                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 space-y-4">
-                                            <h4 className="font-medium text-blue-900">Extend Deadline</h4>
+                                        <div className="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/30 space-y-4">
+                                            <h4 className="font-medium text-blue-300">Extend Deadline</h4>
                                             <div>
-                                                <label className="block text-sm font-medium text-blue-800 mb-1">
+                                                <label className="block text-sm font-medium text-blue-300 mb-1">
                                                     Extension (days)
                                                 </label>
                                                 <div className="flex items-center gap-2">
@@ -319,13 +319,13 @@ export default function CreatorSettingsPage() {
                                                         max={30}
                                                         value={extensionDays}
                                                         onChange={(e) => setExtensionDays(Number(e.target.value))}
-                                                        className="flex-1 px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                        className="flex-1 px-3 py-2 border border-blue-500/40 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                                     />
-                                                    <span className="text-sm text-blue-700">(max 30 days)</span>
+                                                    <span className="text-sm text-blue-400">(max 30 days)</span>
                                                 </div>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-blue-800 mb-1">
+                                                <label className="block text-sm font-medium text-blue-300 mb-1">
                                                     Reason for extension
                                                 </label>
                                                 <textarea
@@ -333,13 +333,13 @@ export default function CreatorSettingsPage() {
                                                     onChange={(e) => setExtensionReason(e.target.value)}
                                                     placeholder="Explain why you need more time..."
                                                     rows={2}
-                                                    className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                                    className="w-full px-3 py-2 border border-blue-500/40 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                                                 />
                                             </div>
                                             <button
                                                 onClick={handleExtendDeadline}
                                                 disabled={isExtending}
-                                                className="w-full py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                                className="w-full py-2 bg-blue-600 text-white rounded-2xl font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                             >
                                                 {isExtending ? (
                                                     <>
@@ -355,12 +355,12 @@ export default function CreatorSettingsPage() {
 
                                     {/* Cancellation Form */}
                                     {showCancellationConfirm && (
-                                        <div className="p-4 bg-red-50 rounded-lg border border-red-200 space-y-4">
+                                        <div className="p-4 bg-red-500/10 rounded-2xl border border-red-500/30 space-y-4">
                                             <div className="flex items-start gap-3">
-                                                <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                                                <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h4 className="font-medium text-red-900">Cancel Project</h4>
-                                                    <p className="text-sm text-red-700 mt-1">
+                                                    <h4 className="font-medium text-red-300">Cancel Project</h4>
+                                                    <p className="text-sm text-red-400 mt-1">
                                                         This action cannot be undone. All backers will be notified and refunds will be processed.
                                                     </p>
                                                 </div>
@@ -374,13 +374,13 @@ export default function CreatorSettingsPage() {
                                                     onChange={(e) => setCancellationReason(e.target.value)}
                                                     placeholder="Why are you cancelling this project?"
                                                     rows={2}
-                                                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                                                    className="w-full px-3 py-2 border border-red-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
                                                 />
                                             </div>
                                             <button
                                                 onClick={handleCancelProject}
                                                 disabled={isCancelling}
-                                                className="w-full py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                                className="w-full py-2 bg-red-600 text-white rounded-2xl font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                             >
                                                 {isCancelling ? (
                                                     <>
@@ -397,18 +397,18 @@ export default function CreatorSettingsPage() {
                             ) : (
                                 <div className="p-8 text-center">
                                     <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                                    <p className="text-gray-500">No projects to manage</p>
-                                    <p className="text-sm text-gray-400 mt-1">Create a project to manage its settings here</p>
+                                    <p className="text-neutral-500">No projects to manage</p>
+                                    <p className="text-sm text-neutral-600 mt-1">Create a project to manage its settings here</p>
                                 </div>
                             )}
                         </div>
 
                         {/* Notification Preferences */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div className="p-6 border-b border-gray-100">
+                        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800/50 overflow-hidden">
+                            <div className="p-6 border-b border-neutral-800/50">
                                 <div className="flex items-center space-x-2">
-                                    <Bell className="w-5 h-5 text-blue-600" />
-                                    <h3 className="font-semibold text-gray-900">Notification Preferences</h3>
+                                    <Bell className="w-5 h-5 text-blue-400" />
+                                    <h3 className="font-semibold text-brand-white">Notification Preferences</h3>
                                 </div>
                             </div>
 
@@ -416,8 +416,8 @@ export default function CreatorSettingsPage() {
                                 {/* Email Notifications */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-4">
-                                        <Mail className="w-4 h-4 text-gray-500" />
-                                        <h4 className="font-medium text-gray-900">Email Notifications</h4>
+                                        <Mail className="w-4 h-4 text-neutral-500" />
+                                        <h4 className="font-medium text-brand-white">Email Notifications</h4>
                                     </div>
                                     <div className="space-y-3">
                                         {[
@@ -428,16 +428,16 @@ export default function CreatorSettingsPage() {
                                             { key: 'marketing', label: 'Marketing and promotional emails' },
                                         ].map(item => (
                                             <label key={item.key} className="flex items-center justify-between cursor-pointer group">
-                                                <span className="text-sm text-gray-700 group-hover:text-gray-900">{item.label}</span>
+                                                <span className="text-sm text-neutral-300 group-hover:text-brand-white">{item.label}</span>
                                                 <button
                                                     onClick={() => handleNotificationChange('email', item.key)}
                                                     className={`relative w-11 h-6 rounded-full transition-colors ${notifications.email[item.key as keyof typeof notifications.email]
-                                                        ? 'bg-green-500'
-                                                        : 'bg-gray-300'
+                                                        ? 'bg-green-500/100'
+                                                        : 'bg-neutral-700'
                                                         }`}
                                                 >
                                                     <span
-                                                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${notifications.email[item.key as keyof typeof notifications.email]
+                                                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-[#111] rounded-full shadow-sm transition-transform ${notifications.email[item.key as keyof typeof notifications.email]
                                                             ? 'translate-x-5'
                                                             : ''
                                                             }`}
@@ -449,21 +449,21 @@ export default function CreatorSettingsPage() {
                                 </div>
 
                                 {/* Push Notifications */}
-                                <div className="pt-4 border-t border-gray-200">
+                                <div className="pt-4 border-t border-neutral-800">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <Bell className="w-4 h-4 text-gray-400" />
-                                            <h4 className="font-medium text-gray-400">Push Notifications</h4>
+                                            <Bell className="w-4 h-4 text-neutral-600" />
+                                            <h4 className="font-medium text-neutral-600">Push Notifications</h4>
                                         </div>
-                                        <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Coming Soon</span>
+                                        <span className="text-xs bg-neutral-900 text-neutral-500 px-2 py-1 rounded-full">Coming Soon</span>
                                     </div>
                                 </div>
 
                                 {/* WhatsApp Notifications */}
-                                <div className="pt-4 border-t border-gray-200">
+                                <div className="pt-4 border-t border-neutral-800">
                                     <div className="flex items-center gap-2 mb-4">
                                         <MessageCircle className="w-4 h-4 text-green-500" />
-                                        <h4 className="font-medium text-gray-900">WhatsApp Notifications</h4>
+                                        <h4 className="font-medium text-brand-white">WhatsApp Notifications</h4>
                                     </div>
                                     <div className="space-y-3">
                                         {[
@@ -472,16 +472,16 @@ export default function CreatorSettingsPage() {
                                             { key: 'dailySummary', label: 'Daily donation summary' },
                                         ].map(item => (
                                             <label key={item.key} className="flex items-center justify-between cursor-pointer group">
-                                                <span className="text-sm text-gray-700 group-hover:text-gray-900">{item.label}</span>
+                                                <span className="text-sm text-neutral-300 group-hover:text-brand-white">{item.label}</span>
                                                 <button
                                                     onClick={() => handleNotificationChange('whatsapp', item.key)}
                                                     className={`relative w-11 h-6 rounded-full transition-colors ${notifications.whatsapp[item.key as keyof typeof notifications.whatsapp]
-                                                        ? 'bg-green-500'
-                                                        : 'bg-gray-300'
+                                                        ? 'bg-green-500/100'
+                                                        : 'bg-neutral-700'
                                                         }`}
                                                 >
                                                     <span
-                                                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${notifications.whatsapp[item.key as keyof typeof notifications.whatsapp]
+                                                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-[#111] rounded-full shadow-sm transition-transform ${notifications.whatsapp[item.key as keyof typeof notifications.whatsapp]
                                                             ? 'translate-x-5'
                                                             : ''
                                                             }`}
@@ -494,7 +494,7 @@ export default function CreatorSettingsPage() {
 
                                 <button
                                     onClick={handleSaveNotifications}
-                                    className="w-full py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-colors"
+                                    className="w-full py-2.5 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-colors"
                                 >
                                     Save Changes
                                 </button>
@@ -506,11 +506,11 @@ export default function CreatorSettingsPage() {
                     <div className="space-y-6">
 
                         {/* KYC & Verification */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div className="p-6 border-b border-gray-100">
+                        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800/50 overflow-hidden">
+                            <div className="p-6 border-b border-neutral-800/50">
                                 <div className="flex items-center space-x-2">
-                                    <Shield className="w-5 h-5 text-green-600" />
-                                    <h3 className="font-semibold text-gray-900">KYC & Verification</h3>
+                                    <Shield className="w-5 h-5 text-green-400" />
+                                    <h3 className="font-semibold text-brand-white">KYC & Verification</h3>
                                 </div>
                             </div>
 
@@ -523,10 +523,10 @@ export default function CreatorSettingsPage() {
                                     <>
                                         {/* Status Badge */}
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm font-medium text-gray-600">Status</span>
-                                            <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${kycData.status === 'approved' ? 'bg-green-100 text-green-700' :
-                                                kycData.status === 'pending' || kycData.status === 'under_review' ? 'bg-yellow-100 text-yellow-700' :
-                                                    'bg-red-100 text-red-700'
+                                            <span className="text-sm font-medium text-neutral-400">Status</span>
+                                            <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${kycData.status === 'approved' ? 'bg-green-500/20 text-green-400' :
+                                                kycData.status === 'pending' || kycData.status === 'under_review' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                    'bg-red-100 text-red-400'
                                                 }`}>
                                                 {kycData.status === 'approved' ? (
                                                     <><Check className="w-4 h-4" /> Verified</>
@@ -542,8 +542,8 @@ export default function CreatorSettingsPage() {
                                             <>
                                                 {kycData.reviewedAt && (
                                                     <div className="flex items-center justify-between">
-                                                        <span className="text-sm text-gray-600">Verified On</span>
-                                                        <span className="text-sm font-medium text-gray-900">
+                                                        <span className="text-sm text-neutral-400">Verified On</span>
+                                                        <span className="text-sm font-medium text-brand-white">
                                                             {kycData.reviewedAt.toDate().toLocaleDateString('en-IN', {
                                                                 day: 'numeric', month: 'long', year: 'numeric'
                                                             })}
@@ -551,16 +551,16 @@ export default function CreatorSettingsPage() {
                                                     </div>
                                                 )}
 
-                                                <div className="pt-4 border-t border-gray-200">
-                                                    <p className="text-sm font-medium text-gray-700 mb-3">Documents Submitted:</p>
+                                                <div className="pt-4 border-t border-neutral-800">
+                                                    <p className="text-sm font-medium text-neutral-300 mb-3">Documents Submitted:</p>
                                                     <div className="space-y-2">
                                                         {/* Aadhaar */}
-                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                        <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
                                                             <div className="flex items-center gap-2">
-                                                                <Check className="w-4 h-4 text-green-600" />
-                                                                <span className="text-sm text-gray-700">Aadhaar</span>
+                                                                <Check className="w-4 h-4 text-green-400" />
+                                                                <span className="text-sm text-neutral-300">Aadhaar</span>
                                                             </div>
-                                                            <span className="text-xs text-gray-500 font-mono">
+                                                            <span className="text-xs text-neutral-500 font-mono">
                                                                 {kycData.selfKYC?.aadhaarNumber
                                                                     ? maskAadhaarNumber(kycData.selfKYC.aadhaarNumber)
                                                                     : kycData.parentGuardianKYC?.kyc?.aadhaarNumber
@@ -569,12 +569,12 @@ export default function CreatorSettingsPage() {
                                                             </span>
                                                         </div>
                                                         {/* PAN */}
-                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                        <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
                                                             <div className="flex items-center gap-2">
-                                                                <Check className="w-4 h-4 text-green-600" />
-                                                                <span className="text-sm text-gray-700">PAN</span>
+                                                                <Check className="w-4 h-4 text-green-400" />
+                                                                <span className="text-sm text-neutral-300">PAN</span>
                                                             </div>
-                                                            <span className="text-xs text-gray-500 font-mono">
+                                                            <span className="text-xs text-neutral-500 font-mono">
                                                                 {kycData.selfKYC?.panCard
                                                                     ? maskPANCard(kycData.selfKYC.panCard)
                                                                     : kycData.parentGuardianKYC?.kyc?.panCard
@@ -583,12 +583,12 @@ export default function CreatorSettingsPage() {
                                                             </span>
                                                         </div>
                                                         {/* Address Proof */}
-                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                        <div className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
                                                             <div className="flex items-center gap-2">
-                                                                <Check className="w-4 h-4 text-green-600" />
-                                                                <span className="text-sm text-gray-700">Address Proof</span>
+                                                                <Check className="w-4 h-4 text-green-400" />
+                                                                <span className="text-sm text-neutral-300">Address Proof</span>
                                                             </div>
-                                                            <span className="text-xs text-gray-500">
+                                                            <span className="text-xs text-neutral-500">
                                                                 {(kycData.selfKYC?.addressProof || kycData.parentGuardianKYC?.kyc?.addressProof)
                                                                     ? 'Uploaded'
                                                                     : 'Not uploaded'}
@@ -599,9 +599,9 @@ export default function CreatorSettingsPage() {
 
                                                 {/* KYC Type Badge */}
                                                 {kycData.kycType && (
-                                                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                                                        <span className="text-sm text-gray-600">KYC Type</span>
-                                                        <span className="text-sm font-medium text-gray-900 capitalize">
+                                                    <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
+                                                        <span className="text-sm text-neutral-400">KYC Type</span>
+                                                        <span className="text-sm font-medium text-brand-white capitalize">
                                                             {kycData.kycType === 'self' ? 'Self Verified (18+)' : 'Parent/Guardian (Minor)'}
                                                         </span>
                                                     </div>
@@ -610,13 +610,13 @@ export default function CreatorSettingsPage() {
                                         )}
 
                                         {kycData.status === 'rejected' && (
-                                            <div className="p-4 bg-red-50 rounded-lg">
-                                                <p className="text-sm text-red-700">
+                                            <div className="p-4 bg-red-500/10 rounded-2xl">
+                                                <p className="text-sm text-red-400">
                                                     <strong>Reason:</strong> {kycData.rejectionReason || 'Documents could not be verified'}
                                                 </p>
                                                 <button
                                                     onClick={() => toast.success('Please contact support to resubmit KYC')}
-                                                    className="mt-3 w-full py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+                                                    className="mt-3 w-full py-2 bg-red-600 text-white rounded-2xl font-medium hover:bg-red-700 transition-colors"
                                                 >
                                                     Contact Support
                                                 </button>
@@ -625,18 +625,18 @@ export default function CreatorSettingsPage() {
                                     </>
                                 ) : (
                                     <div className="text-center py-4">
-                                        <p className="text-gray-500">No KYC data found</p>
+                                        <p className="text-neutral-500">No KYC data found</p>
                                     </div>
                                 )}
                             </div>
                         </div>
 
                         {/* Security Settings */}
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div className="p-6 border-b border-gray-100">
+                        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800/50 overflow-hidden">
+                            <div className="p-6 border-b border-neutral-800/50">
                                 <div className="flex items-center space-x-2">
-                                    <Lock className="w-5 h-5 text-purple-600" />
-                                    <h3 className="font-semibold text-gray-900">Security</h3>
+                                    <Lock className="w-5 h-5 text-purple-400" />
+                                    <h3 className="font-semibold text-brand-white">Security</h3>
                                 </div>
                             </div>
 
@@ -645,17 +645,17 @@ export default function CreatorSettingsPage() {
                                 <div>
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h4 className="font-medium text-gray-900">Security PIN</h4>
-                                            <p className="text-sm text-gray-500">Your 6-digit PIN for project creation</p>
+                                            <h4 className="font-medium text-brand-white">Security PIN</h4>
+                                            <p className="text-sm text-neutral-500">Your 6-digit PIN for project creation</p>
                                         </div>
                                         <button
                                             onClick={() => toast.success('Change PIN (Mock)')}
-                                            className="px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors"
+                                            className="px-4 py-2 text-sm font-medium text-purple-400 hover:text-purple-400 hover:bg-purple-500/10 rounded-2xl transition-colors"
                                         >
                                             Change PIN
                                         </button>
                                     </div>
-                                    <p className="text-xs text-gray-400 mt-2">
+                                    <p className="text-xs text-neutral-600 mt-2">
                                         Created: {kycData?.pinCreatedAt
                                             ? kycData.pinCreatedAt.toDate().toLocaleDateString('en-IN', {
                                                 day: 'numeric', month: 'long', year: 'numeric'
@@ -665,19 +665,19 @@ export default function CreatorSettingsPage() {
                                 </div>
 
                                 {/* Two-Factor Authentication */}
-                                <div className="pt-4 border-t border-gray-200">
+                                <div className="pt-4 border-t border-neutral-800">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h4 className="font-medium text-gray-900">Two-Factor Authentication</h4>
-                                            <p className="text-sm text-gray-500">Add an extra layer of security</p>
+                                            <h4 className="font-medium text-brand-white">Two-Factor Authentication</h4>
+                                            <p className="text-sm text-neutral-500">Add an extra layer of security</p>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <span className={`text-sm font-medium ${mockSecurityData.twoFactorEnabled ? 'text-green-600' : 'text-gray-500'}`}>
+                                            <span className={`text-sm font-medium ${mockSecurityData.twoFactorEnabled ? 'text-green-400' : 'text-neutral-500'}`}>
                                                 {mockSecurityData.twoFactorEnabled ? 'Enabled' : 'Not Enabled'}
                                             </span>
                                             <button
                                                 onClick={() => toast.success('2FA coming soon!')}
-                                                className="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-lg cursor-not-allowed"
+                                                className="px-4 py-2 text-sm font-medium text-neutral-600 bg-neutral-900 rounded-2xl cursor-not-allowed"
                                                 disabled
                                             >
                                                 Coming Soon
@@ -687,18 +687,18 @@ export default function CreatorSettingsPage() {
                                 </div>
 
                                 {/* Active Sessions */}
-                                <div className="pt-4 border-t border-gray-200">
+                                <div className="pt-4 border-t border-neutral-800">
                                     <div className="flex items-center justify-between mb-4">
-                                        <h4 className="font-medium text-gray-900">Active Sessions</h4>
+                                        <h4 className="font-medium text-brand-white">Active Sessions</h4>
                                     </div>
                                     <div className="space-y-3">
                                         {mockSecurityData.activeSessions.map((session, idx) => (
-                                            <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div key={idx} className="flex items-center justify-between p-3 bg-brand-black rounded-2xl">
                                                 <div>
-                                                    <p className="text-sm font-medium text-gray-900">{session.device}</p>
-                                                    <p className="text-xs text-gray-500">{session.location}</p>
+                                                    <p className="text-sm font-medium text-brand-white">{session.device}</p>
+                                                    <p className="text-xs text-neutral-500">{session.location}</p>
                                                 </div>
-                                                <span className={`text-xs font-medium ${session.lastActive === 'Active now' ? 'text-green-600' : 'text-gray-500'
+                                                <span className={`text-xs font-medium ${session.lastActive === 'Active now' ? 'text-green-400' : 'text-neutral-500'
                                                     }`}>
                                                     {session.lastActive}
                                                 </span>
@@ -707,7 +707,7 @@ export default function CreatorSettingsPage() {
                                     </div>
                                     <button
                                         onClick={() => toast.success('Signed out from all devices (Mock)')}
-                                        className="mt-4 w-full py-2 border border-red-300 text-red-600 rounded-lg font-medium hover:bg-red-50 transition-colors text-sm"
+                                        className="mt-4 w-full py-2 border border-red-300 text-red-400 rounded-2xl font-medium hover:bg-red-500/10 transition-colors text-sm"
                                     >
                                         Sign Out All Devices
                                     </button>

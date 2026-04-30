@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail, BadgeCheck } from 'lucide-react';
+import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail, BadgeCheck, Activity } from 'lucide-react';
 import { EnhancedUser } from '../../types/user';
 import SocialLinksBar from './SocialLinksBar';
 import ReportButton from '../common/ReportButton';
@@ -13,9 +13,9 @@ const ExpandableVerifiedBadge: React.FC = () => {
     <button
       onClick={() => setIsExpanded(!isExpanded)}
       className={`
-        inline-flex items-center gap-1 flex-shrink-0
+        inline-flex items-center gap-1.5 flex-shrink-0
         ${isExpanded
-          ? 'px-2.5 py-1 bg-gradient-to-r from-emerald-50 to-green-50 border border-green-200 rounded-full'
+          ? 'px-3 py-1 bg-brand-acid/10 border border-brand-acid/20 rounded-full'
           : ''
         }
         transition-all duration-300 ease-out
@@ -32,8 +32,8 @@ const ExpandableVerifiedBadge: React.FC = () => {
       `}>
         <BadgeCheck
           className={`
-            w-full h-full text-green-500
-            ${isExpanded ? 'fill-green-100' : 'fill-green-50'}
+            w-full h-full text-brand-acid
+            ${isExpanded ? 'fill-brand-acid/20' : 'fill-brand-acid/10'}
           `}
         />
       </div>
@@ -41,12 +41,12 @@ const ExpandableVerifiedBadge: React.FC = () => {
       {/* Expandable Text */}
       <span
         className={`
-          text-xs font-semibold text-green-700 whitespace-nowrap
+          text-[10px] font-black uppercase tracking-widest text-brand-acid whitespace-nowrap
           overflow-hidden transition-all duration-300 ease-out
-          ${isExpanded ? 'max-w-[100px] opacity-100 ml-0.5' : 'max-w-0 opacity-0'}
+          ${isExpanded ? 'max-w-[100px] opacity-100 ml-1' : 'max-w-0 opacity-0'}
         `}
       >
-        KYC Verified
+        Verified
       </span>
     </button>
   );
@@ -127,85 +127,81 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden ${className}`}>
+    <div className={`bg-neutral-900/30 rounded-[2.5rem] border border-neutral-800 overflow-hidden backdrop-blur-xl ${className}`}>
       {/* Cover/Background */}
       <div
-        className="relative w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+        className="relative w-full overflow-hidden bg-[#0A0A0A]"
         style={{ aspectRatio: '16 / 5' }}
       >
-        {user.coverImage && (
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/60 to-transparent z-10" />
+        {user.coverImage ? (
           <img
             src={user.coverImage}
             alt="Cover"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-60 scale-105 hover:scale-110 transition-transform duration-700"
           />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-brand-orange/20 to-brand-acid/20" />
         )}
       </div>
 
       {/* Profile Content */}
-      <div className="px-3 sm:px-6 pb-4 sm:pb-6">
+      <div className="px-6 sm:px-10 pb-8 sm:pb-12">
         {/* Avatar Section - overlaps cover */}
-        <div className="flex justify-between -mt-12 sm:-mt-16 mb-3">
-          <div className="relative">
+        <div className="relative z-20 flex flex-col sm:flex-row justify-between items-start sm:items-end -mt-16 sm:-mt-24 mb-8 sm:mb-10 gap-6">
+          <div className="relative group">
             {/* Premium Verified Ring - gradient with glow effect */}
             {(user.isVerifiedCreator || user.isCreatorVerified) ? (
-              <div className="relative">
-                {/* White backdrop circle - makes ring stand out on colorful backgrounds */}
-                <div className="absolute inset-0 bg-white rounded-full scale-110" />
-
-                {/* Gradient border ring */}
-                <div className="relative p-[4px] bg-gradient-to-br from-emerald-400 via-green-500 to-teal-500 rounded-full shadow-xl">
-                  {/* Inner white ring for clean look */}
-                  <div className="p-[3px] bg-white rounded-full">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full overflow-hidden bg-gray-100">
-                      {user.profileImage ? (
-                        <img
-                          src={user.profileImage}
-                          alt={user.displayName}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            const parent = target.parentElement;
-                            if (parent && !parent.querySelector('.fallback-avatar')) {
-                              const fallback = document.createElement('div');
-                              fallback.className = 'fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold';
-                              fallback.textContent = getInitials(user.displayName);
-                              parent.appendChild(fallback);
-                            }
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold">
-                          {getInitials(user.displayName)}
-                        </div>
-                      )}
-                    </div>
+              <div className="relative p-1 bg-brand-acid rounded-full shadow-[0_0_40px_rgba(204,255,0,0.2)] group-hover:shadow-[0_0_60px_rgba(204,255,0,0.3)] transition-all duration-500">
+                <div className="p-1 bg-brand-black rounded-full">
+                  <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full overflow-hidden bg-neutral-900 border-2 border-neutral-800">
+                    {user.profileImage ? (
+                      <img
+                        src={user.profileImage}
+                        alt={user.displayName}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent && !parent.querySelector('.fallback-avatar')) {
+                            const fallback = document.createElement('div');
+                            fallback.className = 'fallback-avatar w-full h-full bg-neutral-800 flex items-center justify-center text-brand-white text-xl md:text-2xl font-black italic';
+                            fallback.textContent = getInitials(user.displayName);
+                            parent.appendChild(fallback);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-brand-white text-xl md:text-3xl font-black italic">
+                        {getInitials(user.displayName)}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ) : (
-              /* Non-verified users - standard white border */
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100">
+              /* Non-verified users */
+              <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full border-4 border-brand-black shadow-2xl overflow-hidden bg-neutral-900 ring-1 ring-neutral-800">
                 {user.profileImage ? (
                   <img
                     src={user.profileImage}
                     alt={user.displayName}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                       const parent = target.parentElement;
                       if (parent && !parent.querySelector('.fallback-avatar')) {
                         const fallback = document.createElement('div');
-                        fallback.className = 'fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold';
+                        fallback.className = 'fallback-avatar w-full h-full bg-neutral-800 flex items-center justify-center text-brand-white text-xl md:text-2xl font-black italic';
                         fallback.textContent = getInitials(user.displayName);
                         parent.appendChild(fallback);
                       }
                     }}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold">
+                  <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-brand-white text-xl md:text-3xl font-black italic">
                     {getInitials(user.displayName)}
                   </div>
                 )}
@@ -213,247 +209,158 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
             )}
 
             {/* Level Badge */}
-            <div className="absolute -bottom-1 -right-1 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 border-white shadow-md z-10">
-              L{user.level}
+            <div className="absolute bottom-2 right-2 bg-brand-orange text-brand-white text-[10px] font-black px-3 py-1 rounded-full border-2 border-brand-black shadow-xl z-10 transform group-hover:scale-110 transition-transform">
+              LVL {user.level}
             </div>
           </div>
 
-          {/* Action Buttons - Desktop Only */}
-          <div className="hidden sm:flex items-end gap-2 sm:gap-3">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
             {isOwnProfile ? (
               <button
                 onClick={onEditProfile}
-                className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-neutral-900 text-brand-white border border-neutral-800 rounded-2xl hover:border-brand-acid/50 hover:bg-neutral-800 transition-all duration-300 text-[11px] font-black uppercase tracking-widest group"
               >
-                <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">Edit Profile</span>
-                <span className="sm:hidden">Edit</span>
+                <Settings className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+                <span>Edit Profile</span>
               </button>
             ) : (
-              <>
-                <button
-                  onClick={onToggleFollow}
-                  disabled={followLoading}
-                  className={`
-                    inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all duration-200 text-sm
-                    ${isFollowing
-                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }
-                    ${followLoading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}
-                  `}
-                >
-                  {followLoading ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                      <span>{isFollowing ? 'Unfollowing...' : 'Following...'}</span>
-                    </>
-                  ) : (
-                    <>
-                      {isFollowing ? (
-                        <UserMinus className="w-4 h-4" />
-                      ) : (
-                        <UserPlus className="w-4 h-4" />
-                      )}
-                      <span>{isFollowing ? 'Following' : 'Follow'}</span>
-                    </>
-                  )}
-                </button>
-              </>
+              <button
+                onClick={onToggleFollow}
+                disabled={followLoading}
+                className={`
+                  inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl transition-all duration-300 text-[11px] font-black uppercase tracking-widest
+                  ${isFollowing
+                    ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
+                    : 'bg-brand-acid text-brand-black hover:bg-[#b3e600] shadow-[0_0_20px_rgba(204,255,0,0.2)]'
+                  }
+                  ${followLoading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'}
+                `}
+              >
+                {followLoading ? (
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                ) : isFollowing ? (
+                  <UserMinus className="w-4 h-4" />
+                ) : (
+                  <UserPlus className="w-4 h-4" />
+                )}
+                <span>{isFollowing ? 'Unfollow' : 'Follow'}</span>
+              </button>
             )}
 
             <button
               onClick={onShare}
-              className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm"
+              className="p-3.5 bg-neutral-900 text-neutral-400 border border-neutral-800 rounded-2xl hover:text-brand-white hover:border-neutral-700 transition-all duration-300"
             >
-              <Share2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Share</span>
+              <Share2 className="w-5 h-5" />
             </button>
 
-            {/* Report Button - only show if not own profile */}
             {!isOwnProfile && (
               <ReportButton
                 targetType="user"
                 targetId={user.id}
                 targetName={user.displayName}
+                className="!p-3.5 !bg-neutral-900 !text-neutral-500 !border !border-neutral-800 !rounded-2xl hover:!text-brand-orange hover:!border-brand-orange/30 !transition-all"
               />
             )}
           </div>
         </div>
 
-        {/* User Info - on white background */}
-        <div className="space-y-1 mb-3">
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-                {user.displayName}
-              </h1>
-              {/* ✨ Expandable Verified Badge - click to expand */}
-              {(user.isVerifiedCreator || user.isCreatorVerified) && (
-                <ExpandableVerifiedBadge />
+        {/* User Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-brand-white tracking-tighter italic uppercase">
+                  {user.displayName}
+                </h1>
+                {(user.isVerifiedCreator || user.isCreatorVerified) && (
+                  <ExpandableVerifiedBadge />
+                )}
+              </div>
+              {user.username && (
+                <p className="text-lg text-brand-acid font-black tracking-widest uppercase mt-2 opacity-80 italic">@{user.username}</p>
               )}
             </div>
-            {user.username && (
-              <p className="text-sm sm:text-base text-blue-600 font-medium mt-0.5">@{user.username}</p>
+
+            {/* Stats Bar */}
+            <div className="flex flex-wrap items-center gap-8 py-6 border-y border-neutral-800/50">
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-brand-white leading-none">{user.stats?.projectsCreated || 0}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-2">Projects</span>
+              </div>
+              <button onClick={onFollowersClick} className="flex flex-col group text-left">
+                <span className="text-2xl font-black text-brand-white leading-none group-hover:text-brand-acid transition-colors">{user.stats?.followersCount || 0}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-2 group-hover:text-neutral-400">Followers</span>
+              </button>
+              <button onClick={onFollowingClick} className="flex flex-col group text-left">
+                <span className="text-2xl font-black text-brand-white leading-none group-hover:text-brand-acid transition-colors">{user.stats?.followingCount || 0}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-2 group-hover:text-neutral-400">Following</span>
+              </button>
+            </div>
+
+            {user.bio && (
+              <p className="text-lg text-neutral-400 leading-relaxed font-medium">
+                {sanitizeText(user.bio)}
+              </p>
             )}
 
-            {/* Instagram-style Stats */}
-            <div className="flex items-center gap-6 mt-4 mb-2">
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-gray-900 text-base">{user.stats?.projectsCreated || 0}</span>
-                <span className="text-gray-600 text-base">projects</span>
+            {/* Social Links */}
+            {Object.values(user.socialLinks).some(link => link) && (
+              <div className="pt-2">
+                <SocialLinksBar socialLinks={user.socialLinks} />
               </div>
-              <button
-                onClick={onFollowersClick}
-                className="group flex items-center gap-1.5 cursor-pointer transition-colors"
-              >
-                <span className="font-bold text-gray-900 text-base group-hover:text-blue-600 transition-colors">
-                  {user.stats?.followersCount || 0}
-                </span>
-                <span className="text-gray-600 text-base group-hover:text-blue-600 transition-colors">
-                  followers
-                </span>
-              </button>
-              <button
-                onClick={onFollowingClick}
-                className="group flex items-center gap-1.5 cursor-pointer transition-colors"
-              >
-                <span className="font-bold text-gray-900 text-base group-hover:text-blue-600 transition-colors">
-                  {user.stats?.followingCount || 0}
-                </span>
-                <span className="text-gray-600 text-base group-hover:text-blue-600 transition-colors">
-                  following
-                </span>
-              </button>
+            )}
+          </div>
+
+          <div className="space-y-8 bg-neutral-900/40 p-8 rounded-[2rem] border border-neutral-800/50">
+            {/* Meta Info */}
+            <div className="grid grid-cols-2 gap-6">
+              {user.location && (
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Location</p>
+                  <div className="flex items-center gap-2 text-brand-white font-bold">
+                    <MapPin className="w-4 h-4 text-brand-orange" />
+                    <span>{user.location}</span>
+                  </div>
+                </div>
+              )}
+              <div className="space-y-1">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Member Since</p>
+                <div className="flex items-center gap-2 text-brand-white font-bold">
+                  <Calendar className="w-4 h-4 text-brand-acid" />
+                  <span>{formatDate(user.createdAt)}</span>
+                </div>
+              </div>
             </div>
 
             {user.jobTitle && (
-              <p className="text-sm sm:text-base text-gray-600 mt-2">{user.jobTitle}</p>
-            )}
-          </div>
-
-          {/* Meta Info */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
-            {user.location && (
-              <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                <span>{user.location}</span>
+              <div className="space-y-1">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Role</p>
+                <p className="text-lg text-brand-white font-black italic uppercase tracking-tight">{user.jobTitle}</p>
               </div>
             )}
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              <span>Joined {formatDate(user.createdAt)}</span>
+
+            {/* XP Bar */}
+            <div className="space-y-4 pt-4 border-t border-neutral-800">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-brand-acid" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400">Experience Progression</span>
+                </div>
+                <span className="text-xs font-black text-brand-acid">{user.experiencePoints.toLocaleString()} XP</span>
+              </div>
+              <div className="relative w-full h-3 bg-neutral-800 rounded-full overflow-hidden">
+                <div
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-orange to-brand-acid h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(204,255,0,0.3)]"
+                  style={{ width: `${getXPProgressPercentage(user.level, user.experiencePoints)}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-neutral-500">
+                <span>LVL {user.level}</span>
+                <span>LVL {user.level + 1}</span>
+              </div>
             </div>
-            {user.showEmail && (
-              <div className="flex items-center gap-1">
-                <Mail className="w-4 h-4" />
-                <span>{user.email}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Action Buttons - Mobile Only */}
-        <div className="flex sm:hidden items-center gap-2 mb-4">
-          {isOwnProfile ? (
-            <button
-              onClick={onEditProfile}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
-            >
-              <Settings className="w-4 h-4" />
-              <span>Edit Profile</span>
-            </button>
-          ) : (
-            <>
-              <button
-                onClick={onToggleFollow}
-                disabled={followLoading}
-                className={`
-                  inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm
-                  ${isFollowing
-                    ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }
-                  ${followLoading ? 'opacity-50 cursor-not-allowed' : ''}
-                `}
-              >
-                {followLoading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    <span>{isFollowing ? 'Unfollowing...' : 'Following...'}</span>
-                  </>
-                ) : (
-                  <>
-                    {isFollowing ? (
-                      <UserMinus className="w-4 h-4" />
-                    ) : (
-                      <UserPlus className="w-4 h-4" />
-                    )}
-                    <span>{isFollowing ? 'Following' : 'Follow'}</span>
-                  </>
-                )}
-              </button>
-            </>
-          )}
-
-          <button
-            onClick={onShare}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm"
-          >
-            <Share2 className="w-4 h-4" />
-            <span>Share</span>
-          </button>
-
-          {/* Report Button - only show if not own profile */}
-          {!isOwnProfile && (
-            <ReportButton
-              targetType="user"
-              targetId={user.id}
-              targetName={user.displayName}
-            />
-          )}
-        </div>
-
-        {/* Bio */}
-        {user.bio && (
-          <div className="mt-4 sm:mt-6">
-            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-              {sanitizeText(truncateText(user.bio, 160))}
-            </p>
-          </div>
-        )}
-
-        {/* Description */}
-        {user.description && (
-          <div className="mt-3 sm:mt-4">
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-              {sanitizeText(truncateText(user.description, 500))}
-            </p>
-          </div>
-        )}
-
-        {/* Social Links */}
-        {Object.values(user.socialLinks).some(link => link) && (
-          <div className="mt-4 sm:mt-6">
-            <SocialLinksBar socialLinks={user.socialLinks} />
-          </div>
-        )}
-
-        {/* Experience Points Bar */}
-        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Experience Points</span>
-            <span className="text-sm text-gray-600">{user.experiencePoints.toLocaleString()} XP</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${getXPProgressPercentage(user.level, user.experiencePoints)}%` }}
-            ></div>
-          </div>
-          <div className="flex justify-between mt-1 text-xs text-gray-500">
-            <span>Level {user.level}</span>
-            <span>Level {user.level + 1}</span>
           </div>
         </div>
       </div>

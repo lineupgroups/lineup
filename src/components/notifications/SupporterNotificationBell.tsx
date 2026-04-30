@@ -61,12 +61,15 @@ export default function SupporterNotificationBell() {
             {/* Bell Icon Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 text-gray-600 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                className={`relative p-2.5 rounded-xl transition-all duration-300 group ${isOpen 
+                    ? 'bg-neutral-900 text-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.1)] border border-brand-acid/20' 
+                    : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-900 border border-transparent hover:border-neutral-800'
+                }`}
                 aria-label="Notifications"
             >
-                <Bell className="w-5 h-5 sm:w-6 sm:h-6" />
+                <Bell className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'scale-110' : 'group-hover:scale-110'}`} />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute top-2 right-2 bg-brand-orange text-brand-white text-[10px] font-black rounded-full h-4 w-4 flex items-center justify-center shadow-lg shadow-brand-orange/40 animate-in zoom-in duration-300">
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
@@ -74,14 +77,21 @@ export default function SupporterNotificationBell() {
 
             {/* Dropdown */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[500px] flex flex-col">
+                <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-brand-black rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-neutral-800 z-50 max-h-[500px] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
+                    <div className="flex items-center justify-between p-5 border-b border-neutral-800 bg-neutral-900/30">
+                        <div className="flex items-center space-x-2">
+                            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-brand-white">Inbox</h3>
+                            {unreadCount > 0 && (
+                                <span className="px-2 py-0.5 bg-brand-orange/10 text-brand-orange text-[10px] font-black rounded-full border border-brand-orange/20">
+                                    {unreadCount} NEW
+                                </span>
+                            )}
+                        </div>
                         {unreadCount > 0 && (
                             <button
                                 onClick={markAllAsRead}
-                                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                className="text-[10px] font-black uppercase tracking-widest text-brand-acid hover:text-brand-acid/80 transition-colors"
                             >
                                 Mark all read
                             </button>
@@ -89,53 +99,57 @@ export default function SupporterNotificationBell() {
                     </div>
 
                     {/* Notifications List */}
-                    <div className="overflow-y-auto flex-1">
+                    <div className="overflow-y-auto flex-1 custom-scrollbar">
                         {loading ? (
                             <div className="flex items-center justify-center py-12">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                <div className="w-8 h-8 border-2 border-brand-acid border-t-transparent rounded-full animate-spin"></div>
                             </div>
                         ) : notifications.length === 0 ? (
-                            <div className="text-center py-12 px-4">
-                                <Bell className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                                <p className="text-gray-600 font-medium">No notifications yet</p>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    We'll notify you about updates from projects you've backed
+                            <div className="text-center py-16 px-6">
+                                <div className="w-16 h-16 bg-neutral-900 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                    <Bell className="w-8 h-8 text-neutral-700" />
+                                </div>
+                                <p className="text-brand-white font-bold tracking-tight">All caught up!</p>
+                                <p className="text-xs text-neutral-500 font-medium mt-2 leading-relaxed">
+                                    When projects you follow have updates, they'll show up here in your personal lineup.
                                 </p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-gray-100">
+                            <div className="divide-y divide-neutral-900">
                                 {notifications.map((notification) => (
                                     <button
                                         key={notification.id}
                                         onClick={() => handleNotificationClick(notification)}
-                                        className={`w-full text-left p-4 hover:bg-gray-50 transition-colors ${!notification.read ? 'bg-blue-50' : ''
+                                        className={`w-full text-left p-5 hover:bg-neutral-900 transition-all duration-300 group/item ${!notification.read ? 'bg-brand-acid/[0.02]' : ''
                                             }`}
                                     >
-                                        <div className="flex items-start space-x-3">
+                                        <div className="flex items-start space-x-4">
                                             {/* Icon */}
-                                            <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${!notification.read ? 'bg-blue-100' : 'bg-gray-100'
+                                            <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-300 ${!notification.read 
+                                                ? 'bg-brand-acid/10 border border-brand-acid/20' 
+                                                : 'bg-neutral-800 border border-neutral-700'
                                                 }`}>
-                                                <span className="text-xl">{notification.icon || '🔔'}</span>
+                                                <span className="text-lg grayscale-[0.5] group-hover/item:grayscale-0 transition-all">{notification.icon || '🔔'}</span>
                                             </div>
 
                                             {/* Content */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-sm font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-700'
-                                                    }`}>
-                                                    {notification.title}
-                                                </p>
-                                                <p className="text-sm text-gray-600 mt-0.5">
+                                                <div className="flex items-start justify-between">
+                                                    <p className={`text-sm font-bold tracking-tight leading-tight ${!notification.read ? 'text-brand-white' : 'text-neutral-400'
+                                                        }`}>
+                                                        {notification.title}
+                                                    </p>
+                                                    {!notification.read && (
+                                                        <div className="flex-shrink-0 w-1.5 h-1.5 bg-brand-acid rounded-full mt-1 animate-pulse shadow-[0_0_8px_rgba(204,255,0,0.5)]"></div>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-neutral-500 font-medium mt-1 line-clamp-2 leading-normal group-hover/item:text-neutral-400 transition-colors">
                                                     {notification.message}
                                                 </p>
-                                                <p className="text-xs text-gray-500 mt-1">
+                                                <p className="text-[10px] text-neutral-600 font-bold uppercase tracking-widest mt-2">
                                                     {formatTimeAgo(notification.createdAt.toDate())}
                                                 </p>
                                             </div>
-
-                                            {/* Unread indicator */}
-                                            {!notification.read && (
-                                                <div className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
-                                            )}
                                         </div>
                                     </button>
                                 ))}
@@ -145,15 +159,15 @@ export default function SupporterNotificationBell() {
 
                     {/* Footer */}
                     {notifications.length > 0 && (
-                        <div className="p-3 border-t border-gray-200">
+                        <div className="p-4 border-t border-neutral-800 bg-neutral-900/10">
                             <button
                                 onClick={() => {
                                     navigate('/notifications');
                                     setIsOpen(false);
                                 }}
-                                className="w-full text-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                className="w-full py-2 text-center text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 hover:text-brand-acid transition-all duration-300"
                             >
-                                View all notifications
+                                View Timeline
                             </button>
                         </div>
                     )}

@@ -11,54 +11,36 @@ const SocialLinksBar: React.FC<SocialLinksBarProps> = ({ socialLinks, className 
   const getSocialIcon = (platform: string) => {
     switch (platform) {
       case 'twitter':
-        return <Twitter className="w-5 h-5" />;
+        return <Twitter className="w-4 h-4" />;
       case 'linkedin':
-        return <Linkedin className="w-5 h-5" />;
+        return <Linkedin className="w-4 h-4" />;
       case 'github':
-        return <Github className="w-5 h-5" />;
+        return <Github className="w-4 h-4" />;
       case 'instagram':
-        return <Instagram className="w-5 h-5" />;
+        return <Instagram className="w-4 h-4" />;
       case 'facebook':
-        return <Facebook className="w-5 h-5" />;
+        return <Facebook className="w-4 h-4" />;
       case 'youtube':
-        return <Youtube className="w-5 h-5" />;
+        return <Youtube className="w-4 h-4" />;
       case 'website':
-        return <Globe className="w-5 h-5" />;
+        return <Globe className="w-4 h-4" />;
       default:
-        return <ExternalLink className="w-5 h-5" />;
+        return <ExternalLink className="w-4 h-4" />;
     }
   };
 
   const getSocialColor = (platform: string) => {
-    switch (platform) {
-      case 'twitter':
-        return 'hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200';
-      case 'linkedin':
-        return 'hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200';
-      case 'github':
-        return 'hover:bg-gray-50 hover:text-gray-900 hover:border-gray-200';
-      case 'instagram':
-        return 'hover:bg-pink-50 hover:text-pink-600 hover:border-pink-200';
-      case 'facebook':
-        return 'hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200';
-      case 'youtube':
-        return 'hover:bg-red-50 hover:text-red-600 hover:border-red-200';
-      case 'website':
-        return 'hover:bg-green-50 hover:text-green-600 hover:border-green-200';
-      default:
-        return 'hover:bg-gray-50 hover:text-gray-600 hover:border-gray-200';
-    }
+    // Return a consistent hover style that fits the brand
+    return 'hover:bg-neutral-800 hover:text-brand-acid hover:border-brand-acid/50';
   };
 
   const formatUrl = (url: string, platform: string) => {
     if (!url) return '';
     
-    // If it's already a full URL, return as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
     
-    // Add appropriate prefix based on platform
     switch (platform) {
       case 'twitter':
         return `https://twitter.com/${url.replace('@', '')}`;
@@ -84,7 +66,7 @@ const SocialLinksBar: React.FC<SocialLinksBarProps> = ({ socialLinks, className 
   }
 
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
+    <div className={`flex flex-wrap gap-3 ${className}`}>
       {activeSocialLinks.map(([platform, url]) => (
         <a
           key={platform}
@@ -92,13 +74,16 @@ const SocialLinksBar: React.FC<SocialLinksBarProps> = ({ socialLinks, className 
           target="_blank"
           rel="noopener noreferrer"
           className={`
-            inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 
-            text-gray-600 transition-all duration-200 ${getSocialColor(platform)}
+            inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl border border-neutral-800 
+            bg-neutral-900/50 text-neutral-400 transition-all duration-300 
+            ${getSocialColor(platform)} group
           `}
           title={`Visit ${platform} profile`}
         >
-          {getSocialIcon(platform)}
-          <span className="text-sm font-medium capitalize">{platform}</span>
+          <div className="transform group-hover:scale-110 transition-transform">
+            {getSocialIcon(platform)}
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-widest">{platform}</span>
         </a>
       ))}
     </div>

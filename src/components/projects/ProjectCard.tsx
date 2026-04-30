@@ -73,25 +73,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden ${onClick ? 'cursor-pointer transform hover:-translate-y-1' : ''
+      className={`bg-neutral-900/30 rounded-[2.5rem] border border-neutral-800 hover:border-neutral-700 transition-all duration-500 overflow-hidden group ${onClick ? 'cursor-pointer' : ''
         } ${className}`}
       onClick={handleCardClick}
     >
-      <div className="relative">
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-transparent to-transparent z-10" />
         <img
           src={project.image}
           alt={project.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
-        <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full text-sm font-medium">
+        
+        {/* Badges */}
+        <div className="absolute top-5 left-5 z-20 flex gap-2">
+          <span className="px-4 py-1.5 bg-brand-black/60 backdrop-blur-md text-brand-acid border border-brand-acid/20 rounded-full text-[9px] font-black uppercase tracking-[0.2em]">
             {project.category}
           </span>
-          {/* Status Badge for non-active projects */}
           {(() => {
-            // We can't easily import getProjectStatus here without circular deps or refactoring, 
-            // so we'll do a lightweight check or just rely on passed props if we had them.
-            // For now, let's just check expiration/funding simply.
             const now = new Date();
             let endDate: Date;
             if (project.endDate && typeof project.endDate.toDate === 'function') {
@@ -103,33 +102,30 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             const isFunded = (project.raised || 0) >= (project.goal || project.fundingGoal || 0);
 
             if (isExpired) {
-              if (isFunded) {
-                return (
-                  <span className="ml-2 px-3 py-1 bg-green-100/90 backdrop-blur-sm text-green-800 rounded-full text-sm font-medium border border-green-200">
-                    Successful
-                  </span>
-                );
-              } else {
-                return (
-                  <span className="ml-2 px-3 py-1 bg-gray-100/90 backdrop-blur-sm text-gray-800 rounded-full text-sm font-medium border border-gray-200">
-                    Ended
-                  </span>
-                );
-              }
+              return (
+                <span className={`px-4 py-1.5 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${
+                  isFunded 
+                    ? 'bg-brand-acid/20 text-brand-acid border-brand-acid/30 shadow-[0_0_15px_rgba(204,255,0,0.2)]' 
+                    : 'bg-neutral-900/60 text-neutral-400 border-neutral-700'
+                }`}>
+                  {isFunded ? 'Successful' : 'Ended'}
+                </span>
+              );
             }
             return null;
           })()}
         </div>
+
         {showInteractions && (
-          <div className="absolute top-4 right-4 flex space-x-2">
+          <div className="absolute top-5 right-5 z-20 flex gap-2">
             <div
-              className="bg-white/90 backdrop-blur-sm rounded-lg"
+              className="bg-brand-black/60 backdrop-blur-md border border-neutral-800 rounded-2xl hover:bg-neutral-800 transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
-              <LikeButton projectId={project.id} size="sm" showCount={false} />
+              <LikeButton projectId={project.id} size="sm" showCount={false} className="!p-2.5" />
             </div>
             <div
-              className="bg-white/90 backdrop-blur-sm rounded-lg"
+              className="bg-brand-black/60 backdrop-blur-md border border-neutral-800 rounded-2xl hover:bg-neutral-800 transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
               <ShareButton
@@ -137,64 +133,61 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 projectTitle={project.title}
                 projectDescription={project.tagline}
                 size="sm"
+                className="!p-2.5"
               />
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+      <div className="p-8">
+        <h3 className="text-xl sm:text-2xl font-black text-brand-white mb-3 line-clamp-2 italic uppercase tracking-tighter group-hover:text-brand-acid transition-colors">
           {project.title}
         </h3>
-        <p className="text-gray-600 mb-4 line-clamp-2">
+        <p className="text-neutral-500 mb-8 line-clamp-2 font-medium text-sm leading-relaxed">
           {project.tagline}
         </p>
 
         {/* Creator Info */}
-        <CreatorInfo
-          creatorId={project.creatorId}
-          size="sm"
-          className="mb-4"
-        />
+        <div className="mb-8 p-4 bg-neutral-900/50 rounded-2xl border border-neutral-800/50">
+          <CreatorInfo
+            creatorId={project.creatorId}
+            size="sm"
+          />
+        </div>
 
         {/* Project Stats */}
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Raised</span>
-            <span className="font-semibold text-gray-900">
-              {formatCurrency(project.raised)}
-            </span>
+        <div className="space-y-5">
+          <div className="flex justify-between items-end">
+            <div className="space-y-1">
+              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Raised</p>
+              <p className="text-xl font-black text-brand-acid italic">{formatCurrency(project.raised)}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Goal</p>
+              <p className="text-sm font-bold text-brand-white">{formatCurrency(project.goal || project.fundingGoal || 0)}</p>
+            </div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          
+          <div className="relative w-full bg-neutral-800 rounded-full h-3.5 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-orange to-brand-acid h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(204,255,0,0.2)]"
               style={{ width: `${Math.min(getProgressPercentage(project), 100)}%` }}
             ></div>
           </div>
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>{getProgressPercentage(project).toFixed(0)}% funded</span>
-            <span>Goal: {formatCurrency(project.goal || project.fundingGoal || 0)}</span>
+          
+          <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
+            <span className="text-brand-acid">{getProgressPercentage(project).toFixed(0)}% FUNDED</span>
+            <span className="text-neutral-500 flex items-center gap-1.5">
+              <Calendar className="w-3 h-3" />
+              {formatDate(project.endDate)}
+            </span>
           </div>
-        </div>
-
-        {/* Project Meta Info */}
-        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500">
-          <div className="flex items-center space-x-1">
-            <Calendar className="w-4 h-4" />
-            <span>Ends {formatDate(project.endDate)}</span>
-          </div>
-          {project.location && (
-            <div className="flex items-center space-x-1">
-              <MapPin className="w-4 h-4" />
-              <span>{formatLocation(project.location)}</span>
-            </div>
-          )}
         </div>
 
         {/* Interaction Stats */}
         {showInteractions && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="mt-8 pt-6 border-t border-neutral-800">
             <InteractionStats projectId={project.id} size="sm" />
           </div>
         )}

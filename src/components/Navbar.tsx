@@ -53,23 +53,24 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 pt-safe">
+    <>
+    <nav className="bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-neutral-800 sticky top-0 z-50 pt-safe transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 min-w-0">
           {/* Logo */}
-          <div className="flex-shrink-0 cursor-pointer" onClick={() => onNavigate('home')}>
-            <Logo size="md" tagline="For the Idea Nation™" />
+          <div className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => onNavigate('home')}>
+            <Logo size="lg" tagline="For the Idea Nation™" />
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${currentPage === item.id
-                    ? 'text-orange-600 border-b-2 border-orange-600'
-                    : 'text-gray-700 hover:text-orange-600'
+                className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-300 ${currentPage === item.id
+                    ? 'text-brand-black bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.3)] transform scale-105'
+                    : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-900'
                   }`}
               >
                 {item.label}
@@ -81,16 +82,19 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setShowSearchModal(true)}
-              className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+              className="hidden sm:flex items-center space-x-2 px-4 py-2.5 bg-neutral-900 border border-neutral-800 hover:border-brand-orange/50 hover:bg-neutral-800 rounded-xl transition-all duration-300 group"
             >
-              <Search className="w-4 h-4 text-gray-600" />
-              <span className="text-sm text-gray-600">Search projects...</span>
+              <Search className="w-4 h-4 text-neutral-500 group-hover:text-brand-orange transition-colors" />
+              <span className="text-sm font-medium text-neutral-400 group-hover:text-neutral-200 transition-colors">Search...</span>
+              <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-800 text-neutral-500 ml-2 border border-neutral-700">
+                <span className="text-xs">⌘</span>K
+              </kbd>
             </button>
 
             {/* Mobile Search Button */}
             <button
               onClick={() => setShowSearchModal(true)}
-              className="sm:hidden p-2 text-gray-600 hover:text-orange-600 hover:bg-gray-100 rounded-lg transition-all"
+              className="sm:hidden p-2 text-neutral-400 hover:text-brand-orange hover:bg-neutral-900 rounded-xl transition-all"
             >
               <Search className="w-5 h-5" />
             </button>
@@ -108,23 +112,25 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
                       onNavigate('profile');
                     }
                   }}
-                  className="flex items-center space-x-2 p-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-gray-100 transition-all duration-200"
+                  className="flex items-center space-x-2 p-2 text-neutral-300 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-all duration-200 border border-transparent hover:border-neutral-800"
                 >
                   {user.photoURL ? (
                     <img
                       src={user.photoURL}
                       alt={user.displayName}
-                      className="w-6 h-6 rounded-full object-cover"
+                      className="w-8 h-8 rounded-full object-cover ring-2 ring-neutral-800"
                     />
                   ) : (
-                    <User className="w-5 h-5" />
+                    <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center ring-2 ring-neutral-700">
+                      <User className="w-4 h-4 text-neutral-400" />
+                    </div>
                   )}
-                  <span className="hidden sm:block text-sm font-medium">{user.displayName}</span>
+                  <span className="hidden sm:block text-sm font-bold tracking-wide">{user.displayName}</span>
                 </button>
 
                 <button
                   onClick={handleSignOut}
-                  className="p-2 text-gray-600 hover:text-red-600 rounded-lg hover:bg-gray-100 transition-all duration-200"
+                  className="p-2.5 text-neutral-500 hover:text-brand-orange rounded-xl hover:bg-brand-orange/10 transition-all duration-200"
                   title="Sign Out"
                 >
                   <LogOut className="w-5 h-5" />
@@ -134,13 +140,13 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
               <>
                 <button
                   onClick={() => handleAuthClick('login')}
-                  className="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200"
+                  className="px-5 py-2 text-neutral-300 hover:text-brand-white font-bold tracking-wide transition-colors duration-200"
                 >
                   Sign In
                 </button>
                 <button
                   onClick={() => handleAuthClick('signup')}
-                  className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105"
+                  className="px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(204,255,0,0.2)]"
                 >
                   Sign Up
                 </button>
@@ -150,17 +156,17 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
             {/* Mobile menu button */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 text-neutral-400 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-colors"
             >
-              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {showMobileMenu && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
-            <div className="px-4 py-2 space-y-1">
+          <div className="md:hidden border-t border-neutral-800 bg-[#0A0A0A] absolute left-0 right-0 px-4 pb-6 shadow-2xl">
+            <div className="py-4 space-y-2">
               {/* Mobile Navigation Items */}
               {navItems.map((item) => (
                 <button
@@ -169,9 +175,9 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
                     onNavigate(item.id);
                     setShowMobileMenu(false);
                   }}
-                  className={`w-full text-left px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${currentPage === item.id
-                      ? 'text-orange-600 bg-orange-50'
-                      : 'text-gray-700 hover:text-orange-600 hover:bg-gray-50'
+                  className={`w-full text-left px-4 py-3 text-base font-bold rounded-xl transition-all duration-200 ${currentPage === item.id
+                      ? 'text-brand-black bg-brand-acid'
+                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-900'
                     }`}
                 >
                   {item.label}
@@ -179,15 +185,15 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
               ))}
 
               {/* Mobile Search */}
-              <div className="px-3 py-2">
-                <button className="w-full flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
-                  <Search className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Search projects...</span>
+              <div className="py-2">
+                <button className="w-full flex items-center space-x-3 px-4 py-3 bg-neutral-900 border border-neutral-800 hover:border-brand-orange/50 rounded-xl transition-colors duration-200 group">
+                  <Search className="w-5 h-5 text-neutral-500 group-hover:text-brand-orange" />
+                  <span className="text-sm font-medium text-neutral-400 group-hover:text-neutral-200">Search projects...</span>
                 </button>
               </div>
 
               {/* Mobile User Actions */}
-              <div className="border-t border-gray-200 pt-2 mt-2">
+              <div className="border-t border-neutral-800 pt-4 mt-2">
                 {user ? (
                   <>
                     <button
@@ -201,18 +207,20 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
                         }
                         setShowMobileMenu(false);
                       }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                      className="w-full flex items-center space-x-3 px-4 py-3 text-neutral-300 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-all duration-200"
                     >
                       {user.photoURL ? (
                         <img
                           src={user.photoURL}
                           alt={user.displayName}
-                          className="w-6 h-6 rounded-full object-cover"
+                          className="w-8 h-8 rounded-full object-cover ring-2 ring-neutral-800"
                         />
                       ) : (
-                        <User className="w-5 h-5" />
+                        <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center">
+                          <User className="w-5 h-5 text-neutral-400" />
+                        </div>
                       )}
-                      <span className="text-base font-medium">{user.displayName}</span>
+                      <span className="text-base font-bold tracking-wide">{user.displayName}</span>
                     </button>
 
                     <button
@@ -220,20 +228,20 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
                         handleSignOut();
                         setShowMobileMenu(false);
                       }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-red-600 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                      className="w-full flex items-center space-x-3 px-4 py-3 text-neutral-400 hover:text-brand-orange rounded-xl hover:bg-brand-orange/10 transition-all duration-200 mt-2"
                     >
                       <LogOut className="w-5 h-5" />
-                      <span className="text-base font-medium">Sign Out</span>
+                      <span className="text-base font-bold tracking-wide">Sign Out</span>
                     </button>
                   </>
                 ) : (
-                  <>
+                  <div className="flex flex-col gap-3">
                     <button
                       onClick={() => {
                         handleAuthClick('login');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-50"
+                      className="w-full text-center px-4 py-3 text-neutral-300 hover:text-brand-white font-bold transition-colors duration-200 rounded-xl bg-neutral-900 border border-neutral-800"
                     >
                       Sign In
                     </button>
@@ -242,11 +250,11 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
                         handleAuthClick('signup');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 mt-2"
+                      className="w-full text-center px-4 py-3 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200"
                     >
                       Sign Up
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
@@ -254,7 +262,9 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
         )}
       </div>
 
-      {/* Auth Modal */}
+      {/* Auth Modal - rendered outside nav to avoid stacking context issues */}
+    </nav>
+
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
@@ -266,6 +276,6 @@ export default function Navbar({ currentPage, onNavigate, onProfileNavigate, onU
         isOpen={showSearchModal}
         onClose={() => setShowSearchModal(false)}
       />
-    </nav>
+    </>
   );
 }

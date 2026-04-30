@@ -46,12 +46,13 @@ function CreatorNavbarContent() {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 pt-safe">
+    <>
+    <nav className="bg-brand-black shadow-sm border-b border-neutral-800 sticky top-0 z-50 pt-safe">
       <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center h-16">
           {/* Left Section: Logo + Project Selector */}
           <div className="flex items-center flex-shrink-0">
-            <Link to="/dashboard" className="flex-shrink-0">
+            <Link to="/dashboard" className="flex-shrink-0 text-brand-white hover:text-brand-acid transition-colors">
               <div className="hidden sm:block">
                 <Logo size="md" tagline="Creator Studio" />
               </div>
@@ -62,13 +63,13 @@ function CreatorNavbarContent() {
 
             {/* Project Selector */}
             <div className="hidden lg:block ml-4">
-              <ProjectSelector className="" />
+              <ProjectSelector className="text-brand-white" />
             </div>
           </div>
 
           {/* Center Section: Navigation Items - Centered with flex-1 */}
           <div className="hidden lg:flex items-center justify-center flex-1 mx-4">
-            <div className="flex items-center bg-gray-50/80 rounded-lg px-1 py-1">
+            <div className="flex items-center bg-[#111] border border-neutral-800 rounded-full px-1.5 py-1.5">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -77,9 +78,9 @@ function CreatorNavbarContent() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 whitespace-nowrap ${isActive
-                      ? 'text-orange-600 bg-white shadow-sm'
-                      : 'text-gray-600 hover:text-orange-600 hover:bg-white/60'
+                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-bold transition-all duration-300 whitespace-nowrap ${isActive
+                      ? 'text-brand-black bg-brand-acid shadow-[0_0_10px_rgba(204,255,0,0.2)]'
+                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800'
                       }`}
                   >
                     <Icon className="w-4 h-4 flex-shrink-0" />
@@ -95,7 +96,7 @@ function CreatorNavbarContent() {
             {/* New Project Button */}
             <Link
               to="/dashboard/projects/create"
-              className="hidden xl:flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg text-sm font-medium hover:from-orange-600 hover:to-red-600 transition-all shadow-sm hover:shadow-md"
+              className="hidden xl:flex items-center gap-1.5 px-5 py-2 bg-brand-acid text-brand-black rounded-full text-sm font-bold hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.2)]"
             >
               <Rocket className="w-4 h-4" />
               <span>New Project</span>
@@ -114,21 +115,21 @@ function CreatorNavbarContent() {
                   <div className="relative">
                     <button
                       onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="flex items-center space-x-1 px-2 py-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                      className="flex items-center space-x-1 px-2 py-1.5 bg-[#111] border border-neutral-800 rounded-full hover:bg-neutral-800 transition-colors cursor-pointer"
                     >
                       <UserProfilePicture user={user} size="sm" />
-                      <span className="hidden md:block font-medium text-gray-700 text-sm truncate max-w-[80px] xl:max-w-[120px]">
+                      <span className="hidden md:block font-bold text-brand-white text-sm truncate max-w-[80px] xl:max-w-[120px]">
                         {getResponsiveName(user.displayName || 'User')}
                       </span>
-                      <ChevronDown className="w-4 h-4 text-gray-600" />
+                      <ChevronDown className="w-4 h-4 text-neutral-400" />
                     </button>
 
                     {/* User Dropdown Menu */}
                     {showUserMenu && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                      <div className="absolute right-0 mt-2 w-48 bg-[#111] rounded-2xl shadow-xl border border-neutral-800 py-2 z-50">
                         <Link
                           to="/profile"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-brand-white transition-colors"
                           onClick={() => setShowUserMenu(false)}
                         >
                           <div className="flex items-center space-x-2">
@@ -141,7 +142,7 @@ function CreatorNavbarContent() {
                             setShowUserMenu(false);
                             handleSignOut();
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                         >
                           <div className="flex items-center space-x-2">
                             <LogOut className="w-4 h-4" />
@@ -156,13 +157,13 @@ function CreatorNavbarContent() {
                 <div className="flex items-center space-x-1 sm:space-x-2">
                   <button
                     onClick={() => handleAuthClick('login')}
-                    className="px-2 sm:px-3 py-1 sm:py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-xs sm:text-sm whitespace-nowrap"
+                    className="px-2 sm:px-3 py-1 sm:py-2 text-neutral-400 hover:text-brand-white font-bold transition-colors duration-200 text-xs sm:text-sm whitespace-nowrap"
                   >
                     Sign In
                   </button>
                   <button
                     onClick={() => handleAuthClick('signup')}
-                    className="px-2 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105 text-xs sm:text-sm whitespace-nowrap"
+                    className="px-2 sm:px-4 py-1 sm:py-2 bg-brand-acid text-brand-black rounded-full font-bold hover:bg-[#b3e600] transition-all duration-200 transform hover:scale-105 shadow-[0_0_15px_rgba(204,255,0,0.2)] text-xs sm:text-sm whitespace-nowrap"
                   >
                     Start Creating
                   </button>
@@ -173,7 +174,7 @@ function CreatorNavbarContent() {
             {/* Mobile menu button */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="lg:hidden p-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-orange-50 transition-colors flex-shrink-0"
+              className="lg:hidden p-2 text-neutral-400 hover:text-brand-white rounded-lg hover:bg-neutral-800 transition-colors flex-shrink-0"
               aria-label="Toggle menu"
             >
               {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -183,11 +184,11 @@ function CreatorNavbarContent() {
 
         {/* Mobile Menu */}
         {showMobileMenu && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="md:hidden border-t border-neutral-800 bg-[#111]">
             <div className="px-4 py-2 space-y-1">
               {/* Mobile Project Selector */}
-              <div className="py-2 border-b border-gray-100 mb-2">
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2 px-1">Filter by Project</p>
+              <div className="py-2 border-b border-neutral-800 mb-2">
+                <p className="text-xs text-neutral-500 font-bold uppercase tracking-wide mb-2 px-1">Filter by Project</p>
                 <ProjectSelector showInMobile={true} className="w-full" />
               </div>
 
@@ -201,9 +202,9 @@ function CreatorNavbarContent() {
                     key={item.path}
                     to={item.path}
                     onClick={() => setShowMobileMenu(false)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 text-base font-medium rounded-lg transition-colors ${isActive
-                      ? 'text-orange-600 bg-orange-50'
-                      : 'text-gray-700 hover:text-orange-600 hover:bg-orange-50'
+                    className={`w-full flex items-center space-x-3 px-3 py-2 text-base font-bold rounded-xl transition-colors ${isActive
+                      ? 'text-brand-black bg-brand-acid'
+                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800'
                       }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -216,14 +217,14 @@ function CreatorNavbarContent() {
               <Link
                 to="/dashboard/projects/create"
                 onClick={() => setShowMobileMenu(false)}
-                className="w-full flex items-center space-x-3 px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 mt-2"
+                className="w-full flex items-center space-x-3 px-3 py-2 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200 mt-2"
               >
                 <Rocket className="w-5 h-5" />
                 <span>New Project</span>
               </Link>
 
               {/* Mobile User Actions */}
-              <div className="border-t border-gray-200 pt-2 mt-2">
+              <div className="border-t border-neutral-800 pt-2 mt-2">
                 {user ? (
                   <>
                     {/* Mobile Role Switcher */}
@@ -234,7 +235,7 @@ function CreatorNavbarContent() {
                     <Link
                       to="/profile"
                       onClick={() => setShowMobileMenu(false)}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-orange-600 rounded-lg hover:bg-orange-50 transition-all duration-200 min-w-0"
+                      className="w-full flex items-center space-x-3 px-3 py-2 text-neutral-400 hover:text-brand-white rounded-xl hover:bg-neutral-800 transition-all duration-200 min-w-0"
                     >
                       <UserProfilePicture
                         user={user}
@@ -242,7 +243,7 @@ function CreatorNavbarContent() {
                         className="w-6 h-6 flex-shrink-0"
                         key={user?.profileImage || user?.photoURL || 'no-image-mobile'}
                       />
-                      <span className="text-base font-medium truncate flex-1" title={user.displayName}>
+                      <span className="text-base font-bold truncate flex-1" title={user.displayName}>
                         {getResponsiveName(user.displayName, 'mobile')}
                       </span>
                     </Link>
@@ -252,10 +253,10 @@ function CreatorNavbarContent() {
                         handleSignOut();
                         setShowMobileMenu(false);
                       }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-red-600 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                      className="w-full flex items-center space-x-3 px-3 py-2 text-neutral-400 hover:text-red-400 rounded-xl hover:bg-neutral-800 transition-all duration-200"
                     >
                       <LogOut className="w-5 h-5" />
-                      <span className="text-base font-medium">Sign Out</span>
+                      <span className="text-base font-bold">Sign Out</span>
                     </button>
                   </>
                 ) : (
@@ -265,7 +266,7 @@ function CreatorNavbarContent() {
                         handleAuthClick('login');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 rounded-lg hover:bg-orange-50"
+                      className="w-full text-left px-3 py-2 text-neutral-400 hover:text-brand-white font-bold transition-colors duration-200 rounded-xl hover:bg-neutral-800"
                     >
                       Sign In
                     </button>
@@ -274,7 +275,7 @@ function CreatorNavbarContent() {
                         handleAuthClick('signup');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 mt-2"
+                      className="w-full text-left px-3 py-2 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200 mt-2"
                     >
                       Start Creating
                     </button>
@@ -286,13 +287,15 @@ function CreatorNavbarContent() {
         )}
       </div>
 
-      {/* Auth Modal */}
+    </nav>
+
+      {/* Auth Modal - rendered outside nav to avoid stacking context issues */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         initialMode={authMode}
       />
-    </nav>
+    </>
   );
 }
 

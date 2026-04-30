@@ -19,7 +19,6 @@ export default function DiscoverySection({ projects, loading }: DiscoverySection
       title="Discover Something New"
       subtitle="Explore projects outside your usual interests"
       icon={Compass}
-      className="bg-gradient-to-br from-blue-50 to-purple-50"
     >
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map(project => (
@@ -29,6 +28,3 @@ export default function DiscoverySection({ projects, loading }: DiscoverySection
     </SectionContainer>
   );
 }
-
-
-

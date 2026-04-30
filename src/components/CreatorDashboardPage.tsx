@@ -11,7 +11,7 @@ export default function CreatorDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans">
       <Helmet>
         <title>Creator Dashboard - Lineup</title>
         <meta name="description" content="Manage your projects, track supporters, and grow your creator journey." />

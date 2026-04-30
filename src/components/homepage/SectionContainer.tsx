@@ -21,21 +21,21 @@ export default function SectionContainer({
 }: SectionContainerProps) {
   return (
     <section className={`py-12 ${className}`}>
-      <div className="w-full px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+          <div className="flex items-center gap-4">
             {Icon && (
-              <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg">
-                <Icon className="w-6 h-6 text-white" />
+              <div className="p-2.5 bg-brand-orange/10 rounded-xl border border-brand-orange/20">
+                <Icon className="w-6 h-6 text-brand-orange" />
               </div>
             )}
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-brand-white tracking-tight">
                 {title}
               </h2>
               {subtitle && (
-                <p className="text-gray-600 mt-1">{subtitle}</p>
+                <p className="text-neutral-400 mt-1 font-medium">{subtitle}</p>
               )}
             </div>
           </div>
@@ -43,10 +43,10 @@ export default function SectionContainer({
           {viewAllLink && (
             <Link
               to={viewAllLink}
-              className="flex items-center gap-1 text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              className="group flex items-center gap-1.5 text-brand-orange hover:text-[#ff7b33] font-bold text-sm tracking-wide transition-colors"
             >
               View All
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           )}
         </div>
@@ -57,5 +57,3 @@ export default function SectionContainer({
     </section>
   );
 }
-
-

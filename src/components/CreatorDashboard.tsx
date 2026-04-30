@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   Users, DollarSign, Rocket,
   Wallet, Target, ArrowUpRight,
-  ArrowDownRight, Clock, RefreshCw, TrendingUp, AlertTriangle
+  ArrowDownRight, Clock, RefreshCw, TrendingUp, AlertTriangle, Sparkles
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useProjectsByCreator } from '../hooks/useProjects';
@@ -41,12 +41,12 @@ const TrendIndicator = memo(({ current, previous, suffix = '' }: { current: numb
   const diff = current - previous;
 
   if (current === 0 && previous === 0) {
-    return <span className="text-xs text-gray-500">No data yet</span>;
+    return <span className="text-xs text-neutral-500">No data yet</span>;
   }
 
   if (previous === 0 && current > 0) {
     return (
-      <span className="inline-flex items-center text-xs font-medium text-green-600">
+      <span className="inline-flex items-center text-xs font-medium text-brand-acid">
         <ArrowUpRight className="w-3 h-3 mr-0.5" />
         New{suffix}
       </span>
@@ -55,7 +55,7 @@ const TrendIndicator = memo(({ current, previous, suffix = '' }: { current: numb
 
   if (current === 0 && previous > 0) {
     return (
-      <span className="inline-flex items-center text-xs font-medium text-gray-500">
+      <span className="inline-flex items-center text-xs font-medium text-neutral-500">
         <ArrowDownRight className="w-3 h-3 mr-0.5" />
         No activity{suffix}
       </span>
@@ -67,7 +67,7 @@ const TrendIndicator = memo(({ current, previous, suffix = '' }: { current: numb
   const displayPercent = Math.abs(percentChange) > 999 ? '999+' : Math.abs(percentChange).toFixed(1);
 
   return (
-    <span className={`inline-flex items-center text-xs font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+    <span className={`inline-flex items-center text-xs font-medium ${isPositive ? 'text-brand-acid' : 'text-brand-orange'}`}>
       {isPositive ? (
         <ArrowUpRight className="w-3 h-3 mr-0.5" />
       ) : (
@@ -79,71 +79,6 @@ const TrendIndicator = memo(({ current, previous, suffix = '' }: { current: numb
 });
 
 TrendIndicator.displayName = 'TrendIndicator';
-
-// Memoized Summary Card component for better performance
-const SummaryCard = memo(({ to, colorScheme, icon: Icon, value, label, trend, subtitle, isGradient, actionButton, onClick }: {
-  to?: string;
-  colorScheme: string;
-  icon: React.ElementType;
-  value: React.ReactNode;
-  label: string;
-  trend?: React.ReactNode;
-  subtitle?: string;
-  isGradient?: boolean;
-  actionButton?: React.ReactNode;
-  onClick?: () => void;
-}) => {
-  const content = (
-    <>
-      <div className="flex items-center justify-between mb-3">
-        <div className={`p-3 ${isGradient ? 'bg-white/20' : `bg-${colorScheme}-100 group-hover:bg-${colorScheme}-200`} rounded-lg transition-colors`}>
-          <Icon className={`w-6 h-6 ${isGradient ? 'text-white' : `text-${colorScheme}-600`}`} />
-        </div>
-        {trend}
-      </div>
-      <h3 className={`text-2xl font-bold ${isGradient ? 'text-white' : 'text-gray-900'}`}>
-        {value}
-      </h3>
-      <p className={`text-sm mt-1 ${isGradient ? 'text-white/90' : 'text-gray-600'}`}>{label}</p>
-      {subtitle && (
-        <p className={`text-xs mt-1 ${isGradient ? 'text-white/70' : 'text-gray-500'}`}>
-          {subtitle}
-        </p>
-      )}
-      {actionButton}
-    </>
-  );
-
-  if (to) {
-    return (
-      <Link
-        to={to}
-        className={`bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md hover:border-${colorScheme}-300 transition-all group cursor-pointer`}
-      >
-        {content}
-      </Link>
-    );
-  }
-
-  if (onClick) {
-    return (
-      <button
-        onClick={onClick}
-        className={`w-full text-left ${isGradient ? 'bg-gradient-to-br from-orange-500 to-red-500' : 'bg-white border border-gray-200'} rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow`}
-      >
-        {content}
-      </button>
-    );
-  }
-
-  return (
-    <div className={`${isGradient ? 'bg-gradient-to-br from-orange-500 to-red-500' : 'bg-white border border-gray-200'} rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow`}>
-      {content}
-    </div>
-  );
-});
-
-SummaryCard.displayName = 'SummaryCard';
 
 export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
   const { user } = useAuth();
@@ -354,20 +289,20 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
   // Security check
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center font-sans">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 bg-[#111] border border-neutral-800 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-brand-acid" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold text-brand-white mb-4">Authentication Required</h2>
+          <p className="text-neutral-400 mb-6">
             You need to be logged in to access the Creator Dashboard.
           </p>
           <button
             onClick={onBack}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all"
+            className="px-6 py-3 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(204,255,0,0.2)]"
           >
             Go Back
           </button>
@@ -383,26 +318,43 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
 
   // Loading state
   if (loading) {
-    return <DashboardSkeleton />;
+    return (
+      <div className="min-h-screen bg-brand-black text-brand-white py-8 px-4 sm:px-6 lg:px-8 font-sans">
+          <div className="max-w-7xl mx-auto">
+              <div className="animate-pulse space-y-6">
+                  <div className="h-10 bg-neutral-800 rounded-lg w-1/3"></div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {[...Array(4)].map((_, i) => (
+                          <div key={i} className="h-32 bg-neutral-800 rounded-2xl"></div>
+                      ))}
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <div className="lg:col-span-2 h-80 bg-neutral-800 rounded-2xl"></div>
+                      <div className="h-80 bg-neutral-800 rounded-2xl"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    );
   }
 
   // Error state with retry
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center font-sans">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <AlertTriangle className="w-8 h-8 text-red-600" />
+          <div className="w-16 h-16 bg-[#111] border border-neutral-800 rounded-full flex items-center justify-center mx-auto mb-6">
+            <AlertTriangle className="w-8 h-8 text-brand-orange" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h2>
-          <p className="text-gray-600 mb-2">{error}</p>
-          <p className="text-sm text-gray-500 mb-6">
+          <h2 className="text-2xl font-bold text-brand-white mb-4">Something went wrong</h2>
+          <p className="text-neutral-400 mb-2">{error}</p>
+          <p className="text-sm text-neutral-500 mb-6">
             Please check your connection and try again.
           </p>
           <button
             onClick={handleRefresh}
             disabled={isRateLimited}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all disabled:opacity-50 flex items-center gap-2 mx-auto"
+            className="px-6 py-3 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all disabled:opacity-50 flex items-center gap-2 mx-auto shadow-[0_0_20px_rgba(204,255,0,0.2)]"
           >
             <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
             Try Again
@@ -413,7 +365,7 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans pb-12">
       {/* Onboarding */}
       <DashboardOnboarding
         isOpen={showOnboarding}
@@ -453,64 +405,63 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
       <PageTitle title="Dashboard" description="Your creator dashboard overview" />
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Creator Dashboard
-              </h1>
-              <p className="text-gray-600 mt-1">
-                {isFilteringByProject
-                  ? `Showing data for: ${selectedProject?.title}`
-                  : `Welcome back, ${user.displayName || 'Creator'}! Here's your overview.`
-                }
-              </p>
-              {/* Real-time indicator */}
-              <div className="mt-2">
-                <RealTimeIndicator
-                  lastRefreshed={lastRefreshed}
-                  isRefreshing={isRefreshing}
-                  isConnected={isOnline}
-                  onRefresh={handleRefresh}
-                />
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-white">
+              Creator Hub
+            </h1>
+            <p className="text-neutral-400 mt-2 text-lg">
+              {isFilteringByProject
+                ? `Showing data for: ${selectedProject?.title}`
+                : `Welcome back, ${user.displayName || 'Creator'}! Here's your overview.`
+              }
+            </p>
+            {/* Real-time indicator */}
+            <div className="mt-2">
+              <RealTimeIndicator
+                lastRefreshed={lastRefreshed}
+                isRefreshing={isRefreshing}
+                isConnected={isOnline}
+                onRefresh={handleRefresh}
+              />
             </div>
-            <div className="flex items-center gap-3">
-              {/* Refresh button with rate limit indicator */}
-              <button
-                onClick={handleRefresh}
-                disabled={isRefreshing || isRateLimited}
-                className={`p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${isRefreshing ? 'animate-spin' : ''}`}
-                title={isRateLimited ? `Wait ${Math.ceil(remainingTime / 1000)}s` : 'Refresh data'}
-              >
-                <RefreshCw className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => navigate('/dashboard/projects/create')}
-                className="flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 transform hover:scale-105"
-              >
-                <Rocket className="w-5 h-5" />
-                <span className="hidden sm:inline">Create Project</span>
-              </button>
-            </div>
+          </div>
+          <div className="flex items-center gap-3 mt-4 sm:mt-0">
+            {/* Refresh button with rate limit indicator */}
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing || isRateLimited}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-[#111] hover:bg-[#222] border border-neutral-800 rounded-full text-brand-acid transition-all duration-300 font-medium group disabled:opacity-50 disabled:cursor-not-allowed`}
+              title={isRateLimited ? `Wait ${Math.ceil(remainingTime / 1000)}s` : 'Refresh data'}
+            >
+              <RefreshCw className={`w-4 h-4 group-hover:rotate-180 transition-transform duration-500 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Sync Data
+            </button>
+            <button
+              onClick={() => navigate('/dashboard/projects/create')}
+              className="flex items-center space-x-2 px-5 py-2.5 bg-brand-acid text-brand-black rounded-full font-bold hover:bg-[#b3e600] transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(204,255,0,0.2)]"
+            >
+              <Rocket className="w-4 h-4" />
+              <span className="hidden sm:inline">Create Project</span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-6 sm:space-y-8">
           {/* Summary Cards - Responsive grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Card 1: Total Raised */}
             <Link
               to="/dashboard/earnings"
-              className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md hover:border-green-300 transition-all group cursor-pointer"
+              className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-acid/50 transition-all duration-300 group cursor-pointer"
             >
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <div className="p-2 sm:p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                  <DollarSign className="w-6 h-6" />
                 </div>
                 <div className="hidden sm:block">
                   <TrendIndicator
@@ -520,11 +471,11 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                   />
                 </div>
               </div>
-              <h3 className="text-lg sm:text-2xl font-bold text-gray-900">
+              <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                 <CountUp end={stats.totalRaised} prefix="₹" />
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">Total Raised</p>
-              <p className="text-xs text-gray-500 mt-1 hidden sm:block">
+              <p className="text-sm text-neutral-400 mt-2 font-medium">Total Raised</p>
+              <p className="text-xs text-neutral-500 mt-1 hidden sm:block">
                 This week: {formatCurrency(weeklyTrends.revenue.current)}
               </p>
             </Link>
@@ -532,11 +483,11 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
             {/* Card 2: Active Backers */}
             <Link
               to="/dashboard/backers"
-              className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md hover:border-blue-300 transition-all group cursor-pointer"
+              className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-acid/50 transition-all duration-300 group cursor-pointer"
             >
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <div className="p-2 sm:p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                  <Users className="w-6 h-6" />
                 </div>
                 <div className="hidden sm:block">
                   <TrendIndicator
@@ -546,11 +497,11 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                   />
                 </div>
               </div>
-              <h3 className="text-lg sm:text-2xl font-bold text-gray-900">
+              <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                 <CountUp end={stats.totalSupporters} />
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">Active Backers</p>
-              <p className="text-xs text-gray-500 mt-1 hidden sm:block">
+              <p className="text-sm text-neutral-400 mt-2 font-medium">Active Backers</p>
+              <p className="text-xs text-neutral-500 mt-1 hidden sm:block">
                 {weeklyTrends.supporters.current > 0
                   ? `${weeklyTrends.supporters.current} new this week`
                   : 'No new backers this week'
@@ -561,29 +512,31 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
             {/* Card 3: Available Balance - Now clickable */}
             <Link
               to="/dashboard/earnings"
-              className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow col-span-2 sm:col-span-1"
+              className="bg-[#111] rounded-3xl p-6 border border-brand-orange/30 hover:border-brand-orange transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1 shadow-[0_0_15px_rgba(255,91,0,0.1)] hover:shadow-[0_0_25px_rgba(255,91,0,0.2)]"
             >
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <div className="p-2 sm:p-3 bg-white/20 rounded-lg">
-                  <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
+                  <Wallet className="w-6 h-6" />
                 </div>
                 {(earningsSummary?.pendingBalance || 0) > 0 && (
-                  <span className="inline-flex items-center px-2 py-1 bg-white/20 text-white text-xs font-medium rounded-full">
+                  <span className="inline-flex items-center px-2.5 py-1 bg-neutral-800 text-neutral-300 text-xs font-bold rounded-full border border-neutral-700">
                     <Clock className="w-3 h-3 mr-1" />
                     {formatCurrency(earningsSummary?.pendingBalance || 0)} pending
                   </span>
                 )}
               </div>
-              <h3 className="text-lg sm:text-2xl font-bold text-white">
+              <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                 {formatCurrency(earningsSummary?.availableBalance || 0)}
               </h3>
-              <p className="text-xs sm:text-sm text-white/90 mt-1">Available to Withdraw</p>
+              <p className="text-sm text-neutral-400 mt-2 font-medium">Available to Withdraw</p>
               {(earningsSummary?.availableBalance || 0) >= 500 ? (
-                <span className="inline-block mt-2 sm:mt-3 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs sm:text-sm font-medium rounded-lg transition-colors">
-                  Withdraw Now →
-                </span>
+                <div className="mt-3">
+                    <span className="inline-block px-4 py-1.5 bg-brand-orange text-brand-black text-xs font-bold rounded-full transition-colors group-hover:bg-[#ff7529]">
+                    Withdraw Now →
+                    </span>
+                </div>
               ) : (
-                <p className="text-xs text-white/70 mt-2">
+                <p className="text-xs text-neutral-500 mt-3">
                   Minimum ₹500 required
                 </p>
               )}
@@ -592,22 +545,22 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
             {/* Card 4: Conversion Rate */}
             <Link
               to="/dashboard/analytics"
-              className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-md hover:border-purple-300 transition-all group cursor-pointer"
+              className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-acid/50 transition-all duration-300 group cursor-pointer"
             >
-              <div className="flex items-center justify-between mb-2 sm:mb-3">
-                <div className="p-2 sm:p-3 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
-                  <Target className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                  <Target className="w-6 h-6" />
                 </div>
-                <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full hidden sm:flex items-center">
+                <span className="px-2.5 py-1 bg-neutral-800 text-brand-acid text-xs font-bold rounded-full hidden sm:flex items-center border border-neutral-700">
                   <TrendingUp className="w-3 h-3 mr-1" />
                   Conversion
                 </span>
               </div>
-              <h3 className="text-lg sm:text-2xl font-bold text-gray-900">
+              <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                 {conversionRate !== null ? `${conversionRate}%` : 'N/A'}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">View → Support</p>
-              <p className="text-xs text-gray-500 mt-1 hidden sm:block">
+              <p className="text-sm text-neutral-400 mt-2 font-medium">View → Support</p>
+              <p className="text-xs text-neutral-500 mt-1 hidden sm:block">
                 {stats.totalViews > 0
                   ? `${stats.totalViews.toLocaleString('en-IN')} views → ${stats.totalSupporters} backers`
                   : 'Need more data'}
@@ -625,11 +578,11 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
           )}
 
           {/* Revenue Chart & Milestones - Responsive */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               {user?.uid && <RevenueChart creatorId={user.uid} />}
             </div>
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-6">
               <ProjectMilestones
                 projects={userProjects}
                 onShareMilestone={handleMilestoneShare}
@@ -648,43 +601,57 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
           />
 
           {/* Recent Activity & Supporters - Responsive */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Activity */}
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-900">
-                  {selectedProject
-                    ? `"${selectedProject.title}" Activity`
-                    : 'Recent Activity'
-                  }
-                </h2>
-                <Link
-                  to="/dashboard/notifications"
-                  className="text-sm text-orange-600 hover:text-orange-700 font-medium"
-                >
-                  View all
-                </Link>
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 overflow-hidden flex flex-col">
+              <div className="p-6 border-b border-neutral-800 flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-brand-acid/10 rounded-lg">
+                          <Sparkles className="w-5 h-5 text-brand-acid" />
+                      </div>
+                      <h2 className="text-xl font-bold text-brand-white tracking-tight">
+                        {selectedProject
+                            ? `"${selectedProject.title}" Activity`
+                            : 'Recent Activity'
+                        }
+                      </h2>
+                  </div>
+                  <Link
+                      to="/dashboard/notifications"
+                      className="text-sm text-brand-acid hover:text-brand-white font-semibold transition-colors"
+                  >
+                      View all →
+                  </Link>
               </div>
-              {user?.uid && <ActivityFeed creatorId={user.uid} limit={10} />}
+              <div className="p-6">
+                {user?.uid && <ActivityFeed creatorId={user.uid} limit={10} />}
+              </div>
             </div>
 
             {/* Recent Supporters */}
-            <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-900">
-                  {selectedProject
-                    ? `"${selectedProject.title}" Backers`
-                    : 'Recent Backers'
-                  }
-                </h2>
-                <Link
-                  to="/dashboard/backers"
-                  className="text-sm text-orange-600 hover:text-orange-700 font-medium"
-                >
-                  View all
-                </Link>
-              </div>
-              {user?.uid && <RecentSupportersWidget creatorId={user.uid} limit={10} />}
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 overflow-hidden flex flex-col">
+                <div className="p-6 border-b border-neutral-800 flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-brand-orange/10 rounded-lg">
+                            <Users className="w-5 h-5 text-brand-orange" />
+                        </div>
+                        <h2 className="text-xl font-bold text-brand-white tracking-tight">
+                        {selectedProject
+                            ? `"${selectedProject.title}" Backers`
+                            : 'Recent Backers'
+                        }
+                        </h2>
+                    </div>
+                    <Link
+                        to="/dashboard/backers"
+                        className="text-sm text-brand-orange hover:text-brand-white font-semibold transition-colors"
+                    >
+                        View all →
+                    </Link>
+                </div>
+                <div className="p-6">
+                    {user?.uid && <RecentSupportersWidget creatorId={user.uid} limit={10} />}
+                </div>
             </div>
           </div>
         </div>
