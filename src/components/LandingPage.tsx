@@ -23,7 +23,7 @@ export default function LandingPage() {
   const { settings, loading } = usePlatformSettings();
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-brand-black overflow-x-hidden selection:bg-brand-acid selection:text-brand-black">
       <Helmet>
         <title>Lineup - For the Idea Nation™ | Turn Ideas Into Reality</title>
         <meta name="description" content="Join the Idea Nation! Turn your innovative ideas into reality with crowdfunding. Discover trending projects, support creators, and bring amazing ideas to life across India." />

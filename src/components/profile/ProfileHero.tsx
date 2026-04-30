@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail, BadgeCheck, Activity } from 'lucide-react';
+import { MapPin, Calendar, Settings, UserPlus, UserMinus, Share2, Mail, BadgeCheck, Activity, LogOut } from 'lucide-react';
 import { EnhancedUser } from '../../types/user';
+import { useAuth } from '../../contexts/AuthContext';
 import SocialLinksBar from './SocialLinksBar';
 import ReportButton from '../common/ReportButton';
 import { sanitizeText, truncateText } from '../../utils/sanitize';
+import toast from 'react-hot-toast';
 
 // Expandable Verified Badge Component
 const ExpandableVerifiedBadge: React.FC = () => {
@@ -78,6 +80,18 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
   onFollowersClick,
   onFollowingClick
 }) => {
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success('Session terminated successfully');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Failed to terminate session');
+    }
+  };
+
   const formatDate = (timestamp: any) => {
     if (!timestamp) return '';
 
@@ -217,13 +231,22 @@ const ProfileHero: React.FC<ProfileHeroProps> = ({
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             {isOwnProfile ? (
-              <button
-                onClick={onEditProfile}
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-neutral-900 text-brand-white border border-neutral-800 rounded-2xl hover:border-brand-acid/50 hover:bg-neutral-800 transition-all duration-300 text-[11px] font-black uppercase tracking-widest group"
-              >
-                <Settings className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
-                <span>Edit Profile</span>
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={onEditProfile}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-neutral-900 text-brand-white border border-neutral-800 rounded-2xl hover:border-brand-acid/50 hover:bg-neutral-800 transition-all duration-300 text-[11px] font-black uppercase tracking-widest group"
+                >
+                  <Settings className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+                  <span>Edit Profile</span>
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-2xl hover:bg-brand-orange/20 hover:border-brand-orange/50 transition-all duration-300 text-[11px] font-black uppercase tracking-widest group"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </div>
             ) : (
               <button
                 onClick={onToggleFollow}

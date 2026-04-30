@@ -54,9 +54,7 @@ export default function QuickActionsGrid({
             hoverBorder: 'hover:border-brand-acid/50',
             label: 'Create Project',
             description: 'Start a new campaign',
-            route: '/dashboard/projects/create',
-            badge: projectCount === 0 ? 'New' : undefined,
-            badgeColor: 'bg-brand-acid text-brand-black'
+            route: '/dashboard/projects/create'
         },
         {
             id: 'post-update',

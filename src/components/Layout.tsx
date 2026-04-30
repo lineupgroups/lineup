@@ -140,7 +140,7 @@ export default function Layout({ children }: LayoutProps) {
 
   // The main content that needs to be wrapped with ProjectProvider when in creator mode
   const layoutContent = (
-    <div className="min-h-screen bg-gray-50 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-brand-black flex flex-col overflow-x-hidden">
       <Helmet>
         <title>Lineup - For the Idea Nation™</title>
         <meta name="description" content="Turn your innovative ideas into reality. Get funded by a community that believes in your vision." />

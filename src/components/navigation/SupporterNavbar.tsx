@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Menu, LogOut, X, Compass, TrendingUp, Shield, Heart } from 'lucide-react';
+import { Search, Menu, X, Compass, TrendingUp, Shield, Heart, Activity } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAdmin } from '../../contexts/AdminContext';
 import AuthModal from '../auth/AuthModal';
@@ -10,14 +10,17 @@ import { UserProfilePicture } from '../common/ProfilePicture';
 import { getResponsiveName } from '../../utils/nameUtils';
 import Logo from '../common/Logo';
 import SupporterNotificationBell from '../notifications/SupporterNotificationBell';
+import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
 
 export default function SupporterNavbar() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const location = useLocation();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  
+  const scrollRef = useHorizontalScroll();
 
   const navItems = [
     { path: '/', label: 'Discover', icon: Compass },
@@ -31,213 +34,165 @@ export default function SupporterNavbar() {
     setShowAuthModal(true);
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
-
   return (
     <>
-    <nav className="bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-neutral-800 sticky top-0 z-50 pt-safe transition-all duration-300">
-      <div className="w-full px-3 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 min-w-0">
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0 min-w-0 hover:opacity-80 transition-opacity">
-            <div className="hidden sm:block">
-              <Logo size="lg" tagline="Discover Amazing Ideas" />
-            </div>
-            <div className="sm:hidden">
-              <Logo size="sm" showText={true} tagline="" />
+    <nav className="bg-brand-black/80 backdrop-blur-3xl border-b border-white/5 sticky top-0 z-50 pt-safe transition-all duration-500">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="flex justify-between items-center h-16 gap-4">
+          {/* Logo Section */}
+          <Link to="/" className="flex-shrink-0 group flex items-center gap-4 transition-transform active:scale-95">
+            <div className="relative">
+              <div className="absolute -inset-2 bg-brand-acid/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Logo size="md" tagline="" className="relative z-10" />
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
+          {/* Desktop Navigation - Centered Horizontal Stream */}
+          <div className="hidden lg:flex items-center flex-1 min-w-0 relative">
+            {/* Left Fade Mask */}
+            <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-brand-black to-transparent z-10 pointer-events-none" />
+            
+            <div 
+              ref={scrollRef}
+              className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide flex-nowrap px-6 py-2 w-full cursor-grab active:cursor-grabbing"
+            >
+              <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-2xl">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.path;
 
-              // Check hideWhenLoggedIn if it exists
-              if ('hideWhenLoggedIn' in item && item.hideWhenLoggedIn && user) {
-                return null;
-              }
+                  if (item.requiresAuth && !user) {
+                    return (
+                      <button
+                        key={item.path}
+                        onClick={() => handleAuthClick('login')}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black italic uppercase tracking-[0.2em] transition-all duration-300 text-neutral-500 hover:text-brand-white hover:bg-white/5 whitespace-nowrap flex-shrink-0"
+                      >
+                        <Icon className="w-3 h-3" />
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  }
 
-              if (item.requiresAuth && !user) {
-                return (
-                  <button
-                    key={item.path}
-                    onClick={() => handleAuthClick('login')}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-300 text-neutral-400 hover:text-brand-white hover:bg-neutral-900"
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </button>
-                );
-              }
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black italic uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap flex-shrink-0 ${isActive
+                        ? 'text-brand-black bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                        : 'text-neutral-500 hover:text-brand-white hover:bg-white/5'
+                        }`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
 
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-300 ${isActive
-                    ? 'text-brand-black bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.3)] transform scale-105'
-                    : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-900'
-                    }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
+            {/* Right Fade Mask */}
+            <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-brand-black to-transparent z-10 pointer-events-none" />
           </div>
 
-          {/* Right Side - Search, Role Switcher & User */}
-          <div className="flex items-center space-x-2 lg:space-x-4 min-w-0 flex-shrink-0">
-            {/* Search Bar */}
-            <div className="hidden lg:flex items-center">
+          {/* Right Side - Actions & User Protocol */}
+          <div className="flex items-center gap-4 min-w-0 flex-shrink-0 ml-auto">
+            {/* Precision Search */}
+            <div className="hidden xl:flex items-center">
               <div className="relative group">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-brand-orange transition-colors" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-600 group-focus-within:text-brand-acid transition-colors" />
                 <input
                   type="text"
-                  placeholder="Search projects..."
-                  className="pl-10 pr-4 py-2 w-48 xl:w-64 bg-neutral-900 border border-neutral-800 rounded-xl focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange text-sm text-brand-white placeholder-neutral-500 transition-all duration-300"
+                  placeholder="SEARCH..."
+                  className="pl-10 pr-4 py-2 w-36 xl:w-48 bg-white/5 border border-white/10 rounded-xl focus:ring-1 focus:ring-brand-acid/50 focus:border-brand-acid text-[9px] font-bold tracking-widest text-brand-white placeholder-neutral-700 transition-all duration-500 uppercase italic"
                 />
               </div>
             </div>
 
-            {/* Role Switcher OR Become Creator CTA */}
-            {user && (
-              user.isCreatorVerified ? (
-                <RoleSwitcher className="hidden sm:block flex-shrink-0" />
-              ) : (
-                <BecomeCreatorCTA variant="navbar" className="hidden sm:block flex-shrink-0" />
-              )
-            )}
-
-            {/* User Menu */}
+            {/* Role Protocol & Identity */}
             {user ? (
-              <div className="flex items-center space-x-1 sm:space-x-3 min-w-0 flex-shrink-0">
-                {/* Notification Bell */}
+              <div className="flex items-center gap-3 sm:gap-4">
                 <SupporterNotificationBell />
+                
+                {user.isCreatorVerified ? (
+                  <RoleSwitcher className="hidden sm:block scale-90" />
+                ) : (
+                  <BecomeCreatorCTA variant="navbar" className="hidden sm:block scale-90" />
+                )}
 
                 <Link
                   to="/profile"
-                  className="flex items-center space-x-2 p-2 text-neutral-300 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-all duration-200 border border-transparent hover:border-neutral-800 min-w-0 max-w-[120px] sm:max-w-[160px]"
+                  className="flex items-center gap-2.5 p-1 pr-3 bg-white/5 border border-white/10 rounded-full hover:bg-brand-acid group transition-all duration-500 active:scale-95"
                 >
                   <UserProfilePicture
                     user={user}
                     size="sm"
-                    className="w-8 h-8 flex-shrink-0 ring-2 ring-neutral-800"
-                    key={user?.profileImage || user?.photoURL || 'no-image'}
+                    className="w-7 h-7 rounded-full ring-1 ring-white/5 group-hover:ring-brand-black/20"
                   />
-                  <span className="hidden sm:block text-sm font-bold tracking-wide truncate" title={user.displayName}>
+                  <span className="hidden md:block text-[9px] font-black italic uppercase tracking-widest text-neutral-400 group-hover:text-brand-black">
                     {getResponsiveName(user.displayName, 'navbar')}
                   </span>
                 </Link>
-
-                <button
-                  onClick={handleSignOut}
-                  className="p-2.5 text-neutral-500 hover:text-brand-orange rounded-xl hover:bg-brand-orange/10 transition-all duration-200 flex-shrink-0"
-                  title="Sign Out"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-1 sm:space-x-2">
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleAuthClick('login')}
-                  className="px-4 py-2 text-neutral-300 hover:text-brand-white font-bold tracking-wide transition-colors duration-200 text-sm whitespace-nowrap"
+                  className="px-4 py-2 text-[9px] font-black italic uppercase tracking-[0.2em] text-neutral-400 hover:text-brand-white transition-colors"
                 >
-                  Sign In
+                  SIGN IN
                 </button>
                 <button
                   onClick={() => handleAuthClick('signup')}
-                  className="px-5 py-2.5 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(204,255,0,0.2)] text-sm whitespace-nowrap"
+                  className="px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl text-[9px] font-black italic uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all"
                 >
-                  Join Now
+                  JOIN NOW
                 </button>
               </div>
             )}
 
-            {/* Mobile menu button */}
+            {/* Mobile Interface Toggle */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-neutral-400 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-colors flex-shrink-0"
-              aria-label="Toggle menu"
+              className="lg:hidden p-2 text-neutral-400 hover:text-brand-acid rounded-xl bg-white/5 border border-white/10 transition-all"
+              aria-label="TOGGLE MENU"
             >
-              {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Tactical Menu */}
         {showMobileMenu && (
-          <div className="md:hidden border-t border-neutral-800 bg-[#0A0A0A] absolute left-0 right-0 px-4 pb-6 shadow-2xl">
-            <div className="py-4 space-y-2">
-              {/* Mobile Navigation Items */}
+          <div className="lg:hidden border-t border-white/5 bg-brand-black/95 backdrop-blur-3xl absolute left-0 right-0 px-6 py-8 shadow-2xl animate-in slide-in-from-top-4 duration-500">
+            <div className="space-y-4">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
-
-                // Check hideWhenLoggedIn if it exists
-                if ('hideWhenLoggedIn' in item && item.hideWhenLoggedIn && user) {
-                  return null;
-                }
-
-                if (item.requiresAuth && !user) {
-                  return (
-                    <button
-                      key={item.path}
-                      onClick={() => {
-                        handleAuthClick('login');
-                        setShowMobileMenu(false);
-                      }}
-                      className="w-full flex items-center space-x-3 px-4 py-3 text-base font-bold rounded-xl text-neutral-400 hover:text-brand-white hover:bg-neutral-900 transition-all duration-200"
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                }
 
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
                     onClick={() => setShowMobileMenu(false)}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 text-base font-bold rounded-xl transition-all duration-200 ${isActive
+                    className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all ${isActive
                       ? 'text-brand-black bg-brand-acid'
-                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-900'
+                      : 'text-neutral-500 hover:text-brand-white hover:bg-white/5'
                       }`}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
+                    <div className="flex items-center gap-4">
+                      <Icon className="w-5 h-5" />
+                      <span className="text-xs font-black italic uppercase tracking-widest">{item.label}</span>
+                    </div>
+                    {isActive && <Activity className="w-4 h-4 animate-pulse" />}
                   </Link>
                 );
               })}
 
-              {/* Mobile Search */}
-              <div className="py-2">
-                <div className="relative group">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-brand-orange transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Search projects..."
-                    className="w-full pl-10 pr-4 py-3 bg-neutral-900 border border-neutral-800 rounded-xl focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange text-sm text-brand-white placeholder-neutral-500 transition-all duration-300"
-                  />
-                </div>
-              </div>
-
-              {/* Mobile User Actions */}
-              <div className="border-t border-neutral-800 pt-4 mt-2">
+              <div className="pt-8 border-t border-white/5 space-y-6">
                 {user ? (
                   <>
-                    {/* Mobile Role Switcher OR Become Creator CTA */}
-                    <div className="px-4 py-2">
+                    <div className="px-2">
                       {user.isCreatorVerified ? (
                         <RoleSwitcher showLabel={true} />
                       ) : (
@@ -248,49 +203,33 @@ export default function SupporterNavbar() {
                     <Link
                       to="/profile"
                       onClick={() => setShowMobileMenu(false)}
-                      className="w-full flex items-center space-x-3 px-4 py-3 text-neutral-300 hover:text-brand-acid rounded-xl hover:bg-neutral-900 transition-all duration-200 min-w-0"
+                      className="w-full flex items-center gap-4 px-6 py-4 bg-white/5 rounded-2xl text-brand-white"
                     >
-                      <UserProfilePicture
-                        user={user}
-                        size="sm"
-                        className="w-8 h-8 flex-shrink-0 ring-2 ring-neutral-800"
-                        key={user?.profileImage || user?.photoURL || 'no-image-mobile'}
-                      />
-                      <span className="text-base font-bold tracking-wide truncate flex-1" title={user.displayName}>
+                      <UserProfilePicture user={user} size="sm" className="w-8 h-8 rounded-full" />
+                      <span className="text-xs font-black italic uppercase tracking-widest truncate">
                         {getResponsiveName(user.displayName, 'mobile')}
                       </span>
                     </Link>
-
-                    <button
-                      onClick={() => {
-                        handleSignOut();
-                        setShowMobileMenu(false);
-                      }}
-                      className="w-full flex items-center space-x-3 px-4 py-3 text-neutral-400 hover:text-brand-orange rounded-xl hover:bg-brand-orange/10 transition-all duration-200 mt-2"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span className="text-base font-bold tracking-wide">Sign Out</span>
-                    </button>
                   </>
                 ) : (
-                  <div className="flex flex-col gap-3">
+                  <div className="grid grid-cols-2 gap-4">
                     <button
                       onClick={() => {
                         handleAuthClick('login');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-center px-4 py-3 text-neutral-300 hover:text-brand-white font-bold transition-colors duration-200 rounded-xl bg-neutral-900 border border-neutral-800"
+                      className="py-4 bg-white/5 text-neutral-400 font-black italic uppercase tracking-widest text-[9px] rounded-2xl border border-white/10"
                     >
-                      Sign In
+                      SIGN IN
                     </button>
                     <button
                       onClick={() => {
                         handleAuthClick('signup');
                         setShowMobileMenu(false);
                       }}
-                      className="w-full text-center px-4 py-3 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200"
+                      className="py-4 bg-brand-acid text-brand-black font-black italic uppercase tracking-widest text-[9px] rounded-2xl"
                     >
-                      Join Now
+                      JOIN NOW
                     </button>
                   </div>
                 )}
@@ -299,15 +238,13 @@ export default function SupporterNavbar() {
           </div>
         )}
       </div>
-
     </nav>
 
-      {/* Auth Modal - rendered outside nav to avoid stacking context issues */}
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        initialMode={authMode}
-      />
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+      initialMode={authMode}
+    />
     </>
   );
 }

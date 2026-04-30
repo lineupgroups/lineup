@@ -72,20 +72,20 @@ function ReplyForm({ user, replyContent, setReplyContent, onSubmit, onCancel, is
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Add a reply..."
-                    className="w-full px-0 py-1 border-b border-gray-300 focus:border-gray-900 text-sm focus:outline-none bg-transparent transition-colors"
+                    className="w-full px-0 py-1 border-b border-white/10 focus:border-brand-acid text-sm focus:outline-none bg-transparent transition-colors text-brand-white"
                     autoFocus
                 />
                 <div className="flex justify-end gap-2 mt-2">
                     <button
                         onClick={onCancel}
-                        className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                        className="px-3 py-1.5 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={onSubmit}
                         disabled={isSubmitting || !replyContent.trim()}
-                        className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-1.5 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? 'Posting...' : 'Reply'}
                     </button>
@@ -362,15 +362,15 @@ export default function UpdateComments({
                     <div className="flex-1 min-w-0">
                         {/* Username & Time */}
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`font-medium ${isReply ? 'text-xs' : 'text-sm'} text-gray-900`}>
+                            <span className={`font-medium ${isReply ? 'text-xs' : 'text-sm'} text-brand-white`}>
                                 @{comment.userName.replace(/\s+/g, '')}
                             </span>
                             {comment.isCreatorComment && (
-                                <span className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                                <span className="px-2 py-0.5 bg-brand-acid text-brand-black text-[10px] font-black uppercase tracking-wider rounded-full">
                                     Creator
                                 </span>
                             )}
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-neutral-500">
                                 {formatTimeAgo(comment.createdAt)}
                             </span>
                             {comment.isEdited && (
@@ -399,27 +399,27 @@ export default function UpdateComments({
                                     type="text"
                                     value={editContent}
                                     onChange={(e) => setEditContent(e.target.value)}
-                                    className="w-full px-0 py-1 border-b-2 border-blue-500 text-sm focus:outline-none bg-transparent"
+                                    className="w-full px-0 py-1 border-b-2 border-brand-acid text-sm focus:outline-none bg-transparent text-brand-white"
                                     autoFocus
                                 />
                                 <div className="flex justify-end gap-2 mt-2">
                                     <button
                                         onClick={handleCancelEdit}
-                                        className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                        className="px-3 py-1.5 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={() => handleSaveEdit(comment.id)}
                                         disabled={!editContent.trim()}
-                                        className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50"
+                                        className="px-4 py-1.5 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50"
                                     >
                                         Save
                                     </button>
                                 </div>
                             </div>
                         ) : (
-                            <p className={`${isReply ? 'text-xs' : 'text-sm'} text-gray-800 mt-1 whitespace-pre-wrap`}>
+                            <p className={`${isReply ? 'text-xs' : 'text-sm'} text-neutral-300 mt-1 whitespace-pre-wrap`}>
                                 {comment.content}
                             </p>
                         )}
@@ -431,17 +431,17 @@ export default function UpdateComments({
                                 <button
                                     onClick={() => handleLike(comment.id)}
                                     disabled={!user}
-                                    className={`flex items-center gap-1 p-1.5 rounded-full hover:bg-gray-100 transition-colors ${isLiked ? 'text-blue-600' : 'text-gray-600'
+                                    className={`flex items-center gap-1 p-1.5 rounded-full hover:bg-white/10 transition-colors ${isLiked ? 'text-brand-acid' : 'text-neutral-500'
                                         }`}
                                 >
                                     <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                                 </button>
                                 {comment.likes > 0 && (
-                                    <span className="text-xs text-gray-600 mr-1">{comment.likes}</span>
+                                    <span className="text-xs text-neutral-500 mr-1">{comment.likes}</span>
                                 )}
 
                                 {/* Dislike Button (visual only) */}
-                                <button className="p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-600">
+                                <button className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-neutral-500">
                                     <ThumbsDown className="w-4 h-4" />
                                 </button>
 
@@ -457,7 +457,7 @@ export default function UpdateComments({
                                                 openReplyForm(comment.id);
                                             }
                                         }}
-                                        className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors ml-2"
+                                        className="px-3 py-1.5 text-xs font-black italic uppercase tracking-wider text-neutral-400 hover:text-brand-acid hover:bg-brand-acid/10 rounded-full transition-all ml-2"
                                     >
                                         Reply
                                     </button>
@@ -468,7 +468,7 @@ export default function UpdateComments({
                                     <button
                                         onClick={() => handleHeart(comment)}
                                         disabled={isHearting}
-                                        className={`p-1.5 rounded-full hover:bg-gray-100 transition-colors ml-1 ${hasHeart ? 'text-red-500' : 'text-gray-600'
+                                        className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ml-1 ${hasHeart ? 'text-brand-orange' : 'text-neutral-500'
                                             }`}
                                         title={hasHeart ? 'Remove heart' : 'Give heart'}
                                     >
@@ -486,7 +486,7 @@ export default function UpdateComments({
                         {!isReply && replies.length > 0 && (
                             <button
                                 onClick={() => toggleRepliesVisibility(comment.id)}
-                                className="flex items-center gap-1 mt-2 px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                className="flex items-center gap-1 mt-2 px-3 py-1.5 text-xs font-black italic uppercase tracking-wider text-brand-acid hover:bg-brand-acid/10 rounded-full transition-all"
                             >
                                 {isRepliesExpanded ? (
                                     <>
@@ -517,11 +517,11 @@ export default function UpdateComments({
                             </button>
 
                             {isMenuOpen && (
-                                <div className="absolute right-0 top-8 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                                <div className="absolute right-0 top-8 w-36 bg-[#111] rounded-2xl shadow-2xl border border-white/10 py-1 z-20">
                                     {isOwn && (
                                         <button
                                             onClick={() => handleStartEdit(comment)}
-                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-neutral-300 hover:bg-white/5"
                                         >
                                             <Edit3 className="w-4 h-4" />
                                             Edit
@@ -529,7 +529,7 @@ export default function UpdateComments({
                                     )}
                                     <button
                                         onClick={() => handleDelete(comment.id)}
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-brand-orange hover:bg-brand-orange/10"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                         Delete
@@ -572,9 +572,9 @@ export default function UpdateComments({
             {/* Toggle Comments Button */}
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-2 text-sm font-black italic uppercase tracking-wider text-neutral-300 hover:text-brand-acid transition-colors"
             >
-                <MessageSquare className="w-5 h-5" />
+                <MessageSquare className="w-5 h-5 text-brand-acid" />
                 <span>
                     {displayCommentCount === 0
                         ? 'Comments'
@@ -586,14 +586,14 @@ export default function UpdateComments({
 
             {/* Expanded Comments Section */}
             {isExpanded && (
-                <div className={`mt-4 ${isCreatorView ? 'bg-gray-50 rounded-xl p-4 -mx-2' : ''}`}>
+                <div className={`mt-6 ${isCreatorView ? 'bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 -mx-2' : ''}`}>
                     {/* Comment Input - YouTube style */}
                     {user ? (
-                        <div className="flex gap-3 mb-6">
+                        <div className="flex gap-4 mb-8">
                             <img
                                 src={(user as any).profileImage || user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=f97316&color=fff`}
                                 alt=""
-                                className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                                className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-white/10"
                             />
                             <div className="flex-1">
                                 <input
@@ -602,24 +602,24 @@ export default function UpdateComments({
                                     onChange={(e) => setNewComment(e.target.value)}
                                     onFocus={() => setIsFocused(true)}
                                     placeholder="Add a comment..."
-                                    className="w-full px-0 py-2 border-b border-gray-300 focus:border-gray-900 text-sm focus:outline-none bg-transparent transition-colors"
+                                    className="w-full px-0 py-2 border-b border-white/10 focus:border-brand-acid text-sm focus:outline-none bg-transparent transition-colors text-brand-white placeholder-neutral-600"
                                     disabled={isSubmitting}
                                 />
                                 {(isFocused || newComment) && (
-                                    <div className="flex justify-end gap-2 mt-3">
+                                    <div className="flex justify-end gap-2 mt-4">
                                         <button
                                             onClick={() => {
                                                 setNewComment('');
                                                 setIsFocused(false);
                                             }}
-                                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                            className="px-5 py-2 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
                                         >
                                             Cancel
                                         </button>
                                         <button
                                             onClick={handleSubmitComment}
                                             disabled={isSubmitting || !newComment.trim()}
-                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="px-6 py-2 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(204,255,0,0.2)]"
                                         >
                                             {isSubmitting ? 'Posting...' : 'Comment'}
                                         </button>
@@ -628,7 +628,7 @@ export default function UpdateComments({
                             </div>
                         </div>
                     ) : (
-                        <p className="text-sm text-gray-500 mb-4 ml-1">Sign in to comment</p>
+                        <p className="text-sm text-neutral-500 mb-4 ml-1">Sign in to comment</p>
                     )}
 
                     {/* Comments List */}
@@ -646,16 +646,16 @@ export default function UpdateComments({
                         <>
                             {/* Sort Controls */}
                             {topLevelComments.length > 3 && (
-                                <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
-                                    <span className="text-sm font-medium text-gray-700">
+                                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                                    <span className="text-sm font-black italic uppercase tracking-wider text-neutral-500">
                                         {topLevelComments.length} {topLevelComments.length === 1 ? 'comment' : 'comments'}
                                     </span>
-                                    <div className="flex items-center gap-2">
-                                        <SortAsc className="w-4 h-4 text-gray-400" />
+                                    <div className="flex items-center gap-3">
+                                        <SortAsc className="w-4 h-4 text-brand-acid" />
                                         <select
                                             value={sortOrder}
                                             onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'popular')}
-                                            className="text-sm px-2 py-1 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
+                                            className="text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-white/10 rounded-xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid bg-neutral-900 text-brand-white"
                                         >
                                             <option value="newest">Newest First</option>
                                             <option value="oldest">Oldest First</option>
@@ -664,7 +664,7 @@ export default function UpdateComments({
                                     </div>
                                 </div>
                             )}
-                            <div className="divide-y divide-gray-100">
+                            <div className="space-y-4">
                                 {sortedComments.map((comment) => renderComment(comment))}
                             </div>
                         </>

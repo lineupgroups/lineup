@@ -8,14 +8,14 @@ interface ProjectSelectorProps {
     showInMobile?: boolean;
 }
 
-// Project status configuration
+// Project status configuration with brand colors
 const statusConfig: Record<string, { color: string; bgColor: string; label: string; icon: React.ElementType }> = {
-    active: { color: 'text-green-600', bgColor: 'bg-green-500', label: 'Active', icon: Rocket },
-    pending: { color: 'text-yellow-600', bgColor: 'bg-yellow-500', label: 'Pending', icon: Clock },
-    draft: { color: 'text-gray-500', bgColor: 'bg-gray-400', label: 'Draft', icon: FileEdit },
-    funded: { color: 'text-blue-600', bgColor: 'bg-blue-500', label: 'Funded', icon: Check },
-    expired: { color: 'text-red-600', bgColor: 'bg-red-500', label: 'Expired', icon: AlertCircle },
-    rejected: { color: 'text-red-600', bgColor: 'bg-red-500', label: 'Rejected', icon: AlertCircle },
+    active: { color: 'text-brand-acid', bgColor: 'bg-brand-acid', label: 'Active', icon: Rocket },
+    pending: { color: 'text-brand-orange', bgColor: 'bg-brand-orange', label: 'Pending', icon: Clock },
+    draft: { color: 'text-neutral-500', bgColor: 'bg-neutral-600', label: 'Draft', icon: FileEdit },
+    funded: { color: 'text-brand-acid', bgColor: 'bg-brand-acid', label: 'Funded', icon: Check },
+    expired: { color: 'text-brand-orange', bgColor: 'bg-brand-orange', label: 'Expired', icon: AlertCircle },
+    rejected: { color: 'text-red-500', bgColor: 'bg-red-500', label: 'Rejected', icon: AlertCircle },
 };
 
 // Format currency helper
@@ -114,7 +114,7 @@ export default function ProjectSelector({ className = '', showInMobile = false }
         const config = statusConfig[status] || statusConfig.draft;
         return (
             <span
-                className={`w-2 h-2 rounded-full ${config.bgColor} flex-shrink-0`}
+                className={`w-2 h-2 rounded-full ${config.bgColor} flex-shrink-0 shadow-[0_0_8px_rgba(204,255,0,0.4)]`}
                 title={config.label}
             />
         );
@@ -127,7 +127,7 @@ export default function ProjectSelector({ className = '', showInMobile = false }
         return (
             <button
                 onClick={() => handleSelectProject(project.id)}
-                className={`w-full px-3 py-2.5 flex items-center gap-3 hover:bg-gray-50 transition-colors text-left ${isSelected ? 'bg-orange-50' : ''
+                className={`w-full px-4 py-3.5 flex items-center gap-3 hover:bg-white/5 transition-all duration-300 text-left ${isSelected ? 'bg-brand-acid/5' : ''
                     }`}
             >
                 {/* Status dot */}
@@ -136,24 +136,20 @@ export default function ProjectSelector({ className = '', showInMobile = false }
                 {/* Project info */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                        <span className={`font-medium text-sm truncate ${isSelected ? 'text-orange-700' : 'text-gray-900'}`}>
+                        <span className={`font-bold text-sm truncate tracking-tight ${isSelected ? 'text-brand-acid italic' : 'text-neutral-200'}`}>
                             {project.title}
                         </span>
                         {isSelected && (
-                            <Check className="w-4 h-4 text-orange-600 flex-shrink-0" />
+                            <Check className="w-4 h-4 text-brand-acid flex-shrink-0" />
                         )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
-                        <span className={`text-xs ${config.color}`}>{config.label}</span>
+                        <span className={`text-[10px] font-black uppercase tracking-widest ${config.color}`}>{config.label}</span>
                         {project.status === 'active' && (
                             <>
-                                <span className="text-xs text-gray-400">•</span>
-                                <span className="text-xs text-gray-500">
+                                <span className="text-[10px] text-neutral-600">•</span>
+                                <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wide">
                                     {formatCurrency(project.raised || 0)} raised
-                                </span>
-                                <span className="text-xs text-gray-400">•</span>
-                                <span className="text-xs text-gray-500">
-                                    {project.supporters || 0} supporters
                                 </span>
                             </>
                         )}
@@ -173,11 +169,8 @@ export default function ProjectSelector({ className = '', showInMobile = false }
     // Loading state
     if (loading) {
         return (
-            <div className={`${className} ${showInMobile ? '' : 'hidden md:flex'}`}>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg animate-pulse">
-                    <div className="w-4 h-4 bg-gray-300 rounded" />
-                    <div className="w-20 h-4 bg-gray-300 rounded" />
-                </div>
+            <div className={`${className} ${showInMobile ? '' : 'hidden lg:flex'}`}>
+                <div className="flex items-center gap-2 px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-full animate-pulse w-32" />
             </div>
         );
     }
@@ -188,57 +181,60 @@ export default function ProjectSelector({ className = '', showInMobile = false }
     }
 
     return (
-        <div className={`relative ${className} ${showInMobile ? '' : 'hidden md:block'}`} ref={dropdownRef}>
+        <div className={`relative ${className} ${showInMobile ? '' : 'hidden lg:block'}`} ref={dropdownRef}>
             {/* Trigger Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200"
+                className="flex items-center gap-3 px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 bg-black/40 backdrop-blur-md text-brand-white hover:bg-neutral-900 border border-white/5 shadow-xl group"
             >
                 {selectedProject ? (
                     <>
                         <StatusDot status={selectedProject.status} />
-                        <span className="max-w-[80px] xl:max-w-[120px] truncate text-xs">
+                        <span className="max-w-[100px] xl:max-w-[150px] truncate text-xs font-black uppercase tracking-wider italic">
                             {selectedProject.title}
                         </span>
                     </>
                 ) : (
                     <>
-                        <FolderOpen className="w-4 h-4" />
-                        <span className="text-xs">Select Project</span>
+                        <FolderOpen className="w-4 h-4 text-neutral-400 group-hover:text-brand-acid transition-colors" />
+                        <span className="text-xs font-black uppercase tracking-wider">Select Project</span>
                     </>
                 )}
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-300 ${isOpen ? 'rotate-180 text-brand-acid' : ''}`} />
             </button>
 
             {/* Dropdown Menu */}
             {isOpen && (
-                <div className="absolute left-0 top-full mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 py-1 z-50 overflow-hidden">
+                <div className="absolute left-0 top-full mt-3 w-80 bg-[#111] rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-neutral-800 py-2 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Search Input (show only if more than 5 projects) */}
                     {projects.length > 5 && (
-                        <div className="px-3 py-2 border-b border-gray-100">
+                        <div className="px-4 py-3 border-b border-neutral-800/50">
                             <div className="relative">
-                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                                 <input
                                     ref={searchInputRef}
                                     type="text"
                                     placeholder="Search projects..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    className="w-full pl-10 pr-4 py-2 text-xs bg-neutral-900 border border-neutral-800 rounded-xl text-brand-white placeholder-neutral-600 focus:outline-none focus:border-brand-acid transition-all"
                                 />
                             </div>
                         </div>
                     )}
 
                     {/* Header text */}
-                    <div className="px-3 py-2 border-b border-gray-100">
-                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <div className="px-5 py-3 flex items-center justify-between border-b border-neutral-800/50 bg-neutral-900/30">
+                        <p className="text-[10px] font-black text-neutral-500 uppercase tracking-[0.2em]">
                             Your Projects
                         </p>
+                        <span className="px-2 py-0.5 bg-neutral-800 text-neutral-500 text-[9px] font-black rounded-md border border-neutral-700">
+                            {projects.length}
+                        </span>
                     </div>
 
                     {/* Projects list */}
-                    <div className="max-h-64 overflow-y-auto">
+                    <div className="max-h-80 overflow-y-auto custom-scrollbar">
                         {sortedProjects.length > 0 ? (
                             sortedProjects.map((project) => (
                                 <ProjectItem
@@ -248,16 +244,19 @@ export default function ProjectSelector({ className = '', showInMobile = false }
                                 />
                             ))
                         ) : (
-                            <div className="px-3 py-4 text-center text-sm text-gray-500">
-                                No projects found
+                            <div className="px-6 py-8 text-center">
+                                <AlertCircle className="w-8 h-8 text-neutral-800 mx-auto mb-3" />
+                                <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">
+                                    No results
+                                </p>
                             </div>
                         )}
                     </div>
 
                     {/* Footer hint */}
-                    <div className="px-3 py-2 bg-gray-50 border-t border-gray-100">
-                        <p className="text-xs text-gray-500 text-center">
-                            Select a project to filter all dashboard tabs
+                    <div className="px-5 py-3 bg-neutral-900/50 border-t border-neutral-800/50">
+                        <p className="text-[9px] font-bold text-neutral-600 text-center uppercase tracking-widest">
+                            Syncing data across all tabs
                         </p>
                     </div>
                 </div>

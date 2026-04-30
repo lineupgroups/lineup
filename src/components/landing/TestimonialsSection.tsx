@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Quote, MapPin, Award } from 'lucide-react';
+import { Star, Quote, MapPin, Award, Activity, Heart } from 'lucide-react';
 import { useTestimonials } from '../../hooks/useLandingPage';
 
 export default function TestimonialsSection() {
@@ -7,15 +7,11 @@ export default function TestimonialsSection() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-6 animate-pulse">
+      <section className="py-24 bg-brand-black">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white p-6 rounded-xl">
-                <div className="h-20 bg-gray-200 rounded mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-              </div>
+              <div key={i} className="bg-white/5 h-80 rounded-[2rem] animate-pulse"></div>
             ))}
           </div>
         </div>
@@ -28,6 +24,8 @@ export default function TestimonialsSection() {
   }
 
   const formatCurrency = (amount: number) => {
+    if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
+    if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -37,19 +35,24 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 bg-brand-black border-b border-white/5 relative overflow-hidden">
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,rgba(204,255,0,0.02)_0%,transparent_50%)] pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-            <Star className="w-4 h-4 fill-current" />
-            TESTIMONIALS
+        <div className="text-center mb-24">
+          <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-6 py-2.5 rounded-full border border-white/10 mb-8">
+            <Heart className="w-4 h-4 text-brand-orange fill-current" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">
+              SOCIAL <span className="text-brand-orange">CONSENSUS</span>
+            </span>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Loved by Creators & Supporters
+          <h2 className="text-5xl md:text-7xl font-black text-brand-white italic uppercase tracking-tighter mb-8 leading-none">
+            VOICES OF THE <span className="text-brand-acid">NATION</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Hear from the amazing people who are part of our community
+          <p className="text-xl text-neutral-500 max-w-2xl mx-auto font-medium tracking-tight">
+            Validating the impact of the ecosystem through the lived experiences of its prime nodes.
           </p>
         </div>
 
@@ -58,119 +61,102 @@ export default function TestimonialsSection() {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-purple-200"
+              className="group relative bg-white/5 backdrop-blur-2xl rounded-[2.5rem] p-10 border border-white/10 hover:border-brand-acid/30 transition-all duration-500 overflow-hidden flex flex-col"
             >
-              {/* Quote Icon */}
-              <div className="absolute top-6 right-6 text-purple-200 group-hover:text-purple-300 transition-colors">
-                <Quote className="w-12 h-12" />
+              {/* Quote Icon Background */}
+              <div className="absolute top-10 right-10 text-white/[0.03] group-hover:text-brand-acid/[0.05] transition-all">
+                <Quote className="w-24 h-24" />
               </div>
 
-              {/* Rating */}
+              {/* Rating Telemetry */}
               {testimonial.rating && (
-                <div className="flex gap-1 mb-4">
+                <div className="flex gap-1.5 mb-8 relative z-10">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${
+                      className={`w-3.5 h-3.5 ${
                         i < testimonial.rating!
-                          ? 'text-yellow-400 fill-current'
-                          : 'text-gray-300'
+                          ? 'text-brand-acid fill-current'
+                          : 'text-neutral-800'
                       }`}
                     />
                   ))}
                 </div>
               )}
 
-              {/* Quote Text */}
-              <blockquote className="text-gray-700 mb-6 leading-relaxed relative z-10">
+              {/* Narrative Quote */}
+              <blockquote className="text-lg text-neutral-300 font-medium italic leading-relaxed tracking-tight mb-10 relative z-10 flex-1">
                 "{testimonial.quote}"
               </blockquote>
 
-              {/* Author Info */}
-              <div className="flex items-start gap-4 pt-6 border-t border-gray-100">
-                {/* Avatar */}
+              {/* Identity Protocol */}
+              <div className="flex items-start gap-5 pt-8 border-t border-white/5 relative z-10">
                 {testimonial.photo ? (
                   <img
                     src={testimonial.photo}
                     alt={testimonial.name}
-                    className="w-14 h-14 rounded-full object-cover ring-2 ring-purple-100"
+                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-white/5 group-hover:ring-brand-acid/30 transition-all"
                   />
                 ) : (
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center ring-2 ring-purple-100">
-                    <span className="text-white font-bold text-xl">
+                  <div className="w-14 h-14 rounded-2xl bg-brand-black border border-white/10 flex items-center justify-center">
+                    <span className="text-brand-acid font-black text-xl italic">
                       {testimonial.name.charAt(0)}
                     </span>
                   </div>
                 )}
 
-                <div className="flex-1">
-                  <div className="font-semibold text-gray-900 mb-1">
+                <div className="flex-1 min-w-0">
+                  <div className="font-black text-brand-white uppercase tracking-widest mb-1 truncate">
                     {testimonial.name}
                   </div>
                   
-                  {/* Role/Project */}
                   {testimonial.role && (
-                    <div className="text-sm text-gray-600 mb-2">
-                      {testimonial.role}
+                    <div className="text-[9px] font-black text-neutral-600 uppercase tracking-[0.2em] mb-2 truncate">
+                      {testimonial.role.toUpperCase()}
                     </div>
                   )}
                   
                   {testimonial.projectTitle && (
-                    <div className="text-sm text-purple-600 font-medium mb-2">
-                      {testimonial.projectTitle}
+                    <div className="text-[9px] font-black text-brand-orange uppercase tracking-[0.2em] mb-2 truncate">
+                      {testimonial.projectTitle.toUpperCase()}
                     </div>
                   )}
 
-                  {/* Location */}
-                  {testimonial.location && (
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin className="w-3 h-3 mr-1" />
-                      {testimonial.location.city}, {testimonial.location.state}
-                    </div>
-                  )}
-
-                  {/* Amount Info */}
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  {/* Impact Badges */}
+                  <div className="mt-4 flex flex-wrap gap-2">
                     {testimonial.type === 'creator' && testimonial.amountRaised && (
-                      <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                        <Award className="w-3 h-3" />
-                        Raised {formatCurrency(testimonial.amountRaised)}
-                      </span>
+                      <div className="inline-flex items-center gap-1.5 bg-brand-acid/10 text-brand-acid border border-brand-acid/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">
+                        <Award className="w-2.5 h-2.5" />
+                        ACQUIRED {formatCurrency(testimonial.amountRaised)}
+                      </div>
                     )}
                     {testimonial.type === 'supporter' && testimonial.amountSupported && (
-                      <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                        Supported {formatCurrency(testimonial.amountSupported)}
-                      </span>
+                      <div className="inline-flex items-center gap-1.5 bg-brand-orange/10 text-brand-orange border border-brand-orange/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">
+                        <Activity className="w-2.5 h-2.5" />
+                        DEPLOYED {formatCurrency(testimonial.amountSupported)}
+                      </div>
                     )}
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      testimonial.type === 'creator'
-                        ? 'bg-purple-100 text-purple-700'
-                        : 'bg-orange-100 text-orange-700'
-                    }`}>
-                      {testimonial.type === 'creator' ? 'Creator' : 'Supporter'}
-                    </span>
                   </div>
                 </div>
               </div>
-
-              {/* Hover effect gradient */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/5 group-hover:to-pink-500/5 transition-all pointer-events-none"></div>
             </div>
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">
-            Want to share your success story?
-          </p>
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-8 py-3 rounded-lg transition-all transform hover:scale-105">
-            <Star className="w-5 h-5" />
-            Share Your Story
+        {/* Global Action */}
+        <div className="mt-20 text-center">
+          <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-8 py-3 rounded-full border border-white/10 mb-8">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500">
+              SHARE YOUR OWN <span className="text-brand-acid">NARRATIVE</span>
+            </span>
+          </div>
+          <br />
+          <button className="group relative inline-flex items-center gap-4 bg-brand-acid text-brand-black font-black italic uppercase tracking-[0.2em] text-xs px-12 py-5 rounded-2xl shadow-2xl shadow-brand-acid/20 hover:scale-105 active:scale-95 transition-all">
+            <Star className="w-5 h-5 fill-current" />
+            Initialize Story Protocol
           </button>
         </div>
       </div>
     </section>
   );
 }
-

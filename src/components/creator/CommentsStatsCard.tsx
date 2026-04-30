@@ -15,33 +15,25 @@ export default function CommentsStatsCard({ stats, loading }: CommentsStatsCardP
         return `${Math.round(hours / 24)}d`;
     };
 
-    // Get response time color
-    const getResponseTimeColor = (hours: number | null): string => {
-        if (hours === null) return 'text-neutral-500';
-        if (hours < 4) return 'text-green-400';
-        if (hours < 24) return 'text-yellow-400';
-        return 'text-red-400';
-    };
-
     // Get response time label
     const getResponseTimeLabel = (hours: number | null): string => {
-        if (hours === null) return 'No data';
-        if (hours < 4) return 'Excellent!';
-        if (hours < 24) return 'Good';
-        return 'Needs improvement';
+        if (hours === null) return 'Silence';
+        if (hours < 4) return 'Elite Response';
+        if (hours < 24) return 'Active Presence';
+        return 'Delayed Dialogue';
     };
 
     if (loading) {
         return (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="bg-[#111] rounded-3xl border border-neutral-800 p-4 animate-pulse">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-neutral-800 rounded-2xl" />
-                            <div className="h-4 bg-neutral-800 rounded w-20" />
+                    <div key={i} className="bg-white/5 rounded-[2rem] border border-white/10 p-6 animate-pulse">
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="w-12 h-12 bg-white/5 rounded-2xl" />
+                            <div className="h-4 bg-white/5 rounded w-20" />
                         </div>
-                        <div className="h-8 bg-neutral-800 rounded w-16 mb-1" />
-                        <div className="h-3 bg-neutral-800 rounded w-24" />
+                        <div className="h-10 bg-white/5 rounded w-16 mb-2" />
+                        <div className="h-4 bg-white/5 rounded w-24" />
                     </div>
                 ))}
             </div>
@@ -50,69 +42,74 @@ export default function CommentsStatsCard({ stats, loading }: CommentsStatsCardP
 
     const statCards = [
         {
-            label: 'Total Comments',
+            label: 'Total Dialogue',
             value: stats.total,
             subtext: `+${stats.thisWeek} this week`,
             icon: MessageSquare,
-            iconBg: 'bg-blue-500/20',
-            iconColor: 'text-blue-400',
-            valueColor: 'text-brand-white'
+            iconBg: 'bg-brand-acid/10',
+            iconColor: 'text-brand-acid',
+            valueColor: 'text-brand-white',
+            borderColor: 'border-white/10'
         },
         {
-            label: 'Unreplied',
+            label: 'Pending Action',
             value: stats.unreplied,
-            subtext: stats.unreplied > 0 ? 'Need your reply!' : 'All caught up!',
+            subtext: stats.unreplied > 0 ? 'Urgent Engagement' : 'Peak Connection',
             icon: AlertCircle,
-            iconBg: stats.unreplied > 0 ? 'bg-red-100' : 'bg-green-500/20',
-            iconColor: stats.unreplied > 0 ? 'text-red-400' : 'text-green-400',
-            valueColor: stats.unreplied > 0 ? 'text-red-400' : 'text-green-400',
-            pulse: stats.unreplied > 0
+            iconBg: stats.unreplied > 0 ? 'bg-brand-orange/10' : 'bg-brand-acid/10',
+            iconColor: stats.unreplied > 0 ? 'text-brand-orange' : 'text-brand-acid',
+            valueColor: stats.unreplied > 0 ? 'text-brand-orange' : 'text-brand-acid',
+            pulse: stats.unreplied > 0,
+            borderColor: stats.unreplied > 0 ? 'border-brand-orange/30' : 'border-white/10'
         },
         {
-            label: 'Replied',
+            label: 'Closed Loops',
             value: stats.replied,
-            subtext: stats.total > 0 ? `${Math.round((stats.replied / stats.total) * 100)}% response rate` : 'No comments yet',
+            subtext: stats.total > 0 ? `${Math.round((stats.replied / stats.total) * 100)}% Rate` : 'Starting Dialogue',
             icon: CheckCircle,
-            iconBg: 'bg-green-500/20',
-            iconColor: 'text-green-400',
-            valueColor: 'text-green-400'
+            iconBg: 'bg-brand-acid/10',
+            iconColor: 'text-brand-acid',
+            valueColor: 'text-brand-acid',
+            borderColor: 'border-white/10'
         },
         {
-            label: 'Avg. Response',
+            label: 'Latency',
             value: formatResponseTime(stats.avgResponseTimeHours),
             subtext: getResponseTimeLabel(stats.avgResponseTimeHours),
             icon: Clock,
-            iconBg: 'bg-purple-500/20',
-            iconColor: 'text-purple-400',
-            valueColor: getResponseTimeColor(stats.avgResponseTimeHours)
+            iconBg: 'bg-brand-orange/10',
+            iconColor: 'text-brand-orange',
+            valueColor: 'text-brand-white',
+            borderColor: 'border-white/10'
         }
     ];
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             {statCards.map((stat) => {
                 const Icon = stat.icon;
                 return (
                     <div
                         key={stat.label}
-                        className={`bg-[#111] rounded-3xl border border-neutral-800 p-4 hover:shadow-md transition-shadow ${stat.pulse ? 'ring-2 ring-red-200' : ''
-                            }`}
+                        className={`bg-white/5 backdrop-blur-xl rounded-[2.5rem] border ${stat.borderColor} p-6 hover:bg-white/10 transition-all group overflow-hidden relative ${stat.pulse ? 'shadow-[0_0_20px_rgba(255,91,0,0.1)]' : ''}`}
                     >
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className={`w-10 h-10 ${stat.iconBg} rounded-2xl flex items-center justify-center ${stat.pulse ? 'animate-pulse' : ''
-                                }`}>
-                                <Icon className={`w-5 h-5 ${stat.iconColor}`} />
+                        {/* Subtle background glow */}
+                        <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-20 pointer-events-none ${stat.iconBg}`}></div>
+                        
+                        <div className="flex items-center gap-4 mb-4 relative z-10">
+                            <div className={`w-12 h-12 ${stat.iconBg} rounded-2xl flex items-center justify-center ${stat.pulse ? 'animate-pulse' : ''}`}>
+                                <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                             </div>
-                            <span className="text-sm font-medium text-neutral-400">{stat.label}</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">{stat.label}</span>
                         </div>
-                        <div className={`text-2xl font-bold ${stat.valueColor} mb-1`}>
+                        <div className={`text-4xl font-black italic tracking-tighter ${stat.valueColor} mb-2 relative z-10`}>
                             {stat.value}
                         </div>
-                        <div className="flex items-center gap-1 text-xs text-neutral-500">
-                            {stat.label === 'Total Comments' && stats.thisWeek > 0 && (
-                                <TrendingUp className="w-3 h-3 text-green-500" />
+                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-500 relative z-10">
+                            {stat.label === 'Total Dialogue' && stats.thisWeek > 0 && (
+                                <TrendingUp className="w-3.5 h-3.5 text-brand-acid" />
                             )}
-                            <span>{stat.subtext}</span>
+                            <span className={stat.pulse ? 'text-brand-orange' : ''}>{stat.subtext}</span>
                         </div>
                     </div>
                 );

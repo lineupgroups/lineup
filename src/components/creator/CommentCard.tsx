@@ -96,83 +96,81 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
     return (
         <div
-            className={`bg-[#111] rounded-3xl border transition-all ${!comment.hasCreatorReply
-                ? 'border-red-500/30 shadow-sm ring-1 ring-red-500/20'
-                : 'border-neutral-800 hover:shadow-md'
+            className={`bg-white/5 backdrop-blur-xl rounded-[2rem] border transition-all relative overflow-hidden group ${!comment.hasCreatorReply
+                ? 'border-brand-orange/30 shadow-[0_0_20px_rgba(255,91,0,0.05)]'
+                : 'border-white/10 hover:bg-white/10'
                 }`}
         >
-            {/* Status Badge */}
-            {!comment.hasCreatorReply && (
-                <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-2 rounded-t-xl">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-400">
-                        <AlertCircle className="w-3.5 h-3.5" />
-                        NEW - Needs Reply
+            {/* Status Indicator */}
+            {!comment.hasCreatorReply ? (
+                <div className="bg-brand-orange px-6 py-2.5">
+                    <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand-black">
+                        <AlertCircle className="w-4 h-4" />
+                        Pending Action Required
                     </span>
                 </div>
-            )}
-            {comment.hasCreatorReply && (
-                <div className="bg-green-500/10 border-b border-green-500/20 px-4 py-2 rounded-t-xl">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400">
-                        <CheckCircle className="w-3.5 h-3.5" />
-                        Replied
+            ) : (
+                <div className="bg-brand-acid/10 border-b border-brand-acid/20 px-6 py-2.5">
+                    <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand-acid">
+                        <CheckCircle className="w-4 h-4" />
+                        Dialogue Complete
                     </span>
                 </div>
             )}
 
-            <div className="p-4">
+            <div className="p-6">
                 {/* Comment Header */}
-                <div className="flex items-start gap-3 mb-3">
+                <div className="flex items-start gap-4 mb-6">
                     {comment.userAvatar ? (
                         <img
                             src={comment.userAvatar}
                             alt={comment.userName}
-                            className="w-10 h-10 rounded-full object-cover"
+                            className="w-12 h-12 rounded-2xl object-cover ring-2 ring-white/10"
                         />
                     ) : (
-                        <div className="w-10 h-10 bg-neutral-900 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-neutral-600" />
+                        <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
+                            <User className="w-6 h-6 text-neutral-600" />
                         </div>
                     )}
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-semibold text-brand-white">{comment.userName}</span>
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-sm font-black italic uppercase tracking-wider text-brand-white">@{comment.userName.replace(/\s+/g, '')}</span>
                             {comment.isSupporter && (
-                                <span className="px-1.5 py-0.5 bg-brand-orange/20 text-brand-orange text-xs font-medium rounded">
+                                <span className="px-2 py-0.5 bg-brand-acid text-brand-black text-[8px] font-black uppercase tracking-widest rounded-full">
                                     Supporter
                                 </span>
                             )}
-                            <span className="text-neutral-600">•</span>
-                            <span className="text-sm text-neutral-500">
+                            <span className="text-xs font-bold uppercase tracking-widest text-neutral-600">
                                 {getTimeAgo(convertTimestamp(comment.createdAt))}
                             </span>
                         </div>
                         <Link
                             to={`/project/${comment.projectId}`}
-                            className="text-sm text-brand-orange hover:text-brand-orange flex items-center gap-1 mt-0.5"
+                            className="inline-flex items-center gap-2 mt-1.5 px-3 py-1 bg-white/5 border border-white/5 rounded-full hover:border-brand-orange/40 transition-all group/proj"
                         >
-                            <FolderOpen className="w-3.5 h-3.5" />
-                            {comment.projectTitle}
+                            <FolderOpen className="w-3 h-3 text-brand-orange group-hover/proj:scale-110 transition-transform" />
+                            <span className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 group-hover/proj:text-brand-orange">{comment.projectTitle}</span>
                         </Link>
                     </div>
                 </div>
 
                 {/* Comment Content */}
-                <div className="bg-brand-black rounded-2xl p-3 mb-3">
-                    <p className="text-neutral-200 whitespace-pre-wrap">{displayContent}</p>
+                <div className="bg-white/5 border border-white/5 rounded-2xl p-5 mb-6 relative overflow-hidden">
+                    <p className="text-neutral-300 text-sm leading-relaxed relative z-10">{displayContent}</p>
                     {needsTruncation && (
                         <button
                             onClick={() => setExpanded(!expanded)}
-                            className="text-brand-orange hover:text-brand-orange text-sm font-medium mt-2 flex items-center gap-1"
+                            className="text-brand-acid hover:text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] mt-4 flex items-center gap-2 relative z-10"
                         >
                             {expanded ? (
                                 <>
-                                    <ChevronUp className="w-4 h-4" />
-                                    Show less
+                                    <ChevronUp className="w-3 h-3" />
+                                    Condense
                                 </>
                             ) : (
                                 <>
-                                    <ChevronDown className="w-4 h-4" />
-                                    Read more
+                                    <ChevronDown className="w-3 h-3" />
+                                    Read Full Dialogue
                                 </>
                             )}
                         </button>
@@ -181,84 +179,85 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
 
                 {/* Creator Reply (if exists) */}
                 {comment.hasCreatorReply && comment.replyContent && (
-                    <div className="ml-8 border-l-4 border-brand-orange/40 bg-brand-orange/10 rounded-r-lg p-3 mb-3">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-semibold text-brand-orange">Your Reply</span>
-                            <span className="text-xs text-neutral-500">
+                    <div className="ml-6 border-l-2 border-brand-acid/30 bg-brand-acid/5 rounded-2xl p-5 mb-6">
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="text-[10px] font-black italic uppercase tracking-widest text-brand-acid">Elite Response</span>
+                            <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">
                                 {comment.repliedAt && getTimeAgo(convertTimestamp(comment.repliedAt))}
                             </span>
                         </div>
-                        <p className="text-neutral-300 text-sm">{comment.replyContent}</p>
+                        <p className="text-neutral-400 text-sm leading-relaxed">{comment.replyContent}</p>
                     </div>
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
                     {!comment.hasCreatorReply && (
                         <button
                             onClick={() => setIsReplying(!isReplying)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-orange/100 text-white text-sm font-medium rounded-2xl hover:bg-[#b3e600] transition-colors"
+                            className="flex items-center gap-2 px-6 py-3 bg-brand-orange text-brand-white text-[10px] font-black italic uppercase tracking-widest rounded-xl hover:bg-orange-600 transition-all shadow-[0_0_15px_rgba(255,91,0,0.2)] active:scale-95"
                         >
                             <Reply className="w-4 h-4" />
-                            Reply
+                            Synchronize
                         </button>
                     )}
                     <button
                         onClick={() => onPin?.(comment.id)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-2xl transition-colors ${comment.isPinned
-                            ? 'bg-brand-orange/20 text-brand-orange'
-                            : 'text-neutral-400 hover:bg-neutral-900'
+                        className={`flex items-center gap-2 px-5 py-3 text-[10px] font-black italic uppercase tracking-widest rounded-xl transition-all border ${comment.isPinned
+                            ? 'bg-brand-acid/10 border-brand-acid text-brand-acid'
+                            : 'bg-white/5 border-white/5 text-neutral-500 hover:border-brand-acid hover:text-brand-acid'
                             }`}
                     >
-                        <Pin className={`w-4 h-4 ${comment.isPinned ? 'fill-current' : ''}`} />
-                        {comment.isPinned ? 'Pinned' : 'Pin'}
+                        <Pin className={`w-3.5 h-3.5 ${comment.isPinned ? 'fill-current' : ''}`} />
+                        {comment.isPinned ? 'Elite' : 'Highlight'}
                     </button>
 
-                    {/* Creator Heart Button - Like YouTube's feature */}
+                    {/* Creator Heart Button */}
                     <button
                         onClick={() => onHeart?.(comment.id, !comment.creatorHeart)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-2xl transition-colors ${comment.creatorHeart
-                            ? 'bg-red-100 text-red-400'
-                            : 'text-neutral-400 hover:bg-red-500/10 hover:text-red-500'
+                        className={`flex items-center gap-2 px-5 py-3 text-[10px] font-black italic uppercase tracking-widest rounded-xl transition-all border ${comment.creatorHeart
+                            ? 'bg-brand-orange/10 border-brand-orange text-brand-orange'
+                            : 'bg-white/5 border-white/5 text-neutral-500 hover:border-brand-orange hover:text-brand-orange'
                             }`}
-                        title={comment.creatorHeart ? 'Remove heart' : 'Give heart'}
                     >
-                        <Heart className={`w-4 h-4 ${comment.creatorHeart ? 'fill-current' : ''}`} />
-                        {comment.creatorHeart ? 'Hearted' : 'Heart'}
+                        <Heart className={`w-3.5 h-3.5 ${comment.creatorHeart ? 'fill-current' : ''}`} />
+                        {comment.creatorHeart ? 'Hearted' : 'Endorse'}
                     </button>
 
                     <button
                         onClick={() => onLike?.(comment.id)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-900 transition-colors"
+                        className="flex items-center gap-2 px-5 py-3 bg-white/5 border border-white/5 text-neutral-500 text-[10px] font-black italic uppercase tracking-widest rounded-xl hover:border-brand-acid hover:text-brand-acid transition-all"
                     >
-                        <ThumbsUp className="w-4 h-4" />
+                        <ThumbsUp className="w-3.5 h-3.5" />
                         {comment.likes > 0 && <span>{comment.likes}</span>}
                     </button>
                     {comment.hasCreatorReply && (
                         <Link
                             to={`/project/${comment.projectId}`}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-900 transition-colors ml-auto"
+                            className="flex items-center gap-2 px-5 py-3 bg-white/5 border border-white/5 text-neutral-500 text-[10px] font-black italic uppercase tracking-widest rounded-xl hover:text-brand-acid transition-all ml-auto"
                         >
-                            <ExternalLink className="w-4 h-4" />
-                            View Thread
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Full Thread
                         </Link>
                     )}
                 </div>
 
                 {/* Reply Box */}
                 {isReplying && (
-                    <div className="mt-4 bg-brand-black rounded-2xl p-4 border border-neutral-800">
+                    <div className="mt-8 bg-brand-black/50 rounded-[1.5rem] p-6 border border-white/10 relative overflow-hidden group/reply">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none group-hover/reply:bg-brand-acid/10 transition-colors"></div>
+                        
                         {/* Quick Templates */}
-                        <div className="flex items-center gap-2 mb-3 overflow-x-auto pb-2">
-                            <span className="text-xs text-neutral-500 whitespace-nowrap flex items-center gap-1">
-                                <Sparkles className="w-3.5 h-3.5" />
-                                Quick:
+                        <div className="flex items-center gap-3 mb-4 overflow-x-auto pb-2 scrollbar-hide relative z-10">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-neutral-500 whitespace-nowrap flex items-center gap-2">
+                                <Sparkles className="w-3.5 h-3.5 text-brand-acid" />
+                                Smart Templates:
                             </span>
                             {REPLY_TEMPLATES.map(template => (
                                 <button
                                     key={template.id}
                                     onClick={() => handleTemplateSelect(template.text)}
-                                    className="px-3 py-1 text-xs bg-[#111] border border-neutral-800 rounded-full hover:bg-brand-orange/10 hover:border-brand-orange/40 hover:text-brand-orange transition-colors whitespace-nowrap"
+                                    className="px-4 py-1.5 text-[10px] font-black uppercase tracking-widest bg-white/5 border border-white/10 rounded-full text-neutral-400 hover:bg-brand-acid hover:text-brand-black hover:border-brand-acid transition-all whitespace-nowrap active:scale-95"
                                 >
                                     {template.label}
                                 </button>
@@ -269,31 +268,31 @@ export default function CommentCard({ comment, onReply, onPin, onLike, onHeart }
                         <textarea
                             value={replyText}
                             onChange={(e) => setReplyText(e.target.value)}
-                            placeholder="Write your reply..."
-                            rows={3}
-                            className="w-full px-3 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid resize-none"
+                            placeholder="Forge your response..."
+                            rows={4}
+                            className="w-full px-5 py-4 bg-brand-black/50 border border-white/10 rounded-[1.2rem] focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-700 resize-none transition-all relative z-10"
                             autoFocus
                         />
 
                         {/* Reply Actions */}
-                        <div className="flex items-center justify-end gap-2 mt-3">
+                        <div className="flex items-center justify-end gap-4 mt-6 relative z-10">
                             <button
                                 onClick={handleCancelReply}
-                                className="px-4 py-2 text-neutral-400 text-sm font-medium rounded-2xl hover:bg-neutral-800 transition-colors"
+                                className="px-6 py-3 text-neutral-500 text-[10px] font-black uppercase tracking-widest hover:text-brand-white transition-colors"
                             >
-                                Cancel
+                                Discard
                             </button>
                             <button
                                 onClick={handleSubmitReply}
                                 disabled={!replyText.trim() || submittingReply}
-                                className="flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white text-sm font-medium rounded-2xl hover:bg-[#b3e600] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-3 px-8 py-3 bg-brand-acid text-brand-black text-[10px] font-black italic uppercase tracking-widest rounded-xl hover:bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.2)] transition-all disabled:opacity-50 active:scale-95"
                             >
                                 {submittingReply ? (
                                     <LoadingSpinner size="sm" />
                                 ) : (
                                     <Send className="w-4 h-4" />
                                 )}
-                                Send Reply
+                                Sync Dialogue
                             </button>
                         </div>
                     </div>

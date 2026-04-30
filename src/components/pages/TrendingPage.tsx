@@ -66,45 +66,55 @@ export default function TrendingPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       {/* Header */}
-      <div className="bg-[#111] border-b border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="flex items-center justify-between">
+      <div className="bg-[#0A0A0A] border-b border-neutral-800/50">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-brand-white flex items-center tracking-tight mb-2">
-                <div className="p-3 bg-brand-orange/10 rounded-2xl mr-4 border border-brand-orange/20">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
                     <TrendingUp className="w-8 h-8 text-brand-orange" />
                 </div>
-                Trending Projects
+                <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                    Live Now
+                </span>
+              </div>
+              <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                Project <span className="text-brand-orange">Discovery</span>
               </h1>
-              <p className="text-base sm:text-lg text-neutral-400 font-medium">Discover the most popular and fastest-growing projects</p>
+              <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl">
+                Explore next-gen ideas building the future of India's creative economy.
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="bg-[#111]/80 backdrop-blur-md rounded-2xl border border-neutral-800 p-5 sm:p-6 shadow-xl">
-          <div className="flex flex-col gap-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-black/40 backdrop-blur-xl rounded-[2.5rem] border border-white/5 p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
+          {/* Subtle background glow */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-acid/5 rounded-full blur-[100px] pointer-events-none group-hover:bg-brand-acid/10 transition-colors duration-700"></div>
+          
+          <div className="flex flex-col gap-10 relative z-10">
             {/* Time Filter */}
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <div className="flex items-center space-x-2">
-                <Filter className="w-5 h-5 text-neutral-500" />
-                <span className="text-sm font-bold text-neutral-400 uppercase tracking-wider">Trending in:</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+              <div className="flex items-center space-x-3">
+                <Filter className="w-5 h-5 text-brand-acid" />
+                <span className="text-[11px] font-black text-neutral-500 uppercase tracking-[0.2em]">Timeline:</span>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {[
-                  { id: 'day', label: 'Today' },
-                  { id: 'week', label: 'This Week' },
-                  { id: 'month', label: 'This Month' },
-                  { id: 'all', label: 'All Time' }
+                  { id: 'day', label: 'TODAY' },
+                  { id: 'week', label: 'THIS WEEK' },
+                  { id: 'month', label: 'THIS MONTH' },
+                  { id: 'all', label: 'ALL TIME' }
                 ].map((filter) => (
                   <button
                     key={filter.id}
                     onClick={() => setTimeFilter(filter.id as any)}
-                    className={`px-4 py-2 rounded-3xl text-sm font-bold transition-all duration-300 border ${timeFilter === filter.id
-                        ? 'bg-brand-acid text-brand-black border-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.2)]'
-                        : 'bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800 hover:text-brand-white hover:border-neutral-700'
+                    className={`px-6 py-2.5 rounded-full text-[10px] font-black tracking-[0.1em] transition-all duration-500 border ${timeFilter === filter.id
+                        ? 'bg-brand-acid text-brand-black border-brand-acid shadow-[0_0_25px_rgba(204,255,0,0.2)] scale-105'
+                        : 'bg-neutral-900/50 text-neutral-400 border-neutral-800 hover:text-brand-white hover:border-neutral-600 hover:bg-neutral-800'
                       }`}
                   >
                     {filter.label}
@@ -114,26 +124,32 @@ export default function TrendingPage() {
             </div>
 
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setCategoryFilter(category)}
-                  className={`px-4 py-2 rounded-3xl text-sm font-bold transition-all duration-300 border ${categoryFilter === category
-                      ? 'bg-brand-orange text-brand-white border-brand-orange shadow-[0_0_15px_rgba(255,91,0,0.2)]'
-                      : 'bg-neutral-900 text-neutral-400 border-neutral-800 hover:bg-neutral-800 hover:text-brand-white hover:border-neutral-700'
-                    }`}
-                >
-                  {category}
-                </button>
-              ))}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center space-x-3">
+                <Sparkles className="w-5 h-5 text-brand-orange" />
+                <span className="text-[11px] font-black text-neutral-500 uppercase tracking-[0.2em]">Categories:</span>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setCategoryFilter(category)}
+                    className={`px-6 py-2.5 rounded-full text-[10px] font-black tracking-[0.1em] transition-all duration-500 border ${categoryFilter === category
+                        ? 'bg-brand-orange text-brand-white border-brand-orange shadow-[0_0_25px_rgba(255,91,0,0.2)] scale-105'
+                        : 'bg-neutral-900/50 text-neutral-400 border-neutral-800 hover:text-brand-white hover:border-neutral-600 hover:bg-neutral-800'
+                      }`}
+                  >
+                    {category.toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Projects Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-20">
+      <div className="w-full px-4 sm:px-6 lg:px-8 pb-12 sm:pb-20">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-8 gap-4">
           <h2 className="text-xl sm:text-2xl font-bold text-brand-white tracking-wide">
             {categoryFilter === 'All' ? 'All Categories' : categoryFilter} 

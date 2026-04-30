@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Users, MapPin, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { TrendingUp, Users, MapPin, ChevronLeft, ChevronRight, ExternalLink, Activity, Sparkles } from 'lucide-react';
 import { useSuccessStories } from '../../hooks/useLandingPage';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,19 +10,16 @@ export default function SuccessStoriesSection() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gradient-to-br from-green-50 to-emerald-50">
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-96 mx-auto"></div>
-          </div>
+      <section className="py-24 bg-brand-black">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white/5 h-[600px] rounded-[3rem] animate-pulse"></div>
         </div>
       </section>
     );
   }
 
   if (!stories || stories.length === 0) {
-    return null; // Don't show section if no stories
+    return null;
   }
 
   const currentStory = stories[currentIndex];
@@ -37,6 +34,8 @@ export default function SuccessStoriesSection() {
   };
 
   const formatCurrency = (amount: number) => {
+    if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
+    if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -52,176 +51,185 @@ export default function SuccessStoriesSection() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 bg-brand-black relative overflow-hidden border-b border-white/5">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02)_0%,transparent_70%)] pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-            <TrendingUp className="w-4 h-4" />
-            SUCCESS STORIES
+        <div className="text-center mb-24">
+          <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-6 py-2.5 rounded-full border border-white/10 mb-8">
+            <Sparkles className="w-4 h-4 text-brand-acid" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">
+              ELITE <span className="text-brand-acid">ACHIEVEMENTS</span>
+            </span>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Dreams That Became Reality
+          <h2 className="text-5xl md:text-7xl font-black text-brand-white italic uppercase tracking-tighter mb-6 leading-none">
+            LEGENDS OF THE <span className="text-brand-orange">NATION</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Real stories from creators across India who turned their ideas into successful projects
+          <p className="text-xl text-neutral-500 max-w-2xl mx-auto font-medium tracking-tight">
+            Cinematic chronicles of creators who transcended expectations and redefined reality.
           </p>
         </div>
 
-        {/* Carousel */}
-        <div className="relative">
-          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-            <div className="grid md:grid-cols-2 gap-0">
-              {/* Image Side */}
-              <div className="relative h-96 md:h-auto">
+        {/* Cinematic Showcase Card */}
+        <div className="relative group">
+          <div className="bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Image Side - Cinematic Framing */}
+              <div className="relative h-[400px] lg:h-auto overflow-hidden">
                 <img
                   src={currentStory.image}
                   alt={currentStory.projectTitle}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <span className="text-sm font-semibold text-green-600">
-                    {progress}% Funded
-                  </span>
-                </div>
-                <div className="absolute bottom-4 left-4 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-lg">
-                  {formatCurrency(currentStory.amountRaised)} Raised
+                <div className="absolute inset-0 bg-gradient-to-r from-brand-black/60 via-transparent to-transparent"></div>
+                
+                {/* Impact Badge */}
+                <div className="absolute top-8 left-8 flex flex-col gap-2">
+                  <div className="px-5 py-2 bg-brand-acid text-brand-black rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">
+                    {progress}% FUNDED
+                  </div>
+                  <div className="px-5 py-2 bg-brand-black/80 backdrop-blur-md text-brand-white border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    {formatCurrency(currentStory.amountRaised)} RAISED
+                  </div>
                 </div>
               </div>
 
-              {/* Content Side */}
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                {/* Category & Location */}
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+              {/* Content Side - Editorial Layout */}
+              <div className="p-10 md:p-16 flex flex-col justify-center bg-brand-black/40 backdrop-blur-sm">
+                {/* Meta Info */}
+                <div className="flex items-center gap-6 mb-8">
+                  <span className="text-[10px] font-black text-brand-acid uppercase tracking-[0.3em] border-b border-brand-acid/30 pb-1">
                     {currentStory.category}
                   </span>
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <MapPin className="w-4 h-4 mr-1" />
+                  <div className="flex items-center text-neutral-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                    <MapPin className="w-3 h-3 mr-2 text-brand-orange" />
                     {currentStory.location.city}, {currentStory.location.state}
                   </div>
                 </div>
 
-                {/* Title & Subtitle */}
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                {/* Narrative Title */}
+                <h3 className="text-4xl md:text-5xl font-black text-brand-white italic uppercase tracking-tighter mb-4 leading-none">
                   {currentStory.title}
                 </h3>
+                
                 {currentStory.subtitle && (
-                  <p className="text-lg text-green-600 font-semibold mb-4">
+                  <p className="text-lg text-brand-orange font-black italic uppercase tracking-tight mb-8">
                     {currentStory.subtitle}
                   </p>
                 )}
 
-                {/* Project Title */}
-                <p className="text-xl text-gray-700 font-medium mb-4">
-                  "{currentStory.projectTitle}"
-                </p>
+                {/* Quote/Excerpt */}
+                <div className="relative mb-12">
+                  <div className="absolute -left-6 top-0 text-4xl font-black text-brand-acid/20 leading-none">"</div>
+                  <p className="text-xl text-neutral-300 font-medium italic leading-relaxed tracking-tight">
+                    {currentStory.excerpt}
+                  </p>
+                </div>
 
-                {/* Excerpt */}
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {currentStory.excerpt}
-                </p>
-
-                {/* Creator Info */}
-                <div className="flex items-center gap-3 mb-6 pb-6 border-b border-gray-200">
+                {/* Creator Protocol */}
+                <div className="flex items-center gap-6 mb-12 pb-12 border-b border-white/5">
                   {currentStory.creatorPhoto ? (
                     <img
                       src={currentStory.creatorPhoto}
                       alt={currentStory.creatorName}
-                      className="w-12 h-12 rounded-full object-cover"
+                      className="w-14 h-14 rounded-2xl object-cover ring-2 ring-white/10"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                      <span className="text-green-600 font-bold text-lg">
+                    <div className="w-14 h-14 rounded-2xl bg-brand-black border border-white/10 flex items-center justify-center">
+                      <span className="text-brand-acid font-black text-xl italic">
                         {currentStory.creatorName.charAt(0)}
                       </span>
                     </div>
                   )}
                   <div>
-                    <p className="font-semibold text-gray-900">{currentStory.creatorName}</p>
-                    <p className="text-sm text-gray-600">Project Creator</p>
+                    <p className="text-sm font-black text-brand-white uppercase tracking-widest">{currentStory.creatorName}</p>
+                    <p className="text-[9px] font-black text-neutral-600 uppercase tracking-[0.3em]">ORIGINATOR PROTOCOL</p>
                   </div>
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900">
+                {/* Performance Analytics */}
+                <div className="grid grid-cols-2 gap-8 mb-12">
+                  <div className="group/stat">
+                    <div className="text-3xl font-black text-brand-white italic uppercase tracking-tighter mb-1 group-hover/stat:text-brand-acid transition-colors">
                       {formatCurrency(currentStory.amountRaised)}
                     </div>
-                    <div className="text-sm text-gray-600">Total Raised</div>
+                    <div className="text-[9px] font-black text-neutral-600 uppercase tracking-[0.2em]">CAPITAL ACQUISITION</div>
                   </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900 flex items-center justify-center gap-1">
-                      <Users className="w-5 h-5" />
+                  <div className="group/stat">
+                    <div className="text-3xl font-black text-brand-white italic uppercase tracking-tighter mb-1 group-hover/stat:text-brand-orange transition-colors flex items-center gap-2">
+                      <Users className="w-6 h-6 opacity-30" />
                       {currentStory.supportersCount}
                     </div>
-                    <div className="text-sm text-gray-600">Supporters</div>
+                    <div className="text-[9px] font-black text-neutral-600 uppercase tracking-[0.2em]">ACTIVE NODES</div>
                   </div>
                 </div>
 
-                {/* CTA Button */}
+                {/* Engagement Action */}
                 {currentStory.projectId && (
                   <button
                     onClick={handleViewProject}
-                    className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                    className="group w-full flex items-center justify-between gap-4 bg-white/5 hover:bg-brand-acid text-brand-white hover:text-brand-black font-black italic uppercase tracking-[0.2em] text-xs py-5 px-8 rounded-2xl border border-white/10 hover:border-brand-acid transition-all duration-500 shadow-2xl"
                   >
-                    View Full Story
-                    <ExternalLink className="w-4 h-4" />
+                    <span>Analyze Full Deployment</span>
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-brand-black/20 transition-all">
+                      <ExternalLink className="w-4 h-4" />
+                    </div>
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Navigation Arrows */}
+          {/* Precision Navigation Arrows */}
           {stories.length > 1 && (
             <>
               <button
                 onClick={prevStory}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 text-gray-800 p-3 rounded-full shadow-lg transition-all z-10"
+                className="absolute left-[-30px] lg:left-[-60px] top-1/2 -translate-y-1/2 bg-brand-black border border-white/10 hover:border-brand-acid/50 text-neutral-500 hover:text-brand-acid w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all z-20 group"
                 aria-label="Previous story"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={nextStory}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 text-gray-800 p-3 rounded-full shadow-lg transition-all z-10"
+                className="absolute right-[-30px] lg:right-[-60px] top-1/2 -translate-y-1/2 bg-brand-black border border-white/10 hover:border-brand-orange/50 text-neutral-500 hover:text-brand-orange w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all z-20 group"
                 aria-label="Next story"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </button>
             </>
           )}
-
-          {/* Dots Indicator */}
-          {stories.length > 1 && (
-            <div className="flex justify-center gap-2 mt-6">
-              {stories.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`h-2 rounded-full transition-all ${
-                    index === currentIndex
-                      ? 'w-8 bg-green-600'
-                      : 'w-2 bg-gray-300 hover:bg-gray-400'
-                  }`}
-                  aria-label={`Go to story ${index + 1}`}
-                />
-              ))}
-            </div>
-          )}
         </div>
 
-        {/* Tags/Filters (if stories have tags) */}
+        {/* Index Tracking */}
+        {stories.length > 1 && (
+          <div className="flex justify-center gap-4 mt-16">
+            {stories.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  index === currentIndex
+                    ? 'w-16 bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.5)]'
+                    : 'w-4 bg-white/10 hover:bg-white/20'
+                }`}
+                aria-label={`Go to story ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Surveillance Tags */}
         {currentStory.tags && currentStory.tags.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 mt-8">
+          <div className="flex flex-wrap justify-center gap-6 mt-16">
             {currentStory.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-white text-gray-700 rounded-full text-sm border border-gray-200"
+                className="text-[9px] font-black text-neutral-600 hover:text-brand-acid uppercase tracking-[0.3em] cursor-default transition-colors"
               >
-                #{tag}
+                #{tag.toUpperCase()}
               </span>
             ))}
           </div>
@@ -230,4 +238,3 @@ export default function SuccessStoriesSection() {
     </section>
   );
 }
-

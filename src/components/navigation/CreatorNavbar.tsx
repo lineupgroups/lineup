@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { User, Menu, LogOut, X, BarChart3, Rocket, DollarSign, TrendingUp, Edit3, Users, Shield, ChevronDown, MessageSquare, Settings } from 'lucide-react';
+import { User, Menu, X, BarChart3, Rocket, DollarSign, TrendingUp, Edit3, Users, Shield, ChevronDown, MessageSquare, Settings, Activity } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useAdmin } from '../../contexts/AdminContext';
 import AuthModal from '../auth/AuthModal';
@@ -10,26 +10,28 @@ import { getResponsiveName } from '../../utils/nameUtils';
 import NotificationBell from '../notifications/NotificationBell';
 import Logo from '../common/Logo';
 import ProjectSelector from './ProjectSelector';
+import { useHorizontalScroll } from '../../hooks/useHorizontalScroll';
 
-// Creator Navbar component that uses project context
 function CreatorNavbarContent() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const location = useLocation();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  
+  const scrollRef = useHorizontalScroll();
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
-    { path: '/dashboard/updates', label: 'Updates', icon: Edit3 },
-    { path: '/dashboard/comments', label: 'Comments', icon: MessageSquare },
-    { path: '/dashboard/backers', label: 'Backers', icon: Users },
-    { path: '/dashboard/analytics', label: 'Analytics', icon: TrendingUp },
-    { path: '/dashboard/earnings', label: 'Earnings', icon: DollarSign },
-    { path: '/dashboard/settings', label: 'Settings', icon: Settings },
-    ...(isAdmin ? [{ path: '/admin', label: 'Admin Panel', icon: Shield, requiresAuth: true, adminOnly: true }] : []),
+    { path: '/dashboard', label: 'DASHBOARD', icon: BarChart3 },
+    { path: '/dashboard/updates', label: 'UPDATES', icon: Edit3 },
+    { path: '/dashboard/comments', label: 'COMMENTS', icon: MessageSquare },
+    { path: '/dashboard/backers', label: 'BACKERS', icon: Users },
+    { path: '/dashboard/analytics', label: 'ANALYTICS', icon: TrendingUp },
+    { path: '/dashboard/earnings', label: 'EARNINGS', icon: DollarSign },
+    { path: '/dashboard/settings', label: 'SETTINGS', icon: Settings },
+    ...(isAdmin ? [{ path: '/admin', label: 'ADMIN', icon: Shield, requiresAuth: true, adminOnly: true }] : []),
   ];
 
   const handleAuthClick = (mode: 'login' | 'signup') => {
@@ -37,39 +39,36 @@ function CreatorNavbarContent() {
     setShowAuthModal(true);
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
-
   return (
     <>
-    <nav className="bg-brand-black shadow-sm border-b border-neutral-800 sticky top-0 z-50 pt-safe">
-      <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="flex items-center h-16">
-          {/* Left Section: Logo + Project Selector */}
-          <div className="flex items-center flex-shrink-0">
-            <Link to="/dashboard" className="flex-shrink-0 text-brand-white hover:text-brand-acid transition-colors">
-              <div className="hidden sm:block">
-                <Logo size="md" tagline="Creator Studio" />
-              </div>
-              <div className="sm:hidden">
-                <Logo size="sm" showText={false} tagline="" />
+    <nav className="bg-brand-black/80 backdrop-blur-3xl border-b border-white/5 sticky top-0 z-50 pt-safe transition-all duration-500">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center h-16 gap-4">
+          {/* System Origin & Project Protocol */}
+          <div className="flex items-center gap-4 flex-shrink-0">
+            <Link to="/dashboard" className="group flex items-center gap-3 transition-transform active:scale-95">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-brand-acid/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Logo size="md" tagline="" className="relative z-10" />
               </div>
             </Link>
 
-            {/* Project Selector */}
-            <div className="hidden lg:block ml-4">
-              <ProjectSelector className="text-brand-white" />
+            <div className="hidden lg:block h-6 w-[1px] bg-white/10 mx-1"></div>
+
+            <div className="hidden lg:block flex-shrink-0">
+              <ProjectSelector className="text-brand-white scale-90" />
             </div>
           </div>
 
-          {/* Center Section: Navigation Items - Centered with flex-1 */}
-          <div className="hidden lg:flex items-center justify-center flex-1 mx-4">
-            <div className="flex items-center bg-[#111] border border-neutral-800 rounded-full px-1.5 py-1.5">
+          {/* Central Command - Tactical Navigation with Horizontal Stream */}
+          <div className="hidden lg:flex items-center flex-1 min-w-0 relative">
+            {/* Left Fade Mask */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-brand-black to-transparent z-10 pointer-events-none" />
+            
+            <div 
+              ref={scrollRef}
+              className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide flex-nowrap px-8 py-2 w-full cursor-grab active:cursor-grabbing"
+            >
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -78,121 +77,101 @@ function CreatorNavbarContent() {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-bold transition-all duration-300 whitespace-nowrap ${isActive
-                      ? 'text-brand-black bg-brand-acid shadow-[0_0_10px_rgba(204,255,0,0.2)]'
-                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800'
+                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-full text-[9px] font-black italic uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap flex-shrink-0 ${isActive
+                      ? 'text-brand-black bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                      : 'text-neutral-500 hover:text-brand-white hover:bg-white/5'
                       }`}
                   >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span className="hidden xl:inline">{item.label}</span>
+                    <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span>{item.label}</span>
                   </Link>
                 );
               })}
             </div>
+
+            {/* Right Fade Mask */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-brand-black to-transparent z-10 pointer-events-none" />
           </div>
 
-          {/* Right Section: Actions + User */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-auto">
-            {/* New Project Button */}
+          {/* Tactical Actions & User Identity */}
+          <div className="flex items-center gap-4 flex-shrink-0 ml-auto">
             <Link
               to="/dashboard/projects/create"
-              className="hidden xl:flex items-center gap-1.5 px-5 py-2 bg-brand-acid text-brand-black rounded-full text-sm font-bold hover:bg-[#b3e600] transition-all shadow-[0_0_15px_rgba(204,255,0,0.2)]"
+              className="hidden xl:flex items-center gap-2.5 px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl text-[9px] font-black italic uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(204,255,0,0.2)]"
             >
-              <Rocket className="w-4 h-4" />
-              <span>New Project</span>
+              <Rocket className="w-3.5 h-3.5" />
+              <span>DEPLOY</span>
             </Link>
 
-            {/* Right side - Role Switcher & User or Auth buttons */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-3">
               {user ? (
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-3">
                   <NotificationBell />
+                  <RoleSwitcher className="scale-90" />
 
-                  {/* Role Switcher */}
-                  <RoleSwitcher />
-
-                  {/* User Profile with Dropdown */}
                   <div className="relative">
                     <button
                       onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="flex items-center space-x-1 px-2 py-1.5 bg-[#111] border border-neutral-800 rounded-full hover:bg-neutral-800 transition-colors cursor-pointer"
+                      className="flex items-center gap-2.5 p-1 pr-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all active:scale-95 group"
                     >
-                      <UserProfilePicture user={user} size="sm" />
-                      <span className="hidden md:block font-bold text-brand-white text-sm truncate max-w-[80px] xl:max-w-[120px]">
-                        {getResponsiveName(user.displayName || 'User')}
+                      <UserProfilePicture user={user} size="sm" className="w-7 h-7 rounded-full ring-1 ring-white/5 group-hover:ring-brand-acid/30" />
+                      <span className="hidden md:block text-[9px] font-black italic uppercase tracking-widest text-neutral-400 group-hover:text-brand-white">
+                        {getResponsiveName(user.displayName || 'USER')}
                       </span>
-                      <ChevronDown className="w-4 h-4 text-neutral-400" />
+                      <ChevronDown className={`w-3.5 h-3.5 text-neutral-600 transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />
                     </button>
 
-                    {/* User Dropdown Menu */}
                     {showUserMenu && (
-                      <div className="absolute right-0 mt-2 w-48 bg-[#111] rounded-2xl shadow-xl border border-neutral-800 py-2 z-50">
+                      <div className="absolute right-0 mt-4 w-48 bg-brand-black/95 backdrop-blur-3xl rounded-[2rem] shadow-2xl border border-white/10 py-3 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
                         <Link
                           to="/profile"
-                          className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-brand-white transition-colors"
+                          className="flex items-center gap-3 px-6 py-3.5 text-[9px] font-black italic uppercase tracking-widest text-neutral-400 hover:bg-brand-acid hover:text-brand-black transition-all"
                           onClick={() => setShowUserMenu(false)}
                         >
-                          <div className="flex items-center space-x-2">
-                            <User className="w-4 h-4" />
-                            <span>View Profile</span>
-                          </div>
+                          <User className="w-4 h-4" />
+                          <span>AUDIT PROFILE</span>
                         </Link>
-                        <button
-                          onClick={() => {
-                            setShowUserMenu(false);
-                            handleSignOut();
-                          }}
-                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <LogOut className="w-4 h-4" />
-                            <span>Sign Out</span>
-                          </div>
-                        </button>
                       </div>
                     )}
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center space-x-1 sm:space-x-2">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleAuthClick('login')}
-                    className="px-2 sm:px-3 py-1 sm:py-2 text-neutral-400 hover:text-brand-white font-bold transition-colors duration-200 text-xs sm:text-sm whitespace-nowrap"
+                    className="px-4 py-2 text-[9px] font-black italic uppercase tracking-[0.2em] text-neutral-400 hover:text-brand-white transition-colors"
                   >
-                    Sign In
+                    SIGN IN
                   </button>
                   <button
                     onClick={() => handleAuthClick('signup')}
-                    className="px-2 sm:px-4 py-1 sm:py-2 bg-brand-acid text-brand-black rounded-full font-bold hover:bg-[#b3e600] transition-all duration-200 transform hover:scale-105 shadow-[0_0_15px_rgba(204,255,0,0.2)] text-xs sm:text-sm whitespace-nowrap"
+                    className="px-6 py-2.5 bg-brand-acid text-brand-black rounded-xl text-[9px] font-black italic uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-[0_10px_30px_rgba(204,255,0,0.2)]"
                   >
-                    Start Creating
+                    START
                   </button>
                 </div>
               )}
-            </div>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="lg:hidden p-2 text-neutral-400 hover:text-brand-white rounded-lg hover:bg-neutral-800 transition-colors flex-shrink-0"
-              aria-label="Toggle menu"
-            >
-              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="lg:hidden p-2 text-neutral-400 hover:text-brand-acid rounded-xl bg-white/5 border border-white/10 transition-all"
+                aria-label="TOGGLE MENU"
+              >
+                {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Tactical Interface */}
         {showMobileMenu && (
-          <div className="md:hidden border-t border-neutral-800 bg-[#111]">
-            <div className="px-4 py-2 space-y-1">
-              {/* Mobile Project Selector */}
-              <div className="py-2 border-b border-neutral-800 mb-2">
-                <p className="text-xs text-neutral-500 font-bold uppercase tracking-wide mb-2 px-1">Filter by Project</p>
+          <div className="lg:hidden border-t border-white/5 bg-brand-black/95 backdrop-blur-3xl absolute left-0 right-0 px-6 py-8 shadow-2xl animate-in slide-in-from-top-4 duration-500">
+            <div className="space-y-4">
+              <div className="py-4 border-b border-white/5 mb-4">
+                <p className="text-[8px] font-black text-neutral-600 uppercase tracking-[0.4em] mb-4 px-2">SYSTEM FILTER: BY PROJECT</p>
                 <ProjectSelector showInMobile={true} className="w-full" />
               </div>
 
-              {/* Mobile Navigation Items */}
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -202,83 +181,46 @@ function CreatorNavbarContent() {
                     key={item.path}
                     to={item.path}
                     onClick={() => setShowMobileMenu(false)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 text-base font-bold rounded-xl transition-colors ${isActive
+                    className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all ${isActive
                       ? 'text-brand-black bg-brand-acid'
-                      : 'text-neutral-400 hover:text-brand-white hover:bg-neutral-800'
+                      : 'text-neutral-500 hover:text-brand-white hover:bg-white/5'
                       }`}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
+                    <div className="flex items-center gap-4">
+                      <Icon className="w-5 h-5" />
+                      <span className="text-xs font-black italic uppercase tracking-widest">{item.label}</span>
+                    </div>
+                    {isActive && <Activity className="w-4 h-4 animate-pulse" />}
                   </Link>
                 );
               })}
 
-              {/* Mobile Quick Action */}
-              <Link
-                to="/dashboard/projects/create"
-                onClick={() => setShowMobileMenu(false)}
-                className="w-full flex items-center space-x-3 px-3 py-2 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200 mt-2"
-              >
-                <Rocket className="w-5 h-5" />
-                <span>New Project</span>
-              </Link>
+              <div className="pt-8 border-t border-white/5 space-y-6">
+                <Link
+                  to="/dashboard/projects/create"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="w-full flex items-center justify-center gap-4 py-5 bg-brand-acid text-brand-black rounded-2xl font-black italic uppercase tracking-[0.2em] text-[10px] shadow-xl"
+                >
+                  <Rocket className="w-5 h-5" />
+                  <span>DEPLOY NEW PROJECT</span>
+                </Link>
 
-              {/* Mobile User Actions */}
-              <div className="border-t border-neutral-800 pt-2 mt-2">
-                {user ? (
+                {user && (
                   <>
-                    {/* Mobile Role Switcher */}
-                    <div className="px-3 py-2">
+                    <div className="px-2">
                       <RoleSwitcher showLabel={true} />
                     </div>
 
                     <Link
                       to="/profile"
                       onClick={() => setShowMobileMenu(false)}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-neutral-400 hover:text-brand-white rounded-xl hover:bg-neutral-800 transition-all duration-200 min-w-0"
+                      className="w-full flex items-center gap-4 px-6 py-4 bg-white/5 rounded-2xl text-brand-white"
                     >
-                      <UserProfilePicture
-                        user={user}
-                        size="sm"
-                        className="w-6 h-6 flex-shrink-0"
-                        key={user?.profileImage || user?.photoURL || 'no-image-mobile'}
-                      />
-                      <span className="text-base font-bold truncate flex-1" title={user.displayName}>
-                        {getResponsiveName(user.displayName, 'mobile')}
+                      <UserProfilePicture user={user} size="sm" className="w-8 h-8 rounded-full" />
+                      <span className="text-xs font-black italic uppercase tracking-widest truncate">
+                        {getResponsiveName(user.displayName || 'USER', 'mobile')}
                       </span>
                     </Link>
-
-                    <button
-                      onClick={() => {
-                        handleSignOut();
-                        setShowMobileMenu(false);
-                      }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-neutral-400 hover:text-red-400 rounded-xl hover:bg-neutral-800 transition-all duration-200"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span className="text-base font-bold">Sign Out</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        handleAuthClick('login');
-                        setShowMobileMenu(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-neutral-400 hover:text-brand-white font-bold transition-colors duration-200 rounded-xl hover:bg-neutral-800"
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleAuthClick('signup');
-                        setShowMobileMenu(false);
-                      }}
-                      className="w-full text-left px-3 py-2 bg-brand-acid text-brand-black rounded-xl font-bold hover:bg-[#b3e600] transition-all duration-200 mt-2"
-                    >
-                      Start Creating
-                    </button>
                   </>
                 )}
               </div>
@@ -286,18 +228,15 @@ function CreatorNavbarContent() {
           </div>
         )}
       </div>
-
     </nav>
 
-      {/* Auth Modal - rendered outside nav to avoid stacking context issues */}
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        initialMode={authMode}
-      />
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+      initialMode={authMode}
+    />
     </>
   );
 }
 
-// Export the navbar directly - ProjectProvider is now at Layout level
 export default CreatorNavbarContent;

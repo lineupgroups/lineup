@@ -151,87 +151,126 @@ export default function BackersStatsCard({
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {/* Total Raised */}
-            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl">
-                        <DollarSign className="w-5 h-5 text-green-400" />
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                        <DollarSign className="w-6 h-6" />
                     </div>
-                    <span className="text-sm font-medium text-neutral-500">Total Raised</span>
+                    <div className="text-right">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">Capital</span>
+                    </div>
                 </div>
-                <div className="text-2xl font-bold text-brand-white">
-                    {formatCurrency(stats.totalRaised)}
+                
+                <div className="space-y-1 relative z-10">
+                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                        {formatCurrency(stats.totalRaised)}
+                    </h3>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
+                        {isFilteringByProject ? 'Project Total' : 'Global Revenue'}
+                    </p>
                 </div>
-                <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-neutral-500">
-                        {isFilteringByProject ? 'For this project' : 'Across all projects'}
-                    </span>
-                    {weeklyStats.amountThisWeek > 0 && (
-                        <span className="text-xs text-green-400 font-medium">
-                            +{formatCompact(weeklyStats.amountThisWeek)} this week
+
+                {weeklyStats.amountThisWeek > 0 && (
+                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Momentum</span>
+                        <span className="text-[10px] font-black text-brand-acid uppercase tracking-[0.2em] flex items-center gap-1">
+                            <ArrowUp className="w-3 h-3" />
+                            +{formatCompact(weeklyStats.amountThisWeek)}
                         </span>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
 
             {/* Unique Backers */}
-            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl">
-                        <Users className="w-5 h-5 text-blue-400" />
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
+                        <Users className="w-6 h-6" />
                     </div>
-                    <span className="text-sm font-medium text-neutral-500">Unique Backers</span>
+                    <div className="text-right">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">Cohort</span>
+                    </div>
                 </div>
-                <div className="text-2xl font-bold text-brand-white">
-                    {stats.totalSupporters}
+
+                <div className="space-y-1 relative z-10">
+                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                        {stats.totalSupporters}
+                    </h3>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
+                        {stats.uniqueNonAnonymous} Elite • {stats.anonymousCount} Ghost
+                    </p>
                 </div>
-                <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-neutral-500">
-                        {stats.uniqueNonAnonymous} named, {stats.anonymousCount} anon
-                    </span>
-                    {weeklyStats.newBackersThisWeek > 0 && (
-                        <TrendIndicator value={weeklyStats.newBackersThisWeek} suffix=" new" />
-                    )}
-                </div>
+
+                {weeklyStats.newBackersThisWeek > 0 && (
+                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Growth</span>
+                        <TrendIndicator value={weeklyStats.newBackersThisWeek} suffix=" NEW" />
+                    </div>
+                )}
             </div>
 
             {/* Average Donation */}
-            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-purple-100 to-violet-100 rounded-2xl">
-                        <TrendingUp className="w-5 h-5 text-purple-400" />
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                        <TrendingUp className="w-6 h-6" />
                     </div>
-                    <span className="text-sm font-medium text-neutral-500">Avg. Donation</span>
+                    <div className="text-right">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">Unit</span>
+                    </div>
                 </div>
-                <div className="text-2xl font-bold text-brand-white">
-                    {formatCurrency(stats.avgContribution)}
+
+                <div className="space-y-1 relative z-10">
+                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                        {formatCurrency(stats.avgContribution)}
+                    </h3>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
+                        Average Commitment
+                    </p>
                 </div>
-                <div className="text-xs text-neutral-500 mt-1">
-                    Per backer
+                
+                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between opacity-50">
+                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Efficiency</span>
+                    <span className="text-[10px] font-black text-brand-acid uppercase tracking-[0.2em]">Stable</span>
                 </div>
             </div>
 
-            {/* Repeat Backers */}
-            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2.5 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl">
-                        <Repeat className="w-5 h-5 text-brand-orange" />
+            {/* Loyalty / Repeat */}
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-brand-orange/30 p-8 hover:bg-white/10 transition-all group relative overflow-hidden shadow-[0_0_30px_rgba(255,91,0,0.1)]">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors border border-brand-orange/20">
+                        <Repeat className="w-6 h-6" />
                     </div>
-                    <span className="text-sm font-medium text-neutral-500">Repeat Backers</span>
+                    <div className="text-right">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-orange/80">Loyalty</span>
+                    </div>
                 </div>
-                <div className="text-2xl font-bold text-brand-white">
-                    {stats.repeatSupporters}
-                    <span className="text-lg font-medium text-neutral-500 ml-1">
-                        ({repeatPercentage}%)
-                    </span>
+
+                <div className="space-y-1 relative z-10">
+                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                        {repeatPercentage}%
+                    </h3>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
+                        {stats.repeatSupporters} Recurring Legends
+                    </p>
                 </div>
-                <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-neutral-500">
-                        Backed {isFilteringByProject ? 'multiple times' : 'multiple projects'}
-                    </span>
-                    {weeklyStats.repeatChange !== 0 && (
-                        <TrendIndicator value={weeklyStats.repeatChange} suffix=" this week" />
+
+                <div className="mt-6 pt-4 border-t border-brand-orange/10 flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Retention</span>
+                    {weeklyStats.repeatChange !== 0 ? (
+                        <TrendIndicator value={weeklyStats.repeatChange} suffix=" TREND" />
+                    ) : (
+                        <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em]">Solid</span>
                     )}
                 </div>
             </div>

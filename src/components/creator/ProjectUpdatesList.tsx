@@ -205,26 +205,26 @@ export default function ProjectUpdatesList({
     <div className="space-y-6">
       {/* Search and Sort Controls */}
       {isCreator && updates.length > 3 && (
-        <div className="bg-[#111] rounded-3xl shadow-sm border border-neutral-800 p-4">
+        <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-600" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
               <input
                 type="text"
                 placeholder="Search updates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
+                className="w-full pl-12 pr-4 py-3 bg-brand-black/50 border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-600 transition-all"
               />
             </div>
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-neutral-500" />
+            <div className="flex items-center gap-3">
+              <Filter className="w-5 h-5 text-brand-acid" />
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'popular')}
-                className="px-3 py-2 border border-neutral-700 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid bg-[#111]"
+                className="px-4 py-3 bg-brand-black/50 border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid bg-brand-black text-brand-white text-sm font-bold uppercase tracking-widest transition-all"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -234,8 +234,8 @@ export default function ProjectUpdatesList({
           </div>
           {/* Search Results Info */}
           {searchQuery && (
-            <p className="text-sm text-neutral-500 mt-2">
-              Found {filteredAndSortedUpdates.length} {filteredAndSortedUpdates.length === 1 ? 'update' : 'updates'}
+            <p className="text-sm font-black italic uppercase tracking-wider text-neutral-500 mt-4">
+              Found <span className="text-brand-acid">{filteredAndSortedUpdates.length}</span> {filteredAndSortedUpdates.length === 1 ? 'update' : 'updates'}
               {searchQuery && ` matching "${searchQuery}"`}
             </p>
           )}
@@ -244,35 +244,36 @@ export default function ProjectUpdatesList({
 
       {/* Summary Stats - only show if showInlineStats is true */}
       {isCreator && showInlineStats && (
-        <div className="bg-gradient-to-r from-brand-orange/10 to-red-500/10 rounded-3xl p-4 border border-brand-orange/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-[#111] rounded-2xl shadow-sm">
-                <TrendingUp className="w-5 h-5 text-brand-orange" />
+        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-6 border border-white/10 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl group-hover:bg-brand-orange/10 transition-colors"></div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+            <div className="flex items-center space-x-4">
+              <div className="p-4 bg-brand-orange/10 rounded-2xl border border-brand-orange/20">
+                <TrendingUp className="w-6 h-6 text-brand-orange" />
               </div>
               <div>
-                <p className="text-sm text-neutral-400">Total Updates</p>
-                <p className="text-2xl font-bold text-brand-white">{updates.length}</p>
+                <p className="text-xs font-black italic uppercase tracking-widest text-neutral-500">Total Updates</p>
+                <p className="text-3xl font-black text-brand-white italic tracking-tighter">{updates.length}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-6 text-sm">
+            <div className="flex items-center gap-8 text-sm">
               <div className="text-center">
-                <p className="text-lg font-semibold text-brand-white">
+                <p className="text-xl font-black text-brand-acid italic">
                   {updates.reduce((acc, u) => acc + (u.likes || 0), 0)}
                 </p>
-                <p className="text-neutral-500">Total Likes</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-neutral-500">Likes</p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-semibold text-brand-white">
+                <p className="text-xl font-black text-brand-acid italic">
                   {updates.reduce((acc, u) => acc + (u.commentCount || 0), 0)}
                 </p>
-                <p className="text-neutral-500">Total Comments</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-neutral-500">Comments</p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-semibold text-brand-white">
+                <p className="text-xl font-black text-brand-orange italic">
                   {updates.filter(u => u.isPinned).length}
                 </p>
-                <p className="text-neutral-500">Pinned</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-neutral-500">Pinned</p>
               </div>
             </div>
           </div>
@@ -297,18 +298,18 @@ export default function ProjectUpdatesList({
           >
             {/* Pinned Badge */}
             {update.isPinned && (
-              <div className="bg-gradient-to-r from-brand-orange/100 to-red-500/100 px-4 py-2">
-                <div className="flex items-center space-x-2 text-white text-sm font-medium">
-                  <Pin className="w-4 h-4" />
-                  <span>Pinned Update</span>
+              <div className="bg-brand-orange px-6 py-2.5">
+                <div className="flex items-center space-x-2 text-brand-black text-[10px] font-black uppercase tracking-[0.2em]">
+                  <Pin className="w-4 h-4 fill-current" />
+                  <span>Pinned Highlight</span>
                 </div>
               </div>
             )}
 
             {/* Scheduled Badge */}
             {isScheduled && (
-              <div className="bg-blue-500/10 border-b border-blue-500/30 px-4 py-2">
-                <div className="flex items-center space-x-2 text-blue-400 text-sm font-medium">
+              <div className="bg-brand-acid/10 border-b border-brand-acid/20 px-6 py-2.5">
+                <div className="flex items-center space-x-2 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em]">
                   <Clock className="w-4 h-4" />
                   <span>Scheduled for {new Date((update as any).scheduledFor).toLocaleString('en-IN')}</span>
                 </div>
@@ -455,19 +456,19 @@ export default function ProjectUpdatesList({
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-6">
                     {/* Phase 4: View count displayed directly */}
-                    <div className="flex items-center space-x-2 text-neutral-400">
-                      <Eye className="w-5 h-5" />
-                      <span className="text-sm font-medium">
+                    <div className="flex items-center space-x-2 text-neutral-500">
+                      <Eye className="w-5 h-5 text-brand-acid" />
+                      <span className="text-xs font-bold uppercase tracking-wider">
                         {(update as any).viewCount || Math.floor((update.likes || 0) * 2.5 + (update.commentCount || 0) * 5)} views
                       </span>
                     </div>
-                    <div className="flex items-center space-x-2 text-neutral-400">
-                      <ThumbsUp className="w-5 h-5" />
-                      <span className="text-sm font-medium">{update.likes || 0} likes</span>
+                    <div className="flex items-center space-x-2 text-neutral-500">
+                      <ThumbsUp className="w-5 h-5 text-brand-orange" />
+                      <span className="text-xs font-bold uppercase tracking-wider">{update.likes || 0} likes</span>
                     </div>
-                    <div className="flex items-center space-x-2 text-neutral-400">
-                      <MessageSquare className="w-5 h-5" />
-                      <span className="text-sm font-medium">{update.commentCount || 0} comments</span>
+                    <div className="flex items-center space-x-2 text-neutral-500">
+                      <MessageSquare className="w-5 h-5 text-brand-acid" />
+                      <span className="text-xs font-bold uppercase tracking-wider">{update.commentCount || 0} comments</span>
                     </div>
                   </div>
                 </div>
@@ -510,23 +511,23 @@ export default function ProjectUpdatesList({
                           <div className="absolute left-0 top-full mt-2 w-48 bg-[#111] rounded-2xl shadow-lg border border-neutral-800 py-1 z-20">
                             <button
                               onClick={() => handleShare('twitter', update.id, update.title)}
-                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-black transition-colors"
+                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-acid/10 hover:text-brand-acid transition-colors"
                             >
-                              <Twitter className="w-4 h-4 text-sky-500" />
+                              <Twitter className="w-4 h-4" />
                               <span>Share on Twitter</span>
                             </button>
                             <button
                               onClick={() => handleShare('facebook', update.id, update.title)}
-                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-black transition-colors"
+                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-orange/10 hover:text-brand-orange transition-colors"
                             >
-                              <Facebook className="w-4 h-4 text-blue-400" />
+                              <Facebook className="w-4 h-4" />
                               <span>Share on Facebook</span>
                             </button>
                             <button
                               onClick={() => handleShare('linkedin', update.id, update.title)}
-                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-black transition-colors"
+                              className="w-full flex items-center space-x-2 px-4 py-2 text-left text-neutral-300 hover:bg-brand-acid/10 hover:text-brand-acid transition-colors"
                             >
-                              <Linkedin className="w-4 h-4 text-blue-400" />
+                              <Linkedin className="w-4 h-4" />
                               <span>Share on LinkedIn</span>
                             </button>
                             <div className="border-t border-neutral-800/50 my-1" />

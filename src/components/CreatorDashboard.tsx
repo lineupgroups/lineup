@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   Users, DollarSign, Rocket,
   Wallet, Target, ArrowUpRight,
-  ArrowDownRight, Clock, RefreshCw, TrendingUp, AlertTriangle, Sparkles
+  ArrowDownRight, Clock, RefreshCw, TrendingUp, AlertTriangle, Sparkles, Plus
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useProjectsByCreator } from '../hooks/useProjects';
@@ -48,7 +48,7 @@ const TrendIndicator = memo(({ current, previous, suffix = '' }: { current: numb
     return (
       <span className="inline-flex items-center text-xs font-medium text-brand-acid">
         <ArrowUpRight className="w-3 h-3 mr-0.5" />
-        New{suffix}
+        +100%{suffix}
       </span>
     );
   }
@@ -404,53 +404,62 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
       {/* Dynamic Page Title */}
       <PageTitle title="Dashboard" description="Your creator dashboard overview" />
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-white">
-              Creator Hub
-            </h1>
-            <p className="text-neutral-400 mt-2 text-lg">
-              {isFilteringByProject
-                ? `Showing data for: ${selectedProject?.title}`
-                : `Welcome back, ${user.displayName || 'Creator'}! Here's your overview.`
-              }
-            </p>
-            {/* Real-time indicator */}
-            <div className="mt-2">
-              <RealTimeIndicator
-                lastRefreshed={lastRefreshed}
-                isRefreshing={isRefreshing}
-                isConnected={isOnline}
-                onRefresh={handleRefresh}
-              />
+      {/* Header - Editorial Style */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="flex-1">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)] transition-transform hover:scale-105 duration-500">
+                  <Rocket className="w-8 h-8 text-brand-orange" />
+                </div>
+                <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                  Control Center
+                </span>
+                <RealTimeIndicator
+                    lastRefreshed={lastRefreshed}
+                    isRefreshing={isRefreshing}
+                    isConnected={isOnline}
+                    onRefresh={handleRefresh}
+                />
+              </div>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                Creator <span className="text-brand-acid">Studio</span>
+              </h1>
+              <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-6 max-w-2xl leading-relaxed">
+                {isFilteringByProject
+                  ? <>Analyzing performance for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
+                  : <>Welcome back, <span className="text-brand-white font-black italic">{user.displayName || 'Creator'}</span>. Your empire at a glance.</>
+                }
+              </p>
             </div>
-          </div>
-          <div className="flex items-center gap-3 mt-4 sm:mt-0">
-            {/* Refresh button with rate limit indicator */}
-            <button
-              onClick={handleRefresh}
-              disabled={isRefreshing || isRateLimited}
-              className={`flex items-center gap-2 px-5 py-2.5 bg-[#111] hover:bg-[#222] border border-neutral-800 rounded-full text-brand-acid transition-all duration-300 font-medium group disabled:opacity-50 disabled:cursor-not-allowed`}
-              title={isRateLimited ? `Wait ${Math.ceil(remainingTime / 1000)}s` : 'Refresh data'}
-            >
-              <RefreshCw className={`w-4 h-4 group-hover:rotate-180 transition-transform duration-500 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Sync Data
-            </button>
-            <button
-              onClick={() => navigate('/dashboard/projects/create')}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-brand-acid text-brand-black rounded-full font-bold hover:bg-[#b3e600] transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(204,255,0,0.2)]"
-            >
-              <Rocket className="w-4 h-4" />
-              <span className="hidden sm:inline">Create Project</span>
-            </button>
+
+            <div className="flex flex-wrap items-center gap-4 mb-2">
+                {/* Refresh button */}
+                <button
+                    onClick={handleRefresh}
+                    disabled={isRefreshing || isRateLimited}
+                    className="flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-brand-white rounded-2xl font-black italic uppercase tracking-wider hover:bg-white/10 transition-all active:scale-95 disabled:opacity-50 group"
+                    title={isRateLimited ? `Wait ${Math.ceil(remainingTime / 1000)}s` : 'Sync real-time data'}
+                >
+                    <RefreshCw className={`w-5 h-5 text-brand-acid ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+                    <span>Sync Intel</span>
+                </button>
+
+                <button
+                    onClick={() => navigate('/dashboard/projects/create')}
+                    className="flex items-center gap-3 px-8 py-4 bg-brand-acid text-brand-black rounded-2xl font-black italic uppercase tracking-wider hover:bg-brand-acid shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all transform hover:scale-105 active:scale-95"
+                >
+                    <Plus className="w-5 h-5" />
+                    <span>New Project</span>
+                </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="space-y-6 sm:space-y-8">
           {/* Summary Cards - Responsive grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

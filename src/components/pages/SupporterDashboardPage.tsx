@@ -122,12 +122,24 @@ export default function SupporterDashboardPage() {
 
     return (
         <div className="min-h-screen bg-brand-black text-brand-white py-12 px-4 sm:px-6 lg:px-8 font-sans">
-            <div className="max-w-7xl mx-auto">
+            <div className="w-full">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-16">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand-white">Supporter Hub</h1>
-                        <p className="text-neutral-400 mt-2 text-lg">Track your impact and manage your contributions.</p>
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="p-4 bg-brand-acid/10 rounded-3xl border border-brand-acid/20 shadow-[0_0_20px_rgba(204,255,0,0.1)]">
+                                <Rocket className="w-8 h-8 text-brand-acid" />
+                            </div>
+                            <span className="px-4 py-1.5 bg-brand-orange/10 text-brand-orange text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-orange/20">
+                                Backer Mode
+                            </span>
+                        </div>
+                        <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                            Supporter <span className="text-brand-acid">Hub</span>
+                        </h1>
+                        <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl">
+                            Track your impact and discover the next big idea.
+                        </p>
                     </div>
                     <button
                         onClick={() => refresh()}

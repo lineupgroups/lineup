@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, Heart, Users } from 'lucide-react';
+import { TrendingUp, ArrowRight, Heart, Users, Activity, Play } from 'lucide-react';
 import { useTrendingProjects } from '../../hooks/useTrendingProjects';
 import LoadingSpinner from '../common/LoadingSpinner';
 
@@ -8,14 +8,12 @@ export default function TrendingSection() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Trending This Week</h2>
-            <p className="text-xl text-gray-600">Discover the hottest projects gaining momentum</p>
-          </div>
-          <div className="flex justify-center">
-            <LoadingSpinner size="lg" />
+      <section className="py-24 bg-brand-black border-b border-white/5">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="bg-white/5 h-96 rounded-[2.5rem] animate-pulse"></div>
+            ))}
           </div>
         </div>
       </section>
@@ -23,10 +21,12 @@ export default function TrendingSection() {
   }
 
   if (error || !trendingProjects.length) {
-    return null; // Hide section if no trending projects
+    return null;
   }
 
   const formatCurrency = (amount: number) => {
+    if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
+    if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -39,120 +39,137 @@ export default function TrendingSection() {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 bg-brand-black border-b border-white/5 relative overflow-hidden">
+      {/* Background Ambience */}
+      <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-brand-acid/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium mb-4">
-            <TrendingUp className="w-4 h-4" />
-            <span>Hot Right Now</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-2xl px-6 py-2.5 rounded-full border border-white/10 mb-8">
+              <Activity className="w-4 h-4 text-brand-acid animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">
+                Velocity <span className="text-brand-acid">High</span>
+              </span>
+            </div>
+            <h2 className="text-5xl md:text-6xl font-black text-brand-white italic uppercase tracking-tighter leading-none mb-6">
+              TRENDING <span className="text-brand-orange">DEPLOYMENTS</span>
+            </h2>
+            <p className="text-lg text-neutral-500 font-medium tracking-tight">
+              Analyzing the highest interaction nodes across the Idea Nation this week.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Trending This Week</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover the hottest projects gaining momentum and community support
-          </p>
+          
+          <Link
+            to="/browse?sort=trending"
+            className="group flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-brand-acid hover:text-brand-white transition-colors"
+          >
+            <span>Analyze Full Registry</span>
+            <div className="w-10 h-10 rounded-full bg-brand-acid/10 flex items-center justify-center group-hover:bg-brand-acid group-hover:text-brand-black transition-all">
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
         </div>
 
         {/* Trending Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12">
-          {trendingProjects.slice(0, 6).map((project, index) => (
-            <div key={project.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
-              {/* Trending Badge */}
-              {index < 3 && (
-                <div className="absolute top-4 left-4 z-10">
-                  <div className="flex items-center space-x-1 px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-medium">
-                    <TrendingUp className="w-3 h-3" />
-                    <span>#{index + 1} Trending</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {trendingProjects.slice(0, 6).map((project, index) => {
+            const progress = getProgressPercentage(project.raised, project.goal);
+            return (
+              <div 
+                key={project.id} 
+                className="group relative bg-white/5 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 hover:border-brand-acid/30 transition-all duration-500 overflow-hidden flex flex-col h-full"
+              >
+                {/* Visual Header */}
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-transparent"></div>
+                  
+                  {/* Status Badges */}
+                  <div className="absolute top-6 left-6 flex flex-col gap-2">
+                    {index < 3 && (
+                      <div className="px-4 py-1.5 bg-brand-acid text-brand-black rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl flex items-center gap-2">
+                        <TrendingUp className="w-3 h-3" />
+                        NODE #{index + 1}
+                      </div>
+                    )}
+                    <div className="px-4 py-1.5 bg-brand-black/60 backdrop-blur-md text-brand-white border border-white/10 rounded-full text-[9px] font-black uppercase tracking-widest">
+                      {project.category.toUpperCase()}
+                    </div>
+                  </div>
+                  
+                  {/* Interaction Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-brand-black/20 backdrop-blur-[2px]">
+                    <div className="w-16 h-16 rounded-full bg-brand-acid text-brand-black flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-500">
+                      <Play className="w-6 h-6 fill-current" />
+                    </div>
                   </div>
                 </div>
-              )}
 
-              {/* Project Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    // Generate a unique pattern based on project title
-                    const hash = project.title.split('').reduce((a, b) => {
-                      a = ((a << 5) - a) + b.charCodeAt(0);
-                      return a & a;
-                    }, 0);
-                    const colors = ['6366f1', 'f59e0b', 'ef4444', '10b981', '8b5cf6', 'f97316'];
-                    const color = colors[Math.abs(hash) % colors.length];
-                    const encodedTitle = encodeURIComponent(project.title);
-                    target.src = `https://ui-avatars.com/api/?name=${encodedTitle}&background=${color}&color=fff&size=800&format=png`;
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                
-                {/* Category Badge */}
-                <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full text-sm font-medium">
-                    {project.category}
-                  </span>
+                {/* Content Logic */}
+                <div className="p-8 flex-1 flex flex-col">
+                  <h3 className="text-2xl font-black text-brand-white mb-3 italic uppercase tracking-tight group-hover:text-brand-acid transition-colors line-clamp-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-[10px] font-bold text-neutral-500 mb-8 line-clamp-2 uppercase tracking-wider leading-relaxed">
+                    {project.tagline}
+                  </p>
+
+                  {/* Progress Integration */}
+                  <div className="mt-auto space-y-4">
+                    <div className="flex justify-between items-end">
+                      <div className="space-y-1">
+                        <div className="text-[9px] font-black text-neutral-600 uppercase tracking-widest">CAPITAL ACQUIRED</div>
+                        <div className="text-xl font-black text-brand-white italic uppercase tracking-tighter">
+                          {formatCurrency(project.raised)}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[9px] font-black text-neutral-600 uppercase tracking-widest">MAGNITUDE</div>
+                        <div className={`text-xl font-black italic uppercase tracking-tighter ${progress >= 100 ? 'text-brand-acid' : 'text-brand-orange'}`}>
+                          {progress.toFixed(0)}%
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Precision Progress Bar */}
+                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                      <div
+                        className={`h-full transition-all duration-1000 ${progress >= 100 ? 'bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.5)]' : 'bg-brand-orange shadow-[0_0_15px_rgba(255,91,0,0.5)]'}`}
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+
+                    {/* Network Stats */}
+                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                      <div className="flex items-center gap-2 group/stat">
+                        <Users className="w-4 h-4 text-neutral-600 group-hover/stat:text-brand-acid transition-colors" />
+                        <span className="text-[9px] font-black text-neutral-600 group-hover/stat:text-brand-white transition-colors">{project.supporters} NODES</span>
+                      </div>
+                      <div className="flex items-center gap-2 group/stat">
+                        <Heart className="w-4 h-4 text-neutral-600 group-hover/stat:text-brand-orange transition-colors" />
+                        <span className="text-[9px] font-black text-neutral-600 group-hover/stat:text-brand-white transition-colors">{project.likeCount || 0} PULSE</span>
+                      </div>
+                    </div>
+
+                    {/* Engagement Protocol */}
+                    <Link
+                      to={`/project/${project.id}`}
+                      className="w-full flex items-center justify-center gap-4 py-4 bg-white/5 hover:bg-brand-acid text-brand-white hover:text-brand-black border border-white/10 hover:border-brand-acid rounded-2xl text-[10px] font-black italic uppercase tracking-[0.2em] transition-all duration-500"
+                    >
+                      Initialize Intel
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
-
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">
-                  {project.tagline}
-                </p>
-
-                {/* Progress */}
-                <div className="mb-4">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>{formatCurrency(project.raised)}</span>
-                    <span>{getProgressPercentage(project.raised, project.goal).toFixed(0)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${getProgressPercentage(project.raised, project.goal)}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-4 h-4" />
-                    <span>{project.supporters} supporters</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Heart className="w-4 h-4" />
-                    <span>{project.likeCount || 0} likes</span>
-                  </div>
-                </div>
-
-                {/* View Project Button */}
-                <Link
-                  to={`/project/${project.id}`}
-                  className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-orange-100 hover:text-orange-600 transition-colors"
-                >
-                  <span>View Project</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center">
-          <Link
-            to="/browse?sort=trending"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-200"
-          >
-            <span>View All Trending Projects</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+            );
+          })}
         </div>
       </div>
     </section>

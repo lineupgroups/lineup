@@ -107,8 +107,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.viewsTrend,
             trendLabel: stats.totalViews > 0 ? `${stats.thisWeekViews > 0 ? '+' : ''}${stats.thisWeekViews} this week` : 'Avg. engagement',
             icon: <Eye className="w-5 h-5" />,
-            iconBg: 'bg-blue-500/20',
-            iconColor: 'text-blue-400',
+            iconBg: 'bg-brand-acid/10',
+            iconColor: 'text-brand-acid',
             isRate: stats.totalViews === 0
         },
         {
@@ -117,8 +117,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.likesTrend,
             trendLabel: `${stats.thisWeekLikes > 0 ? '+' : ''}${stats.thisWeekLikes} this week`,
             icon: <ThumbsUp className="w-5 h-5" />,
-            iconBg: 'bg-green-500/20',
-            iconColor: 'text-green-400'
+            iconBg: 'bg-brand-orange/10',
+            iconColor: 'text-brand-orange'
         },
         {
             label: 'Comments',
@@ -126,8 +126,8 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
             trend: stats.commentsTrend,
             trendLabel: `${stats.thisWeekComments > 0 ? '+' : ''}${stats.thisWeekComments} this week`,
             icon: <MessageSquare className="w-5 h-5" />,
-            iconBg: 'bg-purple-500/20',
-            iconColor: 'text-purple-400'
+            iconBg: 'bg-brand-acid/10',
+            iconColor: 'text-brand-acid'
         }
     ];
 
@@ -190,39 +190,35 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
                     </div>
 
                     {/* Getting Started Card */}
-                    <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-3xl p-6 border border-blue-500/30">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-blue-500/20 rounded-2xl">
-                                <FileText className="w-6 h-6 text-blue-400" />
+                    <div className="bg-white/5 rounded-3xl p-8 border border-white/10 backdrop-blur-xl relative overflow-hidden group/gs">
+                        <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-acid/5 rounded-full blur-[100px] pointer-events-none group-hover/gs:bg-brand-acid/10 transition-colors duration-700"></div>
+                        
+                        <div className="flex flex-col md:flex-row items-start gap-6 relative z-10">
+                            <div className="p-4 bg-brand-acid/10 rounded-2xl border border-brand-acid/20">
+                                <FileText className="w-8 h-8 text-brand-acid" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-brand-white mb-2">
-                                    🚀 Get Started with Updates
+                                <h3 className="text-2xl font-black italic uppercase tracking-tighter text-brand-white mb-3">
+                                    🚀 Broadcast Your Progress
                                 </h3>
-                                <p className="text-sm text-neutral-400 mb-4">
-                                    Keep your supporters engaged by sharing progress updates! Here are some ideas:
+                                <p className="text-neutral-400 mb-6 text-lg max-w-2xl leading-relaxed">
+                                    Supporters who see regular updates are <span className="text-brand-acid font-bold">3x more likely</span> to back your future projects.
                                 </p>
-                                <ul className="text-sm text-neutral-400 space-y-2">
-                                    <li className="flex items-center gap-2">
-                                        <span className="text-green-500">✓</span>
-                                        Share milestone achievements with the "Milestone Reached" template
-                                    </li>
-                                    <li className="flex items-center gap-2">
-                                        <span className="text-green-500">✓</span>
-                                        Thank your backers with the "Thank You" template
-                                    </li>
-                                    <li className="flex items-center gap-2">
-                                        <span className="text-green-500">✓</span>
-                                        Post weekly progress updates to build trust
-                                    </li>
-                                    <li className="flex items-center gap-2">
-                                        <span className="text-green-500">✓</span>
-                                        Add images and videos to make updates more engaging
-                                    </li>
-                                </ul>
-                                <p className="text-sm text-blue-400 mt-4 font-medium">
-                                    💡 Tip: Projects with regular updates raise 3x more on average!
-                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {[
+                                        'Share milestone achievements instantly',
+                                        'Thank your backers personally',
+                                        'Post weekly BTS content',
+                                        'Add high-quality images & video'
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className="w-5 h-5 rounded-full bg-brand-acid/20 flex items-center justify-center flex-shrink-0">
+                                                <span className="text-brand-acid text-[10px]">✓</span>
+                                            </div>
+                                            <span className="text-sm text-neutral-300 font-medium">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -288,35 +284,39 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
 
                 {/* Best Performing Update */}
                 {stats.bestUpdate && (
-                    <div className="bg-gradient-to-r from-yellow-500/10 to-brand-orange/10 rounded-3xl p-4 border border-yellow-500/30">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-yellow-500/20 rounded-2xl">
-                                <Trophy className="w-6 h-6 text-yellow-400" />
+                    <div className="bg-brand-orange/5 rounded-3xl p-6 border border-brand-orange/20 relative overflow-hidden group/best">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl group-hover/best:bg-brand-orange/10 transition-colors"></div>
+                        <div className="flex items-start gap-6 relative z-10">
+                            <div className="p-4 bg-brand-orange/10 rounded-2xl border border-brand-orange/20">
+                                <Trophy className="w-8 h-8 text-brand-orange" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-xs font-semibold text-yellow-400 uppercase tracking-wide">
-                                        🏆 Best Performing Update
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="px-3 py-1 bg-brand-orange text-brand-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+                                        Elite Status
+                                    </span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-500">
+                                        Best Performing Broadcast
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-semibold text-brand-white truncate">
+                                <h3 className="text-2xl font-black italic uppercase tracking-tighter text-brand-white truncate">
                                     {stats.bestUpdate.title}
                                 </h3>
-                                <div className="flex items-center gap-4 mt-2 text-sm text-neutral-400">
-                                    <span className="flex items-center gap-1">
-                                        <Eye className="w-4 h-4" />
+                                <div className="flex items-center flex-wrap gap-6 mt-4 text-xs font-bold uppercase tracking-widest text-neutral-500">
+                                    <span className="flex items-center gap-2">
+                                        <Eye className="w-4 h-4 text-brand-acid" />
                                         {(stats.bestUpdate as any).viewCount || Math.floor((stats.bestUpdate.likes || 0) * 2.5 + (stats.bestUpdate.commentCount || 0) * 5)} views
                                     </span>
-                                    <span className="flex items-center gap-1">
-                                        <ThumbsUp className="w-4 h-4" />
+                                    <span className="flex items-center gap-2">
+                                        <ThumbsUp className="w-4 h-4 text-brand-orange" />
                                         {stats.bestUpdate.likes || 0} likes
                                     </span>
-                                    <span className="flex items-center gap-1">
-                                        <MessageSquare className="w-4 h-4" />
+                                    <span className="flex items-center gap-2">
+                                        <MessageSquare className="w-4 h-4 text-brand-acid" />
                                         {stats.bestUpdate.commentCount || 0} comments
                                     </span>
-                                    <span className="text-neutral-600">•</span>
-                                    <span>{getTimeAgo(convertTimestamp(stats.bestUpdate.createdAt))}</span>
+                                    <span className="text-neutral-700">•</span>
+                                    <span className="text-neutral-600 italic normal-case">{getTimeAgo(convertTimestamp(stats.bestUpdate.createdAt))}</span>
                                 </div>
                             </div>
                         </div>

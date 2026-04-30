@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Activity, Eye, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,6 @@ export default function NotificationBell() {
         markAllAsRead
     } = useNotifications(user?.uid, 'creator');
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -34,7 +33,6 @@ export default function NotificationBell() {
         await markAsRead(notification.id);
         setIsOpen(false);
 
-        // Navigate to relevant page
         if (notification.actionUrl) {
             navigate(notification.actionUrl);
         }
@@ -42,93 +40,119 @@ export default function NotificationBell() {
 
     const formatTimeAgo = (date: Date) => {
         const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-        if (seconds < 60) return 'just now';
-        if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-        if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-        if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
-        return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        if (seconds < 60) return 'NOW';
+        if (seconds < 3600) return `${Math.floor(seconds / 60)}M`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)}H`;
+        if (seconds < 604800) return `${Math.floor(seconds / 86400)}D`;
+        return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }).toUpperCase();
     };
 
     return (
         <div className="relative" ref={dropdownRef}>
-            {/* Bell Icon Button */}
+            {/* Tactical Bell Toggle */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
-                aria-label="Notifications"
+                className={`
+                    relative p-2.5 rounded-xl transition-all duration-500 group
+                    ${isOpen ? 'bg-brand-acid text-brand-black' : 'text-neutral-500 hover:text-brand-white bg-white/5 border border-white/5 hover:border-white/20'}
+                `}
+                aria-label="SYSTEM INTELLIGENCE"
             >
-                <Bell className="w-6 h-6" />
+                <Bell className={`w-5 h-5 ${isOpen ? 'animate-none' : 'group-hover:animate-pulse'}`} />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-brand-orange text-brand-white text-[8px] font-black italic rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-brand-black shadow-[0_0_10px_rgba(255,91,0,0.4)]">
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
             </button>
 
-            {/* Dropdown */}
+            {/* Intelligence Dropdown */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[500px] flex flex-col">
-                    {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
-                        {unreadCount > 0 && (
-                            <button
-                                onClick={markAllAsRead}
-                                className="text-sm text-orange-600 hover:text-orange-700 font-medium"
-                            >
-                                Mark all read
-                            </button>
-                        )}
+                <div className="absolute right-0 mt-4 w-80 sm:w-[380px] bg-brand-black/98 backdrop-blur-3xl rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.9)] border border-white/10 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+                    {/* Panel Header */}
+                    <div className="p-6 border-b border-white/5 bg-white/[0.02]">
+                        <div className="flex items-center justify-between mb-1.5">
+                            <div className="flex items-center gap-2.5">
+                                <div className="p-1.5 bg-brand-acid/10 rounded-lg border border-brand-acid/20">
+                                    <Activity className="w-3.5 h-3.5 text-brand-acid" />
+                                </div>
+                                <h3 className="text-lg font-black text-brand-white italic uppercase tracking-tighter">OPERATIONAL INTEL</h3>
+                            </div>
+                            {unreadCount > 0 && (
+                                <button
+                                    onClick={markAllAsRead}
+                                    className="text-[8px] font-black italic uppercase tracking-[0.2em] text-brand-acid hover:text-brand-white transition-colors"
+                                >
+                                    ARCHIVE ALL
+                                </button>
+                            )}
+                        </div>
+                        <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest opacity-70">
+                            {unreadCount} ACTIVE PROTOCOLS PENDING REVIEW
+                        </p>
                     </div>
 
-                    {/* Notifications List */}
-                    <div className="overflow-y-auto flex-1">
+                    {/* Stream Content */}
+                    <div className="max-h-[420px] overflow-y-auto scrollbar-hide py-3">
                         {loading ? (
-                            <div className="flex items-center justify-center py-12">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
+                            <div className="flex flex-col items-center justify-center py-16 gap-4">
+                                <Zap className="w-6 h-6 text-brand-acid animate-pulse" />
+                                <span className="text-[9px] font-black text-neutral-500 uppercase tracking-[0.4em]">SYNCING...</span>
                             </div>
                         ) : notifications.length === 0 ? (
-                            <div className="text-center py-12 px-4">
-                                <Bell className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                                <p className="text-gray-600 font-medium">No notifications yet</p>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    We'll notify you about project activity and updates
-                                </p>
+                            <div className="text-center py-20 px-8">
+                                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                                    <CheckCircle2 className="w-6 h-6 text-neutral-700" />
+                                </div>
+                                <p className="text-[9px] font-black text-brand-white uppercase tracking-[0.3em]">ALL SYSTEMS NOMINAL</p>
+                                <p className="text-[8px] font-bold text-neutral-500 uppercase tracking-widest mt-2">NO PENDING UPDATES IN CURRENT BUFFER</p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-gray-100">
+                            <div className="px-3 space-y-1.5">
                                 {notifications.map((notification) => (
                                     <button
                                         key={notification.id}
                                         onClick={() => handleNotificationClick(notification)}
-                                        className={`w-full text-left p-4 hover:bg-gray-50 transition-colors ${!notification.read ? 'bg-orange-50' : ''
-                                            }`}
+                                        className={`
+                                            group w-full text-left p-4 rounded-[1.25rem] transition-all duration-500 border relative overflow-hidden
+                                            ${!notification.read 
+                                                ? 'bg-white/5 border-white/10 hover:bg-white/10' 
+                                                : 'bg-transparent border-transparent opacity-70 hover:opacity-100 hover:bg-white/[0.02]'
+                                            }
+                                        `}
                                     >
-                                        <div className="flex items-start space-x-3">
-                                            {/* Icon */}
-                                            <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${!notification.read ? 'bg-orange-100' : 'bg-gray-100'
-                                                }`}>
-                                                <span className="text-xl">{notification.icon || '🔔'}</span>
+                                        {!notification.read && (
+                                            <div className="absolute top-0 left-0 bottom-0 w-1 bg-brand-acid" />
+                                        )}
+                                        
+                                        <div className="flex items-start gap-4">
+                                            {/* Tactical Icon */}
+                                            <div className={`
+                                                flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-500
+                                                ${!notification.read ? 'bg-brand-acid/10 border border-brand-acid/20' : 'bg-white/5 border border-white/5'}
+                                            `}>
+                                                <span className="text-xl grayscale group-hover:grayscale-0 transition-all">{notification.icon || '🔔'}</span>
                                             </div>
 
-                                            {/* Content */}
+                                            {/* Meta & Intel */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-sm font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-700'
-                                                    }`}>
-                                                    {notification.title}
+                                                <div className="flex items-center justify-between mb-1.5">
+                                                    <span className={`text-[10px] font-black italic uppercase tracking-tight ${!notification.read ? 'text-brand-white' : 'text-neutral-300'}`}>
+                                                        {notification.title}
+                                                    </span>
+                                                    <span className="text-[8px] font-black text-neutral-500 tracking-widest group-hover:text-neutral-400 transition-colors">
+                                                        {formatTimeAgo(notification.createdAt.toDate())}
+                                                    </span>
+                                                </div>
+                                                <p className={`text-[9px] font-bold leading-relaxed mb-3 ${!notification.read ? 'text-neutral-300' : 'text-neutral-500'}`}>
+                                                    {notification.message.toUpperCase()}
                                                 </p>
-                                                <p className="text-sm text-gray-600 mt-0.5">
-                                                    {notification.message}
-                                                </p>
-                                                <p className="text-xs text-gray-500 mt-1">
-                                                    {formatTimeAgo(notification.createdAt.toDate())}
-                                                </p>
+                                                
+                                                <div className="flex items-center gap-2 text-[8px] font-black text-brand-acid italic uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all translate-x-[-8px] group-hover:translate-x-0">
+                                                    <span>EXECUTE PROTOCOL</span>
+                                                    <ChevronRight className="w-2.5 h-2.5" />
+                                                </div>
                                             </div>
-
-                                            {/* Unread indicator */}
-                                            {!notification.read && (
-                                                <div className="flex-shrink-0 w-2 h-2 bg-orange-600 rounded-full mt-2"></div>
-                                            )}
                                         </div>
                                     </button>
                                 ))}
@@ -136,17 +160,18 @@ export default function NotificationBell() {
                         )}
                     </div>
 
-                    {/* Footer */}
+                    {/* Operational Footer */}
                     {notifications.length > 0 && (
-                        <div className="p-3 border-t border-gray-200">
+                        <div className="p-5 border-t border-white/5 bg-white/[0.01]">
                             <button
                                 onClick={() => {
                                     navigate('/dashboard/notifications');
                                     setIsOpen(false);
                                 }}
-                                className="w-full text-center text-sm text-orange-600 hover:text-orange-700 font-medium"
+                                className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-white/5 hover:bg-brand-acid hover:text-brand-black rounded-xl text-[8px] font-black italic uppercase tracking-[0.2em] transition-all duration-500 group"
                             >
-                                View all notifications
+                                <Eye className="w-3 h-3" />
+                                <span>VIEW GLOBAL INTELLIGENCE STREAM</span>
                             </button>
                         </div>
                     )}

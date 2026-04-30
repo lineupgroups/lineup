@@ -1,26 +1,11 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Users,
-    RefreshCw,
-    Search,
-    ChevronDown,
-    ChevronUp,
-    DollarSign,
-    User,
-    Heart,
-    ExternalLink,
-    FileText,
-    Copy,
-    Crown,
-    Medal,
-    Award,
-    ArrowUpDown,
-    Calendar,
-    Download,
-    Receipt,
-    Trophy
+    Users, RefreshCw, Search, ChevronDown, ChevronUp, DollarSign, User, Heart,
+    ExternalLink, FileText, Download, Trophy, Plus, Sparkles, Pin, Medal, Award, Crown,
+    ArrowUpDown, Calendar, Receipt, Filter, Star, Copy
 } from 'lucide-react';
+import PageTitle from '../common/PageTitle';
 import { useProjectContext } from '../../hooks/useProjectContext';
 import { useContextualSupporters } from '../../hooks/useContextualSupporters';
 import { useAuth } from '../../contexts/AuthContext';
@@ -526,19 +511,15 @@ export default function CreatorBackersPage() {
                             ))}
                         </div>
 
-                        {/* Sidebar Skeleton */}
-                        <div className="space-y-6">
-                            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5 animate-pulse">
-                                <div className="h-6 w-28 bg-neutral-800 rounded mb-4" />
-                                {[1, 2, 3, 4, 5].map((i) => (
-                                    <div key={i} className="flex items-center gap-3 mb-3">
-                                        <div className="w-8 h-8 bg-neutral-800 rounded-full" />
-                                        <div className="w-8 h-8 bg-neutral-900 rounded-full" />
-                                        <div className="flex-1 h-4 bg-neutral-900 rounded" />
-                                        <div className="w-16 h-4 bg-neutral-900 rounded" />
-                                    </div>
+                        {/* Content Skeleton */}
+                        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                            <div className="xl:col-span-2 space-y-6">
+                                <div className="h-20 bg-white/5 rounded-[2.5rem] border border-white/10" />
+                                {[1, 2, 3].map(i => (
+                                    <div key={i} className="h-32 bg-white/5 rounded-[2rem] border border-white/10" />
                                 ))}
                             </div>
+                            <div className="h-96 bg-white/5 rounded-[2.5rem] border border-white/10" />
                         </div>
                     </div>
                 </div>
@@ -546,40 +527,44 @@ export default function CreatorBackersPage() {
         );
     }
 
-    // Error state
     if (error) {
         return (
-            <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
-                <div className="bg-[#111] border-b border-neutral-800">
-                    <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-                        <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
-                            <Users className="w-8 h-8 text-orange-500" />
-                            Backers
-                        </h1>
-                    </div>
-                </div>
-
-                <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="max-w-md mx-auto text-center">
-                        <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
+                <PageTitle title="Network Error" description="Supporter sync failed" />
+                <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-center py-20">
+                    <div className="max-w-xl w-full bg-white/5 backdrop-blur-xl rounded-[3rem] border border-brand-orange/20 p-12 text-center relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-brand-orange/5 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <div className="relative z-10">
+                            <div className="w-24 h-24 bg-brand-orange/10 rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-brand-orange/20 shadow-[0_0_30px_rgba(255,91,0,0.1)]">
+                                <AlertCircle className="w-12 h-12 text-brand-orange" />
+                            </div>
+                            <h2 className="text-4xl font-black text-brand-white italic uppercase tracking-tight mb-4">
+                                Sync <span className="text-brand-orange">Interrupted</span>
+                            </h2>
+                            <p className="text-neutral-400 font-medium mb-10 leading-relaxed">
+                                Our elite data channels are currently experiencing interference. We couldn't establish a secure connection to your supporter network.
+                            </p>
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="w-full sm:w-auto px-10 py-5 bg-brand-orange text-brand-black font-black italic uppercase tracking-widest text-xs rounded-2xl hover:bg-brand-white transition-all active:scale-95 shadow-2xl shadow-brand-orange/20"
+                                >
+                                    Force Re-Sync
+                                </button>
+                                <Link
+                                    to="/creator/dashboard"
+                                    className="w-full sm:w-auto px-10 py-5 bg-white/5 text-brand-white border border-white/10 font-black italic uppercase tracking-widest text-xs rounded-2xl hover:bg-white/10 transition-all active:scale-95"
+                                >
+                                    Return to HQ
+                                </Link>
+                            </div>
+                            {error && (
+                                <div className="mt-8 pt-8 border-t border-white/5">
+                                    <code className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.2em]">Error Code: {error}</code>
+                                </div>
+                            )}
                         </div>
-                        <h2 className="text-2xl font-bold text-brand-white mb-2">Something went wrong</h2>
-                        <p className="text-neutral-400 mb-6">
-                            We couldn't load your backers data. Please check your connection and try again.
-                        </p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-orange/100 text-white font-medium rounded-2xl hover:bg-[#b3e600] transition-colors shadow-md hover:shadow-lg"
-                        >
-                            <RefreshCw className="w-5 h-5" />
-                            Try Again
-                        </button>
-                        <p className="text-sm text-neutral-600 mt-4">
-                            Error: {error}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -587,56 +572,67 @@ export default function CreatorBackersPage() {
     }
 
     return (
-        <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
-            {/* Header */}
-            <div className="bg-[#111] border-b border-neutral-800">
-                <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
+            {/* Dynamic Page Title */}
+            <PageTitle title="Backers" description="Network with your elite supporters" />
+
+            <div className="w-full px-4 sm:px-6 lg:px-8">
+                {/* Header - Editorial Style */}
+                <div className="mb-12">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                         <div>
-                            <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
-                                <Users className="w-8 h-8 text-orange-500" />
-                                Backers
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                                    <Users className="w-8 h-8 text-brand-orange" />
+                                </div>
+                                <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                                    Elite Network
+                                </span>
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                                Supporter <span className="text-brand-acid">Network</span>
                             </h1>
-                            <p className="text-neutral-400 mt-1">
+                            <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl leading-relaxed">
                                 {isFilteringByProject
-                                    ? `Showing backers for: ${selectedProject?.title}`
-                                    : 'View and engage with your supporters across all projects'
+                                    ? <>Analyzing interaction for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
+                                    : 'Forge deeper connections and manage the elite inner circle who believe in your mission.'
                                 }
                             </p>
                         </div>
-                        <div className="flex items-center gap-3">
+
+                        <div className="flex flex-wrap items-center gap-4 mb-2">
                             {/* Export Dropdown */}
                             <div className="relative">
                                 <button
                                     onClick={() => setShowExportDropdown(!showExportDropdown)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors"
+                                    className="flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-brand-white rounded-2xl font-black italic uppercase tracking-wider hover:bg-white/10 transition-all active:scale-95 group"
                                 >
-                                    <Download className="w-4 h-4" />
-                                    Export
-                                    <ChevronDown className={`w-4 h-4 transition-transform ${showExportDropdown ? 'rotate-180' : ''}`} />
+                                    <Download className="w-5 h-5 text-brand-orange" />
+                                    <span>Export Intel</span>
+                                    <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showExportDropdown ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 {showExportDropdown && (
                                     <>
                                         <div className="fixed inset-0 z-10" onClick={() => setShowExportDropdown(false)} />
-                                        <div className="absolute top-full right-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[160px]">
+                                        <div className="absolute top-full right-0 mt-2 bg-brand-black border border-white/10 rounded-[1.5rem] shadow-2xl z-20 min-w-[200px] overflow-hidden">
                                             <button
                                                 onClick={handleExportCSV}
-                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
+                                                className="w-full text-left px-5 py-4 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest text-neutral-400 hover:text-brand-acid transition-all flex items-center gap-3"
                                             >
                                                 <FileText className="w-4 h-4" />
                                                 Export as CSV
                                             </button>
                                             <button
                                                 onClick={handleExportPDF}
-                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
+                                                className="w-full text-left px-5 py-4 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest text-neutral-400 hover:text-brand-orange transition-all flex items-center gap-3 border-t border-white/5"
                                             >
-                                                <FileText className="w-4 h-4 text-red-500" />
+                                                <FileText className="w-4 h-4" />
                                                 Export as PDF
                                             </button>
                                             <button
                                                 onClick={handleExportJSON}
-                                                className="w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2"
+                                                className="w-full text-left px-5 py-4 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest text-neutral-400 hover:text-brand-white transition-all flex items-center gap-3 border-t border-white/5"
                                             >
                                                 <FileText className="w-4 h-4" />
                                                 Export as JSON
@@ -649,15 +645,15 @@ export default function CreatorBackersPage() {
                             <button
                                 onClick={handleRefresh}
                                 disabled={loading}
-                                className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors disabled:opacity-50"
+                                className="flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-brand-white rounded-2xl font-black italic uppercase tracking-wider hover:bg-white/10 transition-all active:scale-95 disabled:opacity-50 group"
                             >
-                                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                                Refresh
+                                <RefreshCw className={`w-5 h-5 text-brand-acid ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+                                <span>Sync Network</span>
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
 
             {/* Main Content */}
             <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
@@ -669,132 +665,118 @@ export default function CreatorBackersPage() {
                     isFilteringByProject={isFilteringByProject}
                 />
 
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                    {/* Left Column - Backers List (2/3) */}
-                    <div className="xl:col-span-2">
-                        {/* Filters */}
-                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-4 mb-4">
-                            <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
-                                {/* Search */}
-                                <div className="relative flex-1 w-full lg:max-w-xs">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <div className="xl:col-span-2 space-y-6">
+                        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-6 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
+                            
+                            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center relative z-10">
+                                <div className="relative flex-1 w-full lg:max-w-md">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                                     <input
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Search backers..."
-                                        className="w-full pl-10 pr-4 py-2 border border-neutral-800 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
+                                        placeholder="Scan supporters..."
+                                        className="w-full pl-12 pr-6 py-3.5 bg-brand-black/50 border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-700 transition-all font-black italic uppercase tracking-widest text-[10px]"
                                     />
                                 </div>
 
-                                {/* Amount Filter */}
-                                <div className="relative">
-                                    <button
-                                        onClick={() => setShowAmountDropdown(!showAmountDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
-                                    >
-                                        <DollarSign className="w-4 h-4 text-neutral-500" />
-                                        {currentAmountLabel}
-                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showAmountDropdown ? 'rotate-180' : ''}`} />
-                                    </button>
+                                <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setShowAmountDropdown(!showAmountDropdown)}
+                                            className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl transition-all border font-black italic uppercase tracking-widest text-[10px] ${amountFilter !== 'all' ? 'bg-brand-acid text-brand-black border-brand-acid' : 'bg-brand-black/50 border-white/10 text-neutral-400 hover:border-brand-acid'}`}
+                                        >
+                                            <Filter className="w-3.5 h-3.5" />
+                                            {currentAmountLabel}
+                                            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showAmountDropdown ? 'rotate-180' : ''}`} />
+                                        </button>
 
-                                    {showAmountDropdown && (
-                                        <>
-                                            <div className="fixed inset-0 z-10" onClick={() => setShowAmountDropdown(false)} />
-                                            <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[150px]">
-                                                {AMOUNT_FILTER_OPTIONS.map(option => (
-                                                    <button
-                                                        key={option.value}
-                                                        onClick={() => { setAmountFilter(option.value); setShowAmountDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${amountFilter === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
-                                                    >
-                                                        {option.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
+                                        {showAmountDropdown && (
+                                            <>
+                                                <div className="fixed inset-0 z-10" onClick={() => setShowAmountDropdown(false)} />
+                                                <div className="absolute top-full left-0 mt-2 bg-brand-black border border-white/10 rounded-[1.2rem] shadow-2xl z-20 min-w-[200px] overflow-hidden">
+                                                    {AMOUNT_FILTER_OPTIONS.map(option => (
+                                                        <button
+                                                            key={option.value}
+                                                            onClick={() => { setAmountFilter(option.value); setShowAmountDropdown(false); }}
+                                                            className={`w-full text-left px-5 py-3 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest transition-all ${amountFilter === option.value ? 'text-brand-acid bg-brand-acid/10' : 'text-neutral-500'}`}
+                                                        >
+                                                            {option.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
 
-                                {/* Date Filter */}
-                                <div className="relative">
-                                    <button
-                                        onClick={() => setShowDateDropdown(!showDateDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
-                                    >
-                                        <Calendar className="w-4 h-4 text-neutral-500" />
-                                        {currentDateLabel}
-                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showDateDropdown ? 'rotate-180' : ''}`} />
-                                    </button>
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setShowDateDropdown(!showDateDropdown)}
+                                            className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl transition-all border font-black italic uppercase tracking-widest text-[10px] ${dateFilter !== 'all' ? 'bg-brand-acid text-brand-black border-brand-acid' : 'bg-brand-black/50 border-white/10 text-neutral-400 hover:border-brand-acid'}`}
+                                        >
+                                            <Calendar className="w-3.5 h-3.5" />
+                                            {currentDateLabel}
+                                            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showDateDropdown ? 'rotate-180' : ''}`} />
+                                        </button>
 
-                                    {showDateDropdown && (
-                                        <>
-                                            <div className="fixed inset-0 z-10" onClick={() => setShowDateDropdown(false)} />
-                                            <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[130px]">
-                                                {DATE_FILTER_OPTIONS.map(option => (
-                                                    <button
-                                                        key={option.value}
-                                                        onClick={() => { setDateFilter(option.value); setShowDateDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${dateFilter === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
-                                                    >
-                                                        {option.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
+                                        {showDateDropdown && (
+                                            <>
+                                                <div className="fixed inset-0 z-10" onClick={() => setShowDateDropdown(false)} />
+                                                <div className="absolute top-full left-0 mt-2 bg-brand-black border border-white/10 rounded-[1.2rem] shadow-2xl z-20 min-w-[180px] overflow-hidden">
+                                                    {DATE_FILTER_OPTIONS.map(option => (
+                                                        <button
+                                                            key={option.value}
+                                                            onClick={() => { setDateFilter(option.value); setShowDateDropdown(false); }}
+                                                            className={`w-full text-left px-5 py-3 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest transition-all ${dateFilter === option.value ? 'text-brand-acid bg-brand-acid/10' : 'text-neutral-500'}`}
+                                                        >
+                                                            {option.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
 
-                                {/* Type Filter */}
-                                <div className="flex items-center bg-neutral-900 rounded-2xl p-1">
-                                    <button
-                                        onClick={() => setTypeFilter('all')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'all' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
-                                    >
-                                        All
-                                    </button>
-                                    <button
-                                        onClick={() => setTypeFilter('named')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'named' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
-                                    >
-                                        Named
-                                    </button>
-                                    <button
-                                        onClick={() => setTypeFilter('anonymous')}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${typeFilter === 'anonymous' ? 'bg-[#111] shadow-sm text-brand-white' : 'text-neutral-400'}`}
-                                    >
-                                        Anonymous
-                                    </button>
-                                </div>
+                                    <div className="flex items-center bg-brand-black/50 border border-white/10 rounded-2xl p-1">
+                                        {['all', 'named', 'anonymous'].map((type) => (
+                                            <button
+                                                key={type}
+                                                onClick={() => setTypeFilter(type as TypeFilter)}
+                                                className={`px-4 py-2 rounded-xl text-[8px] font-black uppercase tracking-[0.2em] transition-all ${typeFilter === type ? 'bg-brand-acid text-brand-black' : 'text-neutral-600 hover:text-brand-white'}`}
+                                            >
+                                                {type}
+                                            </button>
+                                        ))}
+                                    </div>
 
-                                {/* Sort */}
-                                <div className="relative ml-auto">
-                                    <button
-                                        onClick={() => setShowSortDropdown(!showSortDropdown)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors text-sm"
-                                    >
-                                        <ArrowUpDown className="w-4 h-4 text-neutral-500" />
-                                        {currentSortLabel}
-                                        <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
-                                    </button>
+                                    <div className="relative lg:ml-auto">
+                                        <button
+                                            onClick={() => setShowSortDropdown(!showSortDropdown)}
+                                            className="flex items-center gap-3 px-5 py-3.5 bg-brand-black/50 border border-white/10 rounded-2xl hover:border-brand-acid text-neutral-400 font-black italic uppercase tracking-widest text-[10px] transition-all"
+                                        >
+                                            <ArrowUpDown className="w-3.5 h-3.5" />
+                                            {currentSortLabel}
+                                        </button>
 
-                                    {showSortDropdown && (
-                                        <>
-                                            <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
-                                            <div className="absolute top-full right-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[180px]">
-                                                {SORT_OPTIONS.map(option => (
-                                                    <button
-                                                        key={option.value}
-                                                        onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
-                                                        className={`w-full text-left px-4 py-2 hover:bg-brand-black text-sm ${sortOption === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
-                                                    >
-                                                        {option.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
+                                        {showSortDropdown && (
+                                            <>
+                                                <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
+                                                <div className="absolute top-full right-0 mt-2 bg-brand-black border border-white/10 rounded-[1.2rem] shadow-2xl z-20 min-w-[220px] overflow-hidden">
+                                                    {SORT_OPTIONS.map(option => (
+                                                        <button
+                                                            key={option.value}
+                                                            onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
+                                                            className={`w-full text-left px-5 py-3 hover:bg-white/5 text-[10px] font-black italic uppercase tracking-widest transition-all ${sortOption === option.value ? 'text-brand-acid bg-brand-acid/10' : 'text-neutral-500'}`}
+                                                        >
+                                                            {option.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -802,32 +784,33 @@ export default function CreatorBackersPage() {
                         {/* Backers List */}
                         <div className="space-y-3">
                             {paginatedSupporters.length === 0 ? (
-                                <div className="bg-[#111] rounded-3xl border border-neutral-800 p-12 text-center">
+                                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-12 text-center relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
                                     {stats.totalSupporters === 0 ? (
                                         <>
-                                            <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                                <Users className="w-8 h-8 text-neutral-600" />
+                                            <div className="w-20 h-20 bg-brand-orange/10 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                                                <Users className="w-10 h-10 text-brand-orange" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-brand-white mb-2">No Backers Yet</h3>
-                                            <p className="text-neutral-400 mb-4">
-                                                When supporters back your project, they'll appear here.
+                                            <h3 className="text-3xl font-black text-brand-white italic uppercase tracking-tight mb-3">No Backers <span className="text-brand-orange">Yet</span></h3>
+                                            <p className="text-neutral-400 font-medium mb-8 max-w-sm mx-auto">
+                                                The elite network is waiting for your first project deployment.
                                             </p>
                                             <Link
                                                 to="/dashboard/projects"
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white rounded-2xl hover:bg-[#b3e600] transition-colors"
+                                                className="inline-flex items-center gap-3 px-8 py-4 bg-brand-orange text-brand-black font-black italic uppercase tracking-widest text-xs rounded-2xl hover:bg-brand-white transition-all active:scale-95 shadow-2xl shadow-brand-orange/20"
                                             >
                                                 <ExternalLink className="w-4 h-4" />
-                                                Share Your Projects
+                                                Deploy Projects
                                             </Link>
                                         </>
                                     ) : (
                                         <>
-                                            <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                                <Search className="w-8 h-8 text-neutral-600" />
+                                            <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-white/10">
+                                                <Search className="w-10 h-10 text-neutral-500" />
                                             </div>
-                                            <h3 className="text-lg font-semibold text-brand-white mb-2">No Results Found</h3>
-                                            <p className="text-neutral-400">
-                                                Try adjusting your filters or search query.
+                                            <h3 className="text-3xl font-black text-brand-white italic uppercase tracking-tight mb-3">No Results <span className="text-brand-acid">Found</span></h3>
+                                            <p className="text-neutral-400 font-medium">
+                                                Adjust your search parameters to find the specific entity.
                                             </p>
                                         </>
                                     )}
@@ -837,82 +820,95 @@ export default function CreatorBackersPage() {
                                     {paginatedSupporters.map((supporter, index) => (
                                         <div
                                             key={supporter.id}
-                                            className="bg-[#111] rounded-3xl border border-neutral-800 p-4 hover:shadow-md transition-shadow"
+                                            className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 hover:bg-white/10 transition-all group relative overflow-hidden"
                                         >
-                                            <div className="flex items-start gap-4">
+                                            <div className="flex items-start gap-5 relative z-10">
                                                 {/* Rank or Avatar */}
                                                 <div className="flex-shrink-0">
                                                     {index < 3 && sortOption === 'amount_high' ? (
-                                                        <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center">
+                                                        <div className="w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center border border-brand-orange/20 shadow-[0_0_15px_rgba(255,91,0,0.1)]">
                                                             {getRankIcon(index + 1)}
                                                         </div>
                                                     ) : supporter.displayProfileImage ? (
-                                                        <img
-                                                            src={supporter.displayProfileImage}
-                                                            alt={supporter.displayName}
-                                                            className="w-12 h-12 rounded-full object-cover"
-                                                        />
+                                                        <div className="p-1 bg-white/10 rounded-full">
+                                                            <img
+                                                                src={supporter.displayProfileImage}
+                                                                alt={supporter.displayName}
+                                                                className="w-14 h-14 rounded-full object-cover border-2 border-brand-black"
+                                                            />
+                                                        </div>
                                                     ) : (
-                                                        <div className="w-12 h-12 bg-neutral-900 rounded-full flex items-center justify-center">
-                                                            <User className="w-6 h-6 text-neutral-600" />
+                                                        <div className="w-16 h-16 bg-brand-black border border-white/10 rounded-full flex items-center justify-center">
+                                                            <User className="w-8 h-8 text-neutral-700" />
                                                         </div>
                                                     )}
                                                 </div>
 
                                                 {/* Info */}
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 flex-wrap">
-                                                        <span className="font-semibold text-brand-white">
-                                                            {supporter.anonymous ? 'Anonymous Supporter' : supporter.displayName}
+                                                    <div className="flex items-center gap-3 flex-wrap">
+                                                        <span className="text-xl font-black text-brand-white tracking-tight uppercase italic">
+                                                            {supporter.anonymous ? 'Ghost Operative' : supporter.displayName}
                                                         </span>
-                                                        {supporter.anonymous && (
-                                                            <span className="px-2 py-0.5 bg-neutral-900 text-neutral-400 text-xs rounded-full">
-                                                                Anonymous
-                                                            </span>
-                                                        )}
-                                                        {supporter.donationCount > 1 && (
-                                                            <span className="px-2 py-0.5 bg-brand-orange/20 text-brand-orange text-xs rounded-full">
-                                                                {supporter.donationCount}x Backer
-                                                            </span>
-                                                        )}
+                                                        <div className="flex gap-2">
+                                                            {supporter.anonymous && (
+                                                                <span className="px-3 py-1 bg-white/5 text-neutral-500 text-[8px] font-black uppercase tracking-[0.2em] rounded-full border border-white/5">
+                                                                    Anonymous
+                                                                </span>
+                                                            )}
+                                                            {supporter.donationCount > 1 && (
+                                                                <span className="px-3 py-1 bg-brand-orange/10 text-brand-orange text-[8px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-orange/20">
+                                                                    {supporter.donationCount}x Veteran
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm text-neutral-500 mt-1">
-                                                        {supporter.donationCount} donation{supporter.donationCount !== 1 ? 's' : ''} • Latest: {getTimeAgo(supporter.latestDonation)}
+                                                    <div className="flex items-center gap-3 mt-2 text-[10px] font-bold text-neutral-500 uppercase tracking-widest">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Calendar className="w-3 h-3" />
+                                                            Latest: {getTimeAgo(supporter.latestDonation)}
+                                                        </div>
+                                                        <div className="w-1 h-1 bg-neutral-800 rounded-full"></div>
+                                                        <div className="flex items-center gap-1.5">
+                                                            <Receipt className="w-3 h-3" />
+                                                            {supporter.donationCount} Commitments
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm text-neutral-500 mt-1 truncate">
-                                                        Projects: {supporter.projects.join(', ')}
+                                                    <div className="text-[9px] font-black text-brand-acid/50 mt-2 uppercase tracking-widest flex items-center gap-2">
+                                                        <Pin className="w-3 h-3" />
+                                                        {supporter.projects.join(' // ')}
                                                     </div>
                                                 </div>
 
                                                 {/* Amount */}
                                                 <div className="flex-shrink-0 text-right">
-                                                    <div className="text-xl font-bold text-green-400">
+                                                    <div className="text-2xl md:text-3xl font-black text-brand-acid tracking-tighter italic uppercase">
                                                         {formatCurrency(supporter.totalAmount)}
                                                     </div>
-                                                    <div className="flex items-center gap-2 mt-2">
+                                                    <div className="flex items-center justify-end gap-2 mt-4">
                                                         {!supporter.anonymous && (
                                                             <>
                                                                 {/* Thank You Button or Thanked Badge */}
                                                                 {supporter.isThanked || locallyThankedIds.has(supporter.id) ? (
                                                                     <span
-                                                                        className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-2xl"
-                                                                        title="Already thanked"
+                                                                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-acid/10 text-brand-acid text-[9px] font-black uppercase tracking-widest rounded-xl border border-brand-acid/20"
                                                                     >
-                                                                        ✓ Thanked
+                                                                        <Heart className="w-3 h-3 fill-brand-acid" />
+                                                                        Acknowledged
                                                                     </span>
                                                                 ) : (
                                                                     <button
                                                                         onClick={() => handleOpenThankYou(supporter)}
-                                                                        className="p-1.5 text-pink-500 hover:bg-pink-50 rounded-2xl transition-colors"
-                                                                        title="Send Thank You"
+                                                                        className="p-3 bg-white/5 text-brand-orange hover:bg-brand-orange hover:text-brand-black rounded-xl transition-all border border-white/5 active:scale-95"
+                                                                        title="Acknowledge Supporter"
                                                                     >
                                                                         <Heart className="w-4 h-4" />
                                                                     </button>
                                                                 )}
                                                                 <button
                                                                     onClick={() => window.open(`/user/${supporter.userId}`, '_blank')}
-                                                                    className="p-1.5 text-blue-500 hover:bg-blue-500/10 rounded-2xl transition-colors"
-                                                                    title="View Profile"
+                                                                    className="p-3 bg-white/5 text-brand-white hover:bg-brand-acid hover:text-brand-black rounded-xl transition-all border border-white/5 active:scale-95"
+                                                                    title="View Intel"
                                                                 >
                                                                     <ExternalLink className="w-4 h-4" />
                                                                 </button>
@@ -921,10 +917,10 @@ export default function CreatorBackersPage() {
                                                         <button
                                                             onClick={() => {
                                                                 navigator.clipboard.writeText(`${supporter.displayName} - ${formatCurrency(supporter.totalAmount)}`);
-                                                                toast.success('Copied to clipboard!');
+                                                                toast.success('Supporter Intel Copied');
                                                             }}
-                                                            className="p-1.5 text-neutral-500 hover:bg-neutral-900 rounded-2xl transition-colors"
-                                                            title="Copy Details"
+                                                            className="p-3 bg-white/5 text-neutral-500 hover:text-brand-white rounded-xl transition-all border border-white/5 active:scale-95"
+                                                            title="Copy Intel"
                                                         >
                                                             <Copy className="w-4 h-4" />
                                                         </button>
@@ -932,21 +928,21 @@ export default function CreatorBackersPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Expand/Collapse Button - Only show if more than 1 donation */}
+                                            {/* Expand/Collapse Button */}
                                             {supporter.donationCount > 1 && (
                                                 <button
                                                     onClick={() => toggleExpanded(supporter.id)}
-                                                    className="w-full flex items-center justify-center gap-2 mt-3 pt-3 border-t border-neutral-800/50 text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
+                                                    className="w-full flex items-center justify-center gap-3 mt-6 pt-6 border-t border-white/5 text-[9px] font-black italic uppercase tracking-widest text-neutral-600 hover:text-brand-acid transition-all"
                                                 >
                                                     {expandedSupporters.has(supporter.id) ? (
                                                         <>
                                                             <ChevronUp className="w-4 h-4" />
-                                                            Hide donation history
+                                                            Redact Transaction History
                                                         </>
                                                     ) : (
                                                         <>
                                                             <ChevronDown className="w-4 h-4" />
-                                                            Show {supporter.donationCount} donations
+                                                            Analyze {supporter.donationCount} Transactions
                                                         </>
                                                     )}
                                                 </button>
@@ -954,19 +950,19 @@ export default function CreatorBackersPage() {
 
                                             {/* Expandable Donation History */}
                                             {expandedSupporters.has(supporter.id) && supporter.donationHistory && (
-                                                <div className="mt-3 pt-3 border-t border-neutral-800/50 space-y-2">
+                                                <div className="mt-4 space-y-3 relative z-10">
                                                     {supporter.donationHistory.map((donation) => (
                                                         <div
                                                             key={donation.id}
-                                                            className="flex items-center justify-between py-2 px-3 bg-brand-black rounded-2xl"
+                                                            className="flex items-center justify-between py-4 px-5 bg-brand-black/50 border border-white/5 rounded-2xl group/item"
                                                         >
-                                                            <div className="flex items-center gap-3">
-                                                                <div className="w-2 h-2 bg-green-500/100 rounded-full" />
+                                                            <div className="flex items-center gap-4">
+                                                                <div className="w-1.5 h-1.5 bg-brand-acid rounded-full shadow-[0_0_8px_rgba(204,255,0,0.5)]" />
                                                                 <div>
-                                                                    <div className="font-medium text-brand-white text-sm">
+                                                                    <div className="text-sm font-black text-brand-white italic uppercase">
                                                                         {formatCurrency(donation.amount)}
                                                                     </div>
-                                                                    <div className="text-xs text-neutral-500">
+                                                                    <div className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest mt-1">
                                                                         {donation.date.toLocaleDateString('en-IN', {
                                                                             day: 'numeric',
                                                                             month: 'short',
@@ -977,8 +973,8 @@ export default function CreatorBackersPage() {
                                                             </div>
                                                             <button
                                                                 onClick={() => handleOpenReceipt(supporter, donation)}
-                                                                className="p-1.5 text-neutral-600 hover:text-green-400 hover:bg-green-500/10 rounded transition-colors"
-                                                                title="Generate Receipt"
+                                                                className="p-2.5 text-neutral-600 hover:text-brand-acid hover:bg-brand-acid/10 rounded-xl transition-all border border-transparent hover:border-brand-acid/20"
+                                                                title="Generate Intel Receipt"
                                                             >
                                                                 <Receipt className="w-4 h-4" />
                                                             </button>
@@ -991,12 +987,12 @@ export default function CreatorBackersPage() {
 
                                     {/* Load More */}
                                     {displayCount < filteredSupporters.length && (
-                                        <div className="text-center pt-4">
+                                        <div className="text-center pt-8">
                                             <button
                                                 onClick={handleLoadMore}
-                                                className="px-6 py-3 bg-[#111] border border-neutral-700 rounded-2xl text-neutral-300 font-medium hover:bg-brand-black transition-colors"
+                                                className="px-10 py-5 bg-white/5 border border-white/10 text-brand-white rounded-2xl font-black italic uppercase tracking-widest text-xs hover:bg-brand-acid hover:text-brand-black transition-all active:scale-95 shadow-xl hover:shadow-brand-acid/20"
                                             >
-                                                Load More ({filteredSupporters.length - displayCount} remaining)
+                                                Load More Network Data ({filteredSupporters.length - displayCount})
                                             </button>
                                         </div>
                                     )}
@@ -1006,53 +1002,53 @@ export default function CreatorBackersPage() {
 
                         {/* Results Count */}
                         {paginatedSupporters.length > 0 && (
-                            <div className="text-center text-sm text-neutral-500 mt-4">
-                                Showing {paginatedSupporters.length} of {filteredSupporters.length} backers
+                            <div className="text-center text-[10px] font-black italic uppercase tracking-[0.2em] text-neutral-700 mt-8">
+                                Manifesting {paginatedSupporters.length} of {filteredSupporters.length} Elite Entities
                             </div>
                         )}
                     </div>
 
                     {/* Right Column - Top Backers & Stats (1/3) */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                         {/* Top Backers Leaderboard */}
-                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5">
-                            <h3 className="text-lg font-semibold text-brand-white flex items-center gap-2 mb-4">
-                                <Crown className="w-5 h-5 text-yellow-500" />
-                                Top Backers
+                        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl pointer-events-none"></div>
+                            
+                            <h3 className="text-xl font-black text-brand-white flex items-center gap-3 mb-8 italic uppercase tracking-tight">
+                                <Crown className="w-6 h-6 text-brand-orange" />
+                                Top Contributors
                             </h3>
 
                             {topSupporters.length === 0 ? (
-                                <p className="text-neutral-500 text-sm text-center py-4">No backers yet</p>
+                                <div className="text-center py-12">
+                                    <Sparkles className="w-12 h-12 text-neutral-800 mx-auto mb-4" />
+                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-600">No elite activity detected</p>
+                                </div>
                             ) : (
                                 <>
-                                    <div className="space-y-3">
+                                    <div className="space-y-6">
                                         {(showLeaderboardModal ? supporters.slice(0, 20) : topSupporters).map((supporter, index) => (
-                                            <div key={supporter.id} className="flex items-center gap-3">
-                                                <div className="flex-shrink-0 w-8 flex justify-center">
-                                                    {getRankIcon(index + 1)}
-                                                </div>
-                                                {supporter.displayProfileImage && !supporter.anonymous ? (
-                                                    <img
-                                                        src={supporter.displayProfileImage}
-                                                        alt={supporter.displayName}
-                                                        className="w-8 h-8 rounded-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <div className="w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center">
-                                                        <User className="w-4 h-4 text-neutral-600" />
-                                                    </div>
-                                                )}
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="font-medium text-brand-white truncate text-sm">
-                                                        {supporter.anonymous ? 'Anonymous' : supporter.displayName}
-                                                    </div>
-                                                    {showLeaderboardModal && (
-                                                        <div className="text-xs text-neutral-500">
-                                                            {supporter.donationCount} donation{supporter.donationCount !== 1 ? 's' : ''}
+                                            <div key={supporter.id} className="flex items-center gap-4 group/row">
+                                                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
+                                                    {index < 3 ? (
+                                                        <div className="p-2 bg-brand-orange/10 rounded-xl border border-brand-orange/20">
+                                                            {getRankIcon(index + 1)}
                                                         </div>
+                                                    ) : (
+                                                        <span className="text-[10px] font-black text-neutral-700">{index + 1}</span>
                                                     )}
                                                 </div>
-                                                <div className="font-bold text-green-400 text-sm">
+                                                
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="font-black text-brand-white truncate text-xs italic uppercase tracking-tight group-hover/row:text-brand-acid transition-colors">
+                                                        {supporter.anonymous ? 'Operative' : supporter.displayName}
+                                                    </div>
+                                                    <div className="text-[8px] font-bold text-neutral-600 uppercase tracking-widest mt-1">
+                                                        {supporter.donationCount} Commitments
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="font-black text-brand-acid text-sm italic uppercase tracking-tighter">
                                                     {formatCurrency(supporter.totalAmount)}
                                                 </div>
                                             </div>
@@ -1063,13 +1059,13 @@ export default function CreatorBackersPage() {
                                     {supporters.length > 5 && (
                                         <button
                                             onClick={() => setShowLeaderboardModal(!showLeaderboardModal)}
-                                            className="w-full mt-4 py-2 text-sm text-brand-orange hover:text-brand-orange hover:bg-brand-orange/10 rounded-2xl transition-colors flex items-center justify-center gap-2"
+                                            className="w-full mt-10 py-4 bg-brand-orange/10 text-brand-orange border border-brand-orange/20 text-[10px] font-black italic uppercase tracking-[0.2em] rounded-2xl hover:bg-brand-orange hover:text-brand-black transition-all flex items-center justify-center gap-3 shadow-lg"
                                         >
                                             <Trophy className="w-4 h-4" />
                                             {showLeaderboardModal ? (
-                                                <>Show Top 5 Only</>
+                                                <span>Minimize Intel</span>
                                             ) : (
-                                                <>View All {supporters.length} Rankings</>
+                                                <span>Full Leaderboard</span>
                                             )}
                                         </button>
                                     )}
@@ -1078,29 +1074,38 @@ export default function CreatorBackersPage() {
                         </div>
 
                         {/* Quick Stats */}
-                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-5">
-                            <h3 className="text-lg font-semibold text-brand-white mb-4">
-                                Quick Stats
+                        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 relative overflow-hidden">
+                            <h3 className="text-xl font-black text-brand-white mb-8 italic uppercase tracking-tight">
+                                Intelligence
                             </h3>
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-neutral-400 text-sm">Named vs Anonymous</span>
-                                    <span className="font-medium text-sm">
+                            <div className="space-y-6">
+                                <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                                    <div>
+                                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Entity Split</span>
+                                        <p className="text-xs font-black text-brand-white italic uppercase tracking-tight mt-1">Named / Ghost</p>
+                                    </div>
+                                    <span className="text-xl font-black text-brand-acid italic uppercase tracking-tighter">
                                         {stats.uniqueNonAnonymous} / {stats.anonymousCount}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-neutral-400 text-sm">Repeat backer rate</span>
-                                    <span className="font-medium text-sm">
+                                <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                                    <div>
+                                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Loyalty Rate</span>
+                                        <p className="text-xs font-black text-brand-white italic uppercase tracking-tight mt-1">Repeat Interaction</p>
+                                    </div>
+                                    <span className="text-xl font-black text-brand-orange italic uppercase tracking-tighter">
                                         {stats.totalSupporters > 0
                                             ? `${((stats.repeatSupporters / stats.totalSupporters) * 100).toFixed(0)}%`
                                             : '0%'
                                         }
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-neutral-400 text-sm">Top contribution</span>
-                                    <span className="font-bold text-green-400 text-sm">
+                                <div className="flex justify-between items-end">
+                                    <div>
+                                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Max Commitment</span>
+                                        <p className="text-xs font-black text-brand-white italic uppercase tracking-tight mt-1">Record Donation</p>
+                                    </div>
+                                    <span className="text-xl font-black text-brand-acid italic uppercase tracking-tighter">
                                         {topSupporters[0] ? formatCurrency(topSupporters[0].totalAmount) : '₹0'}
                                     </span>
                                 </div>

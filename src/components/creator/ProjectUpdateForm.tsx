@@ -224,35 +224,35 @@ export default function ProjectUpdateForm({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#111] rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-brand-black rounded-[2.5rem] shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border border-white/10">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-800 sticky top-0 bg-[#111] z-10">
+        <div className="flex items-center justify-between p-8 border-b border-white/10 bg-brand-black/50 backdrop-blur-xl z-10">
           <div>
-            <h2 className="text-2xl font-bold text-brand-white">
-              {editingUpdate ? 'Edit Update' : 'Post New Update'}
+            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">
+              {editingUpdate ? 'Edit Broadcast' : 'Create Broadcast'}
             </h2>
-            <div className="flex items-center gap-3 mt-1">
-              <p className="text-sm text-neutral-400">
-                Keep your supporters informed about your progress
+            <div className="flex items-center gap-4 mt-2">
+              <p className="text-xs font-black italic uppercase tracking-widest text-neutral-500">
+                Supporters Only Update
               </p>
               {/* Auto-save indicator */}
               {!editingUpdate && onSaveDraft && (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">
                   {isAutoSaving ? (
                     <>
-                      <Save className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
-                      <span className="text-xs text-brand-orange">Saving...</span>
+                      <Save className="w-3 h-3 text-brand-orange animate-pulse" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange">Syncing...</span>
                     </>
                   ) : lastAutoSaved ? (
                     <>
-                      <Check className="w-3.5 h-3.5 text-green-500" />
-                      <span className="text-xs text-green-400">
-                        Draft saved {lastAutoSaved.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                      <Check className="w-3 h-3 text-brand-acid" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-brand-acid">
+                        Draft Saved {lastAutoSaved.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </>
                   ) : hasUnsavedChanges() ? (
-                    <span className="text-xs text-neutral-600">Unsaved changes</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-600">Pending Changes</span>
                   ) : null}
                 </div>
               )}
@@ -260,31 +260,36 @@ export default function ProjectUpdateForm({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-neutral-900 rounded-full transition-colors"
+            className="p-3 hover:bg-white/10 rounded-2xl transition-colors border border-white/5"
             disabled={isSubmitting}
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-neutral-400" />
           </button>
         </div>
+
+        <div className="overflow-y-auto flex-1 custom-scrollbar">
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Info Banner - Improved Mental Model */}
-          <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-2xl p-4">
-            <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+          <div className="bg-brand-acid/10 border border-brand-acid/20 rounded-3xl p-6 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl"></div>
+            <div className="flex items-start space-x-4 relative z-10">
+              <div className="p-3 bg-brand-acid/10 rounded-2xl">
+                <AlertCircle className="w-6 h-6 text-brand-acid flex-shrink-0" />
+              </div>
               <div className="flex-1">
-                <p className="font-medium text-blue-300">Who can see this update?</p>
-                <p className="text-sm text-blue-400 mt-1">
-                  <strong>Only your supporters</strong> — people who have donated to your project can see this update.
-                  This creates an exclusive experience for your backers and encourages more people to support you!
+                <p className="text-sm font-black italic uppercase tracking-wider text-brand-acid">Broadcasting Privacy</p>
+                <p className="text-neutral-400 mt-2 leading-relaxed">
+                  This update is <span className="text-brand-acid font-bold italic">Supporters-Only</span>. 
+                  Only backers who have funded your project will see this exclusive content.
                 </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#111]/60 text-blue-400 text-xs font-medium rounded-full border border-blue-500/30">
-                    <Check className="w-3 h-3" /> Visible to backers
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black/40 text-brand-acid text-[10px] font-black uppercase tracking-widest rounded-full border border-brand-acid/20">
+                    <Check className="w-3 h-3" /> Visible to Backers
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#111]/60 text-neutral-500 text-xs font-medium rounded-full border border-neutral-800">
-                    <X className="w-3 h-3" /> Hidden from non-backers
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black/40 text-neutral-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-white/5">
+                    <X className="w-3 h-3" /> Private to Others
                   </span>
                 </div>
               </div>
@@ -292,27 +297,27 @@ export default function ProjectUpdateForm({
           </div>
 
           {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">
-              Update Title *
+          <div className="space-y-3">
+            <label className="text-xs font-black italic uppercase tracking-[0.2em] text-neutral-500 ml-1">
+              Broadcast Title
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value.slice(0, 60))}
-              placeholder="e.g., Project Milestone Reached!"
-              className={`w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid ${title.length > 54 ? 'border-red-300' : title.length > 48 ? 'border-yellow-300' : 'border-neutral-700'
+              placeholder="e.g., Major Project Milestone Reached!"
+              className={`w-full px-5 py-4 bg-white/5 border rounded-[1.2rem] focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-600 transition-all ${title.length > 54 ? 'border-brand-orange' : title.length > 48 ? 'border-brand-acid' : 'border-white/10'
                 }`}
               required
               maxLength={60}
               disabled={isSubmitting}
             />
             {/* Phase 2: Color-coded character counter */}
-            <div className="flex items-center justify-between mt-1">
-              <p className="text-xs text-neutral-500">
-                Keep it short and engaging
+            <div className="flex items-center justify-between px-1">
+              <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">
+                Keep it short and impactful
               </p>
-              <p className={`text-sm font-medium ${title.length > 54 ? 'text-red-400' : title.length > 48 ? 'text-yellow-400' : 'text-green-400'
+              <p className={`text-[10px] font-black uppercase tracking-widest ${title.length > 54 ? 'text-brand-orange' : title.length > 48 ? 'text-brand-acid' : 'text-neutral-500'
                 }`}>
                 {title.length}/60
               </p>
@@ -320,18 +325,18 @@ export default function ProjectUpdateForm({
           </div>
 
           {/* Content with Rich Text Editor */}
-          <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">
-              Update Content *
+          <div className="space-y-3">
+            <label className="text-xs font-black italic uppercase tracking-[0.2em] text-neutral-500 ml-1">
+              Broadcast Message
             </label>
 
             <RichTextEditor
               value={content}
               onChange={setContent}
-              placeholder="Share your progress, challenges, or exciting news with your supporters..."
+              placeholder="Share exclusive progress or behind-the-scenes content..."
               maxLength={5000}
               disabled={isSubmitting}
-              rows={10}
+              rows={12}
             />
           </div>
 
@@ -469,21 +474,23 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={isSubmitting}
                 />
-                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-orange/100"></div>
+                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-orange/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-brand-black after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-orange/100"></div>
               </label>
             </div>
 
             {/* Send Notification Toggle - Coming Soon */}
-            <div className="flex items-center justify-between opacity-60">
-              <div className="flex items-center space-x-2">
-                <Bell className="w-5 h-5 text-blue-400" />
+            <div className="flex items-center justify-between opacity-40">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-brand-acid/5 rounded-xl">
+                  <Bell className="w-5 h-5 text-brand-acid" />
+                </div>
                 <div>
-                  <span className="font-medium text-neutral-300">Notify backers</span>
+                  <span className="text-sm font-black italic uppercase tracking-wider text-neutral-300">Push Notifications</span>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-neutral-500">Send email notification to all backers</p>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full">
-                      <Info className="w-3 h-3" />
-                      Coming Soon
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">Email all backers instantly</p>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest bg-brand-acid/20 text-brand-acid rounded-full border border-brand-acid/20">
+                      <Info className="w-2.5 h-2.5" />
+                      Locked
                     </span>
                   </div>
                 </div>
@@ -496,21 +503,23 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={true}
                 />
-                <div className="w-11 h-6 bg-neutral-700 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                <div className="w-11 h-6 bg-white/5 border border-white/10 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-neutral-600 after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
             </div>
 
             {/* Schedule Update Toggle - Coming Soon */}
-            <div className="flex items-center justify-between opacity-60">
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-5 h-5 text-purple-400" />
+            <div className="flex items-center justify-between opacity-40">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-brand-acid/5 rounded-xl">
+                  <Clock className="w-5 h-5 text-brand-acid" />
+                </div>
                 <div>
-                  <span className="font-medium text-neutral-300">Schedule for later</span>
+                  <span className="text-sm font-black italic uppercase tracking-wider text-neutral-300">Schedule for later</span>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs text-neutral-500">Auto-post at selected time</p>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-purple-500/20 text-purple-400 rounded-full">
-                      <Info className="w-3 h-3" />
-                      Coming Soon
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">Auto-post at selected time</p>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[8px] font-black uppercase tracking-widest bg-brand-acid/20 text-brand-acid rounded-full border border-brand-acid/20">
+                      <Info className="w-2.5 h-2.5" />
+                      Locked
                     </span>
                   </div>
                 </div>
@@ -523,7 +532,7 @@ export default function ProjectUpdateForm({
                   className="sr-only peer"
                   disabled={true}
                 />
-                <div className="w-11 h-6 bg-neutral-700 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#111] after:border-neutral-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                <div className="w-11 h-6 bg-white/5 border border-white/10 rounded-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-neutral-600 after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
               </label>
             </div>
 
@@ -562,7 +571,7 @@ export default function ProjectUpdateForm({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
+          <div className="flex items-center justify-between pt-8 border-t border-white/10 mt-8 sticky bottom-0 bg-brand-black p-8 -mx-8 -mb-6 z-10">
             {/* U-MISS-03: Save Draft button (left side) */}
             <div>
               {onSaveDraft && !editingUpdate && (
@@ -573,7 +582,7 @@ export default function ProjectUpdateForm({
                     toast.success('Draft saved!');
                   }}
                   disabled={isSubmitting || (!title.trim() && !content.trim())}
-                  className="px-4 py-2 border border-yellow-400 text-yellow-400 bg-yellow-500/10 rounded-2xl font-medium hover:bg-yellow-500/20 transition-colors disabled:opacity-50"
+                  className="px-6 py-3 border border-brand-orange/40 text-brand-orange bg-brand-orange/10 rounded-2xl font-black italic uppercase tracking-widest text-[10px] hover:bg-brand-orange hover:text-brand-black transition-all disabled:opacity-50"
                 >
                   Save Draft
                 </button>
@@ -581,13 +590,13 @@ export default function ProjectUpdateForm({
             </div>
 
             {/* Right side buttons */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               {/* Phase 3: Preview Button */}
               <button
                 type="button"
                 onClick={() => setShowPreview(true)}
                 disabled={isSubmitting || !title.trim() || !content.trim()}
-                className="flex items-center space-x-2 px-4 py-2 border border-blue-500/40 text-blue-400 bg-blue-500/10 rounded-2xl font-medium hover:bg-blue-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center space-x-2 px-6 py-3 bg-white/5 border border-white/10 text-brand-acid rounded-2xl font-black italic uppercase tracking-widest text-[10px] hover:bg-brand-acid hover:text-brand-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Eye className="w-4 h-4" />
                 <span>Preview</span>
@@ -596,23 +605,23 @@ export default function ProjectUpdateForm({
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-6 py-2 border border-neutral-700 text-neutral-300 rounded-2xl font-medium hover:bg-brand-black transition-colors"
+                className="px-8 py-3 text-neutral-500 font-black italic uppercase tracking-widest text-[10px] hover:text-brand-white transition-colors"
                 disabled={isSubmitting}
               >
-                Cancel
+                Discard
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting || !title.trim() || !content.trim()}
-                className="px-6 py-2 bg-gradient-to-r from-brand-orange/100 to-red-500/100 text-white rounded-2xl font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                className="px-10 py-3 bg-brand-acid text-brand-black rounded-2xl font-black italic uppercase tracking-widest text-[10px] hover:bg-brand-acid shadow-[0_0_20px_rgba(204,255,0,0.2)] transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 {isSubmitting && <Loader className="w-4 h-4 animate-spin" />}
                 <span>
                   {isSubmitting
-                    ? (isScheduled ? 'Scheduling...' : 'Posting...')
+                    ? (isScheduled ? 'Scheduling...' : 'Broadcasting...')
                     : (editingUpdate
-                      ? 'Update'
-                      : (isScheduled ? 'Schedule Update' : 'Post Update')
+                      ? 'Update Broadcast'
+                      : (isScheduled ? 'Schedule Broadcast' : 'Post Broadcast')
                     )
                   }
                 </span>
@@ -621,6 +630,7 @@ export default function ProjectUpdateForm({
           </div>
         </form>
       </div>
+    </div>
 
       {/* Phase 3: Preview Modal */}
       <UpdatePreviewModal

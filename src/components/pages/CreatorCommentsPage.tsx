@@ -19,6 +19,7 @@ import { useCreatorComments } from '../../hooks/useCreatorComments';
 import CommentsStatsCard from '../creator/CommentsStatsCard';
 import CommentCard from '../creator/CommentCard';
 import LoadingSpinner from '../common/LoadingSpinner';
+import PageTitle from '../common/PageTitle';
 import toast from 'react-hot-toast';
 
 type FilterStatus = 'all' | 'unreplied' | 'replied';
@@ -239,129 +240,142 @@ export default function CreatorCommentsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
-            {/* Header - Full width like Dashboard */}
-            <div className="bg-[#111] border-b border-neutral-800">
-                <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
+            {/* Dynamic Page Title */}
+            <PageTitle title="Comments" description="Manage dialogues with your supporters" />
+
+            <div className="w-full px-4 sm:px-6 lg:px-8">
+                {/* Header - Broadcast/Dialogue Mode Style */}
+                <div className="mb-12">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                         <div>
-                            <h1 className="text-3xl font-bold text-brand-white flex items-center gap-3">
-                                <MessageSquare className="w-8 h-8 text-orange-500" />
-                                Comment Inbox
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                                    <MessageSquare className="w-8 h-8 text-brand-orange" />
+                                </div>
+                                <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                                    Dialogue Mode
+                                </span>
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+                                Comment <span className="text-brand-acid">Inbox</span>
                             </h1>
-                            <p className="text-neutral-400 mt-1">
+                            <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl leading-relaxed">
                                 {isFilteringByProject
-                                    ? `Showing comments for: ${selectedProject?.title}`
-                                    : 'Manage and respond to supporter comments across all projects'
+                                    ? <>Managing interaction for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
+                                    : 'Forge deeper connections and build trust through direct supporter interaction.'
                                 }
                             </p>
                         </div>
+
                         <button
                             onClick={handleRefresh}
                             disabled={loading}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-700 rounded-2xl hover:bg-brand-black transition-colors disabled:opacity-50"
+                            className="flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-brand-white rounded-2xl font-black italic uppercase tracking-wider hover:bg-white/10 transition-all active:scale-95 disabled:opacity-50 group mb-2"
                         >
-                            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                            Refresh
+                            <RefreshCw className={`w-5 h-5 text-brand-acid ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+                            <span>Refresh Inbox</span>
                         </button>
                     </div>
                 </div>
-            </div>
-
-            {/* Main Content - Full width */}
-            <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
                 {/* Stats Card */}
                 <CommentsStatsCard stats={currentStats} loading={loading} />
 
-                {/* Filters - Full width */}
-                <div className="bg-[#111] rounded-3xl border border-neutral-800 p-4 mb-6">
-                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                {/* Filters - Glassmorphism */}
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 mb-8 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center relative z-10">
                         {/* Status Tabs */}
-                        <div className="flex items-center bg-neutral-900 rounded-2xl p-1">
+                        <div className="flex items-center bg-brand-black/50 border border-white/5 rounded-2xl p-1.5">
                             <button
                                 onClick={() => setFilterStatus('all')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${filterStatus === 'all' ? 'bg-[#111] text-brand-white shadow-sm' : 'text-neutral-400 hover:text-brand-white'
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black italic uppercase tracking-widest transition-all ${filterStatus === 'all' ? 'bg-brand-acid text-brand-black shadow-lg' : 'text-neutral-500 hover:text-brand-white'
                                     }`}
                             >
                                 All
                             </button>
                             <button
                                 onClick={() => setFilterStatus('unreplied')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'unreplied' ? 'bg-[#111] text-red-400 shadow-sm' : 'text-neutral-400 hover:text-brand-white'
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black italic uppercase tracking-widest transition-all flex items-center gap-2 ${filterStatus === 'unreplied' ? 'bg-brand-orange text-brand-white shadow-lg' : 'text-neutral-500 hover:text-brand-white'
                                     }`}
                             >
-                                <AlertCircle className="w-3.5 h-3.5" />
+                                <AlertCircle className="w-4 h-4" />
                                 Unreplied
                                 {currentStats.unreplied > 0 && (
-                                    <span className="bg-red-100 text-red-400 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${filterStatus === 'unreplied' ? 'bg-brand-white text-brand-orange' : 'bg-brand-orange text-brand-white'}`}>
                                         {currentStats.unreplied}
                                     </span>
                                 )}
                             </button>
                             <button
                                 onClick={() => setFilterStatus('replied')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${filterStatus === 'replied' ? 'bg-[#111] text-green-400 shadow-sm' : 'text-neutral-400 hover:text-brand-white'
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black italic uppercase tracking-widest transition-all flex items-center gap-2 ${filterStatus === 'replied' ? 'bg-brand-acid text-brand-black shadow-lg' : 'text-neutral-500 hover:text-brand-white'
                                     }`}
                             >
-                                <CheckCircle className="w-3.5 h-3.5" />
+                                <CheckCircle className="w-4 h-4" />
                                 Replied
                             </button>
                         </div>
 
-                        {/* Sort Dropdown */}
-                        <div className="relative">
-                            <button
-                                onClick={() => setShowSortDropdown(!showSortDropdown)}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-brand-black border border-neutral-800 rounded-2xl hover:bg-neutral-900 transition-colors"
-                            >
-                                <ArrowUpDown className="w-4 h-4 text-neutral-500" />
-                                <span className="text-neutral-300">{currentSortLabel}</span>
-                                <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
-                            </button>
-
-                            {showSortDropdown && (
-                                <>
-                                    <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
-                                    <div className="absolute top-full left-0 mt-2 bg-[#111] border border-neutral-800 rounded-2xl shadow-lg z-20 min-w-[150px]">
-                                        {sortOptions.map(option => {
-                                            const Icon = option.icon;
-                                            return (
-                                                <button
-                                                    key={option.value}
-                                                    onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
-                                                    className={`w-full text-left px-4 py-2 hover:bg-brand-black flex items-center gap-2 ${sortOption === option.value ? 'bg-brand-orange/10 text-brand-orange' : ''}`}
-                                                >
-                                                    <Icon className="w-4 h-4" />
-                                                    {option.label}
-                                                </button>
-                                            );
-                                        })}
+                        <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                            {/* Sort Dropdown */}
+                            <div className="relative w-full sm:w-auto">
+                                <button
+                                    onClick={() => setShowSortDropdown(!showSortDropdown)}
+                                    className="w-full sm:w-auto flex items-center justify-between gap-4 px-6 py-3 bg-brand-black/50 border border-white/10 rounded-2xl hover:border-brand-acid transition-all group/sort"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <ArrowUpDown className="w-4 h-4 text-brand-acid" />
+                                        <span className="text-xs font-bold uppercase tracking-widest text-neutral-300">{currentSortLabel}</span>
                                     </div>
-                                </>
-                            )}
-                        </div>
+                                    <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
+                                </button>
 
-                        {/* Search - Grows to fill space */}
-                        <div className="relative flex-1 max-w-md">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search comments..."
-                                className="w-full pl-10 pr-4 py-2.5 border border-neutral-800 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid"
-                            />
-                            {searchQuery && debouncedSearchQuery !== searchQuery && (
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                                    <LoadingSpinner size="sm" />
-                                </div>
-                            )}
+                                {showSortDropdown && (
+                                    <>
+                                        <div className="fixed inset-0 z-10" onClick={() => setShowSortDropdown(false)} />
+                                        <div className="absolute top-full left-0 mt-3 w-48 bg-brand-black border border-white/10 rounded-2xl shadow-2xl z-20 py-2 overflow-hidden">
+                                            {sortOptions.map(option => {
+                                                const Icon = option.icon;
+                                                return (
+                                                    <button
+                                                        key={option.value}
+                                                        onClick={() => { setSortOption(option.value); setShowSortDropdown(false); }}
+                                                        className={`w-full text-left px-5 py-3 hover:bg-white/5 flex items-center gap-3 text-[10px] font-black uppercase tracking-widest transition-colors ${sortOption === option.value ? 'text-brand-acid' : 'text-neutral-400'}`}
+                                                    >
+                                                        <Icon className="w-4 h-4" />
+                                                        {option.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Search */}
+                            <div className="relative flex-1 w-full lg:min-w-[400px]">
+                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-600" />
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Search broadcasts..."
+                                    className="w-full pl-14 pr-6 py-3.5 bg-brand-black/50 border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-600 transition-all font-medium"
+                                />
+                                {searchQuery && debouncedSearchQuery !== searchQuery && (
+                                    <div className="absolute right-5 top-1/2 -translate-y-1/2">
+                                        <LoadingSpinner size="sm" />
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Results Info */}
                         {filteredComments.length > 0 && (
-                            <span className="text-sm text-neutral-500 whitespace-nowrap">
-                                {filteredComments.length} {filteredComments.length === 1 ? 'comment' : 'comments'}
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 whitespace-nowrap ml-auto">
+                                <span className="text-brand-acid">{filteredComments.length}</span> Results
                             </span>
                         )}
                     </div>
@@ -370,51 +384,57 @@ export default function CreatorCommentsPage() {
                 {/* Comments List - Full width grid */}
                 <div className="space-y-4">
                     {paginatedComments.length === 0 ? (
-                        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-12 text-center">
+                        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-20 text-center relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-b from-brand-acid/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             {stats.total === 0 ? (
                                 // No comments at all
-                                <>
-                                    <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <MessageSquare className="w-8 h-8 text-neutral-600" />
+                                <div className="relative z-10">
+                                    <div className="w-24 h-24 bg-brand-acid/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-brand-acid/20">
+                                        <MessageSquare className="w-10 h-10 text-brand-acid" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-brand-white mb-2">No Comments Yet</h3>
-                                    <p className="text-neutral-400 mb-4">
-                                        Comments from your supporters will appear here.<br />
-                                        Share your project to get more engagement!
+                                    <h3 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white mb-4">
+                                        Inbox <span className="text-brand-acid">Zero</span>
+                                    </h3>
+                                    <p className="text-lg text-neutral-500 max-w-md mx-auto font-medium mb-8">
+                                        Your dialogue hasn't started yet. Share your updates to spark conversations with your circle.
                                     </p>
                                     <Link
                                         to="/dashboard/projects"
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/100 text-white rounded-2xl hover:bg-[#b3e600] transition-colors"
+                                        className="inline-flex items-center gap-3 px-8 py-4 bg-brand-orange text-brand-white rounded-2xl font-black italic uppercase tracking-widest text-xs hover:bg-orange-600 transition-all shadow-[0_0_20px_rgba(255,91,0,0.2)]"
                                     >
                                         <ExternalLink className="w-4 h-4" />
-                                        View Projects
+                                        Expand Outreach
                                     </Link>
-                                </>
+                                </div>
                             ) : filterStatus === 'unreplied' && currentStats.unreplied === 0 ? (
                                 // All caught up
-                                <>
-                                    <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <CheckCircle className="w-8 h-8 text-green-500" />
+                                <div className="relative z-10">
+                                    <div className="w-24 h-24 bg-brand-acid/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-brand-acid/20 shadow-[0_0_20px_rgba(204,255,0,0.1)]">
+                                        <CheckCircle className="w-10 h-10 text-brand-acid" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-brand-white mb-2">All Caught Up! 🎉</h3>
-                                    <p className="text-neutral-400">
-                                        You've replied to all comments. Great engagement!
+                                    <h3 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white mb-4">
+                                        Peak <span className="text-brand-acid">Engagement</span>
+                                    </h3>
+                                    <p className="text-lg text-neutral-500 max-w-md mx-auto font-medium">
+                                        You've closed the loop on all supporter dialogues. Your response rate is elite.
                                     </p>
-                                </>
+                                </div>
                             ) : (
                                 // No results for filter
-                                <>
-                                    <div className="w-16 h-16 bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Search className="w-8 h-8 text-neutral-600" />
+                                <div className="relative z-10">
+                                    <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/10">
+                                        <Search className="w-10 h-10 text-neutral-500" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-brand-white mb-2">No Comments Found</h3>
-                                    <p className="text-neutral-400">
+                                    <h3 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white mb-4">
+                                        Search <span className="text-neutral-500">Silent</span>
+                                    </h3>
+                                    <p className="text-lg text-neutral-500 max-w-md mx-auto font-medium">
                                         {isFilteringByProject
-                                            ? `No comments match your search for "${selectedProject?.title}".`
-                                            : 'Try adjusting your filters or search query.'
+                                            ? `No dialogues matching your search for this project.`
+                                            : 'No results found for your current filter parameters.'
                                         }
                                     </p>
-                                </>
+                                </div>
                             )}
                         </div>
                     ) : (
@@ -433,17 +453,17 @@ export default function CreatorCommentsPage() {
                                 ))}
                             </div>
 
-                            {/* Load More Button */}
-                            {displayCount < filteredComments.length && (
-                                <div className="text-center pt-4">
-                                    <button
-                                        onClick={handleLoadMore}
-                                        className="px-6 py-3 bg-[#111] border border-neutral-700 rounded-2xl text-neutral-300 font-medium hover:bg-brand-black transition-colors"
-                                    >
-                                        Load More ({filteredComments.length - displayCount} remaining)
-                                    </button>
-                                </div>
-                            )}
+                             {/* Load More Button */}
+                             {displayCount < filteredComments.length && (
+                                 <div className="text-center pt-8">
+                                     <button
+                                         onClick={handleLoadMore}
+                                         className="px-10 py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black italic uppercase tracking-[0.2em] text-brand-acid hover:bg-brand-acid hover:text-brand-black transition-all active:scale-95 shadow-xl"
+                                     >
+                                         Sync More Dialogue ({filteredComments.length - displayCount})
+                                     </button>
+                                 </div>
+                             )}
                         </>
                     )}
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TrendingUp, Heart, Rocket, Zap } from 'lucide-react';
+import { TrendingUp, Heart, Rocket, Zap, Activity } from 'lucide-react';
 import { useRecentActivities, usePlatformSettings } from '../../hooks/useLandingPage';
 
 export default function LiveTicker() {
@@ -33,7 +33,7 @@ export default function LiveTicker() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'support':
-        return <Heart className="w-4 h-4" fill="currentColor" />;
+        return <Heart className="w-4 h-4" />;
       case 'milestone':
         return <TrendingUp className="w-4 h-4" />;
       case 'project_launched':
@@ -43,87 +43,92 @@ export default function LiveTicker() {
     }
   };
 
-  const getColor = (type: string) => {
+  const getAccent = (type: string) => {
     switch (type) {
       case 'support':
-        return 'from-pink-500 to-red-500';
+        return 'text-brand-orange border-brand-orange/30 bg-brand-orange/10';
       case 'milestone':
-        return 'from-green-500 to-emerald-500';
+        return 'text-brand-acid border-brand-acid/30 bg-brand-acid/10';
       case 'project_launched':
-        return 'from-blue-500 to-indigo-500';
+        return 'text-brand-acid border-brand-acid/30 bg-brand-acid/10';
       default:
-        return 'from-purple-500 to-pink-500';
+        return 'text-brand-white border-white/30 bg-white/10';
     }
   };
 
   const formatTime = (timestamp: any) => {
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     const now = new Date();
-    const diff = Math.floor((now.getTime() - date.getTime()) / 1000); // seconds
+    const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff < 60) return 'JUST NOW';
+    if (diff < 3600) return `${Math.floor(diff / 60)}M AGO`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}H AGO`;
+    return `${Math.floor(diff / 86400)}D AGO`;
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-        <div
-          className="pointer-events-auto bg-white/95 backdrop-blur-lg rounded-full shadow-2xl border border-gray-200 px-6 py-3 hover:scale-105 transition-all duration-300 cursor-pointer"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div className="flex items-center justify-between gap-4">
-            {/* Live Indicator */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <div className="relative">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-              </div>
-              <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                Live
-              </span>
+    <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 w-full max-w-4xl px-4 pointer-events-none">
+      <div
+        className="pointer-events-auto group relative bg-brand-black/80 backdrop-blur-3xl rounded-[2rem] border border-white/10 p-2 pl-6 shadow-[0_30px_60px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 hover:border-brand-acid/30 hover:scale-[1.02]"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Glow Effect */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+        <div className="flex items-center justify-between gap-6">
+          {/* Live Pulse */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="relative">
+              <div className="w-2.5 h-2.5 bg-brand-acid rounded-full shadow-[0_0_10px_rgba(204,255,0,0.8)]"></div>
+              <div className="absolute inset-0 w-2.5 h-2.5 bg-brand-acid rounded-full animate-ping"></div>
+            </div>
+            <span className="text-[10px] font-black text-brand-white uppercase tracking-[0.4em] italic">
+              LIVE <span className="text-brand-acid">FEED</span>
+            </span>
+          </div>
+
+          {/* Activity Stream */}
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            {/* Icon */}
+            <div className={`flex-shrink-0 w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-500 ${getAccent(currentActivity.type)}`}>
+              {getIcon(currentActivity.type)}
             </div>
 
-            {/* Activity Content */}
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              {/* Icon */}
-              <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${getColor(currentActivity.type)} text-white flex items-center justify-center shadow-lg`}>
-                {getIcon(currentActivity.type)}
-              </div>
-
-              {/* Message */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 truncate">
-                  {currentActivity.message}
-                </p>
-              </div>
-
-              {/* Time */}
-              <div className="flex-shrink-0 text-xs text-gray-500">
-                {formatTime(currentActivity.timestamp)}
-              </div>
+            {/* Message Narrative */}
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-black text-brand-white uppercase tracking-wider italic truncate">
+                {currentActivity.message.toUpperCase()}
+              </p>
             </div>
 
-            {/* Progress Dots */}
-            <div className="hidden sm:flex items-center gap-1 flex-shrink-0">
-              {activities.slice(0, 5).map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1.5 rounded-full transition-all ${
-                    index === currentIndex % 5
-                      ? 'w-6 bg-gradient-to-r from-orange-500 to-red-500'
-                      : 'w-1.5 bg-gray-300'
-                  }`}
-                />
-              ))}
+            {/* Telemetry Time */}
+            <div className="flex-shrink-0 text-[9px] font-black text-neutral-600 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+              {formatTime(currentActivity.timestamp)}
             </div>
+          </div>
+
+          {/* Registry Progress */}
+          <div className="hidden sm:flex items-center gap-1.5 px-4 flex-shrink-0 border-l border-white/10">
+            {activities.slice(0, 8).map((_, index) => (
+              <div
+                key={index}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  index === currentIndex % activities.length
+                    ? 'w-8 bg-brand-acid shadow-[0_0_10px_rgba(204,255,0,0.5)]'
+                    : 'w-2 bg-white/10'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* System Control Icon */}
+          <div className="p-3 bg-brand-acid text-brand-black rounded-[1.5rem] flex-shrink-0 shadow-lg">
+            <Activity className="w-4 h-4 animate-pulse" />
           </div>
         </div>
       </div>
     </div>
   );
 }
-
