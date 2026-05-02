@@ -446,13 +446,7 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                     <span>Sync Intel</span>
                 </button>
 
-                <button
-                    onClick={() => navigate('/dashboard/projects/create')}
-                    className="flex items-center gap-3 px-8 py-4 bg-brand-acid text-brand-black rounded-2xl font-black italic uppercase tracking-wider hover:bg-brand-acid shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all transform hover:scale-105 active:scale-95"
-                >
-                    <Plus className="w-5 h-5" />
-                    <span>New Project</span>
-                </button>
+
             </div>
           </div>
         </div>
@@ -589,7 +583,7 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
           {/* Revenue Chart & Milestones - Responsive */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              {user?.uid && <RevenueChart creatorId={user.uid} />}
+              {user?.uid && <RevenueChart creatorId={user.uid} hasProjects={userProjects.length > 0} />}
             </div>
             <div className="space-y-6">
               <ProjectMilestones

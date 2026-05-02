@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
     MessageSquare, ThumbsUp, ThumbsDown, ChevronDown, ChevronUp,
-    Heart, Edit3, MoreVertical, Trash2, SortAsc
+    Heart, Edit3, MoreVertical, Trash2, SortAsc, Send, Zap, MessageCircle
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUpdateComments } from '../../hooks/useUpdateComments';
@@ -32,17 +32,12 @@ const formatTimeAgo = (timestamp: any) => {
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
-        const diffWeeks = Math.floor(diffDays / 7);
-        const diffMonths = Math.floor(diffDays / 30);
-        const diffYears = Math.floor(diffDays / 365);
 
-        if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins} min ago`;
-        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-        if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
-        if (diffMonths < 12) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
-        return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+        if (diffMins < 1) return 'NOW';
+        if (diffMins < 60) return `${diffMins}M`;
+        if (diffHours < 24) return `${diffHours}H`;
+        if (diffDays < 7) return `${diffDays}D`;
+        return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }).toUpperCase();
     } catch {
         return '';
     }
@@ -60,34 +55,34 @@ interface ReplyFormProps {
 
 function ReplyForm({ user, replyContent, setReplyContent, onSubmit, onCancel, isSubmitting }: ReplyFormProps) {
     return (
-        <div className="flex gap-3 mt-3">
+        <div className="flex gap-4 mt-6 bg-white/[0.02] border border-white/5 p-4 rounded-[1.5rem]">
             <img
                 src={(user as any)?.profileImage || user?.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || 'U')}&background=f97316&color=fff`}
                 alt=""
-                className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+                className="w-8 h-8 rounded-full object-cover flex-shrink-0 border border-white/10"
             />
             <div className="flex-1">
                 <input
                     type="text"
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
-                    placeholder="Add a reply..."
-                    className="w-full px-0 py-1 border-b border-white/10 focus:border-brand-acid text-sm focus:outline-none bg-transparent transition-colors text-brand-white"
+                    placeholder="INITIATE REPLY..."
+                    className="w-full px-0 py-2 border-b border-white/10 focus:border-brand-acid text-xs font-bold focus:outline-none bg-transparent transition-colors text-brand-white placeholder-neutral-600"
                     autoFocus
                 />
-                <div className="flex justify-end gap-2 mt-2">
+                <div className="flex justify-end gap-3 mt-4">
                     <button
                         onClick={onCancel}
-                        className="px-3 py-1.5 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
+                        className="px-5 py-2 text-[9px] font-black italic uppercase tracking-widest text-neutral-500 hover:text-brand-white transition-colors"
                     >
-                        Cancel
+                        ABORT
                     </button>
                     <button
                         onClick={onSubmit}
                         disabled={isSubmitting || !replyContent.trim()}
-                        className="px-4 py-1.5 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-2 text-[9px] font-black italic uppercase tracking-widest text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-xl transition-all disabled:opacity-50"
                     >
-                        {isSubmitting ? 'Posting...' : 'Reply'}
+                        {isSubmitting ? 'ENCRYPTING...' : 'DISPATCH'}
                     </button>
                 </div>
             </div>
@@ -147,65 +142,39 @@ export default function UpdateComments({
 
     const isCreator = user?.uid === creatorId;
 
-    // Sort comments based on selected order
+    // Sort comments
     const sortedComments = useMemo(() => {
         const sorted = [...topLevelComments];
         switch (sortOrder) {
             case 'oldest':
-                return sorted.sort((a, b) =>
-                    convertTimestamp(a.createdAt).getTime() - convertTimestamp(b.createdAt).getTime()
-                );
+                return sorted.sort((a, b) => convertTimestamp(a.createdAt).getTime() - convertTimestamp(b.createdAt).getTime());
             case 'popular':
-                return sorted.sort((a, b) =>
-                    ((b.likes || 0) + (getReplies(b.id).length * 2)) -
-                    ((a.likes || 0) + (getReplies(a.id).length * 2))
-                );
+                return sorted.sort((a, b) => ((b.likes || 0) + (getReplies(b.id).length * 2)) - ((a.likes || 0) + (getReplies(a.id).length * 2)));
             case 'newest':
             default:
-                return sorted.sort((a, b) =>
-                    convertTimestamp(b.createdAt).getTime() - convertTimestamp(a.createdAt).getTime()
-                );
+                return sorted.sort((a, b) => convertTimestamp(b.createdAt).getTime() - convertTimestamp(a.createdAt).getTime());
         }
     }, [topLevelComments, sortOrder, getReplies]);
 
-    // Auto-refresh every 30 seconds when expanded
+    // Refresh interval
     useEffect(() => {
         if (!isExpanded) return;
-        const interval = setInterval(() => {
-            refetch();
-        }, 30000);
+        const interval = setInterval(() => refetch(), 60000);
         return () => clearInterval(interval);
     }, [isExpanded, refetch]);
-
-    // Close menu when clicking outside
-    useEffect(() => {
-        const handleClickOutside = () => setMenuOpenId(null);
-        if (menuOpenId) {
-            document.addEventListener('click', handleClickOutside);
-            return () => document.removeEventListener('click', handleClickOutside);
-        }
-    }, [menuOpenId]);
 
     const toggleRepliesVisibility = (commentId: string) => {
         setExpandedReplies(prev => {
             const newSet = new Set(prev);
-            if (newSet.has(commentId)) {
-                newSet.delete(commentId);
-            } else {
-                newSet.add(commentId);
-            }
+            if (newSet.has(commentId)) newSet.delete(commentId);
+            else newSet.add(commentId);
             return newSet;
         });
     };
 
     const handleSubmitComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user) {
-            toast.error('Please sign in to comment');
-            return;
-        }
-        if (!newComment.trim()) return;
-
+        if (!user || !newComment.trim()) return;
         try {
             setIsSubmitting(true);
             await addComment({
@@ -226,7 +195,6 @@ export default function UpdateComments({
 
     const handleSubmitReply = async (parentId: string) => {
         if (!user || !replyContent.trim()) return;
-
         try {
             setIsSubmitting(true);
             await addComment({
@@ -239,7 +207,6 @@ export default function UpdateComments({
             });
             setReplyContent('');
             setReplyingToParentId(null);
-            // Auto-expand replies for this comment
             setExpandedReplies(prev => new Set(prev).add(parentId));
         } catch (error) {
             console.error('Error posting reply:', error);
@@ -250,24 +217,8 @@ export default function UpdateComments({
 
     const openReplyForm = (parentId: string, mentionUser?: string) => {
         setReplyingToParentId(parentId);
-        if (mentionUser) {
-            setReplyContent(`@${mentionUser.replace(/\s+/g, '')} `);
-        } else {
-            setReplyContent('');
-        }
-        // Auto-expand replies when opening reply form
+        setReplyContent(mentionUser ? `@${mentionUser.replace(/\s+/g, '')} ` : '');
         setExpandedReplies(prev => new Set(prev).add(parentId));
-    };
-
-    const handleStartEdit = (comment: FirestoreUpdateComment) => {
-        setEditingCommentId(comment.id);
-        setEditContent(comment.content);
-        setMenuOpenId(null);
-    };
-
-    const handleCancelEdit = () => {
-        setEditingCommentId(null);
-        setEditContent('');
     };
 
     const handleSaveEdit = async (commentId: string) => {
@@ -276,18 +227,10 @@ export default function UpdateComments({
             await updateComment(commentId, editContent.trim());
             setEditingCommentId(null);
             setEditContent('');
-        } catch (error) {
-            console.error('Error saving edit:', error);
-        }
+        } catch (error) { console.error('Error saving edit:', error); }
     };
 
-    const handleLike = async (commentId: string) => {
-        if (!user) {
-            toast.error('Please sign in to like comments');
-            return;
-        }
-        await likeComment(commentId, user.uid);
-    };
+    const displayCommentCount = (comments.length > 0 || loading) ? comments.length : initialCommentCount;
 
     const handleDelete = (commentId: string) => {
         setMenuOpenId(null);
@@ -302,35 +245,15 @@ export default function UpdateComments({
             await removeComment(pendingDeleteId);
             setDeleteModalOpen(false);
             setPendingDeleteId(null);
+            toast.success('Comment terminated');
         } catch (error) {
             console.error('Failed to delete:', error);
+            toast.error('Termination failed');
         } finally {
             setIsDeleting(false);
         }
     };
 
-    const handleHeart = async (comment: FirestoreUpdateComment) => {
-        if (!isCreator) return;
-        const hasHeart = comment.creatorHeart || false;
-
-        try {
-            setHeartingCommentId(comment.id);
-            await toggleHeart(
-                comment.id,
-                !hasHeart,
-                comment.userId,
-                user?.displayName || 'Creator'
-            );
-        } catch (error) {
-            console.error('Error toggling heart:', error);
-        } finally {
-            setHeartingCommentId(null);
-        }
-    };
-
-    const displayCommentCount = comments.length > 0 ? comments.length : initialCommentCount;
-
-    // Render a single comment
     const renderComment = (comment: FirestoreUpdateComment, isReply = false, parentId?: string) => {
         const isOwn = user?.uid === comment.userId;
         const isLiked = comment.likedBy?.includes(user?.uid || '');
@@ -342,197 +265,116 @@ export default function UpdateComments({
         const isRepliesExpanded = expandedReplies.has(comment.id);
 
         return (
-            <div key={comment.id} className={`${isReply ? 'ml-12' : ''}`}>
-                <div className="flex gap-3 py-2 group">
+            <div key={comment.id} className={`${isReply ? 'ml-12 md:ml-16' : ''}`}>
+                <div className="flex gap-4 py-6 group">
                     {/* Avatar */}
-                    {comment.userAvatar ? (
-                        <img
-                            src={comment.userAvatar}
-                            alt={comment.userName}
-                            className={`${isReply ? 'w-6 h-6' : 'w-10 h-10'} rounded-full object-cover flex-shrink-0`}
-                        />
-                    ) : (
-                        <div className={`${isReply ? 'w-6 h-6' : 'w-10 h-10'} bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center flex-shrink-0`}>
-                            <span className={`${isReply ? 'text-xs' : 'text-sm'} font-medium text-white`}>
-                                {comment.userName.charAt(0).toUpperCase()}
-                            </span>
-                        </div>
-                    )}
+                    <div className="relative flex-shrink-0">
+                        {comment.userAvatar ? (
+                            <img src={comment.userAvatar} alt="" className={`${isReply ? 'w-8 h-8' : 'w-12 h-12'} rounded-full object-cover ring-2 ring-white/10`} />
+                        ) : (
+                            <div className={`${isReply ? 'w-8 h-8' : 'w-12 h-12'} bg-white/5 border border-white/10 rounded-full flex items-center justify-center`}>
+                                <span className={`${isReply ? 'text-[10px]' : 'text-xs'} font-black text-neutral-400`}>{comment.userName.charAt(0).toUpperCase()}</span>
+                            </div>
+                        )}
+                        {comment.isCreatorComment && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-brand-acid rounded-full border-2 border-[#111] flex items-center justify-center"><Zap className="w-2 h-2 text-brand-black" /></div>}
+                    </div>
 
                     <div className="flex-1 min-w-0">
-                        {/* Username & Time */}
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`font-medium ${isReply ? 'text-xs' : 'text-sm'} text-brand-white`}>
-                                @{comment.userName.replace(/\s+/g, '')}
+                        {/* Meta */}
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            <span className={`font-black italic uppercase tracking-tight ${isReply ? 'text-xs' : 'text-sm'} text-brand-white`}>
+                                @{comment.userName.replace(/\s+/g, '').toUpperCase()}
                             </span>
                             {comment.isCreatorComment && (
-                                <span className="px-2 py-0.5 bg-brand-acid text-brand-black text-[10px] font-black uppercase tracking-wider rounded-full">
-                                    Creator
+                                <span className="px-2 py-0.5 bg-brand-acid/10 text-brand-acid text-[8px] font-black uppercase tracking-widest rounded-md border border-brand-acid/20">
+                                    CORE TEAM
                                 </span>
                             )}
-                            <span className="text-xs text-neutral-500">
+                            <span className="text-[9px] font-black text-neutral-500 uppercase tracking-widest">
                                 {formatTimeAgo(comment.createdAt)}
                             </span>
-                            {comment.isEdited && (
-                                <span className="text-xs text-gray-400">(edited)</span>
-                            )}
-
-                            {/* Creator Heart Badge */}
-                            {hasHeart && creatorAvatar && (
-                                <div className="flex items-center gap-1 ml-1" title="Loved by creator">
-                                    <div className="relative">
-                                        <img
-                                            src={creatorAvatar}
-                                            alt="Creator"
-                                            className="w-4 h-4 rounded-full object-cover border border-white"
-                                        />
-                                        <Heart className="w-2 h-2 text-red-500 fill-red-500 absolute -bottom-0.5 -right-0.5" />
-                                    </div>
-                                </div>
-                            )}
                         </div>
 
-                        {/* Content or Edit Form */}
+                        {/* Content */}
                         {isEditing ? (
-                            <div className="mt-2">
+                            <div className="mt-4 bg-white/5 p-4 rounded-2xl border border-brand-acid/20">
                                 <input
                                     type="text"
                                     value={editContent}
                                     onChange={(e) => setEditContent(e.target.value)}
-                                    className="w-full px-0 py-1 border-b-2 border-brand-acid text-sm focus:outline-none bg-transparent text-brand-white"
+                                    className="w-full px-0 py-1 border-b border-brand-acid text-sm focus:outline-none bg-transparent text-brand-white"
                                     autoFocus
                                 />
-                                <div className="flex justify-end gap-2 mt-2">
-                                    <button
-                                        onClick={handleCancelEdit}
-                                        className="px-3 py-1.5 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={() => handleSaveEdit(comment.id)}
-                                        disabled={!editContent.trim()}
-                                        className="px-4 py-1.5 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50"
-                                    >
-                                        Save
-                                    </button>
+                                <div className="flex justify-end gap-3 mt-4">
+                                    <button onClick={() => setEditingCommentId(null)} className="px-4 py-1.5 text-[9px] font-black italic uppercase text-neutral-500">ABORT</button>
+                                    <button onClick={() => handleSaveEdit(comment.id)} className="px-4 py-1.5 text-[9px] font-black italic uppercase text-brand-black bg-brand-acid rounded-lg">COMMIT</button>
                                 </div>
                             </div>
                         ) : (
-                            <p className={`${isReply ? 'text-xs' : 'text-sm'} text-neutral-300 mt-1 whitespace-pre-wrap`}>
+                            <p className={`${isReply ? 'text-xs' : 'text-sm'} text-neutral-400 font-medium leading-relaxed`}>
                                 {comment.content}
                             </p>
                         )}
 
-                        {/* Actions Row */}
+                        {/* Actions */}
                         {!isEditing && (
-                            <div className="flex items-center gap-1 mt-2">
-                                {/* Like Button */}
+                            <div className="flex items-center gap-6 mt-4">
                                 <button
-                                    onClick={() => handleLike(comment.id)}
-                                    disabled={!user}
-                                    className={`flex items-center gap-1 p-1.5 rounded-full hover:bg-white/10 transition-colors ${isLiked ? 'text-brand-acid' : 'text-neutral-500'
-                                        }`}
+                                    onClick={() => likeComment(comment.id, user?.uid || '')}
+                                    className={`flex items-center gap-2 group/like transition-all ${isLiked ? 'text-brand-acid' : 'text-neutral-500 hover:text-brand-white'}`}
                                 >
-                                    <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                                </button>
-                                {comment.likes > 0 && (
-                                    <span className="text-xs text-neutral-500 mr-1">{comment.likes}</span>
-                                )}
-
-                                {/* Dislike Button (visual only) */}
-                                <button className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-neutral-500">
-                                    <ThumbsDown className="w-4 h-4" />
+                                    <ThumbsUp className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''} group-hover/like:scale-110`} />
+                                    <span className="text-[10px] font-black">{comment.likes || 0}</span>
                                 </button>
 
-                                {/* Reply Button */}
                                 {user && (
                                     <button
-                                        onClick={() => {
-                                            if (isReply && parentId) {
-                                                // Reply to a reply - open form in parent with @mention
-                                                openReplyForm(parentId, comment.userName);
-                                            } else {
-                                                // Reply to top-level comment
-                                                openReplyForm(comment.id);
-                                            }
-                                        }}
-                                        className="px-3 py-1.5 text-xs font-black italic uppercase tracking-wider text-neutral-400 hover:text-brand-acid hover:bg-brand-acid/10 rounded-full transition-all ml-2"
+                                        onClick={() => openReplyForm(isReply && parentId ? parentId : comment.id, isReply ? comment.userName : undefined)}
+                                        className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 hover:text-brand-acid transition-colors"
                                     >
-                                        Reply
+                                        REPLY
                                     </button>
                                 )}
 
-                                {/* Heart Button (Creator only, not on own comments) */}
                                 {isCreator && !comment.isCreatorComment && (
                                     <button
-                                        onClick={() => handleHeart(comment)}
-                                        disabled={isHearting}
-                                        className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ml-1 ${hasHeart ? 'text-brand-orange' : 'text-neutral-500'
-                                            }`}
-                                        title={hasHeart ? 'Remove heart' : 'Give heart'}
+                                        onClick={() => toggleHeart(comment.id, !hasHeart, comment.userId, user?.displayName || 'Creator')}
+                                        className={`flex items-center gap-2 transition-all ${hasHeart ? 'text-brand-orange' : 'text-neutral-500 hover:text-brand-orange'}`}
                                     >
-                                        {isHearting ? (
-                                            <LoadingSpinner size="sm" />
-                                        ) : (
-                                            <Heart className={`w-4 h-4 ${hasHeart ? 'fill-current' : ''}`} />
-                                        )}
+                                        <Heart className={`w-3.5 h-3.5 ${hasHeart ? 'fill-current' : ''}`} />
                                     </button>
                                 )}
                             </div>
                         )}
 
-                        {/* Show/Hide Replies Toggle */}
+                        {/* Replies Toggle */}
                         {!isReply && replies.length > 0 && (
                             <button
                                 onClick={() => toggleRepliesVisibility(comment.id)}
-                                className="flex items-center gap-1 mt-2 px-3 py-1.5 text-xs font-black italic uppercase tracking-wider text-brand-acid hover:bg-brand-acid/10 rounded-full transition-all"
+                                className="flex items-center gap-3 mt-6 text-[9px] font-black italic uppercase tracking-[0.2em] text-brand-acid group/replies"
                             >
-                                {isRepliesExpanded ? (
-                                    <>
-                                        <ChevronUp className="w-4 h-4" />
-                                        Hide {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
-                                    </>
-                                ) : (
-                                    <>
-                                        <ChevronDown className="w-4 h-4" />
-                                        {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
-                                    </>
-                                )}
+                                <div className="h-px w-8 bg-brand-acid/20 group-hover/replies:w-12 transition-all"></div>
+                                {isRepliesExpanded ? `CLOSE ${replies.length} DEBATES` : `VIEW ${replies.length} DEBATES`}
+                                {isRepliesExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                             </button>
                         )}
                     </div>
 
-                    {/* Three-dot Menu */}
+                    {/* Menu */}
                     {(isOwn || isCreator) && !isEditing && (
-                        <div className="relative">
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setMenuOpenId(isMenuOpen ? null : comment.id);
-                                }}
-                                className="p-2 rounded-full hover:bg-gray-100 transition-colors opacity-0 group-hover:opacity-100"
-                            >
-                                <MoreVertical className="w-4 h-4 text-gray-600" />
+                        <div className="relative opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onClick={(e) => { e.stopPropagation(); setMenuOpenId(isMenuOpen ? null : comment.id); }} className="p-2 hover:bg-white/5 rounded-xl">
+                                <MoreVertical className="w-4 h-4 text-neutral-500" />
                             </button>
-
                             {isMenuOpen && (
-                                <div className="absolute right-0 top-8 w-36 bg-[#111] rounded-2xl shadow-2xl border border-white/10 py-1 z-20">
+                                <div className="absolute right-0 top-10 w-44 bg-[#0A0A0A] border border-white/10 rounded-2xl shadow-2xl py-2 z-20 overflow-hidden">
                                     {isOwn && (
-                                        <button
-                                            onClick={() => handleStartEdit(comment)}
-                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-neutral-300 hover:bg-white/5"
-                                        >
-                                            <Edit3 className="w-4 h-4" />
-                                            Edit
+                                        <button onClick={() => { setEditingCommentId(comment.id); setEditContent(comment.content); setMenuOpenId(null); }} className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black italic uppercase text-neutral-300 hover:bg-brand-acid hover:text-brand-black">
+                                            <Edit3 className="w-3.5 h-3.5" /> MODULATE
                                         </button>
                                     )}
-                                    <button
-                                        onClick={() => handleDelete(comment.id)}
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-brand-orange hover:bg-brand-orange/10"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                        Delete
+                                    <button onClick={() => handleDelete(comment.id)} className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black italic uppercase text-red-500 hover:bg-red-500 hover:text-white">
+                                        <Trash2 className="w-3.5 h-3.5" /> TERMINATE
                                     </button>
                                 </div>
                             )}
@@ -540,25 +382,22 @@ export default function UpdateComments({
                     )}
                 </div>
 
-                {/* Render Replies */}
+                {/* Replies Thread */}
                 {!isReply && isRepliesExpanded && replies.length > 0 && (
-                    <div className="border-l-2 border-gray-100 ml-5">
+                    <div className="border-l border-white/5 ml-6 pl-4 space-y-2">
                         {replies.map(reply => renderComment(reply, true, comment.id))}
                     </div>
                 )}
 
-                {/* Reply Form - shown inside the thread */}
+                {/* Reply Input */}
                 {!isReply && replyingToParentId === comment.id && (
-                    <div className={`${replies.length > 0 && isRepliesExpanded ? 'ml-12' : 'border-l-2 border-gray-100 ml-5 pl-7'} pb-2`}>
+                    <div className="ml-12 md:ml-16 pb-6">
                         <ReplyForm
                             user={user}
                             replyContent={replyContent}
                             setReplyContent={setReplyContent}
                             onSubmit={() => handleSubmitReply(comment.id)}
-                            onCancel={() => {
-                                setReplyingToParentId(null);
-                                setReplyContent('');
-                            }}
+                            onCancel={() => { setReplyingToParentId(null); setReplyContent(''); }}
                             isSubmitting={isSubmitting}
                         />
                     </div>
@@ -568,32 +407,38 @@ export default function UpdateComments({
     };
 
     return (
-        <div className={`${showBorder ? 'mt-4 pt-4 border-t border-gray-200' : ''}`}>
-            {/* Toggle Comments Button */}
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center gap-2 text-sm font-black italic uppercase tracking-wider text-neutral-300 hover:text-brand-acid transition-colors"
-            >
-                <MessageSquare className="w-5 h-5 text-brand-acid" />
-                <span>
-                    {displayCommentCount === 0
-                        ? 'Comments'
-                        : `${displayCommentCount.toLocaleString()} ${displayCommentCount === 1 ? 'Comment' : 'Comments'}`
-                    }
-                </span>
-                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
+        <div className="relative px-10 pt-10 pb-4">
+            {/* Toggle Comments Trigger - FIXED POSITIONING */}
+            <div className={isExpanded ? "mb-10" : "mb-6"}>
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className={`
+                        flex items-center gap-4 px-8 py-4 rounded-[1.5rem] border transition-all duration-500 group/trigger
+                        ${isExpanded 
+                            ? 'bg-brand-acid text-brand-black border-brand-acid shadow-[0_0_30px_rgba(204,255,0,0.2)]' 
+                            : 'bg-white/5 border-white/10 text-neutral-300 hover:border-brand-acid/40 hover:text-brand-acid'}
+                    `}
+                >
+                    <MessageCircle className={`w-5 h-5 ${isExpanded ? 'text-brand-black' : 'text-brand-acid'}`} />
+                    <span className="text-[11px] font-black italic uppercase tracking-[0.2em]">
+                        {displayCommentCount === 0 ? 'NO DEBATE INITIALIZED' : `${displayCommentCount} ACTIVE DEBATES`}
+                    </span>
+                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4 group-hover/trigger:translate-y-1 transition-transform" />}
+                </button>
+            </div>
 
-            {/* Expanded Comments Section */}
+            {/* Content Area */}
             {isExpanded && (
-                <div className={`mt-6 ${isCreatorView ? 'bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-6 -mx-2' : ''}`}>
-                    {/* Comment Input - YouTube style */}
+                <div className={`mt-8 animate-in fade-in slide-in-from-top-4 duration-500`}>
+                    {/* Primary Input */}
                     {user ? (
-                        <div className="flex gap-4 mb-8">
+                        <div className="flex gap-6 mb-12 bg-white/[0.02] border border-white/10 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group/input">
+                            <div className="absolute -top-12 -right-12 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl group-hover/input:bg-brand-acid/10 transition-colors"></div>
+                            
                             <img
-                                src={(user as any).profileImage || user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=f97316&color=fff`}
+                                src={(user as any).profileImage || user.photoURL || ''}
                                 alt=""
-                                className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-white/10"
+                                className="w-14 h-14 rounded-full object-cover ring-2 ring-brand-acid/20 flex-shrink-0"
                             />
                             <div className="flex-1">
                                 <input
@@ -601,89 +446,81 @@ export default function UpdateComments({
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
                                     onFocus={() => setIsFocused(true)}
-                                    placeholder="Add a comment..."
-                                    className="w-full px-0 py-2 border-b border-white/10 focus:border-brand-acid text-sm focus:outline-none bg-transparent transition-colors text-brand-white placeholder-neutral-600"
+                                    placeholder="INITIATE BROADCAST TO THE CORE..."
+                                    className="w-full px-0 py-4 border-b border-white/10 focus:border-brand-acid text-sm font-bold focus:outline-none bg-transparent transition-all text-brand-white placeholder-neutral-600"
                                     disabled={isSubmitting}
                                 />
                                 {(isFocused || newComment) && (
-                                    <div className="flex justify-end gap-2 mt-4">
+                                    <div className="flex justify-end gap-6 mt-8 animate-in fade-in zoom-in-95">
                                         <button
-                                            onClick={() => {
-                                                setNewComment('');
-                                                setIsFocused(false);
-                                            }}
-                                            className="px-5 py-2 text-sm font-medium text-neutral-400 hover:bg-white/5 rounded-full transition-colors"
+                                            onClick={() => { setNewComment(''); setIsFocused(false); }}
+                                            className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 hover:text-white transition-colors"
                                         >
-                                            Cancel
+                                            ABORT BROADCAST
                                         </button>
                                         <button
                                             onClick={handleSubmitComment}
                                             disabled={isSubmitting || !newComment.trim()}
-                                            className="px-6 py-2 text-sm font-black italic uppercase tracking-wider text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(204,255,0,0.2)]"
+                                            className="px-10 py-3.5 text-[10px] font-black italic uppercase tracking-widest text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-2xl transition-all shadow-xl hover:shadow-brand-acid/20 disabled:opacity-50"
                                         >
-                                            {isSubmitting ? 'Posting...' : 'Comment'}
+                                            {isSubmitting ? 'ENCRYPTING...' : 'DISPATCH'}
                                         </button>
                                     </div>
                                 )}
                             </div>
                         </div>
                     ) : (
-                        <p className="text-sm text-neutral-500 mb-4 ml-1">Sign in to comment</p>
+                        <div className="p-8 bg-white/5 border border-dashed border-white/10 rounded-[2.5rem] text-center mb-10">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-neutral-500">SIGN IN TO ACCESS CORE DEBATE PROTOCOLS</p>
+                        </div>
                     )}
 
-                    {/* Comments List */}
-                    {loading ? (
-                        <div className="flex justify-center py-8">
-                            <LoadingSpinner size="md" />
+                    {/* Stats & Sort */}
+                    {topLevelComments.length > 0 && (
+                        <div className="flex items-center justify-between mb-10 px-4">
+                            <div className="flex items-center gap-3">
+                                <div className="h-px w-10 bg-brand-acid"></div>
+                                <span className="text-[11px] font-black italic uppercase tracking-[0.2em] text-brand-white">DISPATCH LOG</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <SortAsc className="w-4 h-4 text-brand-acid" />
+                                <select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'popular')}
+                                    className="bg-transparent text-[10px] font-black uppercase tracking-widest text-neutral-400 focus:text-brand-white outline-none cursor-pointer"
+                                >
+                                    <option value="newest" className="bg-[#0A0A0A]">NEWEST FIRST</option>
+                                    <option value="oldest" className="bg-[#0A0A0A]">OLDEST FIRST</option>
+                                    <option value="popular" className="bg-[#0A0A0A]">POPULARITY</option>
+                                </select>
+                            </div>
                         </div>
+                    )}
+
+                    {/* Stream */}
+                    {loading ? (
+                        <div className="flex justify-center py-20"><LoadingSpinner size="lg" /></div>
                     ) : topLevelComments.length === 0 ? (
-                        <div className="text-center py-8">
-                            <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                            <p className="text-sm text-gray-500">No comments yet</p>
-                            <p className="text-xs text-gray-400 mt-1">Be the first to comment!</p>
+                        <div className="text-center py-24 bg-white/[0.01] border border-white/5 rounded-[3rem]">
+                            <MessageCircle className="w-12 h-12 text-neutral-800 mx-auto mb-6" />
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-600">NO ACTIVE DEBATE PROTOCOLS FOUND</p>
                         </div>
                     ) : (
-                        <>
-                            {/* Sort Controls */}
-                            {topLevelComments.length > 3 && (
-                                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                                    <span className="text-sm font-black italic uppercase tracking-wider text-neutral-500">
-                                        {topLevelComments.length} {topLevelComments.length === 1 ? 'comment' : 'comments'}
-                                    </span>
-                                    <div className="flex items-center gap-3">
-                                        <SortAsc className="w-4 h-4 text-brand-acid" />
-                                        <select
-                                            value={sortOrder}
-                                            onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'popular')}
-                                            className="text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-white/10 rounded-xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid bg-neutral-900 text-brand-white"
-                                        >
-                                            <option value="newest">Newest First</option>
-                                            <option value="oldest">Oldest First</option>
-                                            <option value="popular">Most Popular</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            )}
-                            <div className="space-y-4">
-                                {sortedComments.map((comment) => renderComment(comment))}
-                            </div>
-                        </>
+                        <div className="space-y-6 px-2">
+                            {sortedComments.map((comment) => renderComment(comment))}
+                        </div>
                     )}
                 </div>
             )}
 
-            {/* Delete Comment Confirmation Modal */}
             <ConfirmModal
                 isOpen={deleteModalOpen}
-                onClose={() => {
-                    setDeleteModalOpen(false);
-                    setPendingDeleteId(null);
-                }}
+                onClose={() => { setDeleteModalOpen(false); setPendingDeleteId(null); }}
                 onConfirm={handleConfirmDelete}
-                title="Delete Comment"
-                message="Are you sure you want to delete this comment? This action cannot be undone."
-                confirmText="Delete"
-                cancelText="Cancel"
+                title="TERMINATE DEBATE"
+                message="ARE YOU SURE YOU WANT TO PERMANENTLY TERMINATE THIS COMMENT PROTOCOL?"
+                confirmText="TERMINATE"
+                cancelText="ABORT"
                 variant="danger"
                 isLoading={isDeleting}
             />

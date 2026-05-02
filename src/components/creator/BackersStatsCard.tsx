@@ -153,7 +153,7 @@ export default function BackersStatsCard({
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {/* Total Raised */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(204,255,0,0.1)] hover:shadow-[0_0_50px_rgba(204,255,0,0.3)] hover:border-brand-acid/30">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div className="flex items-center justify-between mb-6">
@@ -186,7 +186,7 @@ export default function BackersStatsCard({
             </div>
 
             {/* Unique Backers */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden shadow-2xl">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(255,91,0,0.1)] hover:shadow-[0_0_50px_rgba(255,91,0,0.3)] hover:border-brand-orange/30">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div className="flex items-center justify-between mb-6">
@@ -216,7 +216,7 @@ export default function BackersStatsCard({
             </div>
 
             {/* Average Donation */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(204,255,0,0.1)] hover:shadow-[0_0_50px_rgba(204,255,0,0.3)] hover:border-brand-acid/30">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div className="flex items-center justify-between mb-6">
@@ -244,7 +244,7 @@ export default function BackersStatsCard({
             </div>
 
             {/* Loyalty / Repeat */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-brand-orange/30 p-8 hover:bg-white/10 transition-all group relative overflow-hidden shadow-[0_0_30px_rgba(255,91,0,0.1)]">
+            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-brand-orange/30 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(255,91,0,0.2)] hover:shadow-[0_0_50px_rgba(255,91,0,0.4)] hover:border-brand-orange">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div className="flex items-center justify-between mb-6">

@@ -439,8 +439,8 @@ export default function CreatorCommentsPage() {
                         </div>
                     ) : (
                         <>
-                            {/* Two column grid on larger screens */}
-                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                            {/* High-Density Comment Stream */}
+                            <div className="flex flex-col gap-0 bg-white/[0.01] border border-white/5 rounded-[2.5rem] overflow-hidden">
                                 {paginatedComments.map(comment => (
                                     <CommentCard
                                         key={comment.id}

@@ -314,16 +314,9 @@ export default function CreatorUpdatesPage() {
           
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 relative z-10">
             {/* Show selected project info from context */}
-            <div>
-              {selectedProjectId ? (
-                <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">Target Project</p>
-                  <p className="text-xl font-black text-brand-white italic tracking-tighter">
-                    {userProjects.find(p => p.id === selectedProjectId)?.title}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-sm font-black italic uppercase tracking-wider text-neutral-500">Select a project to broadcast</p>
+            <div className="flex-1">
+              {!selectedProjectId && (
+                <p className="text-sm font-black italic uppercase tracking-wider text-neutral-500">Select a project from the top navigation to broadcast</p>
               )}
             </div>
 

@@ -19,7 +19,6 @@ function CreatorNavbarContent() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
   
   const scrollRef = useHorizontalScroll();
 
@@ -109,31 +108,16 @@ function CreatorNavbarContent() {
                   <NotificationBell />
                   <RoleSwitcher className="scale-90" />
 
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="flex items-center gap-2.5 p-1 pr-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all active:scale-95 group"
-                    >
-                      <UserProfilePicture user={user} size="sm" className="w-7 h-7 rounded-full ring-1 ring-white/5 group-hover:ring-brand-acid/30" />
-                      <span className="hidden md:block text-[9px] font-black italic uppercase tracking-widest text-neutral-400 group-hover:text-brand-white">
-                        {getResponsiveName(user.displayName || 'USER')}
-                      </span>
-                      <ChevronDown className={`w-3.5 h-3.5 text-neutral-600 transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {showUserMenu && (
-                      <div className="absolute right-0 mt-4 w-48 bg-brand-black/95 backdrop-blur-3xl rounded-[2rem] shadow-2xl border border-white/10 py-3 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                        <Link
-                          to="/profile"
-                          className="flex items-center gap-3 px-6 py-3.5 text-[9px] font-black italic uppercase tracking-widest text-neutral-400 hover:bg-brand-acid hover:text-brand-black transition-all"
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          <User className="w-4 h-4" />
-                          <span>AUDIT PROFILE</span>
-                        </Link>
-                      </div>
-                    )}
-                  </div>
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2.5 p-1 pr-6 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all active:scale-95 group"
+                  >
+                    <UserProfilePicture user={user} size="sm" className="w-7 h-7 rounded-full ring-1 ring-white/5 group-hover:ring-brand-acid/30" />
+                    <span className="hidden md:block text-[9px] font-black italic uppercase tracking-widest text-neutral-400 group-hover:text-brand-white">
+                      {getResponsiveName(user.displayName || 'USER')}
+                    </span>
+                    <Settings className="w-3.5 h-3.5 text-neutral-600 group-hover:text-brand-acid transition-colors" />
+                  </Link>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">

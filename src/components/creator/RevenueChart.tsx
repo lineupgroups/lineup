@@ -6,6 +6,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 interface RevenueChartProps {
     creatorId: string;
+    hasProjects?: boolean;
 }
 
 type DateRange = 7 | 14 | 30;
@@ -17,7 +18,7 @@ type DateRange = 7 | 14 | 30;
  * - Project context aware
  * - Premium bar chart with visible grid lines
  */
-export default function RevenueChart({ creatorId }: RevenueChartProps) {
+export default function RevenueChart({ creatorId, hasProjects = false }: RevenueChartProps) {
     const [dateRange, setDateRange] = useState<DateRange>(7);
     const { revenueData, loading } = useDailyRevenue(creatorId, dateRange);
     const { selectedProjectId: _selectedProjectId, selectedProject } = useProjectContext();
@@ -235,13 +236,15 @@ export default function RevenueChart({ creatorId }: RevenueChartProps) {
                             Your earnings chart will show here once backers support your projects.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                            <a
-                                href="/dashboard/projects/create"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-acid text-brand-black text-sm font-bold rounded-xl hover:bg-[#b3e600] transition-colors"
-                            >
-                                <Rocket className="w-4 h-4" />
-                                Create a Project
-                            </a>
+                            {!hasProjects && (
+                                <a
+                                    href="/dashboard/projects/create"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-acid text-brand-black text-sm font-bold rounded-xl hover:bg-[#b3e600] transition-colors"
+                                >
+                                    <Rocket className="w-4 h-4" />
+                                    Create a Project
+                                </a>
+                            )}
                             <a
                                 href="/dashboard/analytics"
                                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-neutral-900 border border-neutral-800 text-brand-white text-sm font-bold rounded-xl hover:bg-neutral-800 transition-colors"
