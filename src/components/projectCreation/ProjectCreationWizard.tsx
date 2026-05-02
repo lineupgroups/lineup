@@ -292,10 +292,10 @@ export default function ProjectCreationWizard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
-          <p className="text-gray-600">You need to be logged in to create a project.</p>
+          <h2 className="text-2xl font-black italic uppercase tracking-wider text-brand-white mb-4">Please Sign In</h2>
+          <p className="text-neutral-400">You need to be logged in to create a project.</p>
         </div>
       </div>
     );
@@ -303,49 +303,48 @@ export default function ProjectCreationWizard() {
 
   if (kycLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading KYC data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-acid mx-auto mb-4"></div>
+          <p className="text-neutral-400">Loading KYC data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-brand-black py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Progress Indicator */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-[#111] rounded-3xl border border-neutral-800 p-6 mb-8">
           <div className="flex items-center justify-between">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentStep > step.number
-                    ? 'bg-green-500'
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500 ${currentStep > step.number
+                    ? 'bg-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.4)]'
                     : currentStep === step.number
-                      ? 'bg-orange-500'
-                      : 'bg-gray-200'
+                      ? 'bg-brand-orange scale-110 shadow-[0_0_20px_rgba(255,91,0,0.3)]'
+                      : 'bg-neutral-900 border-2 border-neutral-800'
                     }`}>
                     {currentStep > step.number ? (
-                      <CheckCircle className="w-6 h-6 text-white" />
+                      <CheckCircle className="w-6 h-6 text-brand-black" />
                     ) : (
-                      <span className={`text-lg font-bold ${currentStep === step.number ? 'text-white' : 'text-gray-600'
+                      <span className={`text-lg font-black ${currentStep === step.number ? 'text-brand-black' : 'text-neutral-500'
                         }`}>
                         {step.number}
                       </span>
                     )}
                   </div>
-                  <div className="mt-2 text-center">
-                    <div className={`text-sm font-medium ${currentStep >= step.number ? 'text-gray-900' : 'text-gray-500'
+                  <div className="mt-4 text-center">
+                    <div className={`text-[10px] font-black italic uppercase tracking-[0.2em] ${currentStep > step.number ? 'text-brand-acid' : currentStep === step.number ? 'text-brand-orange' : 'text-neutral-600'
                       }`}>
                       {step.label}
                     </div>
-                    <div className="text-xs text-gray-500">{step.description}</div>
                   </div>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className={`flex-1 h-1 mx-4 rounded transition-all ${currentStep > step.number ? 'bg-green-500' : 'bg-gray-200'
+                  <div className={`flex-1 h-[2px] mx-6 transition-all duration-500 ${currentStep > step.number ? 'bg-brand-acid' : 'bg-neutral-800'
                     }`} />
                 )}
               </div>
@@ -354,7 +353,7 @@ export default function ProjectCreationWizard() {
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-xl shadow-sm p-8">
+        <div className="bg-[#111] rounded-[2.5rem] border-2 border-neutral-800 p-12 shadow-2xl">
           {currentStep === 1 && (
             <Step1Basics
               data={projectData.basics || {}}

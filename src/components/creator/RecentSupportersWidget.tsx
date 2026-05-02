@@ -77,15 +77,9 @@ const SupporterItem = memo(({
                     </span>
                 </div>
                 <div className="flex items-center justify-between">
-                    {showProjectLabel && donation.projectTitle ? (
-                        <p className="text-xs font-medium text-neutral-500 truncate">
-                            backed <span className="font-bold text-brand-orange">{donation.projectTitle}</span>
-                        </p>
-                    ) : (
                         <p className="text-xs font-medium text-neutral-500">
                             {donation.anonymous ? 'Anonymous donation' : 'Backed your project'}
                         </p>
-                    )}
                     <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest flex-shrink-0">
                         {formatTimeAgo(donation.backedAt)}
                     </span>
@@ -157,10 +151,7 @@ function RecentSupportersWidget({ creatorId, limit = 10, onRetry }: RecentSuppor
                 </div>
                 <p className="text-brand-white font-bold text-lg">No supporters yet</p>
                 <p className="text-sm text-neutral-400 mt-2 max-w-[250px] mx-auto">
-                    {selectedProject
-                        ? `"${selectedProject.title}" hasn't received any donations yet`
-                        : 'Your supporters will appear here when they back your projects'
-                    }
+                    Your supporters will appear here when they back your projects
                 </p>
                 {!selectedProject && (
                     <Link

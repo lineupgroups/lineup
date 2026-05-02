@@ -209,7 +209,7 @@ function DetailedProjectView({
                         <Target className="w-5 h-5 text-brand-acid" />
                     </div>
                     <h2 className="text-xl font-bold text-brand-white tracking-tight truncate">
-                        "{project.title}" Progress
+                        Project Progress
                     </h2>
                 </div>
             </div>

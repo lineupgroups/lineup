@@ -384,8 +384,11 @@ export default function UpdateComments({
 
                 {/* Replies Thread */}
                 {!isReply && isRepliesExpanded && replies.length > 0 && (
-                    <div className="border-l border-white/5 ml-6 pl-4 space-y-2">
-                        {replies.map(reply => renderComment(reply, true, comment.id))}
+                    <div className="ml-6 md:ml-10 space-y-2 relative">
+                        <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-white/10 to-transparent"></div>
+                        <div className="pl-6">
+                            {replies.map(reply => renderComment(reply, true, comment.id))}
+                        </div>
                     </div>
                 )}
 
@@ -407,21 +410,21 @@ export default function UpdateComments({
     };
 
     return (
-        <div className="relative px-10 pt-10 pb-4">
+        <div className="relative px-6 pt-6 pb-2 md:px-8 md:pt-8">
             {/* Toggle Comments Trigger - FIXED POSITIONING */}
-            <div className={isExpanded ? "mb-10" : "mb-6"}>
+            <div className={isExpanded ? "mb-8" : "mb-4"}>
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className={`
-                        flex items-center gap-4 px-8 py-4 rounded-[1.5rem] border transition-all duration-500 group/trigger
+                        flex items-center gap-3 px-6 py-3 rounded-2xl border transition-all duration-300 group/trigger
                         ${isExpanded 
-                            ? 'bg-brand-acid text-brand-black border-brand-acid shadow-[0_0_30px_rgba(204,255,0,0.2)]' 
+                            ? 'bg-brand-acid text-brand-black border-brand-acid shadow-[0_0_15px_rgba(204,255,0,0.2)]' 
                             : 'bg-white/5 border-white/10 text-neutral-300 hover:border-brand-acid/40 hover:text-brand-acid'}
                     `}
                 >
-                    <MessageCircle className={`w-5 h-5 ${isExpanded ? 'text-brand-black' : 'text-brand-acid'}`} />
-                    <span className="text-[11px] font-black italic uppercase tracking-[0.2em]">
-                        {displayCommentCount === 0 ? 'NO DEBATE INITIALIZED' : `${displayCommentCount} ACTIVE DEBATES`}
+                    <MessageCircle className={`w-4 h-4 ${isExpanded ? 'text-brand-black' : 'text-brand-acid'}`} />
+                    <span className="text-sm font-bold tracking-tight">
+                        {displayCommentCount === 0 ? 'No Active Debates' : `${displayCommentCount} Active Debates`}
                     </span>
                     {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4 group-hover/trigger:translate-y-1 transition-transform" />}
                 </button>
@@ -432,13 +435,13 @@ export default function UpdateComments({
                 <div className={`mt-8 animate-in fade-in slide-in-from-top-4 duration-500`}>
                     {/* Primary Input */}
                     {user ? (
-                        <div className="flex gap-6 mb-12 bg-white/[0.02] border border-white/10 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group/input">
+                        <div className="flex gap-4 mb-8 bg-white/[0.02] border border-white/10 p-6 rounded-3xl shadow-xl relative overflow-hidden group/input">
                             <div className="absolute -top-12 -right-12 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl group-hover/input:bg-brand-acid/10 transition-colors"></div>
                             
                             <img
                                 src={(user as any).profileImage || user.photoURL || ''}
                                 alt=""
-                                className="w-14 h-14 rounded-full object-cover ring-2 ring-brand-acid/20 flex-shrink-0"
+                                className="w-10 h-10 rounded-full object-cover ring-2 ring-brand-acid/20 flex-shrink-0"
                             />
                             <div className="flex-1">
                                 <input
@@ -446,24 +449,24 @@ export default function UpdateComments({
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
                                     onFocus={() => setIsFocused(true)}
-                                    placeholder="INITIATE BROADCAST TO THE CORE..."
-                                    className="w-full px-0 py-4 border-b border-white/10 focus:border-brand-acid text-sm font-bold focus:outline-none bg-transparent transition-all text-brand-white placeholder-neutral-600"
+                                    placeholder="Add to the debate..."
+                                    className="w-full px-0 py-3 border-b border-white/10 focus:border-brand-acid text-sm font-medium focus:outline-none bg-transparent transition-all text-brand-white placeholder-neutral-500"
                                     disabled={isSubmitting}
                                 />
                                 {(isFocused || newComment) && (
-                                    <div className="flex justify-end gap-6 mt-8 animate-in fade-in zoom-in-95">
+                                    <div className="flex justify-end gap-4 mt-6 animate-in fade-in zoom-in-95">
                                         <button
                                             onClick={() => { setNewComment(''); setIsFocused(false); }}
-                                            className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 hover:text-white transition-colors"
+                                            className="text-xs font-medium text-neutral-500 hover:text-white transition-colors"
                                         >
-                                            ABORT BROADCAST
+                                            Cancel
                                         </button>
                                         <button
                                             onClick={handleSubmitComment}
                                             disabled={isSubmitting || !newComment.trim()}
-                                            className="px-10 py-3.5 text-[10px] font-black italic uppercase tracking-widest text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-2xl transition-all shadow-xl hover:shadow-brand-acid/20 disabled:opacity-50"
+                                            className="px-6 py-2 text-xs font-bold text-brand-black bg-brand-acid hover:bg-[#b3e600] rounded-xl transition-all shadow-md hover:shadow-brand-acid/20 disabled:opacity-50"
                                         >
-                                            {isSubmitting ? 'ENCRYPTING...' : 'DISPATCH'}
+                                            {isSubmitting ? 'Posting...' : 'Post Reply'}
                                         </button>
                                     </div>
                                 )}
@@ -499,11 +502,11 @@ export default function UpdateComments({
 
                     {/* Stream */}
                     {loading ? (
-                        <div className="flex justify-center py-20"><LoadingSpinner size="lg" /></div>
+                        <div className="flex justify-center py-10"><LoadingSpinner size="lg" /></div>
                     ) : topLevelComments.length === 0 ? (
-                        <div className="text-center py-24 bg-white/[0.01] border border-white/5 rounded-[3rem]">
-                            <MessageCircle className="w-12 h-12 text-neutral-800 mx-auto mb-6" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-600">NO ACTIVE DEBATE PROTOCOLS FOUND</p>
+                        <div className="text-center py-16 bg-white/[0.01] border border-white/5 rounded-3xl">
+                            <MessageCircle className="w-10 h-10 text-neutral-800 mx-auto mb-4" />
+                            <p className="text-xs font-bold uppercase tracking-widest text-neutral-600">No Debates Found</p>
                         </div>
                     ) : (
                         <div className="space-y-6 px-2">

@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Users, RefreshCw, Search, ChevronDown, ChevronUp, DollarSign, User, Heart,
+    Users, RefreshCw, Search, ChevronDown, ChevronUp, DollarSign, User, Heart, AlertCircle,
     ExternalLink, FileText, Download, Trophy, Plus, Sparkles, Pin, Medal, Award, Crown,
     ArrowUpDown, Calendar, Receipt, Filter, Star, Copy
 } from 'lucide-react';
@@ -76,11 +76,11 @@ const getTimeAgo = (date: Date): string => {
 const getRankIcon = (rank: number) => {
     switch (rank) {
         case 1:
-            return <Crown className="w-5 h-5 text-yellow-500" />;
+            return <Crown className="w-5 h-5 text-brand-acid" />;
         case 2:
             return <Medal className="w-5 h-5 text-neutral-600" />;
         case 3:
-            return <Award className="w-5 h-5 text-orange-400" />;
+            return <Award className="w-5 h-5 text-brand-orange" />;
         default:
             return <span className="w-5 h-5 text-neutral-600 text-sm font-medium">{rank}</span>;
     }
@@ -451,7 +451,7 @@ export default function CreatorBackersPage() {
     // Loading state with skeleton
     if (loading && supporters.length === 0) {
         return (
-            <div className="min-h-screen bg-brand-black text-brand-white font-sans text-brand-white font-sans">
+            <div className="min-h-screen bg-brand-black text-brand-white font-sans">
                 {/* Header Skeleton */}
                 <div className="bg-[#111] border-b border-neutral-800">
                     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
@@ -500,7 +500,7 @@ export default function CreatorBackersPage() {
                                             <div className="h-3 w-24 bg-neutral-900 rounded" />
                                         </div>
                                         <div className="text-right">
-                                            <div className="h-6 w-20 bg-green-500/20 rounded mb-2" />
+                                            <div className="h-6 w-20 bg-brand-acid/20 rounded mb-2" />
                                             <div className="flex gap-1">
                                                 <div className="w-8 h-8 bg-neutral-900 rounded" />
                                                 <div className="w-8 h-8 bg-neutral-900 rounded" />
@@ -578,7 +578,7 @@ export default function CreatorBackersPage() {
 
             <div className="w-full px-4 sm:px-6 lg:px-8">
                 {/* Header - Editorial Style */}
-                <div className="mb-12">
+                <div className="mb-8">
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                         <div>
                             <div className="flex items-center gap-4 mb-4">
@@ -593,10 +593,7 @@ export default function CreatorBackersPage() {
                                 Supporter <span className="text-brand-acid">Network</span>
                             </h1>
                             <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl leading-relaxed">
-                                {isFilteringByProject
-                                    ? <>Analyzing interaction for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
-                                    : 'Forge deeper connections and manage the elite inner circle who believe in your mission.'
-                                }
+                                Forge deeper connections and manage the elite inner circle who believe in your mission.
                             </p>
                         </div>
 
@@ -653,10 +650,9 @@ export default function CreatorBackersPage() {
                         </div>
                     </div>
                 </div>
-        </div>
 
-            {/* Main Content */}
-            <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
+                {/* Main Content */}
+                <div className="mt-8">
                 {/* Stats Cards Component */}
                 <BackersStatsCard
                     supporters={supporters}
@@ -1142,6 +1138,7 @@ export default function CreatorBackersPage() {
                     creatorName={selectedProject?.title ? `${selectedProject.title} Creator` : 'Project Creator'}
                 />
             )}
+            </div>
         </div>
     );
 }

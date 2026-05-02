@@ -67,7 +67,7 @@ const TrendIndicator = ({ value, suffix = '' }: { value: number; suffix?: string
 
     if (value > 0) {
         return (
-            <span className="flex items-center text-green-400 text-xs">
+            <span className="flex items-center text-brand-acid text-xs">
                 <ArrowUp className="w-3 h-3 mr-0.5" />
                 +{value}{suffix}
             </span>
@@ -75,7 +75,7 @@ const TrendIndicator = ({ value, suffix = '' }: { value: number; suffix?: string
     }
 
     return (
-        <span className="flex items-center text-red-500 text-xs">
+        <span className="flex items-center text-brand-orange text-xs">
             <ArrowDown className="w-3 h-3 mr-0.5" />
             {value}{suffix}
         </span>
@@ -151,13 +151,11 @@ export default function BackersStatsCard({
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
             {/* Total Raised */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(204,255,0,0.1)] hover:shadow-[0_0_50px_rgba(204,255,0,0.3)] hover:border-brand-acid/30">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div className="flex items-center justify-between mb-6">
-                    <div className="p-4 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+            <div className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-acid/50 transition-all duration-300 group">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
                         <DollarSign className="w-6 h-6" />
                     </div>
                     <div className="text-right">
@@ -165,32 +163,25 @@ export default function BackersStatsCard({
                     </div>
                 </div>
                 
-                <div className="space-y-1 relative z-10">
-                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
-                        {formatCurrency(stats.totalRaised)}
-                    </h3>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
-                        {isFilteringByProject ? 'Project Total' : 'Global Revenue'}
-                    </p>
-                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
+                    {formatCurrency(stats.totalRaised)}
+                </h3>
+                <p className="text-sm text-neutral-400 mt-2 font-medium">
+                    {isFilteringByProject ? 'Project Total' : 'Global Revenue'}
+                </p>
 
                 {weeklyStats.amountThisWeek > 0 && (
-                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Momentum</span>
-                        <span className="text-[10px] font-black text-brand-acid uppercase tracking-[0.2em] flex items-center gap-1">
-                            <ArrowUp className="w-3 h-3" />
-                            +{formatCompact(weeklyStats.amountThisWeek)}
-                        </span>
-                    </div>
+                    <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+                        <ArrowUp className="w-3 h-3 text-brand-acid" />
+                        +{formatCompact(weeklyStats.amountThisWeek)} this week
+                    </p>
                 )}
             </div>
 
             {/* Unique Backers */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(255,91,0,0.1)] hover:shadow-[0_0_50px_rgba(255,91,0,0.3)] hover:border-brand-orange/30">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div className="flex items-center justify-between mb-6">
-                    <div className="p-4 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
+            <div className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-orange/50 transition-all duration-300 group">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
                         <Users className="w-6 h-6" />
                     </div>
                     <div className="text-right">
@@ -198,29 +189,24 @@ export default function BackersStatsCard({
                     </div>
                 </div>
 
-                <div className="space-y-1 relative z-10">
-                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
-                        {stats.totalSupporters}
-                    </h3>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
-                        {stats.uniqueNonAnonymous} Elite • {stats.anonymousCount} Ghost
-                    </p>
-                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
+                    {stats.totalSupporters}
+                </h3>
+                <p className="text-sm text-neutral-400 mt-2 font-medium">
+                    {stats.uniqueNonAnonymous} Elite • {stats.anonymousCount} Ghost
+                </p>
 
                 {weeklyStats.newBackersThisWeek > 0 && (
-                    <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Growth</span>
+                    <p className="text-xs text-neutral-500 mt-1">
                         <TrendIndicator value={weeklyStats.newBackersThisWeek} suffix=" NEW" />
-                    </div>
+                    </p>
                 )}
             </div>
 
             {/* Average Donation */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(204,255,0,0.1)] hover:shadow-[0_0_50px_rgba(204,255,0,0.3)] hover:border-brand-acid/30">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div className="flex items-center justify-between mb-6">
-                    <div className="p-4 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+            <div className="bg-[#111] rounded-3xl p-6 border border-neutral-800 hover:border-brand-acid/50 transition-all duration-300 group">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-brand-acid/10 rounded-2xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
                         <TrendingUp className="w-6 h-6" />
                     </div>
                     <div className="text-right">
@@ -228,27 +214,21 @@ export default function BackersStatsCard({
                     </div>
                 </div>
 
-                <div className="space-y-1 relative z-10">
-                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
-                        {formatCurrency(stats.avgContribution)}
-                    </h3>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
-                        Average Commitment
-                    </p>
-                </div>
-                
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between opacity-50">
-                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Efficiency</span>
-                    <span className="text-[10px] font-black text-brand-acid uppercase tracking-[0.2em]">Stable</span>
-                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
+                    {formatCurrency(stats.avgContribution)}
+                </h3>
+                <p className="text-sm text-neutral-400 mt-2 font-medium">
+                    Average Commitment
+                </p>
+                <p className="text-xs text-neutral-500 mt-1">
+                    Stable efficiency
+                </p>
             </div>
 
-            {/* Loyalty / Repeat */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-brand-orange/30 p-8 hover:bg-white/10 transition-all group relative shadow-[0_0_30px_rgba(255,91,0,0.2)] hover:shadow-[0_0_50px_rgba(255,91,0,0.4)] hover:border-brand-orange">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
-                
-                <div className="flex items-center justify-between mb-6">
-                    <div className="p-4 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors border border-brand-orange/20">
+            {/* Loyalty / Repeat — Special highlighted card */}
+            <div className="bg-[#111] rounded-3xl p-6 border border-brand-orange/30 hover:border-brand-orange transition-all duration-300 group shadow-[0_0_15px_rgba(255,91,0,0.1)] hover:shadow-[0_0_25px_rgba(255,91,0,0.2)]">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-brand-orange/10 rounded-2xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
                         <Repeat className="w-6 h-6" />
                     </div>
                     <div className="text-right">
@@ -256,23 +236,19 @@ export default function BackersStatsCard({
                     </div>
                 </div>
 
-                <div className="space-y-1 relative z-10">
-                    <h3 className="text-3xl md:text-4xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
-                        {repeatPercentage}%
-                    </h3>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest pt-2">
-                        {stats.repeatSupporters} Recurring Legends
-                    </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-brand-orange/10 flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Retention</span>
+                <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
+                    {repeatPercentage}%
+                </h3>
+                <p className="text-sm text-neutral-400 mt-2 font-medium">
+                    {stats.repeatSupporters} Recurring Legends
+                </p>
+                <p className="text-xs text-neutral-500 mt-1">
                     {weeklyStats.repeatChange !== 0 ? (
                         <TrendIndicator value={weeklyStats.repeatChange} suffix=" TREND" />
                     ) : (
-                        <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.2em]">Solid</span>
+                        <span className="text-brand-orange">Solid retention</span>
                     )}
-                </div>
+                </p>
             </div>
         </div>
     );

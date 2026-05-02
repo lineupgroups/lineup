@@ -405,8 +405,8 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
       <PageTitle title="Dashboard" description="Your creator dashboard overview" />
 
       {/* Header - Editorial Style */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-6">
@@ -423,14 +423,11 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                     onRefresh={handleRefresh}
                 />
               </div>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
+              <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
                 Creator <span className="text-brand-acid">Studio</span>
               </h1>
               <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-6 max-w-2xl leading-relaxed">
-                {isFilteringByProject
-                  ? <>Analyzing performance for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
-                  : <>Welcome back, <span className="text-brand-white font-black italic">{user.displayName || 'Creator'}</span>. Your empire at a glance.</>
-                }
+                Welcome back, <span className="text-brand-white font-black italic">{user.displayName || 'Creator'}</span>. Your empire at a glance.
               </p>
             </div>
 
@@ -613,10 +610,7 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                           <Sparkles className="w-5 h-5 text-brand-acid" />
                       </div>
                       <h2 className="text-xl font-bold text-brand-white tracking-tight">
-                        {selectedProject
-                            ? `"${selectedProject.title}" Activity`
-                            : 'Recent Activity'
-                        }
+                        Recent Activity
                       </h2>
                   </div>
                   <Link
@@ -639,10 +633,7 @@ export default function CreatorDashboard({ onBack }: CreatorDashboardProps) {
                             <Users className="w-5 h-5 text-brand-orange" />
                         </div>
                         <h2 className="text-xl font-bold text-brand-white tracking-tight">
-                        {selectedProject
-                            ? `"${selectedProject.title}" Backers`
-                            : 'Recent Backers'
-                        }
+                        Recent Backers
                         </h2>
                     </div>
                     <Link

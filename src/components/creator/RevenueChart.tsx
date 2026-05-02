@@ -117,9 +117,7 @@ export default function RevenueChart({ creatorId, hasProjects = false }: Revenue
         { value: 30, label: '30D' }
     ];
 
-    const chartTitle = selectedProject
-        ? `"${selectedProject.title}" Revenue`
-        : 'Revenue Overview';
+    const chartTitle = 'Revenue Overview';
 
     // Calculate Y-axis labels (4 steps)
     const yAxisLabels = useMemo(() => {
@@ -144,10 +142,7 @@ export default function RevenueChart({ creatorId, hasProjects = false }: Revenue
                             </h2>
                         </div>
                         <p className="text-sm text-neutral-400 font-medium">
-                            {selectedProject
-                                ? 'Showing revenue for selected project'
-                                : 'Track your earnings over time'
-                            }
+                            Track your earnings over time
                         </p>
                     </div>
 

@@ -124,12 +124,12 @@ export default function ImageUpload({
     <div className={`space-y-4 ${className}`}>
       {/* Upload Area */}
       <div
-        className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200 ${
+        className={`relative border-2 border-dashed rounded-[1.2rem] p-8 text-center transition-all duration-200 ${
           isDragOver
-            ? 'border-orange-500 bg-orange-50'
+            ? 'border-brand-acid bg-brand-acid/10'
             : disabled
-            ? 'border-gray-200 bg-gray-50'
-            : 'border-gray-300 hover:border-orange-400 hover:bg-orange-50'
+            ? 'border-neutral-800 bg-neutral-900'
+            : 'border-neutral-700 hover:border-brand-acid hover:bg-brand-acid/5'
         } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -148,21 +148,21 @@ export default function ImageUpload({
 
         <div className="space-y-4">
           <div className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center ${
-            isDragOver ? 'bg-orange-100' : 'bg-gray-100'
+            isDragOver ? 'bg-brand-acid/20' : 'bg-[#111]'
           }`}>
             <Upload className={`w-6 h-6 ${
-              isDragOver ? 'text-orange-600' : 'text-gray-400'
+              isDragOver ? 'text-brand-acid' : 'text-neutral-500'
             }`} />
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-bold text-brand-white mb-2">
               {isDragOver ? 'Drop images here' : 'Upload Images'}
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-neutral-400 mb-4">
               Drag and drop your images here, or click to browse
             </p>
-            <div className="text-sm text-gray-500 space-y-1">
+            <div className="text-sm text-neutral-500 space-y-1">
               <p>Supported formats: JPG, PNG, WebP</p>
               <p>Maximum file size: {uploadOptions.maxFileSize ? `${uploadOptions.maxFileSize / (1024 * 1024)}MB` : '10MB'}</p>
               <p>Maximum files: {uploadOptions.maxFiles || 10}</p>
@@ -173,14 +173,14 @@ export default function ImageUpload({
 
       {/* Upload Progress */}
       {isUploading && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-[#111] border border-neutral-800 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-blue-700">Uploading...</span>
-            <span className="text-sm text-blue-600">{Math.round(uploadProgress)}%</span>
+            <span className="text-sm font-medium text-brand-acid">Uploading...</span>
+            <span className="text-sm text-brand-acid">{Math.round(uploadProgress)}%</span>
           </div>
-          <div className="w-full bg-blue-200 rounded-full h-2">
+          <div className="w-full bg-neutral-800 rounded-full h-2">
             <div
-              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+              className="bg-brand-acid h-2 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(204,255,0,0.5)]"
               style={{ width: `${uploadProgress}%` }}
             />
           </div>
@@ -191,7 +191,7 @@ export default function ImageUpload({
       {showPreview && images.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-bold text-brand-white">
               Images ({images.length})
             </h4>
             <div className="flex space-x-2">
@@ -199,7 +199,7 @@ export default function ImageUpload({
                 <button
                   onClick={handleUpload}
                   disabled={isUploading || images.every(img => img.status === 'completed')}
-                  className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-brand-acid text-brand-black rounded-lg font-bold hover:bg-[#b3e600] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isUploading ? 'Uploading...' : 'Upload All'}
                 </button>
@@ -207,7 +207,7 @@ export default function ImageUpload({
               <button
                 onClick={clearImages}
                 disabled={isUploading}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="px-4 py-2 border border-neutral-700 text-neutral-300 rounded-lg font-bold hover:bg-[#111] transition-colors disabled:opacity-50"
               >
                 Clear All
               </button>
@@ -218,7 +218,7 @@ export default function ImageUpload({
             {images.map((image, index) => (
               <div
                 key={image.id}
-                className="relative group bg-white rounded-lg border border-gray-200 overflow-hidden"
+                className="relative group bg-[#111] rounded-xl border border-neutral-800 overflow-hidden"
                 draggable={allowReorder}
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleImageDragOver(e, index)}
@@ -234,8 +234,8 @@ export default function ImageUpload({
                   {/* Status Overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center">
                     {image.status === 'uploading' && (
-                      <div className="bg-white bg-opacity-90 rounded-full p-2">
-                        <Loader className="w-6 h-6 animate-spin text-blue-500" />
+                      <div className="bg-brand-black/90 rounded-full p-2 border border-brand-acid/30">
+                        <Loader className="w-6 h-6 animate-spin text-brand-acid" />
                       </div>
                     )}
                   </div>
@@ -244,7 +244,7 @@ export default function ImageUpload({
                   {image.status === 'uploading' && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50">
                       <div
-                        className="bg-blue-500 h-1 transition-all duration-300"
+                        className="bg-brand-acid h-1 transition-all duration-300"
                         style={{ width: `${image.progress}%` }}
                       />
                     </div>
@@ -254,13 +254,13 @@ export default function ImageUpload({
                 {/* Image Info */}
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900 truncate">
+                    <span className="text-sm font-bold text-brand-white truncate">
                       {image.file.name}
                     </span>
                     {getStatusIcon(image.status)}
                   </div>
                   
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center justify-between text-xs text-neutral-500">
                     <span>{formatFileSize(image.file.size)}</span>
                     {image.status === 'error' && (
                       <button

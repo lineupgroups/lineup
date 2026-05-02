@@ -272,23 +272,23 @@ export default function ProjectUpdateForm({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Info Banner - Improved Mental Model */}
-          <div className="bg-brand-acid/10 border border-brand-acid/20 rounded-3xl p-6 relative overflow-hidden group">
+          <div className="bg-[#111] border border-neutral-800 rounded-3xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl"></div>
             <div className="flex items-start space-x-4 relative z-10">
-              <div className="p-3 bg-brand-acid/10 rounded-2xl">
+              <div className="p-3 bg-brand-acid/10 border border-brand-acid/20 rounded-2xl">
                 <AlertCircle className="w-6 h-6 text-brand-acid flex-shrink-0" />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 mt-1">
                 <p className="text-sm font-black italic uppercase tracking-wider text-brand-acid">Broadcasting Privacy</p>
-                <p className="text-neutral-400 mt-2 leading-relaxed">
+                <p className="text-brand-white/80 mt-2 leading-relaxed">
                   This update is <span className="text-brand-acid font-bold italic">Supporters-Only</span>. 
                   Only backers who have funded your project will see this exclusive content.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black/40 text-brand-acid text-[10px] font-black uppercase tracking-widest rounded-full border border-brand-acid/20">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black text-brand-acid text-[10px] font-black uppercase tracking-widest rounded-full border border-brand-acid/20 shadow-[0_0_10px_rgba(204,255,0,0.1)]">
                     <Check className="w-3 h-3" /> Visible to Backers
                   </span>
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black/40 text-neutral-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-white/5">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-black text-neutral-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-neutral-800">
                     <X className="w-3 h-3" /> Private to Others
                   </span>
                 </div>

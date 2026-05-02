@@ -228,55 +228,49 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
     }
 
     return (
-        <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 overflow-hidden mb-12 group/overview relative">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none group-hover/overview:bg-brand-orange/10 transition-colors duration-1000"></div>
+        <div className="mb-12 group/overview relative">
             
             {/* Stats Grid */}
             <div className="p-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                     <div>
-                        <h2 className="text-3xl font-black text-brand-white italic uppercase tracking-tighter leading-none">
-                            Analytics <span className="text-brand-orange">Stream</span>
+                        <h2 className="text-xl font-bold text-brand-white tracking-tight">
+                            Analytics Stream
                         </h2>
                     </div>
                     <div className="flex flex-col items-start md:items-end gap-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-600">Global Engagement</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Global Engagement</span>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-black text-brand-orange italic tracking-tighter">{stats.engagementRate}%</span>
-                            <span className="text-xs font-bold text-brand-acid uppercase tracking-widest">Growth Solid</span>
+                            <span className="text-2xl font-bold text-brand-orange tracking-tight">{stats.engagementRate}%</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
                     {statCards.map((stat, idx) => (
                         <div
                             key={stat.label}
-                            className={`bg-brand-black/50 backdrop-blur-md rounded-[2rem] p-6 border transition-all duration-300 group/card relative ${
-                                idx % 2 === 0 
-                                ? 'border-brand-orange/10 shadow-[0_0_20px_rgba(255,91,0,0.05)] hover:shadow-[0_0_40px_rgba(255,91,0,0.2)] hover:border-brand-orange/30' 
-                                : 'border-brand-acid/10 shadow-[0_0_20px_rgba(204,255,0,0.05)] hover:shadow-[0_0_40px_rgba(204,255,0,0.2)] hover:border-brand-acid/30'
+                            className={`bg-[#111] rounded-3xl p-6 border border-neutral-800 transition-all duration-300 group/card ${
+                                idx % 2 === 0 ? 'hover:border-brand-orange/50' : 'hover:border-brand-acid/50'
                             }`}
                         >
-                            <div className="flex items-center justify-between mb-6">
-                                <div className={`p-4 rounded-2xl transition-all duration-500 group-hover/card:scale-110 ${stat.iconBg} ${stat.iconColor} border border-transparent group-hover/card:border-white/10`}>
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`p-3 rounded-2xl ${stat.iconBg} ${stat.iconColor} transition-colors`}>
                                     {stat.icon}
                                 </div>
                                 {stat.trend !== undefined && stat.trend !== 0 && (
-                                    <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black italic tracking-widest ${stat.trend > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+                                    <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${stat.trend > 0 ? 'bg-brand-acid/10 text-brand-acid' : 'bg-brand-orange/10 text-brand-orange'}`}>
                                         {stat.trend > 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                                         {Math.abs(stat.trend)}%
                                     </div>
                                 )}
                             </div>
                             <div className="space-y-1">
-                                <h3 className="text-3xl font-black text-brand-white italic tracking-tighter uppercase leading-none">
+                                <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                                     {typeof stat.value === 'string' ? stat.value : formatNumber(stat.value)}
                                 </h3>
-                                <div className="flex flex-col">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-2">{stat.label}</span>
-                                    <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-widest mt-1 italic group-hover/card:text-neutral-400 transition-colors">{stat.trendLabel}</span>
-                                </div>
+                                <p className="text-sm text-neutral-400 mt-2 font-medium">{stat.label}</p>
+                                <p className="text-xs text-neutral-500 mt-1">{stat.trendLabel}</p>
                             </div>
                         </div>
                     ))}
@@ -284,45 +278,39 @@ export default function UpdatesStatsCard({ updates, projectTitle }: UpdatesStats
 
                 {/* Best Performing Update */}
                 {stats.bestUpdate && (
-                    <div className="bg-brand-orange/5 rounded-[2.5rem] p-8 border border-brand-orange/20 relative overflow-hidden group/best shadow-[0_0_30px_rgba(255,91,0,0.05)] hover:shadow-[0_0_50px_rgba(255,91,0,0.15)] transition-all">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none group-hover/best:bg-brand-orange/10 transition-colors duration-700"></div>
-                        <div className="flex flex-col md:flex-row items-start gap-8 relative z-10">
-                            <div className="p-5 bg-brand-orange/10 rounded-[1.5rem] border border-brand-orange/20 group-hover/best:scale-105 transition-transform">
-                                <Trophy className="w-10 h-10 text-brand-orange" />
+                    <div className="bg-[#111] rounded-3xl p-6 border border-neutral-800 relative overflow-hidden group/best hover:border-brand-orange/50 shadow-[0_0_20px_rgba(255,91,0,0.05)] hover:shadow-[0_0_30px_rgba(255,91,0,0.1)] transition-all">
+                        <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-[80px] pointer-events-none group-hover/best:bg-brand-orange/10 transition-colors duration-700"></div>
+                        <div className="flex flex-col md:flex-row items-start gap-6 relative z-10">
+                            <div className="p-4 bg-brand-orange/10 rounded-2xl border border-brand-orange/20 group-hover/best:scale-105 transition-transform">
+                                <Trophy className="w-8 h-8 text-brand-orange" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <span className="px-4 py-1.5 bg-brand-orange text-brand-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <span className="px-3 py-1 bg-brand-orange text-brand-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
                                         Elite Status
                                     </span>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-600">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                                         Best Performing Broadcast
                                     </span>
                                 </div>
-                                <h3 className="text-3xl md:text-4xl font-black italic uppercase tracking-tighter text-brand-white truncate mb-6">
+                                <h3 className="text-xl sm:text-2xl font-bold text-brand-white truncate mb-4">
                                     {stats.bestUpdate.title}
                                 </h3>
-                                <div className="flex items-center flex-wrap gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">
-                                    <div className="flex items-center gap-3 group/stat">
-                                        <div className="w-8 h-8 rounded-xl bg-brand-acid/5 flex items-center justify-center border border-brand-acid/10 group-hover/stat:bg-brand-acid/20 group-hover/stat:border-brand-acid/30 transition-all">
-                                            <Eye className="w-4 h-4 text-brand-acid" />
-                                        </div>
+                                <div className="flex items-center flex-wrap gap-4 text-xs font-medium text-neutral-400">
+                                    <div className="flex items-center gap-2 group/stat">
+                                        <Eye className="w-4 h-4 text-brand-acid" />
                                         <span>{(stats.bestUpdate as any).viewCount || Math.floor((stats.bestUpdate.likes || 0) * 2.5 + (stats.bestUpdate.commentCount || 0) * 5)} views</span>
                                     </div>
-                                    <div className="flex items-center gap-3 group/stat">
-                                        <div className="w-8 h-8 rounded-xl bg-brand-orange/5 flex items-center justify-center border border-brand-orange/10 group-hover/stat:bg-brand-orange/20 group-hover/stat:border-brand-orange/30 transition-all">
-                                            <ThumbsUp className="w-4 h-4 text-brand-orange" />
-                                        </div>
+                                    <div className="flex items-center gap-2 group/stat">
+                                        <ThumbsUp className="w-4 h-4 text-brand-orange" />
                                         <span>{stats.bestUpdate.likes || 0} likes</span>
                                     </div>
-                                    <div className="flex items-center gap-3 group/stat">
-                                        <div className="w-8 h-8 rounded-xl bg-brand-acid/5 flex items-center justify-center border border-brand-acid/10 group-hover/stat:bg-brand-acid/20 group-hover/stat:border-brand-acid/30 transition-all">
-                                            <MessageSquare className="w-4 h-4 text-brand-acid" />
-                                        </div>
+                                    <div className="flex items-center gap-2 group/stat">
+                                        <MessageSquare className="w-4 h-4 text-brand-acid" />
                                         <span>{stats.bestUpdate.commentCount || 0} comments</span>
                                     </div>
-                                    <span className="text-neutral-800 hidden md:inline">/</span>
-                                    <span className="text-neutral-600 italic normal-case tracking-normal font-medium">{getTimeAgo(convertTimestamp(stats.bestUpdate.createdAt))}</span>
+                                    <span className="text-neutral-700 hidden md:inline">•</span>
+                                    <span className="text-neutral-500">{getTimeAgo(convertTimestamp(stats.bestUpdate.createdAt))}</span>
                                 </div>
                             </div>
                         </div>

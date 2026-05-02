@@ -72,11 +72,11 @@ export default function ScrollToTopButton({
     <button
       onClick={scrollToTop}
       onKeyDown={handleKeyDown}
-      className={`fixed bottom-6 right-6 z-50 p-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 group ${className}`}
+      className={`fixed bottom-8 right-8 z-[60] p-3 bg-brand-orange text-brand-black rounded-full shadow-[0_0_30px_rgba(255,91,0,0.3)] hover:shadow-[0_0_50px_rgba(255,91,0,0.5)] transition-all duration-500 transform hover:scale-110 active:scale-90 focus:outline-none focus:ring-4 focus:ring-brand-orange/20 group border-2 border-brand-orange/20 ${className}`}
       aria-label="Scroll to top"
       title="Scroll to top"
     >
-      <ChevronUp className="w-6 h-6 group-hover:-translate-y-0.5 transition-transform duration-200" />
+      <ChevronUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
     </button>
   );
 }

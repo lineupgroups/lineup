@@ -90,25 +90,25 @@ export default function CreatorSettingsPage() {
     if (projectsLoading) return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
 
     return (
-        <div className="min-h-screen bg-[#0A0A0A] text-brand-white font-sans py-12 px-4 sm:px-6 lg:px-10">
+        <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
             <PageTitle title="Control Center" description="Mission-critical system configurations" />
 
             {/* Cinematic Header - Matched to Analytics Hub */}
-            <div className="max-w-[1920px] mx-auto mb-16">
+            <div className="w-full px-4 sm:px-6 lg:px-8 mb-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div>
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="p-4 bg-brand-acid/10 rounded-3xl border border-brand-acid/20 shadow-[0_0_20px_rgba(204,255,0,0.1)] transition-transform hover:scale-105 duration-500">
-                                <SettingsIcon className="w-8 h-8 text-brand-acid" />
+                            <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                                <SettingsIcon className="w-8 h-8 text-brand-orange" />
                             </div>
-                            <span className="px-4 py-1.5 bg-brand-orange/10 text-brand-orange text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-orange/20">
-                                SYSTEM ARCHITECTURE
+                            <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                                System Architecture
                             </span>
                         </div>
                         <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
                             Control <span className="text-brand-acid">Center</span>
                         </h1>
-                        <p className="text-lg text-neutral-500 font-medium mt-4 max-w-xl leading-relaxed italic uppercase tracking-tight">
+                        <p className="text-lg text-neutral-400 font-medium mt-4 max-w-2xl">
                             Configure your creative engine and manage the underlying infrastructure of your digital outreach.
                         </p>
                     </div>
@@ -128,7 +128,7 @@ export default function CreatorSettingsPage() {
                 </div>
             </div>
 
-            <div className="max-w-[1920px] mx-auto flex flex-col xl:flex-row gap-12">
+            <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col xl:flex-row gap-12">
                 {/* Tactical Navigation Sidebar - Vertical Command Stack */}
                 <aside className="xl:w-80 flex-shrink-0">
                     <div className="sticky top-12 space-y-3">

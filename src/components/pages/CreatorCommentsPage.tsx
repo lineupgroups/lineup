@@ -246,7 +246,7 @@ export default function CreatorCommentsPage() {
 
             <div className="w-full px-4 sm:px-6 lg:px-8">
                 {/* Header - Broadcast/Dialogue Mode Style */}
-                <div className="mb-12">
+                <div className="mb-8">
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                         <div>
                             <div className="flex items-center gap-4 mb-4">
@@ -261,10 +261,7 @@ export default function CreatorCommentsPage() {
                                 Comment <span className="text-brand-acid">Inbox</span>
                             </h1>
                             <p className="text-lg sm:text-xl text-neutral-400 font-medium mt-4 max-w-2xl leading-relaxed">
-                                {isFilteringByProject
-                                    ? <>Managing interaction for <span className="text-brand-white font-black italic">"{selectedProject?.title}"</span></>
-                                    : 'Forge deeper connections and build trust through direct supporter interaction.'
-                                }
+                                Forge deeper connections and build trust through direct supporter interaction.
                             </p>
                         </div>
 

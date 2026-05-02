@@ -200,19 +200,19 @@ export default function ProjectUpdatesList({
            <div className="flex flex-col lg:flex-row gap-6 relative z-10">
             {/* Search Input */}
             <div className="flex-1 relative">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
               <input
                 type="text"
-                placeholder="SEARCH INTEL LOGS..."
+                placeholder="Search updates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-16 pr-6 py-5 bg-brand-black/40 border border-white/10 rounded-[1.5rem] focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-600 text-[10px] font-black uppercase tracking-[0.3em] transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-brand-black/40 border border-white/10 rounded-xl focus:ring-2 focus:ring-brand-acid focus:border-brand-acid text-brand-white placeholder-neutral-600 text-sm font-medium transition-all"
               />
             </div>
             
             {/* Filter Pill */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 px-6 py-5 bg-brand-black/40 border border-white/10 rounded-[1.5rem]">
+              <div className="flex items-center gap-2 px-4 py-3 bg-brand-black/40 border border-white/10 rounded-xl">
                 <Filter className="w-4 h-4 text-brand-acid" />
                 <select
                   value={sortOrder}
@@ -237,36 +237,42 @@ export default function ProjectUpdatesList({
 
       {/* Stats Summary - Redesigned as Tactical Telemetry */}
       {isCreator && showInlineStats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-          <div className="bg-white/[0.03] backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 hover:border-brand-acid/30 transition-all group overflow-hidden relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white/[0.03] backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:border-brand-acid/30 transition-all group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-brand-acid/5 rounded-full blur-3xl group-hover:bg-brand-acid/10 transition-all"></div>
-            <p className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-500 mb-2">TOTAL DISPATCHES</p>
-            <div className="flex items-end gap-3">
-              <h4 className="text-5xl font-black text-brand-white italic tracking-tighter leading-none">{updates.length}</h4>
-              <TrendingUp className="w-6 h-6 text-brand-acid mb-1 animate-pulse" />
+            <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-neutral-400">Total Updates</p>
+                <div className="p-2 bg-brand-acid/10 rounded-xl text-brand-acid">
+                    <TrendingUp className="w-5 h-5" />
+                </div>
             </div>
+            <h4 className="text-3xl font-bold text-brand-white tracking-tight">{updates.length}</h4>
           </div>
 
-          <div className="bg-white/[0.03] backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 hover:border-brand-orange/30 transition-all group overflow-hidden relative">
+          <div className="bg-white/[0.03] backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:border-brand-orange/30 transition-all group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-brand-orange/5 rounded-full blur-3xl group-hover:bg-brand-orange/10 transition-all"></div>
-            <p className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-500 mb-2">ENGAGEMENT SCORE</p>
-            <div className="flex items-end gap-3">
-              <h4 className="text-5xl font-black text-brand-white italic tracking-tighter leading-none">
-                {updates.reduce((acc, u) => acc + (u.likes || 0) + (u.commentCount || 0), 0)}
-              </h4>
-              <Activity className="w-6 h-6 text-brand-orange mb-1" />
+            <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-neutral-400">Engagement</p>
+                <div className="p-2 bg-brand-orange/10 rounded-xl text-brand-orange">
+                    <Activity className="w-5 h-5" />
+                </div>
             </div>
+            <h4 className="text-3xl font-bold text-brand-white tracking-tight">
+              {updates.reduce((acc, u) => acc + (u.likes || 0) + (u.commentCount || 0), 0)}
+            </h4>
           </div>
 
-          <div className="bg-white/[0.03] backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 hover:border-brand-acid/30 transition-all group overflow-hidden relative">
+          <div className="bg-white/[0.03] backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:border-brand-acid/30 transition-all group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-brand-acid/5 rounded-full blur-3xl group-hover:bg-brand-acid/10 transition-all"></div>
-            <p className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-500 mb-2">PINNED HIGHLIGHTS</p>
-            <div className="flex items-end gap-3">
-              <h4 className="text-5xl font-black text-brand-white italic tracking-tighter leading-none">
-                {updates.filter(u => u.isPinned).length}
-              </h4>
-              <Pin className="w-6 h-6 text-brand-acid mb-1" />
+            <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-neutral-400">Pinned</p>
+                <div className="p-2 bg-brand-acid/10 rounded-xl text-brand-acid">
+                    <Pin className="w-5 h-5" />
+                </div>
             </div>
+            <h4 className="text-3xl font-bold text-brand-white tracking-tight">
+              {updates.filter(u => u.isPinned).length}
+            </h4>
           </div>
         </div>
       )}
@@ -284,20 +290,22 @@ export default function ProjectUpdatesList({
             <div
               key={update.id}
               className={`
-                bg-white/[0.03] backdrop-blur-3xl rounded-[3rem] border transition-all duration-700 relative group/card overflow-hidden
-                ${update.isPinned ? 'border-brand-acid shadow-[0_0_50px_rgba(204,255,0,0.1)]' : 'border-white/10 hover:border-white/20 hover:bg-white/[0.05]'}
+                bg-[#111] rounded-3xl border transition-all duration-500 relative group/card overflow-hidden
+                ${update.isPinned 
+                  ? 'border-brand-acid/50 shadow-[0_0_30px_rgba(204,255,0,0.1)]' 
+                  : 'border-neutral-800 hover:border-brand-acid/30 hover:shadow-[0_0_40px_rgba(204,255,0,0.05)]'}
               `}
             >
-              {/* Highlight Accents */}
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-brand-acid opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
+              {/* Subtle Corner Glow */}
+              <div className="absolute -top-24 -left-24 w-48 h-48 bg-brand-acid/5 rounded-full blur-[80px] pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-700"></div>
               
               {/* Card Header & Status */}
               <div className="relative">
                 {update.isPinned && (
-                  <div className="absolute top-0 right-0 px-8 py-3 bg-brand-acid text-brand-black text-[10px] font-black italic uppercase tracking-[0.3em] rounded-bl-[2rem] z-20">
-                    <div className="flex items-center gap-2">
+                  <div className="absolute top-0 right-0 px-4 py-1.5 bg-brand-acid text-brand-black text-xs font-bold rounded-bl-2xl z-20">
+                    <div className="flex items-center gap-1.5">
                       <Pin className="w-3.5 h-3.5 fill-current" />
-                      <span>PINNED HIGHLIGHT</span>
+                      <span>Pinned</span>
                     </div>
                   </div>
                 )}
@@ -312,35 +320,35 @@ export default function ProjectUpdatesList({
                 )}
               </div>
 
-              <div className="p-10 md:p-14">
+              <div className="p-6 md:p-8">
                 {/* Information Header */}
-                <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10 mb-12">
+                <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8">
                   <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full">
-                        <span className="text-[9px] font-black text-neutral-500 uppercase tracking-[0.3em]">
-                          DISPATCH ID: {update.id.slice(0, 8).toUpperCase()}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+                        <span className="text-xs font-medium text-neutral-400">
+                          ID: {update.id.slice(0, 8).toUpperCase()}
                         </span>
                       </div>
-                      <div className="h-px w-12 bg-white/10"></div>
-                      <span className="text-[10px] font-black text-brand-acid italic uppercase tracking-widest">
+                      <div className="h-px w-6 bg-white/10"></div>
+                      <span className="text-xs font-bold text-brand-acid">
                         {getTimeAgo(convertTimestamp(update.createdAt))}
                       </span>
                     </div>
                     
-                    <h3 className="text-4xl md:text-5xl font-black text-brand-white italic uppercase tracking-tighter leading-[0.95] mb-6">
+                    <h3 className="text-2xl md:text-3xl font-bold text-brand-white tracking-tight leading-tight mb-4">
                       {update.title}
                     </h3>
                     
-                    <div className="flex items-center gap-6 text-[10px] font-black text-neutral-500 uppercase tracking-[0.2em]">
+                    <div className="flex items-center gap-4 text-xs font-medium text-neutral-500">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-3.5 h-3.5 text-brand-orange" />
-                        <span>{convertTimestamp(update.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase()}</span>
+                        <Calendar className="w-4 h-4 text-brand-orange" />
+                        <span>{convertTimestamp(update.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                       </div>
                       {update.updatedAt && (
-                        <div className="flex items-center gap-2 text-brand-acid">
+                        <div className="flex items-center gap-1.5 text-brand-acid">
                           <Edit3 className="w-3.5 h-3.5" />
-                          <span>SYSTEM UPDATED</span>
+                          <span>Edited</span>
                         </div>
                       )}
                     </div>
@@ -348,10 +356,10 @@ export default function ProjectUpdatesList({
 
                   {/* Creator Actions Menu */}
                   {isCreator && (
-                    <div className="relative self-start lg:mt-2">
+                    <div className="relative self-start">
                       <button
                         onClick={() => toggleMenu(update.id)}
-                        className="p-4 bg-white/5 border border-white/10 rounded-[1.5rem] hover:bg-brand-acid hover:text-brand-black transition-all group/menu"
+                        className="p-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-brand-acid hover:text-brand-black transition-all group/menu"
                       >
                         <MoreVertical className="w-6 h-6 text-neutral-400 group-hover/menu:text-brand-black transition-colors" />
                       </button>
@@ -431,10 +439,10 @@ export default function ProjectUpdatesList({
                    {update.content.length > 350 && (
                     <button
                       onClick={() => toggleContent(update.id)}
-                      className="group flex items-center gap-3 mt-8 px-8 py-3.5 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-acid hover:text-brand-black transition-all"
+                      className="group flex items-center gap-2 mt-4 px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-brand-acid hover:text-brand-black transition-all text-xs font-bold"
                     >
-                      <span className="text-[10px] font-black italic uppercase tracking-[0.3em]">
-                        {isExpanded ? 'COLAPSE DATA' : 'READ FULL DISPATCH'}
+                      <span>
+                        {isExpanded ? 'Show Less' : 'Read Full Update'}
                       </span>
                       {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4 animate-bounce" />}
                     </button>
@@ -442,37 +450,37 @@ export default function ProjectUpdatesList({
                 </div>
 
                 {/* High-Fidelity Engagement Bar */}
-                <div className="mt-16 pt-10 border-t border-white/10">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     {/* Telemetry Stats */}
-                    <div className="flex flex-wrap items-center gap-10">
-                      <div className="flex items-center gap-4 group/stat">
-                        <div className="p-3 bg-brand-acid/5 border border-brand-acid/10 rounded-2xl group-hover/stat:bg-brand-acid/10 transition-colors">
-                          <Eye className="w-5 h-5 text-brand-acid" />
+                    <div className="flex flex-wrap items-center gap-6">
+                      <div className="flex items-center gap-3 group/stat">
+                        <div className="p-2.5 bg-brand-acid/5 border border-brand-acid/10 rounded-xl group-hover/stat:bg-brand-acid/10 transition-colors">
+                          <Eye className="w-4 h-4 text-brand-acid" />
                         </div>
                         <div>
-                          <p className="text-[11px] font-black text-brand-white leading-none">{(update as any).viewCount || '24.1K'}</p>
-                          <p className="text-[8px] font-black text-neutral-500 uppercase tracking-[0.2em] mt-1">TELEMETRY</p>
+                          <p className="text-sm font-bold text-brand-white leading-none">{(update as any).viewCount || '24.1K'}</p>
+                          <p className="text-[10px] font-medium text-neutral-500 mt-0.5">Views</p>
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-4 group/stat">
-                        <div className="p-3 bg-brand-orange/5 border border-brand-orange/10 rounded-2xl group-hover/stat:bg-brand-orange/10 transition-colors">
-                          <ThumbsUp className="w-5 h-5 text-brand-orange" />
+                      <div className="flex items-center gap-3 group/stat">
+                        <div className="p-2.5 bg-brand-orange/5 border border-brand-orange/10 rounded-xl group-hover/stat:bg-brand-orange/10 transition-colors">
+                          <ThumbsUp className="w-4 h-4 text-brand-orange" />
                         </div>
                         <div>
-                          <p className="text-[11px] font-black text-brand-white leading-none">{update.likes || 0}</p>
-                          <p className="text-[8px] font-black text-neutral-500 uppercase tracking-[0.2em] mt-1">REACTIONS</p>
+                          <p className="text-sm font-bold text-brand-white leading-none">{update.likes || 0}</p>
+                          <p className="text-[10px] font-medium text-neutral-500 mt-0.5">Likes</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 group/stat">
-                        <div className="p-3 bg-brand-acid/5 border border-brand-acid/10 rounded-2xl group-hover/stat:bg-brand-acid/10 transition-colors">
-                          <MessageSquare className="w-5 h-5 text-brand-acid" />
+                      <div className="flex items-center gap-3 group/stat">
+                        <div className="p-2.5 bg-brand-acid/5 border border-brand-acid/10 rounded-xl group-hover/stat:bg-brand-acid/10 transition-colors">
+                          <MessageSquare className="w-4 h-4 text-brand-acid" />
                         </div>
                         <div>
-                          <p className="text-[11px] font-black text-brand-white leading-none">{update.commentCount || 0}</p>
-                          <p className="text-[8px] font-black text-neutral-500 uppercase tracking-[0.2em] mt-1">DEBATE</p>
+                          <p className="text-sm font-bold text-brand-white leading-none">{update.commentCount || 0}</p>
+                          <p className="text-[10px] font-medium text-neutral-500 mt-0.5">Comments</p>
                         </div>
                       </div>
                     </div>
@@ -481,21 +489,21 @@ export default function ProjectUpdatesList({
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => handleCopyLink(update.id, update.title)}
-                        className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl text-[10px] font-black italic uppercase tracking-widest transition-all ${copiedId === update.id
-                          ? 'bg-brand-acid text-brand-black shadow-[0_0_20px_rgba(204,255,0,0.3)]'
-                          : 'bg-white/5 text-neutral-400 border border-white/5 hover:border-brand-acid/40 hover:text-brand-acid'
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${copiedId === update.id
+                          ? 'bg-brand-acid text-brand-black shadow-[0_0_15px_rgba(204,255,0,0.2)]'
+                          : 'bg-white/5 text-neutral-300 border border-white/10 hover:border-brand-acid/40 hover:text-brand-acid'
                           }`}
                       >
-                        {copiedId === update.id ? <><Check className="w-4 h-4" /><span>SYSTEM COPIED</span></> : <><Link2 className="w-4 h-4" /><span>LINK DISPATCH</span></>}
+                        {copiedId === update.id ? <><Check className="w-4 h-4" /><span>Copied</span></> : <><Link2 className="w-4 h-4" /><span>Copy Link</span></>}
                       </button>
 
                       <div className="relative">
                         <button
                           onClick={() => setShareMenuOpen(shareMenuOpen === update.id ? null : update.id)}
-                          className="flex items-center gap-3 px-6 py-3.5 bg-white/5 text-neutral-400 border border-white/5 rounded-2xl text-[10px] font-black italic uppercase tracking-widest hover:border-brand-orange/40 hover:text-brand-orange transition-all"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-white/5 text-neutral-300 border border-white/10 rounded-xl text-xs font-bold hover:border-brand-orange/40 hover:text-brand-orange transition-all"
                         >
                           <Share2 className="w-4 h-4" />
-                          <span>BROADCAST</span>
+                          <span>Share</span>
                         </button>
 
                         {shareMenuOpen === update.id && (
@@ -519,8 +527,8 @@ export default function ProjectUpdatesList({
 
               {/* Global Debate Section (Comments) */}
               {isCreator && projectId && creatorId && (
-                <div className="px-10 pb-10">
-                   <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem]">
+                <div className="px-6 pb-6 md:px-8 md:pb-8">
+                   <div className="bg-white/[0.02] border border-white/10 rounded-2xl">
                       <UpdateComments
                         updateId={update.id}
                         projectId={projectId}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Lock, X, AlertCircle } from 'lucide-react';
+import { Lock, X, AlertCircle, ShieldCheck, Zap, ChevronRight } from 'lucide-react';
 import { verifyCreatorPIN } from '../../lib/kycService';
 import toast from 'react-hot-toast';
 
@@ -24,7 +24,6 @@ export default function PINVerificationModal({
     if (!isOpen) return null;
 
     const handlePINChange = (value: string) => {
-        // Only allow digits, max 6
         const numericValue = value.replace(/\D/g, '').slice(0, 6);
         setPin(numericValue);
         setError('');
@@ -32,7 +31,7 @@ export default function PINVerificationModal({
 
     const handleVerify = async () => {
         if (pin.length !== 6) {
-            setError('PIN must be 6 digits');
+            setError('PIN MUST BE 6 DIGITS');
             return;
         }
 
@@ -40,25 +39,24 @@ export default function PINVerificationModal({
             setVerifying(true);
             setError('');
 
-            // Verify PIN with backend
             const isValid = await verifyCreatorPIN(userId, pin);
 
             if (isValid) {
-                toast.success('Identity verified successfully!');
+                toast.success('IDENTITY VERIFIED!');
                 onVerified();
                 handleClose();
             } else {
                 setAttempts(prev => prev + 1);
-                setError('Invalid PIN. Please try again.');
+                setError('INVALID SECURITY PIN');
                 setPin('');
 
                 if (attempts >= 2) {
-                    toast.error('Multiple failed attempts. Please contact support if you forgot your PIN.');
+                    toast.error('MULTIPLE FAILURES. CONTACT SUPPORT.');
                 }
             }
         } catch (error: any) {
             console.error('PIN verification error:', error);
-            setError(error.message || 'Failed to verify PIN. Please try again.');
+            setError(error.message?.toUpperCase() || 'VERIFICATION FAILED');
             setPin('');
         } finally {
             setVerifying(false);
@@ -79,54 +77,63 @@ export default function PINVerificationModal({
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+            <div className="absolute inset-0 bg-brand-black/95 backdrop-blur-2xl" onClick={handleClose} />
+            
+            <div className="relative w-full max-w-md bg-[#0a0a0a] border-2 border-neutral-800 rounded-[2.5rem] shadow-[0_0_100px_rgba(255,91,0,0.1)] overflow-hidden animate-in zoom-in-95 duration-300">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                            <Lock className="w-5 h-5 text-orange-600" />
+                <div className="p-8 border-b-2 border-neutral-800/50">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="w-14 h-14 bg-brand-orange/10 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                                <Lock className="w-7 h-7 text-brand-orange" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-black italic uppercase tracking-wider text-brand-white">Verify <span className="text-brand-orange">ID</span></h3>
+                                <p className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 mt-1">6-Digit Security Access</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="text-lg font-semibold text-gray-900">Verify Your Identity</h3>
-                            <p className="text-sm text-gray-500">Enter your 6-digit security PIN</p>
-                        </div>
+                        <button
+                            onClick={handleClose}
+                            className="p-3 bg-neutral-900 rounded-2xl text-neutral-600 hover:text-brand-white transition-all hover:scale-110 active:scale-90"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
                     </div>
-                    <button
-                        onClick={handleClose}
-                        className="p-1 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                <div className="p-8">
+                    <div className="mb-8">
+                        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-4 flex items-center gap-2">
+                            <Zap className="w-4 h-4 text-brand-acid" />
                             Security PIN
                         </label>
-                        <input
-                            type="password"
-                            value={pin}
-                            onChange={(e) => handlePINChange(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                            placeholder="••••••"
-                            maxLength={6}
-                            inputMode="numeric"
-                            autoComplete="off"
-                            autoFocus
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-2xl font-mono tracking-widest focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                            disabled={verifying}
-                        />
+                        <div className="relative group">
+                            <input
+                                type="password"
+                                value={pin}
+                                onChange={(e) => handlePINChange(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="••••••"
+                                maxLength={6}
+                                inputMode="numeric"
+                                autoComplete="off"
+                                autoFocus
+                                className="w-full px-6 py-6 bg-brand-black border-2 border-neutral-800 rounded-2xl text-center text-4xl font-black italic tracking-[0.5em] text-brand-white placeholder-neutral-800 focus:border-brand-orange focus:ring-8 focus:ring-brand-orange/10 transition-all duration-300"
+                                disabled={verifying}
+                            />
+                        </div>
 
                         {/* PIN Strength Indicator */}
-                        <div className="mt-3 flex gap-1">
+                        <div className="mt-6 flex gap-2">
                             {[...Array(6)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className={`h-1 flex-1 rounded-full transition-colors ${i < pin.length ? 'bg-orange-500' : 'bg-gray-200'
-                                        }`}
+                                    className={`h-2 flex-1 rounded-full transition-all duration-500 ${i < pin.length 
+                                        ? 'bg-brand-orange shadow-[0_0_10px_rgba(255,91,0,0.5)]' 
+                                        : 'bg-neutral-900'
+                                    }`}
                                 />
                             ))}
                         </div>
@@ -134,64 +141,62 @@ export default function PINVerificationModal({
 
                     {/* Error Message */}
                     {error && (
-                        <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
-                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-red-700">{error}</p>
-                        </div>
-                    )}
-
-                    {/* Attempts Warning */}
-                    {attempts > 0 && (
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
-                            <p className="text-xs text-yellow-800">
-                                Failed attempts: {attempts}/3
-                            </p>
+                        <div className="flex items-center gap-3 p-4 bg-red-500/10 border-2 border-red-500/20 rounded-2xl mb-6 animate-in slide-in-from-top-2">
+                            <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                            <p className="text-[10px] font-black italic uppercase tracking-widest text-red-500">{error}</p>
                         </div>
                     )}
 
                     {/* Info */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <p className="text-sm text-blue-800">
-                            <strong>Why do we need this?</strong><br />
-                            This PIN verifies that you're the account owner who submitted KYC,
-                            preventing unauthorized project creation.
-                        </p>
+                    <div className="bg-brand-acid/5 border-2 border-brand-acid/10 rounded-3xl p-6 mb-8 relative overflow-hidden group/info">
+                        <div className="absolute -right-4 -bottom-4 opacity-5 group-hover/info:opacity-10 transition-opacity">
+                            <ShieldCheck className="w-24 h-24 text-brand-acid" />
+                        </div>
+                        <div className="relative z-10">
+                            <h4 className="text-[10px] font-black italic uppercase tracking-widest text-brand-acid mb-2">Why this matters?</h4>
+                            <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 leading-relaxed">
+                                This PIN confirms account ownership and prevents unauthorized project drops on the platform.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={handleClose}
                             disabled={verifying}
-                            className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                            className="flex-1 px-8 py-5 border-2 border-neutral-800 text-neutral-500 rounded-2xl font-black italic uppercase tracking-widest hover:border-neutral-600 hover:text-brand-white transition-all active:scale-95 disabled:opacity-50"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleVerify}
                             disabled={pin.length !== 6 || verifying}
-                            className={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors ${pin.length === 6 && !verifying
-                                    ? 'bg-gradient-to-r from-orange-600 to-pink-600 text-white hover:from-orange-700 hover:to-pink-700'
-                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            className={`flex-1 px-8 py-5 rounded-2xl font-black italic uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${pin.length === 6 && !verifying
+                                    ? 'bg-brand-orange text-brand-black shadow-[0_0_30px_rgba(255,91,0,0.3)] hover:scale-105 active:scale-95'
+                                    : 'bg-neutral-900 text-neutral-700 cursor-not-allowed'
                                 }`}
                         >
                             {verifying ? (
-                                <span className="flex items-center justify-center gap-2">
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                    Verifying...
-                                </span>
+                                <div className="w-5 h-5 border-2 border-brand-black border-t-transparent rounded-full animate-spin" />
                             ) : (
-                                'Verify & Submit'
+                                <>
+                                    <span>Verify</span>
+                                    <ChevronRight className="w-5 h-5" />
+                                </>
                             )}
                         </button>
                     </div>
                 </div>
 
-                {/* Footer */}
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-xl">
-                    <p className="text-xs text-gray-500 text-center">
-                        🔒 Your PIN is never stored in plain text and is encrypted for security.
-                    </p>
+                {/* Footer Security Note */}
+                <div className="p-6 bg-[#0c0c0c] border-t-2 border-neutral-800/50">
+                    <div className="flex items-center justify-center gap-2">
+                        <ShieldCheck className="w-4 h-4 text-brand-acid" />
+                        <p className="text-[9px] font-black italic uppercase tracking-[0.2em] text-neutral-600">
+                            End-to-End Encrypted Verification
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

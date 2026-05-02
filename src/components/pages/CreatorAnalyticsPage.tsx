@@ -257,25 +257,25 @@ export default function CreatorAnalyticsPage() {
   if (projectsLoading || loading) return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-brand-white font-sans py-12 px-4 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-brand-black text-brand-white font-sans py-8">
       <PageTitle title="Analytics" description="High-frequency performance telemetry" />
 
       {/* Cinematic Header */}
-      <div className="max-w-[1920px] mx-auto mb-16">
+      <div className="w-full px-4 sm:px-6 lg:px-8 mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <div className="flex items-center gap-4 mb-4">
-              <div className="p-4 bg-brand-acid/10 rounded-3xl border border-brand-acid/20 shadow-[0_0_20px_rgba(204,255,0,0.1)] transition-transform hover:scale-105 duration-500">
-                <TrendingUp className="w-8 h-8 text-brand-acid" />
+              <div className="p-4 bg-brand-orange/10 rounded-3xl border border-brand-orange/20 shadow-[0_0_20px_rgba(255,91,0,0.1)]">
+                <TrendingUp className="w-8 h-8 text-brand-orange" />
               </div>
-              <span className="px-4 py-1.5 bg-brand-orange/10 text-brand-orange text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-orange/20">
-                TELEMETRY HUB
+              <span className="px-4 py-1.5 bg-brand-acid/10 text-brand-acid text-[10px] font-black uppercase tracking-[0.2em] rounded-full border border-brand-acid/20">
+                Telemetry Hub
               </span>
             </div>
             <h1 className="text-5xl md:text-7xl font-black text-brand-white tracking-tighter italic uppercase leading-none">
               Performance <span className="text-brand-acid">Intel</span>
             </h1>
-            <p className="text-lg text-neutral-500 font-medium mt-4 max-w-xl leading-relaxed italic uppercase tracking-tight">
+            <p className="text-lg text-neutral-400 font-medium mt-4 max-w-2xl">
               Real-time synchronization of project outreach, engagement velocity, and financial conversion.
             </p>
           </div>
@@ -301,7 +301,7 @@ export default function CreatorAnalyticsPage() {
         </div>
       </div>
 
-      <div className="max-w-[1920px] mx-auto">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         {/* Tactical Filters */}
         <div className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] p-6 mb-12 flex flex-wrap items-center justify-between gap-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-acid/5 rounded-full blur-3xl" />
@@ -334,7 +334,7 @@ export default function CreatorAnalyticsPage() {
             ].map((stat, i) => (
                 <div 
                     key={i} 
-                    className={`bg-[#111] border border-neutral-800 p-8 rounded-[2.5rem] transition-all duration-300 group/item cursor-pointer flex flex-col justify-between min-h-[240px] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] ${stat.hover}`}
+                    className={`bg-[#111] rounded-3xl p-6 border border-neutral-800 transition-all duration-300 group/item cursor-pointer flex flex-col justify-between ${stat.hover}`}
                 >
                     <div className="flex items-center justify-between">
                         <div className={`p-4 bg-brand-black rounded-2xl border border-neutral-800 transition-all duration-500 ${stat.fill}`}>

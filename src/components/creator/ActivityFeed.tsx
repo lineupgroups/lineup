@@ -84,11 +84,7 @@ const ActivityItem = memo(({
                 <p className="text-xs text-neutral-400 mt-1 line-clamp-2 font-medium">
                     {sanitizeDescription(activity.description)}
                 </p>
-                {showProjectLabel && activity.projectTitle && (
-                    <p className="text-[11px] text-neutral-500 mt-1.5 font-bold uppercase tracking-wider">
-                        ON <span className="text-brand-acid">{activity.projectTitle}</span>
-                    </p>
-                )}
+
             </div>
             <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex-shrink-0 bg-neutral-900 px-2 py-1 rounded-md border border-neutral-800 group-hover:bg-[#111]">
                 {formatTimeAgo(activity.createdAt)}
@@ -159,10 +155,7 @@ function ActivityFeed({ creatorId, limit = 10, onRetry }: ActivityFeedProps) {
                 </div>
                 <p className="text-brand-white font-bold text-lg">No activity yet</p>
                 <p className="text-sm text-neutral-400 mt-2 max-w-[250px] mx-auto">
-                    {selectedProject
-                        ? `No activity for "${selectedProject.title}" yet`
-                        : 'Create your first project to start seeing activity here!'
-                    }
+                    Activity for your projects will appear here.
                 </p>
                 {!selectedProject && (
                     <Link

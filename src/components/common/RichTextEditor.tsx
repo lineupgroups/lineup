@@ -126,76 +126,76 @@ export default function RichTextEditor({
     return (
         <div className="w-full">
             {/* Toolbar */}
-            <div className={`flex items-center space-x-1 p-2 border border-gray-300 border-b-0 rounded-t-lg bg-gray-50 transition-colors ${isFocused ? 'border-orange-500 bg-orange-50' : ''
+            <div className={`flex items-center space-x-1 p-2 border border-neutral-800 border-b-0 rounded-t-[1.2rem] bg-neutral-900/50 transition-colors ${isFocused ? 'border-brand-acid bg-brand-acid/5' : ''
                 }`}>
                 <button
                     type="button"
                     onClick={handleBold}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Bold (Ctrl+B)"
                     disabled={disabled}
                 >
-                    <Bold className="w-4 h-4 text-gray-600" />
+                    <Bold className="w-4 h-4 text-neutral-400" />
                 </button>
                 <button
                     type="button"
                     onClick={handleItalic}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Italic (Ctrl+I)"
                     disabled={disabled}
                 >
-                    <Italic className="w-4 h-4 text-gray-600" />
+                    <Italic className="w-4 h-4 text-neutral-400" />
                 </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
+                <div className="w-px h-6 bg-neutral-800 mx-1" />
                 <button
                     type="button"
                     onClick={handleLink}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Insert Link (Ctrl+K)"
                     disabled={disabled}
                 >
-                    <Link2 className="w-4 h-4 text-gray-600" />
+                    <Link2 className="w-4 h-4 text-neutral-400" />
                 </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
+                <div className="w-px h-6 bg-neutral-800 mx-1" />
                 <button
                     type="button"
                     onClick={handleBulletList}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Bullet List"
                     disabled={disabled}
                 >
-                    <List className="w-4 h-4 text-gray-600" />
+                    <List className="w-4 h-4 text-neutral-400" />
                 </button>
                 <button
                     type="button"
                     onClick={handleNumberedList}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Numbered List"
                     disabled={disabled}
                 >
-                    <ListOrdered className="w-4 h-4 text-gray-600" />
+                    <ListOrdered className="w-4 h-4 text-neutral-400" />
                 </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
+                <div className="w-px h-6 bg-neutral-800 mx-1" />
                 {/* Quote Button */}
                 <button
                     type="button"
                     onClick={handleQuote}
-                    className="p-2 hover:bg-white rounded transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50"
                     title="Quote"
                     disabled={disabled}
                 >
-                    <Quote className="w-4 h-4 text-gray-600" />
+                    <Quote className="w-4 h-4 text-neutral-400" />
                 </button>
                 {/* Emoji Picker */}
                 <div className="relative">
                     <button
                         type="button"
                         onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                        className={`p-2 hover:bg-white rounded transition-colors disabled:opacity-50 ${showEmojiPicker ? 'bg-white' : ''}`}
+                        className={`p-2 hover:bg-[#111] hover:text-brand-white rounded transition-colors disabled:opacity-50 ${showEmojiPicker ? 'bg-[#111] text-brand-white' : ''}`}
                         title="Insert Emoji"
                         disabled={disabled}
                     >
-                        <Smile className="w-4 h-4 text-gray-600" />
+                        <Smile className="w-4 h-4 text-neutral-400" />
                     </button>
                     {showEmojiPicker && (
                         <>
@@ -203,15 +203,15 @@ export default function RichTextEditor({
                                 className="fixed inset-0 z-10"
                                 onClick={() => setShowEmojiPicker(false)}
                             />
-                            <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 p-2 z-20">
-                                <p className="text-xs text-gray-500 mb-2">Click to insert emoji</p>
+                            <div className="absolute left-0 top-full mt-2 w-64 bg-[#111] rounded-2xl shadow-xl border border-neutral-800 p-3 z-20">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-neutral-500 mb-3">Click to insert emoji</p>
                                 <div className="grid grid-cols-10 gap-1">
                                     {commonEmojis.map((emoji) => (
                                         <button
                                             key={emoji}
                                             type="button"
                                             onClick={() => handleEmoji(emoji)}
-                                            className="text-lg hover:bg-gray-100 rounded p-1 transition-colors"
+                                            className="text-lg hover:bg-neutral-800 rounded p-1 transition-colors"
                                         >
                                             {emoji}
                                         </button>
@@ -241,8 +241,8 @@ export default function RichTextEditor({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 onPaste={handlePaste}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-b-lg focus:outline-none transition-colors prose prose-sm max-w-none ${isFocused ? 'ring-2 ring-orange-500 border-orange-500' : ''
-                    } ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+                className={`w-full px-5 py-4 border border-neutral-800 rounded-b-[1.2rem] focus:outline-none transition-colors prose prose-sm prose-invert max-w-none ${isFocused ? 'ring-2 ring-brand-acid border-brand-acid text-brand-white' : 'text-brand-white'
+                    } ${disabled ? 'bg-neutral-900 cursor-not-allowed' : 'bg-brand-black'}`}
                 style={{
                     minHeight: `${rows * 1.5}rem`,
                     maxHeight: '400px',
@@ -293,12 +293,12 @@ export default function RichTextEditor({
         }
         
         [contentEditable] blockquote {
-          border-left: 4px solid #f97316;
+          border-left: 4px solid #ccff00;
           padding-left: 1rem;
           margin: 0.75rem 0;
-          color: #6b7280;
+          color: #a3a3a3;
           font-style: italic;
-          background-color: #fef3c7;
+          background-color: #111;
           padding: 0.5rem 1rem;
           border-radius: 0 0.5rem 0.5rem 0;
         }

@@ -85,32 +85,29 @@ export default function CommentsStatsCard({ stats, loading }: CommentsStatsCardP
     ];
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
             {statCards.map((stat) => {
                 const Icon = stat.icon;
                 return (
                     <div
                         key={stat.label}
-                        className={`bg-white/5 backdrop-blur-xl rounded-[2.5rem] border ${stat.borderColor} p-6 hover:bg-white/10 transition-all group overflow-hidden relative ${stat.pulse ? 'shadow-[0_0_20px_rgba(255,91,0,0.1)]' : ''}`}
+                        className={`bg-[#111] rounded-3xl p-6 border border-neutral-800 transition-all duration-300 group ${stat.pulse ? 'border-brand-orange/30 hover:border-brand-orange' : stat.iconColor === 'text-brand-orange' ? 'hover:border-brand-orange/50' : 'hover:border-brand-acid/50'}`}
                     >
-                        {/* Subtle background glow */}
-                        <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-20 pointer-events-none ${stat.iconBg}`}></div>
-                        
-                        <div className="flex items-center gap-4 mb-4 relative z-10">
-                            <div className={`w-12 h-12 ${stat.iconBg} rounded-2xl flex items-center justify-center ${stat.pulse ? 'animate-pulse' : ''}`}>
-                                <Icon className={`w-6 h-6 ${stat.iconColor}`} />
+                        <div className="flex items-center justify-between mb-4">
+                            <div className={`p-3 ${stat.iconBg} rounded-2xl ${stat.iconColor} ${stat.iconColor === 'text-brand-orange' ? 'group-hover:bg-brand-orange' : 'group-hover:bg-brand-acid'} group-hover:text-brand-black transition-colors ${stat.pulse ? 'animate-pulse' : ''}`}>
+                                <Icon className="w-6 h-6" />
                             </div>
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">{stat.label}</span>
                         </div>
-                        <div className={`text-4xl font-black italic tracking-tighter ${stat.valueColor} mb-2 relative z-10`}>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-brand-white tracking-tight">
                             {stat.value}
-                        </div>
-                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-500 relative z-10">
+                        </h3>
+                        <p className="text-sm text-neutral-400 mt-2 font-medium">{stat.label}</p>
+                        <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
                             {stat.label === 'Total Dialogue' && stats.thisWeek > 0 && (
-                                <TrendingUp className="w-3.5 h-3.5 text-brand-acid" />
+                                <TrendingUp className="w-3 h-3 text-brand-acid" />
                             )}
                             <span className={stat.pulse ? 'text-brand-orange' : ''}>{stat.subtext}</span>
-                        </div>
+                        </p>
                     </div>
                 );
             })}
