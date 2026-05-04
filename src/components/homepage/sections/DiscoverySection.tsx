@@ -20,7 +20,7 @@ export default function DiscoverySection({ projects, loading }: DiscoverySection
       subtitle="Explore projects outside your usual interests"
       icon={Compass}
     >
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map(project => (
           <EnhancedProjectCard key={project.id} project={project} />
         ))}

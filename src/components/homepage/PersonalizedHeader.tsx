@@ -25,7 +25,7 @@ export default function PersonalizedHeader() {
 
   return (
     <div className="bg-[#111] border-b border-neutral-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-10">
         {/* Main Greeting with Location */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">

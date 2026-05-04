@@ -20,7 +20,7 @@ export default function QuickActionBar() {
 
   return (
     <div className="bg-[#111]/80 backdrop-blur-md border-b border-neutral-800 sticky top-16 z-30 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 py-4 overflow-x-auto scrollbar-hide">
           {filters.map((filter) => {
             const Icon = filter.icon;

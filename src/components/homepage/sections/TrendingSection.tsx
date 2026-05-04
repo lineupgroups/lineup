@@ -16,7 +16,7 @@ export default function TrendingSection({ projects, loading }: TrendingSectionPr
                 subtitle="Projects making waves on Lineup"
                 icon={Flame}
             >
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[...Array(3)].map((_, i) => (
                         <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
                     ))}
@@ -54,7 +54,7 @@ export default function TrendingSection({ projects, loading }: TrendingSectionPr
             icon={Flame}
             viewAllLink="/explore?sort=trending"
         >
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {projects.map(project => (
                     <EnhancedProjectCard key={project.id} project={project} />
                 ))}

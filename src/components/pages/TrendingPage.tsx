@@ -175,7 +175,7 @@ export default function TrendingPage() {
         )}
 
         {isLoading && !hasError && (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
             ))}
@@ -183,7 +183,7 @@ export default function TrendingPage() {
         )}
 
         {!isLoading && !hasError && (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {trendingProjects.map((project, index) => (
               <div key={project.id} className="relative group/card">
                 {/* Trending Badge */}
