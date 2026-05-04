@@ -54,7 +54,7 @@ export default function SupportersList({ projectId, limit = 10, showTitle = true
     if (donations.length === 0) {
         return (
             <div className="text-center py-8 bg-brand-black rounded-2xl border border-dashed border-neutral-700">
-                <Heart className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                <Heart className="w-10 h-10 text-neutral-700 mx-auto mb-3" />
                 <p className="text-neutral-500 font-medium">No supporters yet</p>
                 <p className="text-xs text-neutral-600 mt-1">Be the first to back this project!</p>
             </div>

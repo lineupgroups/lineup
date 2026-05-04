@@ -35,12 +35,12 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
       onClick={toggleLike}
       disabled={isLoading}
       className={cn(
-        'inline-flex items-center gap-2 rounded-lg border transition-all duration-200',
+        'inline-flex items-center gap-2 rounded-xl border transition-all duration-300',
         'hover:scale-105 active:scale-95',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         isLiked
-          ? 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100'
-          : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300',
+          ? 'bg-brand-orange/10 border-brand-orange/30 text-brand-orange shadow-[0_0_10px_rgba(255,91,0,0.1)]'
+          : 'bg-white/5 border-neutral-700 text-neutral-400 hover:bg-white/10 hover:border-neutral-600',
         buttonSizeClasses[size],
         className
       )}
@@ -49,14 +49,14 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
         className={cn(
           sizeClasses[size],
           'transition-all duration-200',
-          isLiked ? 'fill-current text-red-500' : '',
+          isLiked ? 'fill-current text-brand-orange' : '',
           isLoading && 'animate-pulse'
         )}
       />
       {showCount && (
         <span className={cn(
-          'font-medium',
-          isLiked ? 'text-red-600' : 'text-gray-700'
+          'font-bold',
+          isLiked ? 'text-brand-orange' : 'text-neutral-400'
         )}>
           {likeCount}
         </span>

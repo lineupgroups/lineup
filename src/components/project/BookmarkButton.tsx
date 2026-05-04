@@ -99,14 +99,14 @@ export default function BookmarkButton({
             <button
                 disabled
                 className={cn(
-                    'inline-flex items-center gap-2 rounded-lg border transition-all duration-200',
-                    'bg-white border-gray-200 text-gray-400',
+                    'inline-flex items-center gap-2 rounded-xl border transition-all duration-300',
+                    'bg-neutral-800/50 border-neutral-700 text-neutral-500',
                     buttonSizeClasses[size],
                     className
                 )}
             >
-                <div className={cn(sizeClasses[size], 'animate-pulse bg-gray-200 rounded')} />
-                {showLabel && <span className="font-medium">Save</span>}
+                <div className={cn(sizeClasses[size], 'animate-pulse bg-neutral-700 rounded')} />
+                {showLabel && <span className="font-bold">Save</span>}
             </button>
         );
     }
@@ -117,11 +117,11 @@ export default function BookmarkButton({
             disabled={isLoading}
             aria-label={isBookmarked ? 'Remove from saved projects' : 'Save project for later'}
             className={cn(
-                'inline-flex items-center gap-2 rounded-lg border transition-all duration-200',
-                'hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-500',
+                'inline-flex items-center gap-2 rounded-xl border transition-all duration-300',
+                'hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-orange/50',
                 isBookmarked
-                    ? 'bg-orange-50 border-orange-300 text-orange-600'
-                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300',
+                    ? 'bg-brand-orange/10 border-brand-orange/30 text-brand-orange shadow-[0_0_10px_rgba(255,91,0,0.1)]'
+                    : 'bg-white/5 border-neutral-700 text-neutral-400 hover:bg-white/10 hover:border-neutral-600 hover:text-brand-white',
                 isLoading && 'opacity-70 cursor-not-allowed',
                 buttonSizeClasses[size],
                 className
@@ -135,7 +135,7 @@ export default function BookmarkButton({
                 )}
             />
             {showLabel && (
-                <span className="font-medium">
+                <span className="font-bold">
                     {isBookmarked ? 'Saved' : 'Save'}
                 </span>
             )}

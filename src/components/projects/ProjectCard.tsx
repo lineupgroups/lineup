@@ -29,7 +29,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   const getProgressPercentage = (project: FirestoreProject) => {
-    return getProjectProgress(project);
+    return Math.min(getProjectProgress(project), 100);
   };
 
   const formatDate = (date: any) => {
@@ -44,50 +44,40 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const formatLocation = (location: any) => {
     if (!location) return '';
-
-    // Handle string format (legacy)
-    if (typeof location === 'string') {
-      return location;
-    }
-
-    // Handle object format {city, state} or {city, state, country}
+    if (typeof location === 'string') return location;
     if (typeof location === 'object') {
-      const { city, state, country } = location;
+      const { city, state } = location;
       const parts = [];
-
       if (city) parts.push(city);
       if (state) parts.push(state);
-      if (country && country !== 'India') parts.push(country);
-
       return parts.join(', ') || '';
     }
-
     return '';
   };
 
   const handleCardClick = () => {
-    if (onClick) {
-      onClick(project.id);
-    }
+    if (onClick) onClick(project.id);
   };
+
+  const progress = getProgressPercentage(project);
 
   return (
     <div
-      className={`bg-neutral-900/30 rounded-[2.5rem] border border-neutral-800 hover:border-neutral-700 transition-all duration-500 overflow-hidden group ${onClick ? 'cursor-pointer' : ''
-        } ${className}`}
+      className={`group relative bg-[#0D0D0D] rounded-[1.5rem] border border-neutral-800/50 hover:border-brand-orange/30 transition-all duration-700 overflow-hidden shadow-2xl ${onClick ? 'cursor-pointer' : ''} ${className}`}
       onClick={handleCardClick}
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-transparent to-transparent z-10" />
+      {/* 16:9 Cover Image */}
+      <div className="relative aspect-video overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent z-10 opacity-60" />
         <img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-full object-cover transition-opacity duration-700"
         />
         
-        {/* Badges */}
-        <div className="absolute top-5 left-5 z-20 flex gap-2">
-          <span className="px-4 py-1.5 bg-brand-black/60 backdrop-blur-md text-brand-acid border border-brand-acid/20 rounded-full text-[9px] font-black uppercase tracking-[0.2em]">
+        {/* Badges Overlay */}
+        <div className="absolute top-4 left-4 z-20 flex flex-wrap gap-2">
+          <span className="px-3 py-1 bg-brand-black/40 backdrop-blur-xl text-brand-acid border border-white/5 rounded-full text-[8px] font-black uppercase tracking-[0.2em]">
             {project.category}
           </span>
           {(() => {
@@ -103,12 +93,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             if (isExpired) {
               return (
-                <span className={`px-4 py-1.5 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${
-                  isFunded 
-                    ? 'bg-brand-acid/20 text-brand-acid border-brand-acid/30 shadow-[0_0_15px_rgba(204,255,0,0.2)]' 
-                    : 'bg-neutral-900/60 text-neutral-400 border-neutral-700'
+                <span className={`px-3 py-1 backdrop-blur-xl rounded-full text-[8px] font-black uppercase tracking-[0.2em] border border-white/5 ${
+                  isFunded ? 'text-brand-acid' : 'text-neutral-400'
                 }`}>
-                  {isFunded ? 'Successful' : 'Ended'}
+                  {isFunded ? 'Success' : 'Ended'}
                 </span>
               );
             }
@@ -116,82 +104,76 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           })()}
         </div>
 
+        {/* Hover Actions */}
         {showInteractions && (
-          <div className="absolute top-5 right-5 z-20 flex gap-2">
-            <div
-              className="bg-brand-black/60 backdrop-blur-md border border-neutral-800 rounded-2xl hover:bg-neutral-800 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <LikeButton projectId={project.id} size="sm" showCount={false} className="!p-2.5" />
+          <div className="absolute top-4 right-4 z-20 flex gap-2 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            <div className="p-1.5 bg-brand-black/40 backdrop-blur-xl border border-white/10 rounded-xl hover:bg-neutral-800 transition-colors" onClick={(e) => e.stopPropagation()}>
+              <LikeButton projectId={project.id} size="sm" showCount={false} className="!p-1.5" />
             </div>
-            <div
-              className="bg-brand-black/60 backdrop-blur-md border border-neutral-800 rounded-2xl hover:bg-neutral-800 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ShareButton
-                projectId={project.id}
-                projectTitle={project.title}
-                projectDescription={project.tagline}
-                size="sm"
-                className="!p-2.5"
-              />
+            <div className="p-1.5 bg-brand-black/40 backdrop-blur-xl border border-white/10 rounded-xl hover:bg-neutral-800 transition-colors" onClick={(e) => e.stopPropagation()}>
+              <ShareButton projectId={project.id} projectTitle={project.title} projectDescription={project.tagline} size="sm" className="!p-1.5" />
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-8">
-        <h3 className="text-xl sm:text-2xl font-black text-brand-white mb-3 line-clamp-2 italic uppercase tracking-tighter group-hover:text-brand-acid transition-colors">
+      <div className="p-6 sm:p-7">
+        <h3 className="text-xl font-black italic uppercase tracking-tighter text-brand-white line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors duration-500">
           {project.title}
         </h3>
-        <p className="text-neutral-500 mb-8 line-clamp-2 font-medium text-sm leading-relaxed">
+        <p className="text-[11px] text-neutral-500 font-medium line-clamp-2 mb-6 leading-relaxed">
           {project.tagline}
         </p>
 
-        {/* Creator Info */}
-        <div className="mb-8 p-4 bg-neutral-900/50 rounded-2xl border border-neutral-800/50">
-          <CreatorInfo
-            creatorId={project.creatorId}
-            size="sm"
-          />
-        </div>
-
-        {/* Project Stats */}
-        <div className="space-y-5">
+        {/* Stats Section */}
+        <div className="space-y-4">
           <div className="flex justify-between items-end">
-            <div className="space-y-1">
-              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Raised</p>
-              <p className="text-xl font-black text-brand-acid italic">{formatCurrency(project.raised)}</p>
+            <div className="space-y-0.5">
+              <span className="text-[9px] font-black italic uppercase tracking-[0.2em] text-neutral-600">Raised Intel</span>
+              <p className="text-xl font-black text-brand-white italic tracking-tighter">
+                {formatCurrency(project.raised)}
+              </p>
             </div>
-            <div className="text-right">
-              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">Goal</p>
-              <p className="text-sm font-bold text-brand-white">{formatCurrency(project.goal || project.fundingGoal || 0)}</p>
+            <div className="text-right space-y-0.5">
+              <span className="text-[9px] font-black italic uppercase tracking-[0.2em] text-neutral-600">Objective</span>
+              <p className="text-xs font-black text-neutral-400 italic">
+                {formatCurrency(project.goal || project.fundingGoal || 0)}
+              </p>
             </div>
           </div>
           
-          <div className="relative w-full bg-neutral-800 rounded-full h-3.5 overflow-hidden">
+          {/* Progress Bar Container */}
+          <div className="relative w-full h-2 bg-neutral-900 rounded-full overflow-hidden border border-white/5">
+            {/* Filled Progress */}
             <div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-orange to-brand-acid h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(204,255,0,0.2)]"
-              style={{ width: `${Math.min(getProgressPercentage(project), 100)}%` }}
-            ></div>
+              className="absolute inset-y-0 left-0 bg-brand-orange h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(255,91,0,0.3)] relative overflow-hidden"
+              style={{ width: `${progress}%` }}
+            >
+              {/* Localized Shimmer Animation (Only inside progress) */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full h-full -translate-x-full animate-[shimmer_2s_infinite]" />
+            </div>
           </div>
           
-          <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
-            <span className="text-brand-acid">{getProgressPercentage(project).toFixed(0)}% FUNDED</span>
-            <span className="text-neutral-500 flex items-center gap-1.5">
-              <Calendar className="w-3 h-3" />
-              {formatDate(project.endDate)}
-            </span>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black italic text-brand-orange">{progress.toFixed(0)}% Complete</span>
+              <div className="w-1 h-1 rounded-full bg-neutral-800" />
+              <div className="flex items-center gap-1 text-[9px] font-black italic uppercase text-neutral-600">
+                <MapPin className="w-2.5 h-2.5" />
+                <span>{formatLocation(project.location) || 'Remote'}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 text-[9px] font-black italic uppercase text-neutral-500">
+              <Calendar className="w-2.5 h-2.5" />
+              <span>{formatDate(project.endDate)}</span>
+            </div>
           </div>
         </div>
 
-        {/* Interaction Stats */}
-        {showInteractions && (
-          <div className="mt-8 pt-6 border-t border-neutral-800">
-            <InteractionStats projectId={project.id} size="sm" />
-          </div>
-        )}
       </div>
+
+      {/* Luxury Hover Glow */}
+      <div className="absolute inset-0 pointer-events-none border border-brand-orange/0 group-hover:border-brand-orange/20 transition-all duration-700 rounded-[1.5rem]" />
     </div>
   );
 };

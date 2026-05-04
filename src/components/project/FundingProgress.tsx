@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Target, Users, Clock, TrendingUp } from 'lucide-react';
 
 interface FundingProgressProps {
     raised: number;
@@ -17,20 +17,40 @@ export default function FundingProgress({
     animated = true
 }: FundingProgressProps) {
     const [displayPercentage, setDisplayPercentage] = useState(0);
+    const [displayRaised, setDisplayRaised] = useState(0);
     const actualPercentage = Math.min((raised / goal) * 100, 100);
     const isGoalReached = actualPercentage >= 100;
 
-    // Animate progress bar on mount
+    // Animate progress bar and counter on mount
     useEffect(() => {
         if (animated) {
             const timer = setTimeout(() => {
                 setDisplayPercentage(actualPercentage);
-            }, 100);
-            return () => clearTimeout(timer);
+            }, 200);
+
+            // Animate the raised amount counter
+            const duration = 1500;
+            const steps = 40;
+            const increment = raised / steps;
+            let current = 0;
+            let step = 0;
+
+            const counterInterval = setInterval(() => {
+                step++;
+                current = Math.min(increment * step, raised);
+                setDisplayRaised(Math.round(current));
+                if (step >= steps) clearInterval(counterInterval);
+            }, duration / steps);
+
+            return () => {
+                clearTimeout(timer);
+                clearInterval(counterInterval);
+            };
         } else {
             setDisplayPercentage(actualPercentage);
+            setDisplayRaised(raised);
         }
-    }, [actualPercentage, animated]);
+    }, [actualPercentage, animated, raised]);
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-IN', {
@@ -40,133 +60,136 @@ export default function FundingProgress({
         }).format(amount);
     };
 
-    const getProgressColor = () => {
-        if (actualPercentage >= 100) return 'from-green-500 to-emerald-500';
-        return 'from-orange-500 to-red-500';
-    };
-
-    const milestones = [
-        { percent: 25, label: '25%', reached: actualPercentage >= 25 },
-        { percent: 50, label: '50%', reached: actualPercentage >= 50 },
-        { percent: 75, label: '75%', reached: actualPercentage >= 75 },
-        { percent: 100, label: '100%', reached: actualPercentage >= 100 }
-    ];
-
     return (
-        <div className="funding-progress">
-            {/* Main Stats */}
-            <div className="text-center mb-4">
-                <div className="text-3xl font-bold text-gray-900 mb-1 flex items-center justify-center gap-2">
-                    {formatCurrency(raised)}
-                    {isGoalReached && (
-                        <span className="inline-flex items-center">
-                            <Sparkles className="w-6 h-6 text-yellow-500 animate-pulse" />
-                        </span>
-                    )}
+        <div className="space-y-6">
+            {/* Raised Amount — Hero Display */}
+            <div className="text-center py-2">
+                <p className="text-[10px] font-black italic uppercase tracking-[0.25em] text-neutral-500 mb-3">
+                    Total Raised
+                </p>
+                <div className="text-4xl sm:text-5xl font-black italic text-brand-white tracking-tighter leading-none">
+                    {formatCurrency(displayRaised)}
                 </div>
-                <div className="text-gray-600">
-                    of {formatCurrency(goal)} goal
-                </div>
+                <p className="text-sm text-neutral-500 font-medium mt-2">
+                    of <span className="text-neutral-300 font-bold">{formatCurrency(goal)}</span> goal
+                </p>
             </div>
 
             {/* Progress Bar */}
-            <div className="mb-4">
-                <div className="relative w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+            <div>
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-black italic uppercase tracking-[0.2em] text-neutral-500">
+                        Progress
+                    </span>
+                    <span className={`text-sm font-black italic ${isGoalReached ? 'text-brand-acid' : 'text-brand-orange'}`}>
+                        {actualPercentage.toFixed(1)}%
+                    </span>
+                </div>
+                <div className="relative w-full bg-white/5 rounded-full h-3 overflow-hidden border border-white/10">
                     <div
-                        className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProgressColor()} transition-all duration-1000 ease-out rounded-full shadow-lg`}
+                        className={`absolute top-0 left-0 h-full rounded-full transition-all duration-[1.5s] ease-out ${
+                            isGoalReached
+                                ? 'bg-brand-acid shadow-[0_0_20px_rgba(204,255,0,0.4)]'
+                                : 'bg-brand-orange shadow-[0_0_20px_rgba(255,91,0,0.3)]'
+                        }`}
                         style={{ width: `${displayPercentage}%` }}
                     >
-                        {/* Shimmer effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"
+                        {/* Shimmer */}
+                        <div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
                             style={{
                                 backgroundSize: '200% 100%',
-                                animation: 'shimmer 2s infinite'
+                                animation: 'shimmer 2.5s infinite linear'
                             }}
                         />
-
-                        {/* Percentage label */}
-                        {displayPercentage > 10 && (
-                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white drop-shadow-md">
-                                {actualPercentage.toFixed(0)}%
-                            </span>
-                        )}
                     </div>
                 </div>
 
-                {/* Milestones */}
-                <div className="relative mt-2">
-                    <div className="flex justify-between items-center">
-                        {milestones.map((milestone, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col items-center"
-                                style={{ marginLeft: index === 0 ? '0' : 'auto', marginRight: index === milestones.length - 1 ? '0' : 'auto' }}
-                            >
+                {/* Milestone markers */}
+                <div className="flex justify-between mt-3">
+                    {[25, 50, 75, 100].map((milestone) => {
+                        const reached = actualPercentage >= milestone;
+                        return (
+                            <div key={milestone} className="flex flex-col items-center gap-1">
                                 <div
-                                    className={`w-2 h-2 rounded-full transition-all duration-500 ${milestone.reached
-                                        ? 'bg-green-500 shadow-lg shadow-green-500/50 scale-125'
-                                        : 'bg-gray-400'
-                                        }`}
+                                    className={`w-1.5 h-1.5 rounded-full transition-all duration-700 ${
+                                        reached
+                                            ? 'bg-brand-acid shadow-[0_0_6px_rgba(204,255,0,0.5)]'
+                                            : 'bg-neutral-700'
+                                    }`}
                                 />
-                                <span className={`text-xs mt-1 font-medium transition-colors duration-500 ${milestone.reached ? 'text-green-600' : 'text-gray-500'
-                                    }`}>
-                                    {milestone.label}
+                                <span className={`text-[9px] font-black uppercase tracking-widest ${
+                                    reached ? 'text-brand-acid' : 'text-neutral-600'
+                                }`}>
+                                    {milestone}%
                                 </span>
                             </div>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
             </div>
 
             {/* Goal Reached Celebration */}
             {isGoalReached && (
-                <div className="mb-4 p-3 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg animate-pulse-slow">
-                    <div className="flex items-center justify-center gap-2 text-green-800 font-semibold">
-                        <span className="text-2xl">🎉</span>
-                        <span>Goal Reached!</span>
-                        <span className="text-2xl">🎉</span>
-                    </div>
+                <div className="p-4 bg-brand-acid/5 border border-brand-acid/20 rounded-2xl text-center">
+                    <p className="text-[11px] font-black italic uppercase tracking-[0.2em] text-brand-acid">
+                        🎉 Goal Achieved 🎉
+                    </p>
                 </div>
             )}
 
-            {/* Statistics Grid */}
-            <div className="grid grid-cols-3 gap-2 text-center text-sm">
-                <div className="p-2 bg-gray-50 rounded-lg">
-                    <div className="font-bold text-gray-900">{actualPercentage.toFixed(0)}%</div>
-                    <div className="text-xs text-gray-600">Funded</div>
+            {/* Stats Grid — Dashboard Style */}
+            <div className="grid grid-cols-3 gap-3">
+                {/* Funded */}
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 text-center group hover:border-brand-acid/30 transition-all duration-300">
+                    <div className="flex justify-center mb-2.5">
+                        <div className="p-2 bg-brand-acid/10 rounded-xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                            <TrendingUp className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-xl font-black italic text-brand-white tracking-tight">
+                        {actualPercentage.toFixed(0)}%
+                    </div>
+                    <div className="text-[8px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-1">
+                        Funded
+                    </div>
                 </div>
-                <div className="p-2 bg-gray-50 rounded-lg">
-                    <div className="font-bold text-gray-900">{supporters}</div>
-                    <div className="text-xs text-gray-600">Supporters</div>
+
+                {/* Supporters */}
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 text-center group hover:border-brand-orange/30 transition-all duration-300">
+                    <div className="flex justify-center mb-2.5">
+                        <div className="p-2 bg-brand-orange/10 rounded-xl text-brand-orange group-hover:bg-brand-orange group-hover:text-brand-black transition-colors">
+                            <Users className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-xl font-black italic text-brand-white tracking-tight">
+                        {supporters}
+                    </div>
+                    <div className="text-[8px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-1">
+                        Backers
+                    </div>
                 </div>
-                <div className="p-2 bg-gray-50 rounded-lg">
-                    <div className="font-bold text-gray-900">{daysLeft}</div>
-                    <div className="text-xs text-gray-600">Days Left</div>
+
+                {/* Days Left */}
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 text-center group hover:border-brand-acid/30 transition-all duration-300">
+                    <div className="flex justify-center mb-2.5">
+                        <div className="p-2 bg-brand-acid/10 rounded-xl text-brand-acid group-hover:bg-brand-acid group-hover:text-brand-black transition-colors">
+                            <Clock className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-xl font-black italic text-brand-white tracking-tight">
+                        {daysLeft}
+                    </div>
+                    <div className="text-[8px] font-black uppercase tracking-[0.2em] text-neutral-500 mt-1">
+                        Days Left
+                    </div>
                 </div>
             </div>
 
             <style>{`
                 @keyframes shimmer {
-                    0% {
-                        background-position: -200% 0;
-                    }
-                    100% {
-                        background-position: 200% 0;
-                    }
-                }
-                @keyframes pulse-slow {
-                    0%, 100% {
-                        opacity: 1;
-                    }
-                    50% {
-                        opacity: 0.8;
-                    }
-                }
-                .animate-shimmer {
-                    animation: shimmer 2s infinite;
-                }
-                .animate-pulse-slow {
-                    animation: pulse-slow 3s ease-in-out infinite;
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
                 }
             `}</style>
         </div>

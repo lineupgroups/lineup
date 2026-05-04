@@ -81,7 +81,7 @@ export default function SuccessStoriesSection() {
                 <img
                   src={currentStory.image}
                   alt={currentStory.projectTitle}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-opacity duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-brand-black/60 via-transparent to-transparent"></div>
                 

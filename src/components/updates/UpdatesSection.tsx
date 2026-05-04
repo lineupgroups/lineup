@@ -68,25 +68,25 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                    <Edit3 className="w-6 h-6 text-gray-600" />
+                    <Edit3 className="w-6 h-6 text-brand-acid" />
                     <div>
-                        <h3 className="text-xl font-semibold text-gray-900">
+                        <h3 className="text-xl font-black text-brand-white">
                             Project Updates ({updateCount})
                         </h3>
-                        <p className="text-sm text-gray-500">Exclusive updates for supporters</p>
+                        <p className="text-sm text-neutral-500">Exclusive updates for supporters</p>
                     </div>
                 </div>
             </div>
 
             {/* Updates List */}
             {updates.length === 0 ? (
-                <div className="text-center py-12 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-100">
-                    <MessageSquare className="w-16 h-16 text-orange-300 mx-auto mb-4" />
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">No updates yet</h4>
-                    <p className="text-gray-600 max-w-md mx-auto mb-4">
+                <div className="text-center py-12 bg-neutral-800/30 rounded-2xl border border-neutral-800">
+                    <MessageSquare className="w-16 h-16 text-neutral-700 mx-auto mb-4" />
+                    <h4 className="text-lg font-bold text-brand-white mb-2">No updates yet</h4>
+                    <p className="text-neutral-400 max-w-md mx-auto mb-4">
                         The creator hasn't posted any updates yet. Once they do, you'll see exclusive behind-the-scenes content here!
                     </p>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 rounded-full text-sm text-orange-700 border border-orange-200">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm text-brand-orange border border-neutral-700">
                         <ThumbsUp className="w-4 h-4" />
                         <span>Support this project to get notified of updates</span>
                     </div>
@@ -100,12 +100,12 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
                         return (
                             <div
                                 key={update.id}
-                                className={`bg-white rounded-xl p-6 border ${update.isPinned ? 'border-orange-500 border-2' : 'border-gray-200'
+                                className={`bg-[#111] rounded-2xl p-6 border ${update.isPinned ? 'border-brand-orange border-2' : 'border-neutral-800'
                                     }`}
                             >
                                 {/* Pinned Badge */}
                                 {update.isPinned && (
-                                    <div className="flex items-center space-x-2 text-orange-600 text-sm font-medium mb-3">
+                                    <div className="flex items-center space-x-2 text-brand-orange text-sm font-bold mb-3">
                                         <Pin className="w-4 h-4" />
                                         <span>Pinned Update</span>
                                     </div>
@@ -113,10 +113,10 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
 
                                 {/* Update Header */}
                                 <div className="flex items-center justify-between mb-4">
-                                    <h4 className="text-lg font-semibold text-gray-900">
+                                    <h4 className="text-lg font-bold text-brand-white">
                                         {update.title}
                                     </h4>
-                                    <div className="flex items-center space-x-2 text-sm text-gray-500">
+                                    <div className="flex items-center space-x-2 text-sm text-neutral-500">
                                         <Clock className="w-4 h-4" />
                                         <span>{formatDate(update.createdAt)}</span>
                                     </div>
@@ -125,7 +125,7 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
                                 {/* Update Content */}
                                 <div className="prose max-w-none mb-4">
                                     <div
-                                        className="text-gray-700 leading-relaxed"
+                                        className="text-neutral-300 leading-relaxed"
                                         dangerouslySetInnerHTML={{ __html: sanitizeAndProcessHTML(update.content) }}
                                     />
                                 </div>
@@ -147,13 +147,13 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
                                 )}
 
                                 {/* Actions */}
-                                <div className="flex items-center space-x-6 pt-4 border-t border-gray-100">
+                                <div className="flex items-center space-x-6 pt-4 border-t border-neutral-800">
                                     <button
                                         onClick={() => handleLikeUpdate(update.id)}
                                         disabled={!user || isLiking}
                                         className={`flex items-center space-x-2 text-sm transition-colors ${isLiked
-                                            ? 'text-red-600 font-medium'
-                                            : 'text-gray-600 hover:text-red-600'
+                                            ? 'text-brand-orange font-bold'
+                                            : 'text-neutral-400 hover:text-brand-orange'
                                             } ${!user ? 'cursor-not-allowed opacity-50' : ''}`}
                                         aria-label={isLiked ? 'Unlike this update' : 'Like this update'}
                                     >
@@ -179,7 +179,7 @@ export default function UpdatesSection({ projectId, creatorId, creatorAvatar, pr
 
                                 {/* Visibility Badge */}
                                 {update.visibility === 'supporters-only' && (
-                                    <div className="mt-4 inline-flex items-center px-3 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded-full">
+                                    <div className="mt-4 inline-flex items-center px-3 py-1 bg-brand-acid/10 text-brand-acid text-xs font-bold rounded-full border border-brand-acid/20">
                                         Supporters Only
                                     </div>
                                 )}

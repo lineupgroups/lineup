@@ -206,21 +206,116 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
     return new Intl.NumberFormat('en-IN').format(amount);
   };
 
+  // Custom Select Component for State/City
+  const CustomSelect = ({ 
+    label, 
+    value, 
+    options, 
+    onChange, 
+    placeholder, 
+    disabled = false,
+    searchPlaceholder = "Search..."
+  }: { 
+    label: string, 
+    value: string, 
+    options: string[], 
+    onChange: (val: string) => void, 
+    placeholder: string,
+    disabled?: boolean,
+    searchPlaceholder?: string
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [search, setSearch] = useState('');
+    const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const filteredOptions = options.filter(opt => 
+      opt.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return (
+      <div className="relative" ref={dropdownRef}>
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          {label} <span className="text-brand-orange">*</span>
+        </label>
+        
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => setIsOpen(!isOpen)}
+          className={`w-full flex items-center justify-between px-5 py-4 bg-transparent border rounded-xl text-brand-white font-medium transition-all duration-200 ${
+            isOpen ? 'border-brand-acid/40 ring-4 ring-brand-acid/5' : 'border-neutral-800 hover:border-neutral-700'
+          } ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <span className={value ? 'text-brand-white' : 'text-neutral-700'}>
+            {value || placeholder}
+          </span>
+          <ChevronDown className={`w-4 h-4 text-neutral-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+
+        {isOpen && !disabled && (
+          <div className="absolute z-[100] mt-2 w-full bg-brand-black border border-neutral-800 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-2 border-b border-neutral-800/50">
+              <input
+                type="text"
+                autoFocus
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={searchPlaceholder}
+                className="w-full px-4 py-2 bg-white/5 border border-neutral-800/50 rounded-lg text-sm text-brand-white placeholder-neutral-700 focus:outline-none focus:border-brand-acid/30 transition-colors"
+              />
+            </div>
+            <div className="max-h-60 overflow-y-auto p-1 custom-scrollbar">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => {
+                      onChange(option);
+                      setIsOpen(false);
+                      setSearch('');
+                    }}
+                    className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-neutral-400 hover:bg-brand-acid hover:text-brand-black transition-all"
+                  >
+                    {option}
+                  </button>
+                ))
+              ) : (
+                <div className="px-4 py-4 text-center text-xs text-neutral-600 italic">
+                  No results found
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="mb-12">
-        <h2 className="text-5xl font-black italic uppercase tracking-tighter text-brand-white mb-3">
-          Project <span className="text-brand-orange">Basics</span>
+      <div className="mb-6">
+        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-acid/60 mb-3">Step 01</p>
+        <h2 className="text-4xl font-black italic uppercase tracking-tight text-brand-white">
+          The <span className="text-brand-orange">Basics</span>
         </h2>
-        <p className="text-neutral-400 font-bold uppercase tracking-[0.2em] text-[10px]">Essential information for your campaign</p>
       </div>
 
       {/* Project Title */}
-      <div className="group">
-        <label htmlFor="project-title" className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-3 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-brand-acid" />
-          Project Title *
+      <div>
+        <label htmlFor="project-title" className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Project Title <span className="text-brand-orange">*</span>
         </label>
         <div className="relative">
           <input
@@ -228,21 +323,20 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
             type="text"
             value={data.title || ''}
             onChange={(e) => onUpdate({ title: sanitizeText(e.target.value) })}
-            placeholder="e.g., Smart Solar Lamp for Rural India"
+            placeholder="Give your project a name"
             maxLength={PROJECT_LIMITS.MAX_TITLE_LENGTH}
-            className="w-full px-6 py-5 bg-brand-black border-2 border-neutral-800 rounded-2xl text-xl font-black text-brand-white placeholder-neutral-700 focus:ring-4 focus:ring-brand-acid/10 focus:border-brand-acid transition-all duration-300"
+            className="w-full px-5 py-4 bg-transparent border border-neutral-800 rounded-xl text-lg font-semibold text-brand-white placeholder-neutral-700 focus:border-brand-acid/40 focus:outline-none transition-colors duration-200"
           />
-          <div className="absolute right-4 bottom-[-1.5rem] text-[10px] font-black italic uppercase tracking-widest text-brand-orange">
-            {data.title?.length || 0}/{PROJECT_LIMITS.MAX_TITLE_LENGTH} CHARS
-          </div>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-medium text-neutral-700">
+            {data.title?.length || 0}/{PROJECT_LIMITS.MAX_TITLE_LENGTH}
+          </span>
         </div>
       </div>
 
       {/* Tagline */}
-      <div className="group">
-        <label htmlFor="project-tagline" className="block text-sm font-black italic uppercase tracking-wider text-brand-orange mb-3 flex items-center gap-2">
-          <Zap className="w-4 h-4 text-brand-orange" />
-          Tagline *
+      <div>
+        <label htmlFor="project-tagline" className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Tagline <span className="text-brand-orange">*</span>
         </label>
         <div className="relative">
           <input
@@ -250,222 +344,161 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
             type="text"
             value={data.tagline || ''}
             onChange={(e) => onUpdate({ tagline: sanitizeText(e.target.value) })}
-            placeholder="What is your project in one sentence?"
+            placeholder="Describe it in one line"
             maxLength={PROJECT_LIMITS.MAX_TAGLINE_LENGTH}
-            className="w-full px-6 py-5 bg-brand-black border-2 border-neutral-800 rounded-2xl text-lg font-medium text-brand-white placeholder-neutral-700 focus:ring-4 focus:ring-brand-orange/10 focus:border-brand-orange transition-all duration-300"
+            className="w-full px-5 py-4 bg-transparent border border-neutral-800 rounded-xl text-base font-medium text-brand-white placeholder-neutral-700 focus:border-brand-acid/40 focus:outline-none transition-colors duration-200"
           />
-          <div className="absolute right-4 bottom-[-1.5rem] text-[10px] font-black italic uppercase tracking-widest text-brand-orange">
-            {data.tagline?.length || 0}/{PROJECT_LIMITS.MAX_TAGLINE_LENGTH} CHARS
-          </div>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-medium text-neutral-700">
+            {data.tagline?.length || 0}/{PROJECT_LIMITS.MAX_TAGLINE_LENGTH}
+          </span>
         </div>
       </div>
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-4">
-          Category *
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-3">
+          Category <span className="text-brand-orange">*</span>
         </label>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {CATEGORIES_WITH_ICONS.map((category) => (
-            <button
-              key={category.value}
-              type="button"
-              onClick={() => onUpdate({ category: category.value })}
-              className={`group relative p-5 border-2 rounded-2xl transition-all duration-500 text-left overflow-hidden ${data.category === category.value
-                ? 'border-brand-orange bg-brand-orange/10 shadow-[0_0_25px_rgba(255,91,0,0.15)]'
-                : 'border-neutral-800/30 bg-gradient-to-b from-[#121212] to-brand-black hover:border-neutral-700/50 hover:from-[#181818] hover:to-[#0f0f0f]'
+        <div className="flex flex-wrap gap-2">
+          {CATEGORIES_WITH_ICONS.map((category) => {
+            const isSelected = data.category === category.value;
+            return (
+              <button
+                key={category.value}
+                type="button"
+                onClick={() => onUpdate({ category: category.value })}
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-200 ${isSelected
+                  ? 'bg-brand-acid text-brand-black'
+                  : 'bg-transparent border border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300'
                 }`}
-            >
-              {/* Subtle background glow on hover */}
-              <div className="absolute inset-0 bg-brand-orange/0 group-hover:bg-brand-orange/[0.02] transition-colors" />
-              
-              <div className={`p-2.5 w-fit rounded-xl mb-3 transition-all duration-300 ${
-                data.category === category.value 
-                ? 'bg-brand-orange/20 text-brand-orange scale-110 shadow-[0_0_15px_rgba(255,91,0,0.2)]' 
-                : 'bg-neutral-800/50 text-neutral-400 group-hover:text-neutral-200 group-hover:bg-neutral-700/50'
-              }`}>
-                <category.icon className="w-6 h-6" />
-              </div>
-              
-              <div className={`text-[10px] font-black italic uppercase tracking-[0.15em] leading-tight transition-colors ${
-                data.category === category.value 
-                ? 'text-brand-white' 
-                : 'text-neutral-400 group-hover:text-neutral-200'
-              }`}>
+              >
+                <category.icon className="w-3.5 h-3.5" />
                 {category.label}
-              </div>
-
-              {/* Selection Indicator */}
-              {data.category === category.value && (
-                <div className="absolute top-4 right-4 w-2 h-2 bg-brand-orange rounded-full animate-pulse shadow-[0_0_10px_rgba(255,91,0,1)]" />
-              )}
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Tags */}
       <div>
-        <label htmlFor="project-tags" className="block text-sm font-black italic uppercase tracking-wider text-brand-orange mb-4 flex items-center gap-2">
-          <Tag className="w-4 h-4 text-brand-orange" />
-          Tags (Optional - Max {PROJECT_LIMITS.MAX_TAGS})
+        <label htmlFor="project-tags" className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Tags <span className="text-neutral-700">— Optional, max {PROJECT_LIMITS.MAX_TAGS}</span>
         </label>
 
-        <div className="bg-[#111] border-2 border-neutral-800 rounded-3xl p-5">
-          {/* Tag chips */}
-          {data.tags && data.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {data.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-brand-acid/10 text-brand-acid border border-brand-acid/20 rounded-xl text-xs font-black italic uppercase tracking-widest"
-                >
-                  #{tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="hover:text-brand-white transition-colors"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Tag input */}
-          {(!data.tags || data.tags.length < PROJECT_LIMITS.MAX_TAGS) && (
-            <div className="flex gap-3">
-              <input
-                id="project-tags"
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(sanitizeText(e.target.value).toLowerCase())}
-                onKeyDown={handleTagKeyDown}
-                placeholder="e.g., innovation, technology, education"
-                maxLength={PROJECT_LIMITS.MAX_TAG_LENGTH}
-                className="flex-1 px-5 py-3 bg-brand-black border-2 border-neutral-800 rounded-xl text-brand-white placeholder-neutral-700 focus:border-brand-acid transition-all"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                disabled={!tagInput.trim()}
-                className="px-6 py-3 bg-brand-orange text-brand-black rounded-xl font-black italic uppercase tracking-widest hover:bg-[#ff7b33] transition-all disabled:opacity-50"
+        {data.tags && data.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {data.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-full text-[11px] font-medium"
               >
-                Add
-              </button>
-            </div>
-          )}
-          <p className="text-[10px] font-medium text-neutral-600 mt-3">
-            Press Enter or comma to add. Add tags to help people discover your project.
-          </p>
-        </div>
+                #{tag}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTag(tag)}
+                  className="text-neutral-600 hover:text-brand-white transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {(!data.tags || data.tags.length < PROJECT_LIMITS.MAX_TAGS) && (
+          <div className="flex gap-2">
+            <input
+              id="project-tags"
+              type="text"
+              value={tagInput}
+              onChange={(e) => setTagInput(sanitizeText(e.target.value).toLowerCase())}
+              onKeyDown={handleTagKeyDown}
+              placeholder="Type a tag and press Enter"
+              maxLength={PROJECT_LIMITS.MAX_TAG_LENGTH}
+              className="flex-1 px-5 py-3 bg-transparent border border-neutral-800 rounded-xl text-sm text-brand-white placeholder-neutral-700 focus:border-brand-acid/40 focus:outline-none transition-colors"
+            />
+            <button
+              type="button"
+              onClick={handleAddTag}
+              disabled={!tagInput.trim()}
+              className="px-5 py-3 bg-white/5 border border-neutral-800 text-neutral-400 rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-white/10 hover:text-brand-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              Add
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Location */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="relative group">
-          <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-3 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-brand-acid" />
-            State *
-          </label>
-          <div className="relative">
-            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 group-focus-within:text-brand-orange transition-colors" />
-            <select
-              value={data.location?.state || ''}
-              onChange={(e) => onUpdate({
-                location: {
-                  state: e.target.value,
-                  city: ''
-                }
-              })}
-              className="w-full pl-12 pr-10 py-4 bg-brand-black border-2 border-neutral-800 rounded-2xl text-brand-white font-medium focus:ring-4 focus:ring-brand-orange/10 focus:border-brand-orange transition-all appearance-none cursor-pointer"
-            >
-              <option value="">Select state</option>
-              {INDIAN_STATES.map((state) => (
-                <option key={state.code} value={state.name}>{state.name}</option>
-              ))}
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-              <ChevronDown className="w-5 h-5 text-neutral-500" />
-            </div>
-          </div>
-        </div>
+        <CustomSelect 
+          label="State"
+          value={data.location?.state || ''}
+          placeholder="Select state"
+          searchPlaceholder="Search states..."
+          options={INDIAN_STATES.map(s => s.name)}
+          onChange={(val) => onUpdate({
+            location: {
+              state: val,
+              city: ''
+            }
+          })}
+        />
 
-        <div className="relative group">
-          <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-3 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-brand-acid" />
-            City *
-          </label>
-          <div className="relative">
-            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 group-focus-within:text-brand-acid transition-colors" />
-            <select
-              value={data.location?.city || ''}
-              onChange={(e) => onUpdate({
-                location: {
-                  ...data.location!,
-                  city: e.target.value
-                }
-              })}
-              disabled={!data.location?.state}
-              className="w-full pl-12 pr-10 py-4 bg-brand-black border-2 border-neutral-800 rounded-2xl text-brand-white font-medium focus:ring-4 focus:ring-brand-acid/10 focus:border-brand-acid transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:bg-neutral-900 disabled:cursor-not-allowed"
-            >
-              <option value="">Select city</option>
-              {data.location?.state && getCitiesByState(data.location.state).map((city) => (
-                <option key={city} value={city}>{city}</option>
-              ))}
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-              <ChevronDown className="w-5 h-5 text-neutral-500" />
-            </div>
-          </div>
-        </div>
+        <CustomSelect 
+          label="City"
+          value={data.location?.city || ''}
+          placeholder="Select city"
+          searchPlaceholder="Search cities..."
+          disabled={!data.location?.state}
+          options={data.location?.state ? getCitiesByState(data.location.state) : []}
+          onChange={(val) => onUpdate({
+            location: {
+              ...data.location!,
+              city: val
+            }
+          })}
+        />
       </div>
 
       {/* Cover Image */}
       <div>
-        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-orange mb-4 flex items-center gap-2">
-          <Upload className="w-4 h-4 text-brand-orange" />
-          Cover Image *
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Cover Image <span className="text-brand-orange">*</span>
         </label>
-        <div className={`relative border-2 border-dashed rounded-[2rem] p-10 text-center transition-all duration-500 overflow-hidden group ${
+        <div className={`relative border border-dashed rounded-2xl transition-all duration-300 overflow-hidden group ${
           data.coverImage 
-          ? 'border-neutral-800 bg-[#111]' 
-          : 'border-neutral-800 bg-brand-black hover:border-brand-acid hover:bg-brand-acid/[0.02]'
+          ? 'border-neutral-800 p-2' 
+          : 'border-neutral-800 hover:border-brand-acid/30 p-12'
         }`}>
           {data.coverImage ? (
             <div className="relative">
               <img
                 src={data.coverImage}
                 alt="Cover"
-                className="w-full aspect-video object-cover rounded-[1.5rem] shadow-2xl transition-transform duration-500 group-hover:scale-[1.01]"
+                className="w-full aspect-video object-cover rounded-xl"
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-[1.5rem]">
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
                 <button
                   type="button"
                   onClick={() => document.getElementById('cover-image-input')?.click()}
-                  className="px-8 py-3 bg-brand-white text-brand-black rounded-2xl font-black italic uppercase tracking-widest hover:scale-105 transition-transform"
+                  className="px-6 py-2.5 bg-brand-white text-brand-black rounded-full text-[11px] font-bold uppercase tracking-wider hover:scale-105 transition-transform"
                 >
-                  Replace Image
+                  Replace
                 </button>
               </div>
             </div>
           ) : (
-            <div className="py-10">
-              <div className="mx-auto w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-brand-acid/20 transition-all duration-300">
-                <Upload className="w-8 h-8 text-neutral-500 group-hover:text-brand-acid" />
-              </div>
-              <h3 className="text-xl font-black italic uppercase tracking-wider text-brand-white mb-2">
-                Project Cover
-              </h3>
-              <p className="text-neutral-500 mb-8 max-w-sm mx-auto text-sm">
-                Recommended 16:9 ratio. High resolution images get 40% more engagement.
-              </p>
+            <div className="text-center">
+              <Upload className="w-8 h-8 text-neutral-700 group-hover:text-brand-acid/60 transition-colors mx-auto mb-4" />
+              <p className="text-sm font-medium text-neutral-500 mb-1">16:9 recommended</p>
+              <p className="text-[10px] text-neutral-700 mb-6">High-res images get 40% more engagement</p>
               <button
                 type="button"
                 onClick={() => document.getElementById('cover-image-input')?.click()}
                 disabled={uploading}
-                className="px-10 py-4 bg-brand-acid text-brand-black rounded-2xl font-black italic uppercase tracking-widest hover:scale-105 hover:bg-[#b3e600] transition-all disabled:opacity-50"
+                className="px-6 py-2.5 bg-white/5 border border-neutral-800 text-neutral-300 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-white/10 transition-all disabled:opacity-50"
               >
                 {uploading ? 'Processing...' : 'Choose File'}
               </button>
@@ -483,181 +516,127 @@ export default function Step1Basics({ data, onUpdate, onNext }: Step1BasicsProps
 
       {/* YouTube Video */}
       <div>
-        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-4 flex items-center gap-2">
-          <Youtube className="w-4 h-4 text-brand-acid" />
-          Project Video (YouTube)
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Video <span className="text-neutral-700">— YouTube, optional</span>
         </label>
-        <div className="bg-[#111] border-2 border-neutral-800 rounded-3xl p-5">
-          <div className="relative group">
-            <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-neutral-700 group-focus-within:text-brand-acid transition-colors" />
-            <input
-              type="url"
-              value={data.videoUrl || ''}
-              onChange={(e) => handleVideoUrlChange(e.target.value)}
-              placeholder="https://www.youtube.com/watch?v=..."
-              className="w-full pl-14 pr-6 py-4 bg-brand-black border-2 border-neutral-800 rounded-2xl text-brand-white placeholder-neutral-700 focus:border-brand-acid transition-all"
+        <div className="relative">
+          <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-700" />
+          <input
+            type="url"
+            value={data.videoUrl || ''}
+            onChange={(e) => handleVideoUrlChange(e.target.value)}
+            placeholder="https://youtube.com/watch?v=..."
+            className="w-full pl-12 pr-5 py-4 bg-transparent border border-neutral-800 rounded-xl text-sm text-brand-white placeholder-neutral-700 focus:border-neutral-500 focus:outline-none transition-colors"
+          />
+        </div>
+        <p className="text-[10px] text-neutral-700 mt-2">Projects with videos raise 300% more</p>
+
+        {videoPreview && (
+          <div className="mt-4 rounded-xl overflow-hidden border border-neutral-800 aspect-video">
+            <iframe
+              src={videoPreview}
+              className="w-full h-full"
+              allowFullScreen
+              title="Video preview"
             />
           </div>
-          <p className="text-[10px] font-black italic uppercase tracking-widest text-neutral-600 mt-3">
-            Projects with videos get 300% more funding. Highly recommended.
-          </p>
-
-          {videoPreview && (
-            <div className="mt-6 relative rounded-2xl overflow-hidden border-2 border-neutral-800 bg-brand-black aspect-video">
-              <iframe
-                src={videoPreview}
-                className="w-full h-full"
-                allowFullScreen
-                title="Video preview"
-              />
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Funding Goal */}
       <div>
-        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-orange mb-4 flex items-center gap-2">
-          <Target className="w-4 h-4 text-brand-orange" />
-          Funding Goal *
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
+          Funding Goal <span className="text-brand-orange">*</span>
         </label>
-        <div className="bg-[#111] border-2 border-neutral-800 rounded-[2rem] p-8 text-center">
-          <div className="relative max-w-sm mx-auto">
-            <div className="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-black italic text-brand-acid">
-              ₹
-            </div>
-            <input
-              type="number"
-              value={data.fundingGoal || ''}
-              onChange={(e) => onUpdate({ fundingGoal: parseInt(e.target.value) || 0 })}
-              onWheel={(e) => (e.target as HTMLInputElement).blur()}
-              placeholder="50,000"
-              min={PROJECT_LIMITS.MIN_FUNDING_GOAL}
-              max={PROJECT_LIMITS.MAX_FUNDING_GOAL}
-              className="w-full pl-14 pr-6 py-6 bg-brand-black border-2 border-neutral-800 rounded-[1.5rem] text-4xl font-black italic text-brand-white placeholder-neutral-800 focus:border-brand-acid transition-all text-center"
-            />
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-6">
-            <div className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 bg-neutral-900 px-4 py-2 rounded-full">
-              MIN: ₹{formatCurrency(PROJECT_LIMITS.MIN_FUNDING_GOAL)}
-            </div>
-            <div className="text-[10px] font-black italic uppercase tracking-widest text-neutral-500 bg-neutral-900 px-4 py-2 rounded-full">
-              MAX: ₹{formatCurrency(PROJECT_LIMITS.MAX_FUNDING_GOAL)}
-            </div>
-          </div>
-
-          {data.fundingGoal && data.fundingGoal > 0 && (
-            <div className="mt-6 p-4 bg-brand-acid/5 border border-brand-acid/10 rounded-2xl">
-              <p className="text-sm font-black italic uppercase tracking-wider text-brand-acid">
-                Platform fee (5%): ₹{formatCurrency(Math.round(data.fundingGoal * 0.05))}
-              </p>
-              <p className="text-[10px] text-neutral-500 mt-1 uppercase tracking-widest font-bold">
-                You will receive approx ₹{formatCurrency(data.fundingGoal - Math.round(data.fundingGoal * 0.05))}
-              </p>
-            </div>
-          )}
+        <div className="relative max-w-md">
+          <div className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl font-bold text-brand-acid/60">₹</div>
+          <input
+            type="number"
+            value={data.fundingGoal || ''}
+            onChange={(e) => onUpdate({ fundingGoal: parseInt(e.target.value) || 0 })}
+            onWheel={(e) => (e.target as HTMLInputElement).blur()}
+            placeholder="50,000"
+            min={PROJECT_LIMITS.MIN_FUNDING_GOAL}
+            max={PROJECT_LIMITS.MAX_FUNDING_GOAL}
+            className="w-full pl-12 pr-5 py-4 bg-transparent border border-neutral-800 rounded-xl text-2xl font-bold text-brand-white placeholder-neutral-800 focus:border-brand-acid/40 focus:outline-none transition-colors"
+          />
         </div>
+        
+        <div className="flex items-center gap-3 mt-3">
+          <span className="text-[10px] font-medium text-neutral-700">Min ₹{formatCurrency(PROJECT_LIMITS.MIN_FUNDING_GOAL)}</span>
+          <span className="text-neutral-800">·</span>
+          <span className="text-[10px] font-medium text-neutral-700">Max ₹{formatCurrency(PROJECT_LIMITS.MAX_FUNDING_GOAL)}</span>
+        </div>
+
+        {data.fundingGoal && data.fundingGoal > 0 && (
+          <div className="mt-4 flex items-center gap-6 text-[11px] font-medium">
+            <span className="text-neutral-500">
+              Platform fee (5%): <span className="text-neutral-400">₹{formatCurrency(Math.round(data.fundingGoal * 0.05))}</span>
+            </span>
+            <span className="text-neutral-500">
+              You receive: <span className="text-brand-white">₹{formatCurrency(data.fundingGoal - Math.round(data.fundingGoal * 0.05))}</span>
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Campaign Duration */}
       <div>
-        <label className="block text-sm font-black italic uppercase tracking-wider text-brand-acid mb-4 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-brand-acid" />
-          Campaign Duration *
+        <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-3">
+          Duration <span className="text-brand-orange">*</span>
         </label>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex gap-3">
           {DURATION_PRESETS.map((preset) => (
             <button
               key={preset.value}
               type="button"
               onClick={() => onUpdate({ duration: preset.value })}
               aria-pressed={data.duration === preset.value}
-              className={`relative p-5 border-2 rounded-2xl transition-all duration-500 overflow-hidden ${data.duration === preset.value
-                ? 'border-brand-orange bg-brand-orange/10 shadow-[0_0_30px_rgba(255,91,0,0.1)] scale-[1.02]'
-                : 'border-neutral-800/30 bg-gradient-to-b from-[#121212] to-brand-black hover:border-neutral-700/50'
-                }`}
+              className={`flex-1 py-4 px-6 rounded-xl text-center transition-all duration-200 ${data.duration === preset.value
+                ? 'bg-brand-acid text-brand-black'
+                : 'bg-transparent border border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300'
+              }`}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className={`text-xl font-black italic uppercase tracking-wider transition-colors ${data.duration === preset.value ? 'text-brand-white' : 'text-neutral-500'}`}>
-                    {preset.label.split(' ')[0]} DAYS
-                  </div>
-                  <div className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest mt-1">
-                    {preset.value === 30 ? 'RECOMMENDED REACH' : 'FAST TRACK'}
-                  </div>
-                </div>
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${data.duration === preset.value ? 'bg-brand-orange text-brand-black shadow-[0_0_15px_rgba(255,91,0,0.4)]' : 'bg-neutral-900 text-neutral-700'}`}>
-                  <Calendar className="w-6 h-6" />
-                </div>
-              </div>
+              <div className="text-lg font-bold">{preset.label.split(' ')[0]}</div>
+              <div className="text-[10px] font-medium uppercase tracking-wider opacity-60">Days</div>
             </button>
           ))}
         </div>
 
         {data.duration && (
-          <div className="mt-4 p-4 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center gap-3">
-            <div className="p-2 bg-brand-acid/10 rounded-lg">
-              <Calendar className="w-4 h-4 text-brand-acid" />
-            </div>
-            <p className="text-xs font-black italic uppercase tracking-wider text-brand-white">
-              Campaign Ends: <span className="text-brand-acid ml-1">{new Date(Date.now() + data.duration * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', { dateStyle: 'long' })}</span>
-            </p>
-          </div>
+          <p className="text-[11px] text-neutral-600 mt-3">
+            Ends {new Date(Date.now() + data.duration * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', { dateStyle: 'long' })}
+          </p>
         )}
       </div>
 
       {/* Tips */}
-      <div className="bg-[#111] border-2 border-neutral-800 rounded-[2.5rem] p-10 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-          <Sparkles className="w-32 h-32 text-brand-orange" />
-        </div>
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-brand-orange text-brand-black rounded-2xl shadow-[0_0_15px_rgba(255,91,0,0.4)]">
-              <HelpCircle className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl font-black italic uppercase tracking-wider text-brand-white">Tips for Success</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-            <div className="flex gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 shrink-0" />
-              <p className="text-xs font-black italic uppercase tracking-wider text-neutral-400">
-                Authentic storytelling builds the strongest community
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 shrink-0" />
-              <p className="text-xs font-black italic uppercase tracking-wider text-neutral-400">
-                Post frequent updates to maintain momentum and trust
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 shrink-0" />
-              <p className="text-xs font-black italic uppercase tracking-wider text-neutral-400">
-                Rewards should feel limited, unique and high-value
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-orange mt-2 shrink-0" />
-              <p className="text-xs font-black italic uppercase tracking-wider text-neutral-400">
-                Secure early backers to trend on the discovery page
-              </p>
-            </div>
-          </div>
+      <div className="border-t border-neutral-800/50 pt-8 mt-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-600 mb-4">Quick tips</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+          {[
+            'Authentic storytelling builds the strongest community',
+            'Post frequent updates to maintain momentum',
+            'Rewards should feel limited, unique and high-value',
+            'Early backers help you trend on discovery'
+          ].map((tip, i) => (
+            <p key={i} className="text-[11px] text-neutral-600 flex items-start gap-2">
+              <span className="text-brand-orange/40 mt-0.5">—</span>
+              {tip}
+            </p>
+          ))}
         </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-end pt-12 border-t-2 border-neutral-800">
+      <div className="flex justify-end pt-8">
         <button
           onClick={handleNext}
-          className="group flex items-center gap-4 px-12 py-5 bg-brand-orange text-brand-black rounded-[1.5rem] font-black italic uppercase tracking-widest hover:bg-[#ff7b33] hover:scale-105 hover:shadow-[0_0_30px_rgba(255,91,0,0.3)] transition-all duration-300 active:scale-95"
+          className="group flex items-center gap-3 px-8 py-3.5 bg-brand-acid text-brand-black rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-[#b3e600] transition-all active:scale-95"
         >
-          <span>Continue to Story</span>
-          <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+          <span>Continue</span>
+          <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
 

@@ -461,19 +461,21 @@ export default function CreatorAnalyticsPage() {
 
                 {/* Engagement Heatmap */}
                 <div className="bg-[#111] border border-neutral-800 rounded-[3rem] p-10 transition-all duration-300 hover:border-brand-orange/30 group/thermal">
-                    <div className="flex items-center justify-between mb-10">
+                    <div className="flex items-center justify-between mb-0 relative z-10">
                         <div className="flex items-center gap-3">
                             <Zap className="w-5 h-5 text-brand-orange fill-current" />
                             <span className="text-[10px] font-black italic uppercase tracking-[0.3em] text-brand-orange">ENGAGEMENT THERMAL</span>
                         </div>
                         <div className="flex items-center gap-4">
                             <span className="text-[8px] font-black text-neutral-600 uppercase tracking-widest">LOW</span>
-                            <div className="w-24 h-2 rounded-full bg-gradient-to-r from-white/[0.02] via-[#FF5B00]/50 to-[#FF5B00] border border-white/5" />
+                            <div className="relative w-24 h-2 rounded-full bg-neutral-900 border border-white/5 overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#FF5B00]/0 to-[#FF5B00]" />
+                            </div>
                             <span className="text-[8px] font-black text-brand-orange uppercase tracking-widest">HIGH</span>
                         </div>
                     </div>
                     
-                    <div className="overflow-x-auto scrollbar-hide pb-4">
+                    <div className="overflow-x-auto scrollbar-hide pt-20 pb-4 -mt-10 relative z-0">
                         <div className="min-w-[800px] space-y-2">
                             <div className="flex pl-14 mb-4">
                                 {Array.from({length: 24}).map((_, i) => (

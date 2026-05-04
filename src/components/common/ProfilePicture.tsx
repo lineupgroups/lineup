@@ -25,7 +25,7 @@ export default function ProfilePicture({
   };
 
   const borderClasses = showBorder ? `border-2 ${borderColor}` : '';
-  const baseClasses = `rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0 aspect-square ${sizeClasses[size]} ${borderClasses} ${className}`;
+  const baseClasses = `rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center flex-shrink-0 aspect-square ${sizeClasses[size]} ${borderClasses} ${className}`;
 
   if (src) {
     return (
@@ -41,7 +41,7 @@ export default function ProfilePicture({
   }
 
   return (
-    <div className={`${baseClasses} bg-gradient-to-br from-orange-500 to-red-500 text-white font-bold`}>
+    <div className={`${baseClasses} bg-gradient-to-br from-brand-orange to-[#ff7529] text-white font-bold`}>
       {fallbackText || getInitials(alt)}
     </div>
   );
@@ -69,9 +69,9 @@ export function UserProfilePicture({
   // Check for verification
   const isVerified = user?.isVerifiedCreator === true;
 
-  // If verified, override border settings to show green ring
+  // If verified, override border settings to show brand-acid ring
   const finalShowBorder = isVerified || showBorder;
-  const finalBorderColor = isVerified ? 'border-green-500 ring-2 ring-green-500 ring-offset-2' : borderColor;
+  const finalBorderColor = isVerified ? 'border-brand-acid ring-2 ring-brand-acid ring-offset-2 ring-offset-brand-black' : borderColor;
 
   return (
     <ProfilePicture

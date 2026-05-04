@@ -110,13 +110,12 @@ function CreatorNavbarContent() {
 
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2.5 p-1 pr-6 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all active:scale-95 group"
+                    className="flex items-center gap-2.5 p-1 pr-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all active:scale-95 group"
                   >
                     <UserProfilePicture user={user} size="sm" className="w-7 h-7 rounded-full ring-1 ring-white/5 group-hover:ring-brand-acid/30" />
                     <span className="hidden md:block text-[9px] font-black italic uppercase tracking-widest text-neutral-400 group-hover:text-brand-white">
                       {getResponsiveName(user.displayName || 'USER')}
                     </span>
-                    <Settings className="w-3.5 h-3.5 text-neutral-600 group-hover:text-brand-acid transition-colors" />
                   </Link>
                 </div>
               ) : (

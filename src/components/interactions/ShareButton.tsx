@@ -219,22 +219,22 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         aria-haspopup="menu"
         aria-label="Share project options"
         className={cn(
-          'inline-flex items-center gap-2 rounded-lg border transition-all duration-200',
-          'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300',
-          'hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500',
+          'inline-flex items-center gap-2 rounded-xl border transition-all duration-300',
+          'bg-white/5 border-neutral-700 text-neutral-400 hover:bg-white/10 hover:border-neutral-600',
+          'hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-acid/50',
           buttonSizeClasses[size],
           className
         )}
       >
         <Share2 className={sizeClasses[size]} />
-        <span className="font-medium">Share</span>
+        <span className="font-bold">Share</span>
       </button>
 
       {isOpen && (
         <div
           role="menu"
           aria-label="Share options"
-          className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-50 py-1"
+          className="absolute top-full left-0 mt-2 w-48 bg-[#1a1a1a] rounded-2xl border border-neutral-700 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 py-2 backdrop-blur-md"
         >
           {shareOptions.map((option, index) => {
             const Icon = option.icon;
@@ -257,10 +257,10 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
                     setIsOpen(false);
                   }
                 }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-3 transition-colors duration-150 focus:outline-none focus:bg-gray-50"
+                className="w-full px-4 py-2.5 text-left hover:bg-white/10 flex items-center gap-3 transition-colors duration-200 focus:outline-none focus:bg-white/10 rounded-xl mx-1 first:mt-0"
               >
                 <Icon className={cn('w-4 h-4', option.color)} />
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-neutral-300">
                   {option.name}
                 </span>
               </button>

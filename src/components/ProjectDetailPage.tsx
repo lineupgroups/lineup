@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import BackProjectModal from './payments/BackProjectModal';
-import { ArrowLeft, BadgeCheck, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ZoomIn, Play, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BadgeCheck, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ZoomIn, Play, MapPin } from 'lucide-react';
 import { FirestoreProject, FirestoreUser } from '../types/firestore';
 import { getUser } from '../lib/firestore';
 import { useProject } from '../hooks/useProjects';
@@ -216,7 +216,7 @@ export default function ProjectDetailPage() {
   // Loading state
   if (projectLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-brand-black flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -270,7 +270,7 @@ export default function ProjectDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-black font-sans">
       <Helmet>
         <title>{project.title} - Lineup</title>
         <meta name="description" content={project.tagline} />
@@ -336,11 +336,11 @@ export default function ProjectDetailPage() {
         <div className="mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center space-x-2 text-neutral-400 hover:text-brand-acid transition-all duration-300 group"
             aria-label="Go back to previous page"
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-bold">Back</span>
           </button>
         </div>
 
@@ -348,7 +348,7 @@ export default function ProjectDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Project Header */}
-            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <div className="bg-[#111] rounded-3xl border border-neutral-800 p-6 mb-6">
 
 
               {/* Project Media Carousel - Video first, then images */}
@@ -377,7 +377,7 @@ export default function ProjectDetailPage() {
 
                   return (
                     <>
-                      <div className="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 relative group">
+                      <div className="aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 relative group border border-neutral-800">
                         {currentItem?.type === 'video' ? (
                           // YouTube Video Embed
                           <iframe
@@ -446,7 +446,7 @@ export default function ProjectDetailPage() {
                               {item.type === 'video' ? (
                                 // Play icon for video
                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center ${idx === mediaIndex
-                                  ? 'bg-orange-500 text-white'
+                                  ? 'bg-brand-orange text-white'
                                   : 'bg-white/80 text-gray-700'
                                   }`}>
                                   <Play className="w-3 h-3 ml-0.5" fill="currentColor" />
@@ -467,7 +467,7 @@ export default function ProjectDetailPage() {
                       {currentItem?.type !== 'video' && (
                         <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                           {/* Status Badge */}
-                          <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm ${getStatusColor(projectStatus.status)} bg-white/90`}>
+                          <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-black shadow-lg backdrop-blur-md ${getStatusColor(projectStatus.status)} bg-black/60 border border-neutral-700`}>
                             {projectStatus.status === 'successful' && '✅ '}
                             {projectStatus.status === 'expired' && '⏰ '}
                             {projectStatus.status === 'failed' && '❌ '}
@@ -480,7 +480,7 @@ export default function ProjectDetailPage() {
                       {currentItem?.type !== 'video' && (
                         <div className="absolute top-4 right-4 flex flex-wrap gap-2">
                           {/* Category Badge */}
-                          <span className="inline-flex items-center px-3 py-1.5 bg-orange-500 text-white rounded-full text-sm font-semibold shadow-lg">
+                          <span className="inline-flex items-center px-3 py-1.5 bg-brand-orange text-white rounded-full text-sm font-black shadow-lg border border-brand-orange/50">
                             {project.category}
                           </span>
                         </div>
@@ -491,12 +491,12 @@ export default function ProjectDetailPage() {
               </div>
 
               {/* Project Title & Tagline */}
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{project.title}</h1>
-              <p className="text-lg text-gray-600 mb-4">{project.tagline}</p>
+              <h1 className="text-2xl sm:text-3xl font-black text-brand-white mb-3 tracking-tight">{project.title}</h1>
+              <p className="text-lg text-neutral-400 mb-4">{project.tagline}</p>
 
               {/* Location Indicator */}
               {project.location && (
-                <div className="flex items-center gap-2 text-gray-500 text-sm mb-6">
+                <div className="flex items-center gap-2 text-neutral-500 text-sm mb-6">
                   <MapPin className="w-4 h-4" />
                   <span>
                     {typeof project.location === 'string'
@@ -508,24 +508,24 @@ export default function ProjectDetailPage() {
               )}
 
               {/* Creator Info & Actions - Redesigned Layout */}
-              <div className="border-t pt-6">
+              <div className="border-t border-neutral-800 pt-6">
                 {/* Top Row: Creator + Verified Badge + Stats */}
                 <div className="flex items-center justify-between mb-4">
                   {/* Creator Info */}
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     {loadingCreator ? (
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse flex-shrink-0" />
+                        <div className="w-10 h-10 bg-neutral-800 rounded-full animate-pulse flex-shrink-0" />
                         <div>
-                          <div className="h-4 bg-gray-200 rounded w-24 mb-1.5 animate-pulse" />
-                          <div className="h-3 bg-gray-200 rounded w-16 animate-pulse" />
+                          <div className="h-4 bg-neutral-800 rounded w-24 mb-1.5 animate-pulse" />
+                          <div className="h-3 bg-neutral-800 rounded w-16 animate-pulse" />
                         </div>
                       </div>
                     ) : creatorError ? (
-                      <div className="text-red-500 text-sm">{creatorError}</div>
+                      <div className="text-brand-orange text-sm">{creatorError}</div>
                     ) : creator ? (
                       <div
-                        className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 py-1.5 px-2 -ml-2 rounded-lg transition-colors min-w-0"
+                        className="flex items-center gap-3 cursor-pointer hover:bg-white/5 py-1.5 px-2 -ml-2 rounded-xl transition-all duration-300 min-w-0"
                         onClick={handleCreatorNavigation}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
@@ -544,14 +544,14 @@ export default function ProjectDetailPage() {
                         />
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <h3 className="font-semibold text-gray-900 truncate max-w-[150px] sm:max-w-[200px]">
+                            <h3 className="font-black italic uppercase tracking-tight text-brand-white truncate max-w-[150px] sm:max-w-[200px]">
                               {creator.displayName}
                             </h3>
                             {creator.isVerifiedCreator && (
-                              <BadgeCheck className="w-4 h-4 text-green-600 flex-shrink-0" />
+                              <BadgeCheck className="w-4 h-4 text-brand-acid flex-shrink-0" />
                             )}
                           </div>
-                          <p className="text-sm text-gray-500 truncate">@{creator.username}</p>
+                          <p className="text-sm text-neutral-500 truncate">@{creator.username}</p>
                         </div>
                       </div>
                     ) : null}
@@ -594,48 +594,56 @@ export default function ProjectDetailPage() {
             </div>
 
             {/* Navigation Tabs */}
-            <div className="bg-white rounded-lg shadow-sm mb-6">
-              <div
-                className="flex space-x-1 p-1 bg-gray-100 rounded-lg m-4 overflow-x-auto scrollbar-hide"
-                role="tablist"
-                onKeyDown={handleTabNavigation}
-              >
-                {[
-                  { id: 'overview', label: 'Overview' },
-                  { id: 'faqs', label: 'FAQs' },
-                  { id: 'updates', label: 'Updates' },
-                  { id: 'comments', label: 'Comments' },
-                  { id: 'supporters', label: 'Supporters' }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    role="tab"
-                    aria-selected={activeTab === tab.id}
-                    aria-controls={`${tab.id}-panel`}
-                    id={`${tab.id}-tab`}
-                    tabIndex={activeTab === tab.id ? 0 : -1}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${activeTab === tab.id
-                      ? 'bg-white text-orange-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                      }`}
-                    onClick={() => handleTabChange(tab.id)}
-                    onKeyDown={(e) => handleKeyDown(e, tab.id)}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+            <div className="bg-[#111] rounded-[2.5rem] border border-neutral-800 mb-8">
+              <div className="px-8 pt-8 pb-2">
+                <div
+                  className="flex items-center gap-2 flex-nowrap pb-4 border-b border-neutral-800/30"
+                  role="tablist"
+                  onKeyDown={handleTabNavigation}
+                >
+                  {[
+                    { id: 'overview', label: 'Overview' },
+                    { id: 'faqs', label: 'FAQs' },
+                    { id: 'updates', label: 'Updates' },
+                    { id: 'comments', label: 'Comments' },
+                    { id: 'supporters', label: 'Supporters' }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      role="tab"
+                      aria-selected={activeTab === tab.id}
+                      aria-controls={`${tab.id}-panel`}
+                      id={`${tab.id}-tab`}
+                      tabIndex={activeTab === tab.id ? 0 : -1}
+                      className={`px-6 py-2.5 rounded-full text-[10px] font-black italic uppercase tracking-[0.2em] transition-all duration-300 whitespace-nowrap focus:outline-none ${activeTab === tab.id
+                        ? 'bg-brand-acid text-brand-black'
+                        : 'text-neutral-500 hover:text-brand-white'
+                        }`}
+                      onClick={() => handleTabChange(tab.id)}
+                      onKeyDown={(e) => handleKeyDown(e, tab.id)}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Tab Content */}
-              <div className="p-6">
+              <div className="p-8">
                 {/* Overview Tab */}
                 {activeTab === 'overview' && (
                   <div role="tabpanel" id="overview-panel" aria-labelledby="overview-tab">
                     <div className="prose max-w-none space-y-8">
                       {/* About Section */}
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">About This Project</h3>
-                        <div className="whitespace-pre-wrap text-gray-700">
+                        <div className="mb-8">
+                          <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                            <span className="w-8 h-[2px] bg-brand-acid" />
+                            Core Protocol
+                          </h3>
+                          <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">About This Project</h4>
+                        </div>
+                        <div className="whitespace-pre-wrap text-neutral-300 leading-relaxed">
                           {project.description}
                         </div>
                       </div>
@@ -643,8 +651,14 @@ export default function ProjectDetailPage() {
                       {/* Why This Matters Section */}
                       {project.story?.why && (
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-4">Why This Matters</h3>
-                          <div className="whitespace-pre-wrap text-gray-700">
+                          <div className="mb-8">
+                            <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                              <span className="w-8 h-[2px] bg-brand-acid" />
+                              Impact Intel
+                            </h3>
+                            <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Why This Matters</h4>
+                          </div>
+                          <div className="whitespace-pre-wrap text-neutral-300 leading-relaxed">
                             {project.story.why}
                           </div>
                         </div>
@@ -653,7 +667,13 @@ export default function ProjectDetailPage() {
                       {/* Fund Breakdown Section - Pie Chart */}
                       {project.story?.fundBreakdown && project.story.fundBreakdown.length > 0 && (
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-4">How Funds Will Be Used</h3>
+                          <div className="mb-8">
+                            <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                              <span className="w-8 h-[2px] bg-brand-acid" />
+                              Fund Strategy
+                            </h3>
+                            <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Budget Breakdown</h4>
+                          </div>
                           <FundBreakdownPieChart breakdown={project.story.fundBreakdown} />
                         </div>
                       )}
@@ -662,14 +682,22 @@ export default function ProjectDetailPage() {
                       {project.gallery && project.gallery.length > 0 && (
                         <div>
                           <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">Project Gallery</h3>
-                            <span className="text-sm text-gray-500">{project.gallery.length} images</span>
+                           <div className="mb-8">
+                             <div className="flex items-center justify-between mb-2">
+                               <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 flex items-center gap-3">
+                                 <span className="w-8 h-[2px] bg-brand-acid" />
+                                 Visual Assets
+                               </h3>
+                               <span className="text-[10px] font-black italic uppercase tracking-[0.1em] text-neutral-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">{project.gallery.length} frames</span>
+                             </div>
+                             <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Project Gallery</h4>
+                           </div>
                           </div>
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {project.gallery.map((image: string, index: number) => (
                               <div
                                 key={index}
-                                className="relative group cursor-pointer aspect-video rounded-lg overflow-hidden bg-gray-100"
+                                className="relative group cursor-pointer aspect-video rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800"
                                 onClick={() => openLightbox(index + 1)} // +1 because main image is at index 0
                               >
                                 <img
@@ -691,15 +719,21 @@ export default function ProjectDetailPage() {
                       {/* Timeline Section */}
                       {project.story?.timeline && project.story.timeline.length > 0 && (
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Timeline</h3>
+                          <div className="mb-8">
+                            <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                              <span className="w-8 h-[2px] bg-brand-acid" />
+                              Operational Sync
+                            </h3>
+                            <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Execution Roadmap</h4>
+                          </div>
                           <div className="space-y-4">
                             {project.story.timeline.map((item: { month: number; milestone: string }, index: number) => (
                               <div key={index} className="flex items-start space-x-4">
-                                <div className="flex-shrink-0 w-24 h-12 bg-gradient-to-r from-orange-100 to-red-100 text-orange-900 font-semibold rounded-lg flex items-center justify-center text-sm">
+                                <div className="flex-shrink-0 w-24 h-12 bg-gradient-to-r from-brand-orange/20 to-brand-orange/10 text-brand-orange font-black rounded-xl flex items-center justify-center text-sm border border-brand-orange/20">
                                   Month {item.month}
                                 </div>
                                 <div className="flex-1 pt-2">
-                                  <p className="text-gray-700">{item.milestone}</p>
+                                  <p className="text-neutral-300">{item.milestone}</p>
                                 </div>
                               </div>
                             ))}
@@ -710,8 +744,14 @@ export default function ProjectDetailPage() {
                       {/* Risks & Challenges Section */}
                       {project.story?.risks && (
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-4">Risks & Challenges</h3>
-                          <div className="whitespace-pre-wrap text-gray-700 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                           <div className="mb-8">
+                             <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                               <span className="w-8 h-[2px] bg-brand-acid" />
+                               Stability Check
+                             </h3>
+                             <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Risks & Challenges</h4>
+                           </div>
+                          <div className="whitespace-pre-wrap text-neutral-300 bg-neutral-800/50 border border-neutral-700 rounded-2xl p-5 leading-relaxed">
                             {project.story.risks}
                           </div>
                         </div>
@@ -725,7 +765,13 @@ export default function ProjectDetailPage() {
                   <div role="tabpanel" id="faqs-panel" aria-labelledby="faqs-tab">
                     <div className="space-y-6">
                       <div className="flex items-center space-x-2">
-                        <h3 className="text-xl font-semibold text-gray-900">Frequently Asked Questions</h3>
+                      <div className="mb-8">
+                        <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                          <span className="w-8 h-[2px] bg-brand-acid" />
+                          Support Node
+                        </h3>
+                        <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Common Inquiries</h4>
+                      </div>
                       </div>
                       <ProjectFAQs
                         faqs={project.faqs || []}
@@ -739,6 +785,13 @@ export default function ProjectDetailPage() {
                 {/* Updates Tab */}
                 {activeTab === 'updates' && (
                   <div role="tabpanel" id="updates-panel" aria-labelledby="updates-tab">
+                    <div className="mb-8">
+                      <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-brand-acid" />
+                        Live Feed
+                      </h3>
+                      <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Project Updates</h4>
+                    </div>
                     <UpdatesSection projectId={project.id} creatorId={creatorId} creatorAvatar={(creator as any)?.profileImage || creator?.photoURL || undefined} projectTitle={project.title} />
                   </div>
                 )}
@@ -746,6 +799,13 @@ export default function ProjectDetailPage() {
                 {/* Comments Tab */}
                 {activeTab === 'comments' && (
                   <div role="tabpanel" id="comments-panel" aria-labelledby="comments-tab">
+                    <div className="mb-8">
+                      <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-brand-acid" />
+                        Community Pulse
+                      </h3>
+                      <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Discussion</h4>
+                    </div>
                     <CommentsSection projectId={project.id} creatorId={creatorId} creatorAvatar={(creator as any)?.profileImage || creator?.photoURL || undefined} />
                   </div>
                 )}
@@ -753,9 +813,13 @@ export default function ProjectDetailPage() {
                 {/* Supporters Tab */}
                 {activeTab === 'supporters' && (
                   <div role="tabpanel" id="supporters-panel" aria-labelledby="supporters-tab">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Supporters ({displayProject.supporters})
-                    </h3>
+                    <div className="mb-8">
+                      <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-brand-acid" />
+                        Backer Network
+                      </h3>
+                      <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">Supporters ({displayProject.supporters})</h4>
+                    </div>
                     <SupportersList projectId={displayProject.id} limit={20} showTitle={false} />
                   </div>
                 )}
@@ -767,14 +831,14 @@ export default function ProjectDetailPage() {
           <div className="lg:col-span-1">
             <div className="lg:sticky lg:top-24 space-y-6">
               {/* Funding Progress Card */}
-              <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 overflow-hidden relative">
+              <div className="bg-[#111] rounded-3xl border border-neutral-800 p-6 overflow-hidden relative shadow-[0_0_30px_rgba(0,0,0,0.3)]">
                 {/* Subtle gradient overlay */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-orange-50 to-transparent rounded-bl-full pointer-events-none" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-brand-orange/5 to-transparent rounded-bl-full pointer-events-none" />
 
                 {/* Project Status Badge - Only show if NOT active */}
                 {projectStatus.status !== 'active' && (
                   <div className="mb-4 relative">
-                    <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold ${getStatusColor(projectStatus.status)}`}>
+                    <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-black ${getStatusColor(projectStatus.status)}`}>
                       {projectStatus.status === 'successful' && '🎉 '}
                       {projectStatus.status === 'expired' && '⏰ '}
                       {projectStatus.status === 'failed' && '😔 '}
@@ -802,11 +866,11 @@ export default function ProjectDetailPage() {
 
                 {/* Expired Project Message */}
                 {projectStatus.isExpired && !projectStatus.isSuccessful && (
-                  <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                    <p className="text-sm font-medium text-gray-700">
+                  <div className="mt-4 p-3 bg-neutral-800/50 border border-neutral-700 rounded-2xl text-center">
+                    <p className="text-sm font-bold text-neutral-300">
                       This project has ended
                     </p>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-neutral-500 mt-1">
                       Donations are no longer accepted
                     </p>
                   </div>
@@ -814,11 +878,11 @@ export default function ProjectDetailPage() {
 
                 {/* Success Message */}
                 {projectStatus.isExpired && projectStatus.isSuccessful && (
-                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
-                    <p className="text-sm font-medium text-green-800">
+                  <div className="mt-4 p-3 bg-brand-acid/10 border border-brand-acid/30 rounded-2xl text-center">
+                    <p className="text-sm font-black text-brand-acid">
                       🎉 Project Successfully Funded!
                     </p>
-                    <p className="text-xs text-green-700 mt-1">
+                    <p className="text-xs text-brand-acid/70 mt-1">
                       This project has reached its goal
                     </p>
                   </div>
@@ -828,7 +892,7 @@ export default function ProjectDetailPage() {
                 {!projectStatus.isExpired && (
                   <button
                     onClick={() => setIsBackModalOpen(true)}
-                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-200 text-center block mt-6"
+                    className="w-full bg-gradient-to-r from-brand-orange to-[#ff7529] text-brand-black py-3.5 px-4 rounded-2xl font-black text-base hover:shadow-[0_0_25px_rgba(255,91,0,0.3)] transition-all duration-300 text-center block mt-6 uppercase tracking-wider active:scale-[0.98]"
                     aria-label="Support this project"
                   >
                     Back This Project
@@ -838,50 +902,72 @@ export default function ProjectDetailPage() {
 
               {/* Creator Card */}
               {creator && (
-                <div className="bg-white rounded-lg shadow-sm p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">About the Creator</h3>
-                  <div className="flex items-center space-x-4 mb-4">
-                    <UserProfilePicture
-                      user={creator}
-                      size="lg"
-                      className="w-16 h-16"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-gray-900">{creator.displayName}</h4>
-                        {creator.isVerifiedCreator && (
-                          <BadgeCheck className="w-4 h-4 text-green-600" />
-                        )}
+                <div className="bg-[#111] rounded-[2.5rem] border border-neutral-800 p-8 relative overflow-hidden group transition-all duration-500 hover:border-brand-acid/30 hover:shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                  {/* Luxury Background Accents */}
+                  <div className="absolute -top-12 -right-12 w-48 h-48 bg-brand-acid/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-brand-acid/10 transition-all duration-1000" />
+                  <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-brand-orange/5 rounded-full blur-[80px] pointer-events-none" />
+                  
+                  <div className="relative z-10">
+                    <div className="mb-10">
+                      <h3 className="text-[10px] font-black italic uppercase tracking-[0.3em] text-neutral-600 mb-2 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-brand-acid" />
+                        Master Intelligence
+                      </h3>
+                      <h4 className="text-3xl font-black italic uppercase tracking-tighter text-brand-white">About The Creator</h4>
+                    </div>
+                    
+                    <div className="flex items-center gap-5 mb-8">
+                      <div className="relative flex-shrink-0">
+                        <UserProfilePicture
+                          user={creator}
+                          size="xl"
+                          className="w-20 h-20 ring-4 ring-brand-acid ring-offset-4 ring-offset-brand-black shadow-[0_0_20px_rgba(204,255,0,0.1)] group-hover:shadow-[0_0_30px_rgba(204,255,0,0.2)] transition-all duration-500"
+                        />
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-brand-acid rounded-full border-4 border-[#111] flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 bg-brand-black rounded-full animate-pulse" />
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600">@{creator.username}</p>
-                    </div>
-                  </div>
-                  {creator.bio && (
-                    <div className="mb-4">
-                      <p className={`text-gray-700 ${!bioExpanded && creator.bio.length > 150 ? 'line-clamp-3' : ''}`}>
-                        {creator.bio}
-                      </p>
-                      {creator.bio.length > 150 && (
-                        <button
-                          onClick={() => setBioExpanded(!bioExpanded)}
-                          className="text-orange-600 text-sm font-medium hover:text-orange-700 mt-1 flex items-center gap-1"
-                        >
-                          {bioExpanded ? (
-                            <><ChevronUp className="w-4 h-4" /> Show less</>
-                          ) : (
-                            <><ChevronDown className="w-4 h-4" /> Read more</>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-black italic uppercase tracking-tighter text-brand-white text-2xl leading-none truncate">
+                            {creator.displayName}
+                          </h4>
+                          {creator.isVerifiedCreator && (
+                            <BadgeCheck className="w-5 h-5 text-brand-acid fill-brand-acid/10 flex-shrink-0" />
                           )}
-                        </button>
-                      )}
+                        </div>
+                        <p className="text-xs font-bold text-neutral-500 uppercase tracking-[0.2em]">@{creator.username}</p>
+                      </div>
                     </div>
-                  )}
-                  <button
-                    onClick={handleCreatorNavigation}
-                    className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-                    aria-label={`View ${creator.displayName}'s profile`}
-                  >
-                    View Profile
-                  </button>
+                    
+                    {creator.bio && (
+                      <div className="mb-8 relative">
+                        <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-brand-acid/30 to-transparent rounded-full" />
+                        <div className="pl-6">
+                          <p className={`text-neutral-400 text-sm leading-relaxed font-medium italic ${!bioExpanded && creator.bio.length > 150 ? 'line-clamp-3' : ''}`}>
+                            "{creator.bio}"
+                          </p>
+                          {creator.bio.length > 150 && (
+                            <button
+                              onClick={() => setBioExpanded(!bioExpanded)}
+                              className="text-brand-acid text-[9px] font-black italic uppercase tracking-[0.2em] hover:text-brand-white mt-4 flex items-center gap-2 transition-all group/bio"
+                            >
+                              <div className="w-4 h-px bg-brand-acid group-hover:w-8 transition-all" />
+                              {bioExpanded ? 'Collapse Data' : 'Expand Intelligence'}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <button
+                      onClick={handleCreatorNavigation}
+                      className="w-full bg-brand-acid text-brand-black py-4 px-6 rounded-[1.25rem] font-black italic uppercase tracking-[0.2em] text-[11px] hover:bg-[#b3e600] transition-all duration-500 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(204,255,0,0.1)] hover:shadow-[0_0_35px_rgba(204,255,0,0.3)] active:scale-[0.96] group/btn"
+                    >
+                      Connect with Creator
+                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1.5 transition-transform duration-300" />
+                    </button>
+                  </div>
                 </div>
               )}
 

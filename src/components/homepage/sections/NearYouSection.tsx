@@ -17,7 +17,7 @@ export default function NearYouSection({ projects, loading }: NearYouSectionProp
         subtitle="Projects from your area"
         icon={MapPin}
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
           ))}
@@ -37,7 +37,7 @@ export default function NearYouSection({ projects, loading }: NearYouSectionProp
       icon={MapPin}
       viewAllLink="/?filter=nearme"
     >
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
         {projects.map(project => (
           <EnhancedProjectCard key={project.id} project={project} />
         ))}

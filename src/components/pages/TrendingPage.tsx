@@ -91,7 +91,7 @@ export default function TrendingPage() {
 
       {/* Filters */}
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-black/40 backdrop-blur-xl rounded-[2.5rem] border border-white/5 p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
+        <div className="bg-black/40 backdrop-blur-xl rounded-[1.5rem] border border-white/5 p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
           {/* Subtle background glow */}
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-brand-acid/5 rounded-full blur-[100px] pointer-events-none group-hover:bg-brand-acid/10 transition-colors duration-700"></div>
           
@@ -175,15 +175,15 @@ export default function TrendingPage() {
         )}
 
         {isLoading && !hasError && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-neutral-900 rounded-2xl h-[400px] animate-pulse border border-neutral-800" />
             ))}
           </div>
         )}
 
         {!isLoading && !hasError && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {trendingProjects.map((project, index) => (
               <div key={project.id} className="relative group/card">
                 {/* Trending Badge */}

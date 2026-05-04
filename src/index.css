@@ -62,6 +62,15 @@ input[type=number] {
   animation: float-delayed 3s ease-in-out infinite 1.5s;
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
 /* Background pattern */
 .bg-grid-pattern {
   background-image: radial-gradient(circle, #f97316 1px, transparent 1px);

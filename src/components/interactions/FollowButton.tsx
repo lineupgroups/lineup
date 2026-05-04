@@ -39,12 +39,12 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       onClick={toggleFollow}
       disabled={isLoading}
       className={cn(
-        'inline-flex items-center gap-2 rounded-lg border transition-all duration-200',
+        'inline-flex items-center gap-2 rounded-xl border transition-all duration-300',
         'hover:scale-105 active:scale-95',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         isFollowed
-          ? 'bg-blue-50 border-blue-200 text-blue-600 hover:bg-blue-100'
-          : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300',
+          ? 'bg-brand-acid/10 border-brand-acid/30 text-brand-acid shadow-[0_0_10px_rgba(204,255,0,0.1)]'
+          : 'bg-white/5 border-neutral-700 text-neutral-400 hover:bg-white/10 hover:border-neutral-600',
         buttonSizeClasses[size],
         className
       )}
@@ -53,14 +53,14 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
         className={cn(
           sizeClasses[size],
           'transition-all duration-200',
-          isFollowed ? 'text-blue-500' : '',
+          isFollowed ? 'text-brand-acid' : '',
           isLoading && 'animate-pulse'
         )}
       />
       {showText && (
         <span className={cn(
-          'font-medium',
-          isFollowed ? 'text-blue-600' : 'text-gray-700'
+          'font-bold',
+          isFollowed ? 'text-brand-acid' : 'text-neutral-400'
         )}>
           {isFollowed ? 'Following' : 'Follow'}
         </span>
@@ -68,7 +68,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       {showCount && followCount > 0 && (
         <span className={cn(
           'text-xs px-2 py-1 rounded-full',
-          isFollowed ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
+          isFollowed ? 'bg-brand-acid/20 text-brand-acid' : 'bg-neutral-800 text-neutral-500'
         )}>
           {followCount}
         </span>
